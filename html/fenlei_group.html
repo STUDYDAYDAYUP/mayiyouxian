@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_pingtai.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    	html, body{
+			height: 100%;
+			-webkit-overflow-scrolling:touch;
+    	}
+    	#main{
+            /*border-top: 1px solid #e5e5e5;*/
+    		/*transition: margin-top 0.3s ease-out;*/
+    	}
+
+		.min_header{
+            height: 38px;
+            background-color: #fff;
+            width: 100%;
+            padding:5px 0 0;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 9999;
+        }
+		.swiper-slide img{
+    		width: 100%;
+    		vertical-align: bottom;
+    	}
+    	.goods-slide-section{
+			display: block;
+			position: relative;
+			overflow: hidden;
+		    width: 100%;
+
+		    text-align: center;
+		    -webkit-transition: height 0.275s ease-out;
+		    transition: height 0.275s ease-out;
+			-webkit-backface-visibility: hidden;
+		    height: 0;
+		}
+		.slide-img-box{
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0; right: 0; margin: 0 auto;
+		}
+		.mycart{
+			width: 0;
+			height: 0;
+			overflow: hidden;
+			position: fixed;
+			bottom: 50px;
+			left: 60px;
+			background-image: url('../image/my_cart.png');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			z-index: 9999;
+		}
+		.dian{
+			width: 0;
+			height: 0;
+			position: absolute;
+			z-index: 1000;
+			/*方法一
+			*-webkit-transition:left 0.75s ease-out;
+			transition:left 0.75s ease-out;*/
+			/*方法二*/
+			transition:transform 750ms ease-out;
+			transform: translateX(0px);
+			-webkit-backface-visibility: hidden;
+		}
+		.dian_change {
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			/*background: #eb6b67;*/
+			background: #60b034;
+			z-index: 1000;
+			/*方法一
+			*-webkit-transition:top 0.75s cubic-bezier(.25, 0, .4, 0);
+			transition:top 0.75s cubic-bezier(.25, 0, .4, 0);*/
+			/*方法二*/
+			transition:transform 750ms cubic-bezier(.25, 0, .4, 0);
+			transform: translateY(0px);
+			-webkit-backface-visibility: hidden;
+		}
+    </style>
+</head>
+<script>
+</script>
+<body>
+	<div class="mycart"></div>
+	<div id="main" style="">
+		<div class="goods_list">
+				<div id="headlist" class="content">
+
+				</div>
+			</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript">
+apiready = function(){
+	get_goods_by_cat1();
+	// document.getElementById('headlist').innerHTML = '<p>我是：'+api.pageParam.type+'</p>';
+	//get_goods_by_cat(api.pageParam.catId,1,0);
+	// fget_buycar();
+	api.setRefreshHeaderInfo({
+		visible: true,
+		loadingImg: '',
+		bgColor: '#f2f2f2',
+		textColor: '#fff',
+		textDown: '下拉刷新...',
+		textUp: '松开刷新...',
+		showTime: true
+	}, function(ret, err){
+		api.refreshHeaderLoading();
+		// fget_buycar();
+		api.execScript({
+			name:'fenlei_shaixuan_header',
+			frameName: 'mycart_frame',
+			script: 'fget_buycar();'
+		});
+		get_goods_by_cat1();
+		api.refreshHeaderLoadDone();
+	});
+
+	api.addEventListener({
+		name:'scrolltobottom',
+		extra:{
+			threshold:80            //设置距离底部多少距离时触发，默认值为0，数字类型
+		}
+	}, function(ret, err){
+		get_goods_by_cat();
+	});
+};
+// 小球
+var end_x, end_y, dian_n = 0, start_x, start_y, m_time;
+function fs_dian(){
+	dian_n ++;
+	var goods_num_x = $('.mycart').offset().left;
+	var goods_num_y = $('.mycart').offset().top;
+	var $start_ = $(cartDom);
+	start_x = $start_.offset().left;
+	start_y = $start_.offset().top;
+	// 方法一
+	// end_x = parseFloat(goods_num_x);
+	// end_y = parseFloat(goods_num_y) + $('body').scrollTop() - start_y + 25;
+	// 方法二
+	end_x = parseFloat(goods_num_x) + parseFloat($('.mycart').css('width'))/2 - start_x;
+	end_y = parseFloat(goods_num_y) + parseFloat($('.mycart').css('height'))/2 - start_y;
+
+	if(end_y<150){
+		m_time = 0.5;
+	}
+	else if(end_y<280){
+		m_time = 0.62;
+	}
+	else{
+		m_time = 0.75;
+	}
+	var dianH = '<div class="dian dian'+dian_n+'" style="left:'+start_x+'px;top:'+start_y+'px;transition-duration:'+m_time+'s;"><div class="dian_change" style="transition-duration:'+m_time+'s;"></div></div>';
+	$('body').append(dianH);
+
+	f_setT(dian_n,end_x,end_y,m_time);
+}
+function f_setT(num_,end_x_,end_y_,m_time_){
+	m_time_ = m_time_*1000 + 50;
+	setTimeout(function(){
+		// 方法一
+		// $('.dian'+num_).css('left',end_x_);
+		// $('.dian'+num_).find('.dian_change').css('top',end_y_);
+		// 方法二
+		$('.dian'+num_).css({
+			'transform': 'translateX('+ end_x_ +'px)'
+		});
+		$('.dian'+num_).find('.dian_change').css({
+			'transform': 'translateY('+ end_y_ +'px)'
+		});
+
+	},0)
+	setTimeout(function(){
+
+		api.execScript({
+		   name:'fenlei_shaixuan_header',
+		   frameName:'mycart_frame',
+		   script: 'fmovemycart();'
+		});
+		$('.dian'+num_).remove();
+	},m_time_)
+}
+
+// 商品列表点击弹出图片
+var slide_img_h;
+function slide_section1(obj) {
+	var status_ = true, num_ = 1;
+	$(obj).on('touchmove',function(e){
+		// e.preventDefault();
+		status_ = false;
+	})
+	$(obj).one('touchend',function(e){
+		e.preventDefault();
+		if(status_ == false ){
+
+		}else {
+			slide_section2(obj);
+		}
+	})
+	return false;
+}
+function slide_section2(obj){
+	slide_img_h = $(window).width() - parseFloat($('.goods-slide-section .swiper-slide').css('padding-left')) - parseFloat($('.goods-slide-section .swiper-slide').css('padding-right'));
+	if($(obj).attr('data-h') == 'true'){
+		$(obj).parent().siblings('.goods-slide-section').css('height',0);
+		$(obj).attr('data-h',false);
+		return false;
+	}else{
+		$('.goods-slide-section').css('height',0);
+		$('.goods-list-content').attr('data-h',false);
+		$(obj).parent().siblings('.goods-slide-section').css('height',slide_img_h);
+		$(obj).attr('data-h',true);
+	}
+}
+
+var cid = 0;
+var type = 0;
+var start = 0;
+var lock = 0;
+var lock1 = 1;
+function get_goods_by_cat1(cid1,type1,start1){
+	cid = api.pageParam.cid1;
+	type = api.pageParam.type1;
+	start = api.pageParam.start1;
+	lock = 0;
+	lock1 = 1;
+	get_goods_by_cat();
+}
+function fnLoadImage(ele_) {
+	var dataUrl = $api.attr(ele_, 'data-url');
+	//    alert(fnLoadImage)
+	if (dataUrl) {
+		api.imageCache({
+			url : dataUrl
+		}, function(ret, err) {
+			if (ret) {
+				ele_.src = ret.url;
+				$api.attr(ele_, 'data-url', '');
+			} else {
+			}
+		});
+	}
+}
+function set_lock(){
+	lock1 = 1;
+	api.hideProgress();//隐藏加载进度框
+}
+function get_goods_by_cat(){
+	if(start > 0){
+		$('.jiazaid').remove();
+	}
+	if(lock1 == -1){
+		api.toast({
+			msg: '别急，慢慢来！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	if(lock == -1){
+		return;
+	}
+
+	lock1 = -1;
+	if(start > 0){
+		$('.content').append('<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+	}
+	else{
+		$('.content').html('<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+	}
+	api.showProgress({title: '努力加载中...'});
+	var user_id=$api.getStorage('user_id');
+	var time = Math.ceil(new Date().getTime()/1000);
+	var sign = get_appkey(time);
+	sign = md5(sign+type);
+	api.ajax({
+		url: YAH_web+'/index.php?m=Api&c=Goods&a=get_goods_by_cat',
+		method: 'post',
+		cache: false,
+		timeout: 30,
+		dataType: 'json',
+		returnAll:false,
+		data:{
+			values: {
+				userId:user_id,
+				cid:cid,
+				start:start,
+				type:type,
+				time:time,
+				sign:sign
+			}
+		}
+	},function(ret,err){
+		//alert(JSON.stringify(ret||err));
+
+		if (ret) {
+			 var html = '';
+
+			 $(ret).each(function(i,val){
+				 html += '<div class="goods-list-box goods-list-slide">';
+				 html += '<div class="goods-list-section">';
+				//  html += '<div class="goods-list-content block-box" tapmode="a"  onclick="slide_section(this)">';
+				 html += '<div class="goods-list-content block-box" tapmode="a"  ontouchstart="slide_section1(this)">';
+				 var n = i+1;
+				 if(n == ret.length){
+					 html += '<div class="goods-img"><img  onload="fnLoadImage(this);set_lock();" data-url="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsThums+'" alt="" src="../image/default_goods.png" /></div>';
+				 }
+				 else{
+					 html += '<div class="goods-img"><img  onload="fnLoadImage(this)" data-url="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsThums+'" alt="" src="../image/default_goods.png" /></div>';
+				 }
+
+				 html += '<div class="goods-ifo block-flex">';
+				 html += '<p class="goods-name">'+val.goodsName+'</p>';
+				 html += '<p class="goods-explain">'+val.goodsSpec+'</p>'
+
+				 if(val.keywordlist.length > 0 && val['keywordlist'][0] != ''){
+					 var abc = 0;
+					 html += '<div class="goods-spec">';
+					 //alert(val.goodsKeywords);
+					 $(val.keywordlist).each(function(m,val2){
+						  if(abc < 3 ){
+							  if(val2 != ''){
+								 html += '<span>'+val2+'</span>';
+								 abc++
+							  }
+						  }
+
+
+					 })
+
+					 html += '</div>';
+				 }
+				 html += '<div class="goods-price">';
+				 if(ret[i].isOneyuan == 1 && ret[i].goodsStock > 0 && ret[i].userone > 0){
+					  html += '<strong>￥1.00</strong>';
+					  html += '<span>￥'+ret[i].shopPrice+'</span>';
+				 }
+				 else{
+					  html += '<strong>￥'+ret[i].shopPrice+'</strong>';
+					  html += '<span></span>';
+				 }
+				 html += '</div>';
+				 html += '</div>';
+				 if(ret[i].isOneyuan == 1 && ret[i].userone > 0){
+					 html += '<div class="goods-labels">';
+					 html += '<em><i></i>一元特价<i></i></em>';
+					 if(ret[i].goodsStock > 10){
+						 html += '<em>大于10份</em>';
+					 }
+					 else if(ret[i].goodsStock > 0){
+						 html += '<em>仅剩'+ret[i].goodsStock+'份</em>';
+					 }
+					 else{
+						 html += '<em>剩余0份</em>';
+					 }
+					 html += '</div>';
+				 }
+				 html += '</div>';
+				 html += '<a href="javascript:void(0)" onclick="addCart('+ret[i].goodsId+',this);" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a>';
+				 html += '</div>';
+				 html += '<div class="goods-slide-section" style="display: block;">';
+				 html += '<div class="slide-img-box">';
+				 html += '<div class="swiper-container swiper-container2">';
+				 html += '<div class="swiper-wrapper">';
+				 html += '<div class="swiper-slide"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" alt="" /></div>';
+				 $(val.imglist).each(function(n,val1){
+					  html += '<div class="swiper-slide"><img src="'+$api.getStorage("YAH_web")+'/'+val1.goodsImg+'" alt="" /></div>';
+				 })
+
+				 html += '</div>';
+				 html += '<div class="swiper-pagination swiper-pagination2"></div>';
+				 html += '</div>';
+				 html += '</div>';
+				 html += '</div>';
+				 html += '</div>';
+			 })
+
+
+			 if(start > 0){
+				 $('.jiazai').remove();
+				 $('.content').append(html);
+			 }else{
+				 $('.content').html(html);
+			 }
+
+			 if(ret.length > 0){
+				 if(ret.length == 10){
+					 start = start+10;
+					 $('.content').append('<div class="jiazaid" style="text-align:center;line-height:50px;" onclick="get_goods_by_cat()">加载更多数据</div>');
+				 }
+				 else{
+					 lock = -1;
+					 start = -1;
+					 $('.content').append('<div style="text-align:center;line-height:50px;">没有更多数据了</div>');
+				 }
+			 }
+			 else{
+					 lock = -1;
+					 start = -1;
+					 api.hideProgress();//隐藏加载进度框
+					 $('.content').append('<div style="text-align:center;line-height:50px;">没有更多数据了</div>');
+			 }
+
+		}else {
+			api.hideProgress();//隐藏加载进度框
+			var html='<div style="text-align:center;">暂无商品</div>';
+			$('.content').html(html);
+		};
+	});
+}
+
+var cartDom;
+function addCart(gid,obj_){
+	cartDom = obj_;
+	var login=$api.getStorage('login');
+	if(login=='0' || login==0 || login==undefined)
+	{
+		api.toast({
+			msg: '请先登录！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	fs_dian();
+	api.execScript({
+		name:'root',
+		frameName:'home',
+		script: 'addCart('+gid+',2);'
+	 });
+}
+
+</script>
+</html>

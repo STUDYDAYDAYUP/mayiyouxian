@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wuliu_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div class="goods_l"><img id="tu" src="../image/sp_3.png" /></div>
+		<div class="goods_r">
+			<div class="wuliu_zhuangtai"><span class="s1">物流状态</span><span class="s2" id="status"></span></div>
+			<div class="dingdan_bianhao"><span class="s1">运单编号</span><span class="s2" id="dd_no"></span></div>
+			<div class="xinxi_laiyuan"><span class="s1">信息来源</span><span class="s2" id="dd_name"></span></div>
+		</div>
+	</div>
+	<div id="content">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<!--<li>
+				<div class="wlxx_l">
+					<div class="ding ding_on"></div>
+					<div class="ding_w ding_w_on"></div>
+				</div>
+				<div class="xian xian_on"></div>
+				<div class="wlxx_r">
+					<div class="wl_title wl_title_on">[广州市]已签收，收件人李清照已签收，感谢使用龙门镖局，期待再次为您服务！</div>
+					<div class="time_title">2016-01-17 15:23:57</div>
+				</div>
+			</li>
+			<li>
+				<div class="wlxx_l">
+					<div class="ding"></div>
+				</div>
+				<div class="xian"></div>
+				<div class="wlxx_r">
+					<div class="wl_title">[广州市中心]广州市中心已发出！</div>
+					<div class="time_title">2016-01-17 15:23:57</div>
+				</div>
+			</li>
+			<li>
+				<div class="wlxx_l">
+					<div class="ding"></div>
+				</div>
+				<div class="xian"></div>
+				<div class="wlxx_r">
+					<div class="wl_title">[广州市中心]广州市中心已转入！</div>
+					<div class="time_title">2016-01-17 15:23:57</div>
+				</div>
+			</li>
+			<li>
+				<div class="wlxx_l">
+					<div class="ding"></div>
+				</div>
+				<div class="xian"></div>
+				<div class="wlxx_r">
+					<div class="wl_title">[广州市中心]龙门镖局md001号镖师已揽件</div>
+					<div class="time_title">2016-01-17 15:23:57</div>
+				</div>
+			</li>
+			<li>
+				<div class="wlxx_l">
+					<div class="ding"></div>
+				</div>
+				<div class="xian"></div>
+				<div class="wlxx_r">
+					<div class="wl_title">商家正通知快递公司揽件！</div>
+					<div class="time_title">2016-01-17 15:23:57</div>
+				</div>
+			</li>-->
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var shuxing=0;
+	apiready = function(){
+		fget_order();
+	};
+	function fget_order()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_wuliu_order.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	orderId:api.pageParam.orderId
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	document.getElementById("tu").src=$api.getStorage("YAH_web")+'/'+ret[0].img;
+            	document.getElementById("dd_no").innerHTML=ret[0].wuliu_no;
+            	document.getElementById("dd_name").innerHTML=ret[0].wuliu_name;
+            	if(ret[0].wuliu_no==0)
+            	{
+            		document.getElementById("content").innerHTML='<div style="text-align: center;line-height: 50px;">暂无物流信息</div>';
+            	}
+            	else
+            	{
+            		fget_wuliu_xx(ret[0].wuliu_pinyin,ret[0].wuliu_no);
+            	}
+            }else {
+            	document.getElementById("content").innerHTML='<div style="text-align: center;line-height: 50px;">暂无物流信息</div>';
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_wuliu_xx(name,num)
+	{
+		api.ajax({
+            url: 'http://www.kuaidi100.com/query?type='+name+'&postid='+num,
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//document.getElementById("status").innerHTML='';
+            	ret='['+ret+']';
+            	ret=eval('('+ret+')');
+            	if(ret[0].state==0) document.getElementById("status").innerHTML='配送中';
+            	if(ret[0].state==1) document.getElementById("status").innerHTML='揽件中';
+            	if(ret[0].state==2) document.getElementById("status").innerHTML='疑难件';
+            	if(ret[0].state==3) document.getElementById("status").innerHTML='已签收';
+            	if(ret[0].state==4) document.getElementById("status").innerHTML='退签';
+            	if(ret[0].state==5) document.getElementById("status").innerHTML='派件中';
+            	if(ret[0].state==6) document.getElementById("status").innerHTML='退回中';
+                var wuliu=ret[0].data;
+                var html='<ul>';
+                for(var i=0;i<wuliu.length;i++)
+                {
+                	if(i==0)
+                	{
+                		html+='<li>';
+						html+='	<div class="wlxx_l">';
+						html+='		<div class="ding ding_on"></div>';
+						html+='		<div class="ding_w ding_w_on"></div>';
+						html+='	</div>';
+						html+='	<div class="xian xian_on"></div>';
+						html+='	<div class="wlxx_r">';
+						html+='		<div class="wl_title wl_title_on">'+wuliu[i].context+'</div>';
+						html+='		<div class="time_title">'+wuliu[i].time+'</div>';
+						html+='	</div>';
+						html+='</li>';
+                	}
+                	else
+                	{
+                		html+='<li>';
+						html+='	<div class="wlxx_l">';
+						html+='		<div class="ding"></div>';
+						html+='		<div class="ding_w"></div>';
+						html+='	</div>';
+						html+='	<div class="xian"></div>';
+						html+='	<div class="wlxx_r">';
+						html+='		<div class="wl_title">'+wuliu[i].context+'</div>';
+						html+='		<div class="time_title">'+wuliu[i].time+'</div>';
+						html+='	</div>';
+						html+='</li>';
+                	}
+                }
+                html+='</ul>';
+                if(ret[0].state) document.getElementById("content").innerHTML=html;
+                else document.getElementById("content").innerHTML='<div style="text-align: center;line-height: 50px;">暂无物流信息</div>';
+            }else {
+            	document.getElementById("content").innerHTML='<div style="text-align: center;line-height: 50px;">暂无物流信息</div>';
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

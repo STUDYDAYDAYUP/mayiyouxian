@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_shaixuan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div id="h1">价格</div>
+		<div id="h2"><input type="text" maxlength="6" onkeyup="fshu(0,this.value);" onafterpaste="fshu(0,this.value);"/></div>
+		<div id="h3">——</div>
+		<div id="h4"><input type="text" maxlength="6" onkeyup="fshu(1,this.value);" onafterpaste="fshu(1,this.value);"/></div>
+	</div>
+	<div id="content">
+		<div class="list">品牌</div>
+		<div id="pinpai">
+			<div class="pinpai_list" tapmode="" onclick="fxuan(0);" pinpai="0"><img src="../image/pinpai1.png" /></div>
+			<div class="pinpai_list" tapmode="" onclick="fxuan(1);" pinpai="0"><img src="../image/pinpai2.png" /></div>
+			<div class="pinpai_list" tapmode="" onclick="fxuan(2);" pinpai="0"><img src="../image/pinpai3.png" /></div>
+			<div class="pinpai_list" tapmode="" onclick="fxuan(3);" pinpai="0"><img src="../image/pinpai4.png" /></div>
+			<div class="pinpai_list" tapmode="" onclick="fxuan(4);" pinpai="0"><img src="../image/pinpai5.png" /></div>
+			<div class="pinpai_list" tapmode="" onclick="fxuan(5);" pinpai="0"><img src="../image/pinpai6.png" /></div>
+		</div>
+	</div>
+	<div style="text-align: center;"><span id="go" tapmode="go_on" onclick="fgo();">确定</span></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	var pinpai_xuan=0;
+	apiready = function(){
+		
+	};
+	function fclose()
+	{
+		api.closeFrame({
+	        name: 'sousuo_shaixuan'
+        });
+	}
+	var record={num:""} 
+	function fshu(n,value)
+	{ 
+		 var decimalReg=/^\d{0,8}\.{0,1}(\d{1,2})?$/;
+		 //var decimalReg=/^[-\+]?\d{0,8}\.{0,1}(\d{1,2})?$/; 
+		 if(value!=""&&decimalReg.test(value)){
+		     record.num=value;
+		 }else{
+			 if(value!=""){
+			     value=record.num;
+			 }
+		 }
+		 $('input').eq(n).val(value);
+		 //alert(val.toFixed(2));
+	}
+	function fxuan(n)
+	{
+		var max=$('#content div').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('img').eq(i).css('border','1px solid red');
+				pinpai_xuan=$('#content div').eq(i).attr('pinpai');
+			}
+			else
+			{
+				$('img').eq(i).css('border','1px solid #fff');
+			}
+		}
+	}
+	function fgo()
+	{
+		var v1=$('input').eq(0).val();
+		var v2=$('input').eq(1).val();
+		if(Number(v2)<Number(v1) && Number(v1)>0)
+		{
+			api.toast({
+				msg: '后面价钱不能小于前面！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.execScript({
+	       	frameName:'sousuo',
+	        script: 'fset_shaixuan(\''+pinpai_xuan+'\',\''+v1+'\',\''+v2+'\');'
+        });
+        api.execScript({
+	       	frameName:'tuangou',
+	        script: 'fset_shaixuan(\''+pinpai_xuan+'\',\''+v1+'\',\''+v2+'\');'
+        });
+        api.closeFrame({
+	        name: 'sousuo_shaixuan'
+        });
+	}
+</script>
+</html>

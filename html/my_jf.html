@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/my_jf.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div class="list"><span class="s1">当前积分</span><span class="s2" tapmode="" onclick="fopen_jf_shuoming();">积分说明</span></div>
+		<div class="list"><span class="s3" id="user_score">0</span></div>
+		<div><div class="go" tapmode="go_on" onclick="fclose();">积分兑换商品</div></div>
+	</div>
+	<div id="tishi_h">最近30天积分记录</div>
+	<div id="content">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<!--<li>
+				<div class="title">签到积分</div>
+				<div class="min_con">
+					<div class="time">2016-01-03</div>
+					<div class="num">+10</div>
+				</div>
+			</li>
+			<li>
+				<div class="title">消费积分</div>
+				<div class="min_con">
+					<div class="time">2016-01-03</div>
+					<div class="num hong">-10</div>
+				</div>
+			</li>
+			<li>
+				<div class="title">分享积分</div>
+				<div class="min_con">
+					<div class="time">2016-01-03</div>
+					<div class="num">+10</div>
+				</div>
+			</li>-->
+		</ul>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_user();
+		fget_jf_jilu();
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fget_user()
+	{
+		var user_id=$api.getStorage('user_id');
+		var login=$api.getStorage('login');
+		if(login==0 || login=='0')
+		{
+			document.getElementById("user_score").innerHTML=0;
+			return;
+		}
+		api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("user_score").innerHTML=ret[0].userScore;
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_jf_jilu()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_user_jf_jilu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+            		html+='<li>';
+					html+='	<div class="title">'+ret[i].msg+'</div>';
+					html+='	<div class="min_con">';
+					html+='		<div class="time">'+getTime2(ret[i].time)+'</div>';
+					var fu='';
+					var se='';
+					if(ret[i].IncDec==0) {fu='-';se='hong';}
+					else fu='+';
+					html+='		<div class="num '+se+'">'+fu+ret[i].score+'</div>';
+					html+='	</div>';
+					html+='</li>';
+            	}
+            	html+='</ul>';
+                document.getElementById("content").innerHTML=html;
+            }else {
+            	//fduanwang();
+            	var html='<div style="text-align: center;line-height: 50px;">暂无记录</div>';
+            	document.getElementById("content").innerHTML=html;
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_jf_shuoming()
+	{
+		api.openWin({
+	        name: 'jf_shuoming_header',
+	        url: 'jf_shuoming_header.html'
+        });
+	}
+</script>
+</html>

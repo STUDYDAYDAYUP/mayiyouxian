@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang_fenlei.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<!--<ul>
+		<li>
+			<div class="header">
+				<div class="left"><img tapmode="" onclick="fopen_look_user(0);" src="../image/user_img_cs.png" /></div>
+				<div class="con">
+					<div class="right">2016/07/06</div>
+					<div class="user_name ccyc">我就是我<span class="dengji">lv1</span><span class="right"><span class="l1">保</span><span class="l2">2000</span></span></div>
+					<div class="time"><div class="icon"></div><div class="dizhi ccyc">广州天河区天河北路175号</div><div class="juli">距离233米</div></div>
+				</div>
+				
+			</div>
+			<div class="dian" tapmode="" onclick="fopen_weibang_xx(0);">
+			<div class="title">我就是我，不一样的标题</div>
+			<div class="content">最后一步还是踏上了这一条路，宿命难违，早刻下这个轮回。嘴角写满微笑，埋下红尘牵挂重重的灰。寺院古钟一声声唱着慈悲，暮然回味，竟留下前世的泪。若此...</div>
+			<div class="tu_list">
+				<img src="../image/05.jpg" />
+				<img src="../image/05.jpg" />
+				<img src="../image/05.jpg" />
+			</div>
+			<div class="list"><div class="left">价钱:<span>￥23</span></span></div><div class="right">已有3人接单</div></div>
+			</div>
+			<div class="footer">
+				<div class="fenxiang" tapmode="fenxiang_on"></div>
+				<div class="con"></div>
+				<div class="jiedan" tapmode="jiedan_on" onclick="fopen_jiedan(0);">接单</div>
+			</div>
+		</li>
+		<li>
+			<div class="header">
+				<div class="left"><img tapmode="" onclick="fopen_look_user(0);" src="../image/user_img_cs.png" /></div>
+				<div class="con">
+					<div class="right">2016/07/06</div>
+					<div class="user_name ccyc">我就是我<span class="dengji">lv1</span><span class="right"><span class="l1">保</span><span class="l2">2000</span></span></div>
+					<div class="time"><div class="icon"></div><div class="dizhi ccyc">广州天河区天河北路175号</div><div class="juli">距离233米</div></div>
+				</div>
+			</div>
+			<div class="dian" tapmode="" onclick="fopen_weibang_xx(0);">
+			<div class="title">我就是我，不一样的标题</div>
+			<div class="content">最后一步还是踏上了这一条路，宿命难违，早刻下这个轮回。嘴角写满微笑，埋下红尘牵挂重重的灰。寺院古钟一声声唱着慈悲，暮然回味，竟留下前世的泪。若此...</div>
+			<div class="tu_list">
+				<img src="../image/05.jpg" />
+				<img src="../image/05.jpg" />
+				<img src="../image/05.jpg" />
+			</div>
+			<div class="list"><div class="left">价钱:<span>￥23</span></span></div><div class="right">已有3人接单</div></div>
+			</div>
+			<div class="footer">
+				<div class="fenxiang" tapmode="fenxiang_on">分享</div>
+				<div class="con"></div>
+				<div class="jiedan" tapmode="jiedan_on" onclick="fopen_jiedan(0);">接单</div>
+			</div>
+		</li>
+	</ul>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/emotion.json.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    fget_weibang_fenlei_list();
+			    api.parseTapmode();
+			});
+			catName=api.pageParam.catName;
+			shaixuan=api.pageParam.shaixuan;
+			fget_weibang_fenlei_list();
+	};
+	var catName='';
+	var shaixuan='';
+	var type=0;
+		function fset_catName(n)
+	    {
+	    	catName=n;
+	    	fget_weibang_fenlei_list();
+	    }
+	    function fset_shaixuan(n)
+	    {
+	    	shaixuan=n;
+	    	fget_weibang_fenlei_list();
+	    }
+	    function fset_type(n)
+	    {
+	    	type=n;
+	    	fget_weibang_fenlei_list();
+	    }
+	function fopen_weibang_xx(wb_id)
+	{
+		api.openWin({
+	        name: 'weibang_xx_header',
+	        url: 'weibang_xx_header.html',
+	        pageParam:{
+	        	wb_id:wb_id
+	        }
+        });
+	}
+	function fopen_jiedan(wb_id,louzhu_id,fanwei_pan,name)
+	{
+		var login=$api.getStorage('login');
+		if(login=='0' || login==0 || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var user_id=$api.getStorage('user_id');
+		if(user_id==louzhu_id)
+		{
+			api.toast({
+				msg: '自己不能给自己接单！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(fanwei_pan==0)
+		{
+			api.toast({
+				msg: '超出范围！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'jiedan_header',
+	        url: 'jiedan_header.html',
+	        pageParam:{
+	        	wb_id:wb_id,
+	        	name:name
+	        }
+        });
+	}
+	function fenxiang(wb_id)
+	{
+		
+	}
+	function fget_weibang_fenlei_list()
+	{
+			var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+			var user_id='0';
+			var login=$api.getStorage('login');
+			if(login==1 || login=='1') user_id=$api.getStorage('user_id');
+			$('#main').html('<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+		 	api.ajax({
+	            url: YAH_ajax_name+'get_weibang_fenlei_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	catName:catName,
+	                	shaixuan:shaixuan,
+	                	type:type,
+	                	lat:lat,
+	                	lon:lon,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	                 var html='<ul>';
+	                 for(var i=0;i<ret.length;i++)
+	                 {
+	                 	html+='<li>';
+						html+='	<div class="header">';
+						html+='		<div class="left"><img tapmode="" onclick="fopen_look_user('+ret[i].userId+');" src="'+YAH_web+'/'+ret[i].userPhoto+'" /></div>';
+						html+='		<div class="con">';
+						html+='			<div class="right">'+ret[i].createTime+'</div>';
+						html+='			<div class="user_name ccyc">'+ret[i].userName+'<span class="dengji">lv'+ret[i].grage+'</span>';
+						if(ret[i].isBondShow==1 || ret[i].isBondShow=='1') html+='				<span class="right"><span class="l1">保</span><span class="l2">'+ret[i].userBond+'</span></span>';
+						html+='			</div>';
+						var juli='';
+						if(Number(ret[i].juli)<1000) juli=ret[i].juli+"米";
+						else{
+							juli=Number(ret[i].juli)/1000;
+							juli=juli.toFixed(1)+"KM";
+						}
+						html+='			<div class="time"><div class="icon"></div><div class="dizhi ccyc">'+ret[i].address+'</div><div class="juli">距离'+juli+'</div></div>';
+						html+='		</div>';
+						html+='	</div>';
+						html+='	<div class="dian" tapmode="" onclick="fopen_weibang_xx('+ret[i].id+');">';
+						html+='	<div class="title ccyc">'+ret[i].title+'</div>';
+						html+='	<div class="content">'+ret[i].content+'</div>';
+						html+='	<div class="tu_list">';
+						var max=ret[i]['img_list'].length;
+						if(max>3) max=3;
+						if(max<=1 && (ret[i]['img_list']==" " || ret[i]['img_list']=="")) max=0;
+						for(var j=0;j<max;j++)
+						{
+							html+='		<img src="'+YAH_web+'/'+ret[i]['img_list'][j]+'" />';
+						}
+						var content=ret[i].content;
+						for(j=0;j<emotion_json.length;j++)
+						{
+							reg=new RegExp("\<img src=\"../emotion/"+emotion_json[j].name+".png\"\>","g"); //创建正则RegExp对象 
+							content=content.replace(reg,emotion_json[j].text);
+						}
+						html+='	</div>';
+						html+='	<div class="list"><div class="left">价钱:<span>￥'+ret[i].money+'</span></span></div><div class="right">已有'+ret[i].jiedan_num+'人接单</div></div>';
+						html+='	</div>';
+						html+='	<div class="footer">';
+						//html+='		<div class="fenxiang" tapmode="fenxiang_on" onclick="fenxiang(\''+ret[i].id+'\',\''+content+'\');">分享</div>';
+						html+='		<div class="fenxiang" tapmode="fenxiang_on" onclick="fcall(\''+ret[i].userPhone+'\');"></div>';
+						html+='		<div class="con"></div>';
+						var jd='';
+						if(ret[i].type==0) jd='接单';
+						if(ret[i].type==1) jd='需要';
+						if(ret[i].isGo==0) html+='		<div class="jiedan" style="color:#e2e2e2;border-color:#e2e2e2;">已完成</div>';
+						else if(ret[i].isGo==-1) html+='		<div class="jiedan" style="color:#e2e2e2;border-color:#e2e2e2;">已接单</div>';
+						else html+='		<div class="jiedan" tapmode="jiedan_on" onclick="fopen_jiedan(\''+ret[i].id+'\',\''+ret[i].userId+'\',\''+ret[i].fanwei_pan+'\',\''+ret[i].userName+'\');">'+jd+'</div>';
+						html+='	</div>';
+						html+='</li>';
+	                 }
+	                 html+='</ul>';
+	                 $('#main').html(html);
+	                 api.parseTapmode();
+	            }else {
+	            	document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">暂无微帮信息</div>';
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fenxiang(n,content)
+	{
+		var weiXin = api.require('weiXin');
+	    weiXin.registerApp
+	    (
+	         function(ret,err)
+	         {
+	         	if (ret.status)
+	         	{
+		         	weiXin.sendRequest({
+					    scene:'timeline',
+					    contentType:'text',
+					    title:'微帮生活',
+					    description:content+YAH_download,
+					    thumbUrl:'../image/shanghu_logo.png',
+					    contentUrl: 'http://www.baidu.com/'
+					},function(ret,err){
+					    if(ret.status){
+					        api.alert({title: '发表微信',msg: '分享成功', buttons: ['确定']});
+					    } else{
+					        //api.alert({title: '发表失败',msg: err.msg,buttons: ['确定']});
+					    }
+					});
+	         	}
+	         }
+	    );
+		
+	}
+	function fcall(phone)
+	{
+		api.openFrame({
+	        name: 'fuwuzhongxin_tanc',
+	        url: 'fuwuzhongxin_tanc.html',
+	        pageParam:{
+	        	phone:phone
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+</script>
+</html>

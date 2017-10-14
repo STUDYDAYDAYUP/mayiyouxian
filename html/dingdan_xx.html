@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dingdan_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.goods-explain{
+            width: 100%;
+            font-size: 11px;
+            color: #656565;
+            height: 16px;
+            line-height: 16px;
+            padding: 4px 0 2px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+        }
+        .goods-spec{
+            width: 150%;
+            padding: 10px 0 30px 0;
+        }
+        .goods-spec span{
+            display: inline-block;
+            float: left;
+            min-width: 44px;
+            height: 10px;
+            padding: 3px;
+            font-size: 9px;
+            color: #656565;
+            line-height: 12px;
+            text-align: center;
+            border: 1px solid #656565;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+	<div id="header">订单号：<span class="s1" id="dingdanhao"></span><span class="s2" id="fh_zt">发货状态</span></div>
+	<div id="address" tapmode="">
+		<div id="address_info">
+			<div class="s1"></div>
+			<div class="s2">
+				<div class="shouhuoxinxi">
+					<div class="shouhuoren">收货人：</div>
+					<div class="phone"></div>
+				</div>
+				<div class="shouhuodizhi">收货地址：</div>
+			</div>
+			<div class="s3"></div>
+		</div>
+	</div>
+	<div id="main">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<div class="shangjia">
+			<!-- <div class="goods" tapmode="a0" onclick="fopen_dingdan_xx();">
+				<div class="goods_left"><img src="../image/sp_5.png" /></div>
+				<div class="goods_cen">
+					<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+				</div>
+				<div class="goods_right"><div class="goods_money">￥13</div><div class="goods_num">X2</div></div>
+			</div>
+			<div class="goods" tapmode="a0" onclick="fopen_dingdan_xx();">
+				<div class="goods_left"><img src="../image/sp_5.png" /></div>
+				<div class="goods_cen">
+					<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+				</div>
+				<div class="goods_right"><div class="goods_money">￥13</div><div class="goods_num">X2</div></div>
+			</div> -->
+			
+		</div>
+	</div>
+	<div class="ps_info">
+		<span class="ps_xx">实付款:<a style="color:#df5354;" class="ordermoney">￥26</a> (含运费：<font class="orderyoufei">0</font>)</span>
+	</div>
+	<div class="caozuo">
+		<div tapmode="del_on" class="del"><a href='' class="lianxishangjia">联系商家</a></div>
+		<div tapmode="look_wl_on" class="look_wl look_wl1" onclick="fopen_wuliu();" style="display: none;">配送状况</div>
+		<div tapmode="look_wl_on" class="look_wl look_wl2" onclick="del_order1();" style="display: none;">取消订单</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_dingdan_xx();
+		fopen_xieyi();
+		//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    fget_dingdan_xx();
+				fopen_xieyi();
+			    api.refreshHeaderLoadDone();
+			    api.parseTapmode();
+			});
+	};
+	var distribution = '';
+	var distributionTel = '';
+	var orderStatus = '';
+	var orderId = 0;
+	function fget_dingdan_xx()
+	{
+		var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=get_order_info',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	oid:api.pageParam.id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	if (ret) {
+                 orderId = ret['orderId'];
+                 $('#dingdanhao').html(ret['orderNo']);
+                 //alert(ret['orderStatus']);
+                 if(ret['orderStatus'] == -2)$('#fh_zt').html('待付款');
+                 if(ret['orderStatus'] == 1 || ret['orderStatus'] == 0 || ret['orderStatus'] == 2 )$('#fh_zt').html('待发货');
+                 if(ret['orderStatus'] == 3)$('#fh_zt').html('配送中');
+                 if(ret['orderStatus'] == 4)$('#fh_zt').html('已完成');
+                 $('.shouhuoren').html("收货人："+ret['userName']);
+                 $('.phone').html(ret['userPhone']);
+                 $('.shouhuodizhi').html("收货地址："+ret['userAddress']);
+                 
+                 var html = '';
+                 var i=0;
+                 $(ret['goodslist']).each(function(n,val1){
+                     html += '<div class="goods" tapmode="a0" >';
+                     html += '<div class="goods_left"><img src="'+$api.getStorage("YAH_web")+'/'+val1['goodsThums']+'" /></div>';
+                     html += '<div class="goods_cen">';
+                     html += '<div class="goods_title">'+val1['goodsName']+'</div>';
+                     html += '<div class="goods-explain">'+val1.goodsSpec+'</div>'
+                     if(val1.keywordlist.length > 0 && val1['keywordlist'][0] != ''){
+		                 var abc = 0;
+		                 html += '<div class="goods-spec">';
+		                 $(val1.keywordlist).each(function(m,val2){
+		                      if(abc < 3 ){
+			                      if(val2 != ''){
+			                         html += '<span>'+val2+'</span>';
+			                         abc++
+			                      }
+		                      }
+		                 })
+		                 html += '</div>';
+	                 }
+                     html += '</div>';
+                     html += '<div class="goods_right"><div class="goods_money">￥'+val1['goodsPrice']+'</div><div class="goods_num">X'+val1['goodsNums']+'</div></div>';
+                     html += '</div>';
+                     i++;
+                 })
+                 $('#main').html(html);
+                 
+                 $('.ordermoney').html('￥'+ret['needPay']);
+                 $('.orderyoufei').html('￥'+ret['deliverMoney']);
+                 
+                 
+                 if(ret['orderStatus'] == 1 || ret['orderStatus'] == 0 || ret['orderStatus'] == 2 || ret['orderStatus'] == -2){
+                     $('.look_wl2').show();
+                 }
+                 if(ret['orderStatus'] == 3 || ret['orderStatus'] == 4){
+                     $('.look_wl1').show();
+                 }
+                 distribution = ret['distribution'];
+                 distributionTel = ret['distributionTel'];
+                 orderStatus = ret['orderStatus'];
+            
+            }else {
+            	
+            };
+        });
+	}
+	
+	function fclose(){
+	    api.closeWin({});
+	}
+	function del_order1(){
+	   api.confirm({
+		    title: '提示',
+		    msg: '确定要取消吗？',
+		    buttons: ['确定', '取消']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		del_order();
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function del_order(){
+	    if(orderId == 0){
+	       return;
+	    }
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id+'_'+orderId);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=del_order',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	oid:orderId,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+            if (ret) {
+               if(ret['status'] == 1){
+                   api.toast({
+						msg: '取消成功',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+            			name:'daifahuo_header',
+                       	frameName:'daifahuo',
+                        script: 'get_order_list();'
+                    });
+                    window.setTimeout("fclose()",1000);
+			       return;
+               }
+               else{
+                   api.toast({
+						msg: ret['msg'],
+						duration: 2000,
+						location: 'bottom'
+					});
+			       return;
+               }
+            }
+            else{
+               fduanwang();
+            }
+        })
+	}
+	
+	function fopen_xieyi(){
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=get_platinfo',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+            if (ret) {
+               $('.lianxishangjia').attr('href','tel:'+ret['phoneNo']);
+            }
+            else{
+               fduanwang();
+            }
+        })
+	}
+	function fopen_wuliu(orderId)
+	{
+		api.openWin({
+		    name: 'wuliu_xx_header',
+		    url: 'wuliu_xx_header.html',
+		    pageParam:{
+	        	distribution:distribution,
+	        	distributionTel:distributionTel,
+	        	orderStatus:orderStatus
+	        }
+	    });
+	}
+	function fopen_goods(goodsId)
+	{
+	
+	}
+	function ftuikuan_pan(orderId)
+	{
+		api.confirm({
+		    title: '提示',
+		    msg: '确定要退款吗？',
+		    buttons: ['确定', '取消']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		ftuikuan(orderId);
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function ftuikuan(orderId)
+	{
+		api.openWin({
+	        name: 'tuikuan_header',
+	        url: 'tuikuan_header.html',
+	        pageParam:{
+	        	orderId:orderId
+	        }
+        });
+	}
+	
+	function fcall(phone)
+	{
+		api.openFrame({
+	        name: 'fuwuzhongxin_tanc',
+	        url: 'fuwuzhongxin_tanc.html',
+	        pageParam:{
+	        	phone:phone
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+</script>
+</html>

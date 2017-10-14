@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#main{
+    		font-size: 14px;
+    	}
+    	#main ul{
+    	
+    	}
+    	#main ul li{
+    		height:49px;
+    		line-height: 49px;
+    		background-color:#fff;
+    		border-bottom:1px solid #ccc;
+    		border-right:1px solid #ccc;
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+    	}
+    	#main ul li .s1{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            margin-left:10px;
+    	}
+    	#main ul li .s2{
+    		background-color:#eee;
+    		color:#666;
+    		height:30px;
+    		margin-top:10px;
+    		border-radius: 30px;
+    		padding:0 15px;
+    		line-height: 30px;
+    	}
+    	#main ul li .s3{
+    		background-image:url('../image/youjiantou.png');
+    		background-repeat: no-repeat;
+    		background-size: 10px 16px;
+    		background-position: 0 15px;
+    		width:16px;
+    		height: 49px;
+    		margin:0 5px;
+    	}
+    	.on{
+    		background-color:#f2f2f2 !important;
+    		border-right:1px solid #f2f2f2 !important;
+    	}
+    	.s3_on{
+    		background-size: 0 !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+	<!--<ul>
+		<li class="on" tapmode="" onclick="fxuan(0);"><div class="s1">美食</div><div class="s2">233</div><div class="s3 s3_on"></div></li>
+		<li tapmode="" onclick="fxuan(1);"><div class="s1">便利店</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(2);"><div class="s1">水果</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(3);"><div class="s1">甜品饮品</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(4);"><div class="s1">鲜花蛋糕</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(5);"><div class="s1">送药上门</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(6);"><div class="s1">休闲娱乐</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(7);"><div class="s1">本地生活</div><div class="s2">233</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fxuan(8);"><div class="s1">其他</div><div class="s2">233</div><div class="s3"></div></li>
+	</ul>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fcz_fenlei_xuan();
+	};
+	function fxuan(n,catId)
+	{
+		var max=$('#main li').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('#main li').eq(i).addClass('on');
+				$('.s3').eq(i).addClass('s3_on');
+			}
+			else
+			{
+				$('#main li').eq(i).removeClass('on');
+				$('.s3').eq(i).removeClass('s3_on');
+			}
+		}
+		api.execScript({
+	       	frameName:'fenlei_xuan_right',
+	        script: 'fset_fenlei_xuan_right(\''+catId+'\');'
+        });
+	}
+	function fcz_fenlei_xuan()
+	{
+		var ret=$api.getStorage('fenlei_list');
+		var html='<ul>';
+		var t=0;
+		var o_t=0;
+		var o_catId=0;
+		var lin_num=0;
+		var oneId=0;
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==0)
+			{
+				if(t==0) oneId=ret[i].catId;
+				lin_num=0;
+				for(var j=0;j<ret.length;j++)
+				{
+					if(ret[i].catId==ret[j].parentId) lin_num++;
+				}
+				if(t==0)
+				{
+					html+='<li class="on" tapmode="" onclick="fxuan(\''+t+'\',\''+ret[i].catId+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+lin_num+'</div><div class="s3 s3_on"></div></li>';
+					o_t=t;
+					o_catId=ret[i].catId;
+				}
+				else
+				{
+					html+='<li tapmode="" onclick="fxuan(\''+t+'\',\''+ret[i].catId+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+lin_num+'</div><div class="s3"></div></li>';
+				}
+				t++;
+			}
+		}
+		html+='</ul>';
+		$('#main').html(html);
+		//document.getElementById("main").innerHTML=html;
+		api.parseTapmode();
+		api.execScript({
+	       	frameName:'fenlei_xuan_right',
+	        script: 'fset_fenlei_xuan_right(\''+oneId+'\');'
+        });
+	}
+</script>
+</html>

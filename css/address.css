@@ -1,0 +1,159 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body {   
+	width: 100%;
+	height:100%;
+	margin:0;
+	padding-bottom:1px;
+	background-color:#f2f2f2;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;height: 100%;float:left;
+	font-size: 16px;
+}
+.a{
+    background-color:#eee !important;
+}
+#address_list{
+	float:left;
+	width: 100%;
+}
+#address_list ul{
+	float:left;
+	background-color:#f2f2f2;
+}
+#address_list ul li{
+	float:left;
+	background-color: #fff;
+	margin-bottom: 10px;
+	padding-left:10px;
+}
+#address_list ul li .top{
+	float:left;
+	width: 100%;
+	border-bottom: 1px solid #eee;
+}
+#address_list ul li .top .name{
+	line-height:40px;
+}
+#address_list ul li .top .name .user_name{
+	margin-right: 10px;
+}
+#address_list ul li .top .name .phone{
+
+}
+#address_list ul li .top .dizhi{
+	font-size: 14px;
+	color:#666;
+	line-height: 30px;
+	margin-bottom: 10px;
+}
+#address_list ul li .bottom{
+	float:left;
+	width: 100%;
+	height: 50px;
+}
+#address_list ul li .bottom .s1{
+	float:left;
+	height: 50px;
+	line-height: 50px;
+}
+#address_list ul li .bottom .s1 .tu{
+	float:left;
+	background-image: url('../image/xuan_hui2.png');
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	background-position: 0 15px;
+	height: 50px;
+	width: 20px;
+	margin-right: 10px;
+}
+#address_list ul li .bottom .s1 .title{
+	margin-right: 10px;
+}
+#address_list ul li .bottom .s2{
+	float:right;
+	height: 50px;
+	line-height: 50px;
+}
+#address_list ul li .bottom .s2 .tu{
+	float:left;
+	background-image: url('../image/bianji.png');
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	background-position: 0 15px;
+	height: 50px;
+	width: 20px;
+	margin-right: 10px;
+}
+#address_list ul li .bottom .s2 .title{
+	margin-right: 10px;
+}
+#address_list ul li .bottom .s3{
+	float:right;
+	height: 50px;
+	line-height: 50px;
+}
+#address_list ul li .bottom .s3 .tu{
+	float:left;
+	background-image: url('../image/delete.png');
+	background-repeat: no-repeat;
+	background-size: 15px 20px;
+	background-position: 0 15px;
+	height: 50px;
+	width: 15px;
+	margin-right: 10px;
+}
+#address_list ul li .bottom .s3 .title{
+	margin-right: 10px;
+}
+.tu1_on{
+	background-image: url('../image/xuan_hong.png') !important;
+}
+.add{
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	background-color:#fff;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+	/*border-radius: 5px;*/
+	width: 100%;
+	/*margin-left: 20%;*/
+	color:#666;
+	margin-top: 20px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+    position: fixed;
+    left:0px;
+    bottom:0px;
+}
+.add .s1{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.add .tu{
+	background-image: url('../image/jia.png');
+	background-repeat: no-repeat;
+	height: 50px;
+	width: 20px;
+	background-size: 14px 14px;
+	background-position: 0 17px;
+}
+.add .title{
+	height: 50px;
+}
+.add .s2{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.add_on{
+	background-color:#b01212 !important;
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/new_address_diqu.css"/>
+    <style>
+    	
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="title">
+		<div class="s1"></div><div class="s2">所在地区</div><div class="s3" tapmode="a" onclick="fclose();"></div>
+	</div>
+	<div class="quyu">
+		<div id="sheng" tapmode="" onclick="fgai(0);" style="display:none;">省</div>
+		<div id="shi" tapmode="" onclick="fgai(1);" style="display:none;">市</div>
+		<div id="xian" tapmode="" onclick="fgai(2);" style="display:none;">县</div>
+		<div id="xuan">请选择</div>
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var main_h;
+	apiready = function(){
+		var main=document.getElementById("main");
+		main_h=$api.offset(main).h;
+		api.openFrame({
+	        name: 'new_address_xuan',
+	        url: 'new_address_xuan.html',
+	        pageParam:{
+            		id:0
+            },
+	        rect: {
+		        x:0,
+		        y:api.pageParam.header_h+main_h,
+		        w:'auto',
+		        h:api.pageParam.rect_h-main_h
+	        },
+	        vScrollBarEnabled: false,
+    		hScrollBarEnabled: false,
+    		reload:true,
+	        animation:{
+			    type:"movein",                //动画类型（详见动画类型常量）
+			    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+			    duration:300                //动画过渡时间，默认300毫秒
+			}
+        });
+	};
+	var xuan_num=0;
+	function fset_xuan(title,address)
+	{
+		if(xuan_num==4) return;
+		xuan_num++;
+		$api.setStorage("address_num",xuan_num);
+		if(xuan_num==1)
+		{
+			$api.setStorage("address1",address);
+			$api.setStorage("address11",title);
+			document.getElementById("sheng").innerHTML=title;
+			document.getElementById("sheng").style.display="block";
+			fopen_xuan(address);
+		}
+		if(xuan_num==2)
+		{
+			$api.setStorage("address2",address);
+			$api.setStorage("address12",title);
+			document.getElementById("shi").innerHTML=title;
+			document.getElementById("shi").style.display="block";
+			fopen_xuan(address);
+		}
+		if(xuan_num==3)
+		{
+		    $api.setStorage("address3",address);
+			$api.setStorage("address13",title);
+			api.execScript({
+	           	frameName:'new_address',
+	            script: 'fset_dizhi();'
+            });
+            api.execScript({
+	           	frameName:'bianji_address',
+	            script: 'fset_dizhi();'
+            });
+            api.execScript({
+	           	frameName:'new_address_tanc',
+	            script: 'fclose();'
+            });
+		}
+		/*if(xuan_num==3)
+		{
+			$api.setStorage("address3",address);
+			$api.setStorage("address13",title);
+			document.getElementById("xian").innerHTML=title;
+			document.getElementById("xian").style.display="block";
+			fopen_xuan(address);
+		}
+		if(xuan_num==4)
+		{
+			$api.setStorage("address4",address);
+			$api.setStorage("address14",title);
+			api.execScript({
+	           	frameName:'new_address',
+	            script: 'fset_dizhi();'
+            });
+            api.execScript({
+	           	frameName:'bianji_address',
+	            script: 'fset_dizhi();'
+            });
+            api.execScript({
+	           	frameName:'new_address_tanc',
+	            script: 'fclose();'
+            });
+		}*/
+	}
+	function fgai(n)
+	{
+		if(n==0)
+		{
+			fopen_xuan(0);
+			xuan_num=0;
+			$api.setStorage("address_num",xuan_num);
+			document.getElementById("sheng").style.display="none";
+			document.getElementById("shi").style.display="none";
+			document.getElementById("xian").style.display="none";
+		}
+		if(n==1)
+		{
+			xuan_num=1;
+			$api.setStorage("address_num",xuan_num);
+			fopen_xuan($api.getStorage('address1'));
+			document.getElementById("shi").style.display="none";
+			document.getElementById("xian").style.display="none";
+		}
+		if(n==2)
+		{
+			xuan_num=2;
+			$api.setStorage("address_num",xuan_num);
+			fopen_xuan($api.getStorage('address2'));
+			document.getElementById("xian").style.display="none";
+		}
+	}
+	function fopen_xuan(id)
+	{
+		api.openFrame({
+	        name: 'new_address_xuan',
+	        url: 'new_address_xuan.html',
+	        pageParam:{
+            		id:id
+            },
+	        rect: {
+		        x:0,
+		        y:api.pageParam.header_h+main_h,
+		        w:'auto',
+		        h:api.pageParam.rect_h-main_h
+	        },
+	        vScrollBarEnabled: false,
+    		hScrollBarEnabled: false,
+    		reload:true,
+	        animation:{
+			    type:"movein",                //动画类型（详见动画类型常量）
+			    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+			    duration:300                //动画过渡时间，默认300毫秒
+			}
+        });
+	}
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'new_address_tanc',
+	        script: 'fclose();'
+        });
+	}
+</script>
+</html>

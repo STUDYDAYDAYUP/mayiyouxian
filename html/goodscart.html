@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goshop.css"/>
+    <style>
+    html, body{
+    	width: 100%;
+    	/*height: 100%;*/
+    	background: #f2f2f2;
+    }
+    .manjian{width:100%;height:40px;background-color:#fef5db;color:#656565;text-align:center;font-size:0.8rem;line-height:40px;}
+    .manjian_c{width:20px;height:20px;margin-top:10px;float:right;margin-right:10px;background-image:url('../image/manjianc.png');background-size:100% 100%;}
+    .goods{
+    		position: relative;
+    		overflow: hidden;
+    	}
+		.shanchu_{
+			display: none;
+			width: 170px;
+			height: inherit;
+			position: absolute;
+			top: 0;
+			right: -175px;
+			/*-webkit-transform: translateX(170px);
+			transform: translateX(170px);*/
+			display: table;
+			text-align: center;
+			z-index: 1000;
+			-webkit-transition:right 0.4s ease-out 0s;
+			transition:right 0.4s ease-out 0s;
+			-webkit-backface-visibility: hidden;
+		}
+		.goods .shanchu_t{
+			display: table;
+			right: 0;
+			/*-webkit-transform: translateX(0px);
+			transform: translateX(0px);*/
+		}
+		.shanchu_l{
+			width: 50%;
+			height: inherit;
+			display: table-cell;
+			vertical-align: middle;
+			background: #eee;
+		}
+		.shanchu_r{
+			width: 50%;
+			height: inherit;
+			display: table-cell;
+			vertical-align: middle;
+			background: #df5354;
+		}
+		
+    </style>
+</head>
+<body style="background: #f2f2f2;">
+	<div class="manjian"><span class="manjian_nr">满39元免费配送，还差12.5元，快去凑单哦！</span><span class="manjian_c" onclick="manjian_c()"></span></div>
+	<div id="main" style="padding-bottom: 10px;background: #f2f2f2;">
+		<div style="text-align: center;line-height: 50px;">购物车没有商品</div>
+		<!-- <div class="goods">
+			<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+			<div class="goods_right" tapmode="" onclick="fxuan(0)">
+				<div class="goods_right_top">
+					<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+					<div class="goods_xuanzhong"></div>
+				</div>
+				<div class="goods_right_bottom">
+					<div class="goods_money">
+						<div class="danjia">￥14</div>
+						<div class="xiaoji"><a>￥42</a></div>
+					</div>
+					<div class="yiyuantequan">开启特权</div>
+					<div class="goods_num_add">
+					    
+						<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian(0)">-</div>
+						<input type="text" class="num" value="3"   onchange="fshu(0,this.value);" onkeyup="fshu(0,this.value);" onafterpaste="fshu(0,this.value)"/>
+						<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia(0)">+</div>
+					</div>
+				</div>
+			</div>
+			<input class="max_value" type="hidden" value="100" />
+			<input class="money" type="hidden" value="2" />
+			<input class="xuan" type="hidden" value="0" />
+		</div>
+		<div class="goods">
+			<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+			<div class="goods_right" tapmode="" onclick="fxuan(0)">
+				<div class="goods_right_top">
+					<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+					<div class="goods_xuanzhong"></div>
+				</div>
+				<div class="goods_right_bottom">
+					<div class="goods_money">
+						<div class="danjia">￥14</div>
+						<div class="xiaoji"><a>￥42</a></div>
+					</div>
+					<div class="yiyuantequan yiyuantequan_on">开启特权</div>
+					<div class="goods_num_add">
+						<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian(0)">-</div>
+						<input type="text" class="num" value="3"   onchange="fshu(0,this.value);" onkeyup="fshu(0,this.value);" onafterpaste="fshu(0,this.value)"/>
+						<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia(0)">+</div>
+					</div>
+				</div>
+			</div>
+			<input class="max_value" type="hidden" value="100" />
+			<input class="money" type="hidden" value="2" />
+			<input class="xuan" type="hidden" value="0" />
+		</div>  -->
+    </div>
+		
+		
+<div class="chongzhi"><span class="chongzhi1">充值即可享受更多一元特权哦</span><span class="chongzhi2" onclick="go_chongzhi()">去充值</span></div>
+<div style="clear:both;overflow:hidden"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+});
+//购物车删除按钮
+function fshanchu(n){
+	var oshanchu = $('.goods').eq(n).find('.shanchu_');
+	oshanchu.addClass('shanchu_t');
+
+	$('.shanchu_l').on('touchend',function(){
+		setTimeout(function(){
+			$('.shanchu_').removeClass('shanchu_t');
+		},10)
+		
+		return false;
+	    
+	});
+	$(document).on('touchend',function(e){
+        if(e.target.id == 'shanchu_r' || e.target.id == 'shanchu_'){
+        	//删除该商品
+
+            return false;
+        }else{
+			$('.shanchu_').removeClass('shanchu_t');
+        }
+    });
+	
+}
+
+function fshanchu1(attr_key){
+	var oshanchu = $('.'+attr_key).find('.shanchu_');
+	oshanchu.addClass('shanchu_t');
+	
+	$('.shanchu_l').on('touchend',function(){
+		setTimeout(function(){
+			$('.shanchu_').removeClass('shanchu_t');
+		},10)
+		return false;
+	});
+	
+	$(document).on('touchend',function(e){
+        if(e.target.id == 'shanchu_r' || e.target.id == 'shanchu_'){
+        	//删除该商品
+
+            return false;
+        }else{
+			$('.shanchu_').removeClass('shanchu_t');
+        }
+    });
+}
+    function go_chongzhi(){
+	    api.openWin({
+	        name: 'chongzhi_list_header',
+	        url: 'chongzhi_list_header.html'
+        });
+	}
+	apiready = function(){
+		
+		
+		var gao=api.winHeight;
+		h=gao-100;
+		api.openFrame({
+		    name: 'goshop_footder',
+		    url: 'goshop_footder.html',
+		    vScrollBarEnabled:false,
+            hScrollBarEnabled:false,
+		    rect: {
+			    x:0,
+			    y:h,
+			    w:'auto',
+			    h:50
+		    }
+	    });
+	    
+	    api.setFrameAttr({name: "goshop_footder", hidden:true});
+	    fget_buycar();
+	    fget_buycar_manjian();
+	    
+	    
+	    //下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    fget_buycar();
+			    fget_buycar_manjian();
+			    
+			    api.refreshHeaderLoadDone();
+			    //api.parseTapmode();
+			});
+	};
+	
+	function manjian_c(){
+	    $('.manjian').hide();
+	}
+	
+	function fget_buycar_manjian(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+		api.ajax({
+            //url: YAH_ajax_name+'set_buycar.php',
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=fget_buycar_manjian',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+               		userId:user_id,
+               		time:time,
+                    sign:sign
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+        	//alert(JSON.stringify(ret||err));
+        	$('.manjian_nr').html('满'+ret['plat_money']+'元免费配送，还差'+ret['cha_money']+'元，快去凑单哦！');
+        	if(ret['status'] == 1){
+                $('.manjian').show();
+            }
+            else{
+                $('.manjian').hide();
+            }
+        });
+	}
+	
+	
+	
+	function fxuan(n)
+	{
+		var xuan=$('.xuan').eq(n).val();
+		if(xuan=="0")
+		{
+			$('.xuan').eq(n).val("1");
+			var goods_id=$('.goods').eq(n).attr('id');
+			var attr_id=$('.goods').eq(n).attr('attr_id');
+			fset_buycar(goods_id,'isSelected','1',attr_id);
+			$('.goods_xuanzhong').eq(n).addClass("goods_xuanzhong_on");
+			fzong();
+		}
+		else if(xuan=="1")
+		{
+			$('.xuan').eq(n).val("0");
+			var goods_id=$('.goods').eq(n).attr('id');
+			var attr_id=$('.goods').eq(n).attr('attr_id');
+			fset_buycar(goods_id,'isSelected','0',attr_id);
+			$('.goods_xuanzhong').eq(n).removeClass("goods_xuanzhong_on");
+			fzong();
+		}
+	}
+	function fall(n)
+	{
+		var max=$('.goods');
+		var attr_id = '';
+		
+		for(var i=0;i<max.length;i++)
+		{
+			
+			attr_id = attr_id+$('.goods').eq(i).attr('attr_id')+',';
+			
+			$('.xuan').eq(i).val(n);
+			if(n==1)
+			{
+				
+	            $('.goods_xuanzhong').eq(i).addClass("goods_xuanzhong_on");
+	        }
+			else
+			{
+				$('.goods_xuanzhong').eq(i).removeClass("goods_xuanzhong_on");
+			}
+			
+		}
+		fset_buycar1(attr_id,n);
+		fzong();
+	}
+	function pay()
+	{
+		var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign);
+	
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=User&a=get_community_byuser',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	
+	    	 if(ret['people_num'] == -2){
+	    	     api.openWin({
+			        name: 'xiadan_header',
+			        url: 'xiadan_header.html'
+		        });
+	    	 }
+	    	 else{
+	
+	    	     api.toast({
+					msg: '小区还未开通',
+					duration: 2000,
+					location: 'bottom'
+				 });
+				 return;
+	
+	    	 }
+	    });
+		
+	}
+	function fzong()
+	{
+		var sum=0,sum2=0;
+		var zong_money=0;
+		var max=$('.xuan');
+		for(var i=0;i<max.length;i++)
+		{
+			if(max.eq(i).val()=="1")
+			{
+				sum++;
+				sum2+=Number($('.num').eq(i).val());
+				zong_money+=(Number($('.danjia').eq(i).html().split("￥")[1])*Number($('.num').eq(i).val()));
+			}
+		}
+		$api.setStorage('goshop_goods_num',sum);
+		api.execScript({
+		    frameName:'goshop_footder',
+		    script: 'fset_num('+sum+');'
+	    });
+	    api.execScript({
+		    frameName:'goshop_footder',
+		    script: 'fset_num2('+sum2+');'
+	    });
+	    api.execScript({
+		    frameName:'goshop_footder',
+		    script: 'fset_money('+zong_money.toFixed(2)+');'
+	    });
+	    
+		if(max.length==sum && sum!=0)
+		{
+			api.execScript({
+		        frameName:'goshop_footder',
+		        script: 'fset_quanxian(1);'
+	        });
+		}
+		else
+		{
+			api.execScript({
+		        frameName:'goshop_footder',
+		        script: 'fset_quanxian(0);'
+	        });
+		}
+	}
+	var abc = 1;
+	function set_num(n,type,attr_key){
+	    if(abc == -1)return;
+	    var key_array = attr_key.split('_');
+	    
+	    /*if(key_array[1] == 1 || key_array[1] == '1'){
+	        var new_key = key_array[0]+'_0';
+	        
+	        if($('#num_'+new_key)){
+	            var new_val = $('#num_'+new_key).val();
+	            if(type == -1 && Number(new_val) == 1){
+			    	fshanchu1(new_key);
+			        return;
+			    }
+	        }
+	        
+	    }*/
+   
+	    var val=$('.num').eq(n).val();
+	    if(type == -1 && Number(val) == 1){
+	    	if(key_array[1] == 1 || key_array[1] == '1'){
+	    	     var new_key = key_array[0]+'_0';
+	    	     var new_val = $('#num_'+new_key).val();
+	    	     if(new_val> 0){
+	    	     
+	    	     }else{
+		    	     
+		    	     fshanchu(n);
+			         return;
+	    	     }
+	    	     
+	    	}
+	    	else{
+		    	fshanchu(n);
+		        return;
+	    	}
+	    	
+	    }
+	    abc = -1;
+	    var goods_id=$('.goods').eq(n).attr('id');
+		var attr_id=$('.goods').eq(n).attr('attr_id');
+		var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+attr_id);
+	    //alert(attr_id);alert(goods_id);//return;
+	    api.showProgress({title: '努力加载中...'});
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=Orders&a=set_cart_num',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	attr_id:attr_id,
+	            	gid:goods_id,
+	            	type:type,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	         api.hideProgress();
+	         abc = 1;
+	         if(ret['type']==1){
+		         api.toast({
+					msg: '剩下'+ret['user_num']+'次一元特权',
+					duration: 2000,
+					location: 'bottom'
+				 });
+	         }
+	         
+	         fget_buycar();
+	    });
+	}
+	
+	function jia(n,attr_key)
+	{
+		set_num(n,1,attr_key);
+	}
+	function jian(n,attr_key)
+	{
+		set_num(n,-1,attr_key);
+	}
+	
+	
+	function yiyuantequan(obj,n){
+	    if($(obj).hasClass('yiyuantequan_on')){
+	       var type = 0;
+	    }
+	    else{
+	       var type = 1;
+	    }
+	    
+	    var goods_id=$('.goods').eq(n).attr('id');
+		var attr_id=$('.goods').eq(n).attr('attr_id');
+			
+		
+		var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+attr_id);
+	    //alert(attr_id);alert(goods_id);//return;
+	    api.showProgress({title: '努力加载中...'});
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=Orders&a=set_cart_kaiqione',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	attr_id:attr_id,
+	            	gid:goods_id,
+	            	type:type,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	         api.hideProgress();
+	         //alert(JSON.stringify(ret||err)); 
+	         if(ret['msg']){
+	              api.toast({
+					msg: ret['msg'],
+					duration: 2000,
+					location: 'bottom'
+				 });
+	         }
+	         if(ret['status'] == 1){
+		         fget_buycar();
+	         }
+	         
+	    });
+	    
+	}
+	
+	
+	
+	function fget_buycar(){
+	    var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">购物车没有商品</div>';
+        	 api.execScript({
+		         frameName:'goshop_footder',
+		         script: 'fset_quanxian(0);'
+	         });
+	         api.execScript({
+                 name:'root',
+                 script: 'fset_goshop_num(0);'
+             });
+			return;
+		}
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+	
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=Orders&a=get_cart_byuser',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	type:1,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	         //alert(JSON.stringify(ret||err)); 
+	         api.hideProgress();
+	         if(ret){
+	             if(ret['num'] > 0){
+	                 var html = '';
+	                 var num = 0;
+	                 $(ret['data']).each(function(i,val){
+	                     html += '<div class="goods '+val.cart_key+'" id="'+val.goodsId+'" attr_id="'+val.cart_key+'">';
+	                     html += '<div class="goods_left" tapmode="" ><img src="'+$api.getStorage("YAH_web")+'/'+val.goodsThums+'" /></div>'
+	                     html += '<div class="goods_right" tapmode="" >';
+	                     html += '<div class="goods_right_top" onclick="fxuan('+i+')">';
+	                     html += '<div class="goods_title">'+val.goodsName+'</div>';
+	                     var zhong='';
+	                     if(val.isSelected=='1') zhong='goods_xuanzhong_on';
+						 else zhong='';
+	                     html += '<div class="goods_xuanzhong '+zhong+'"></div>';
+	                     html += '</div>';
+	                     html += '<div class="goods_right_bottom">';
+	                     html += '<div class="goods_money">';
+	                     html += '<div class="danjia" id="shopprice_'+val.cart_key+'">￥'+val.shopPrice+'</div>';
+	                     if(val.shopPrice == 1){
+	                     html += '<div class="xiaoji"><a>￥'+val.marketPrice+'</a></div>';
+	                     }
+	                     html += '</div>';
+	                     var kaiqi_one='',ytext='';
+	                     if(val.kaiqi_one=='1') {
+	                     	kaiqi_one='yiyuantequan_on';
+	                     	ytext='使用特权';
+	                     }else {
+						 	kaiqi_one='';
+						 	ytext='不用特权';
+						 }
+	                     html += '<div class="yiyuantequan '+kaiqi_one+'"  onclick="yiyuantequan(this,'+i+')"><span class="icon"></span><p>'+ytext+'</p></div>';
+	                     html += '<div class="goods_num_add">';
+	                     html += '<div class="jian gaibian" tapmode="jian_action" onclick="jian('+i+',\''+val.cart_key+'\')">-</div>';
+	                     html += '<input type="text" id="num_'+val.cart_key+'" class="num" value="'+val.cnt+'" readonly />';
+	                     html += '<div class="jia gaibian" tapmode="jia_action" onclick="jia('+i+',\''+val.cart_key+'\')">+</div>';
+	                     html += '</div>';
+	                     html += '</div>';
+	                     html += '</div>';
+	                     //html += '<input class="max_value" type="hidden" value="100" />';
+	                     html += '<input class="money" id="money_'+val.cart_key+'" type="hidden" value="'+val.shopPrice+'" />';
+	                     html += '<input class="xuan" id="xuan_'+val.cart_key+'" type="hidden" value="'+val.isSelected+'" />';
+	                     html+='<div class="shanchu_" id="shanchu"><div tapmode class="shanchu_l">取消</div><div tapmode class="shanchu_r"  onclick="del_car_goods(\''+val.cart_key+'\')">删除</div></div>';
+	                     html += '</div>';
+	                     num++;
+	                 })
+	                 api.execScript({
+		                 name:'root',
+		                 script: 'fset_goshop_num('+num+');'
+	                 });
+			         document.getElementById("main").innerHTML=html;
+			         
+			         fzong();
+			         fget_buycar_manjian();
+			         // fshanchu_s();
+	             
+	             }
+	             else{
+		             document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">购物车没有商品</div>';
+	            	 api.execScript({
+				         frameName:'goshop_footder',
+				         script: 'fset_quanxian(0);'
+			         });
+			         api.execScript({
+		                 name:'root',
+		                 script: 'fset_goshop_num(0);'
+	                 });
+	                 fzong();
+	             }
+	         }else{
+	             document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">购物车没有商品</div>';
+            	 api.execScript({
+			         frameName:'goshop_footder',
+			         script: 'fset_quanxian(0);'
+		         });
+		         api.execScript({
+	                 name:'root',
+	                 script: 'fset_goshop_num(0);'
+                 });
+                  fzong();
+	         }
+	    	 
+	    	 
+	    });
+	}
+	function del_car_goods(key)
+	{
+		api.confirm({
+		    title: '提示',
+		    msg: '确定要删除该商品的吗？',
+		    buttons: ['确定', '取消']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		del_car_goods1(key);
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	
+	function del_car_goods1(key){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+	    api.showProgress({title: '正在删除...'});
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=Orders&a=del_car_goods',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	key:key,
+	            	type:1,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	        api.hideProgress();
+	        //alert(JSON.stringify(ret||err));
+	        if(ret['status'] == 1){
+	            api.toast({
+					msg: '删除成功',
+					duration: 2000,
+					location: 'bottom'
+				 });
+				 fget_buycar();
+	        }
+	        else{
+	              api.toast({
+					msg: '删除失败',
+					duration: 2000,
+					location: 'bottom'
+				 });
+	        }
+	        
+	    })
+	}
+	
+	function fset_buycar(goods_id,pan,val,attr_id)
+	{
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'set_buycar.php',
+	            url: YAH_ajax_name+'set_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	               		user_id:user_id,
+	               		goods_id:goods_id,
+	               		pan:pan,
+	               		val:val,
+	               		attr_id:attr_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	        	//alert(JSON.stringify(ret||err));
+	        	fget_buycar_manjian();
+	            if (ret) {
+
+	            }else {
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	
+	function fset_buycar1(attr_id,val)
+	{
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'set_buycar.php',
+	            url: YAH_ajax_name+'set_buycar_session1.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	               		user_id:user_id,
+	               		val:val,
+	               		attr_id:attr_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	        	//alert(JSON.stringify(ret||err));
+	        	fget_buycar_manjian();
+	            if (ret) {
+
+	            }else {
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

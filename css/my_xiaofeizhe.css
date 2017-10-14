@@ -1,0 +1,180 @@
+
+.calendar { position: absolute; width:280px; height: 246px; padding:0;display: none; float: left;border:1px solid #60b034;background:#fff;}
+.calendar .calMain { width:100%; height:246px; float: left; overflow: hidden; position: absolute; }
+.calendar .calMain .calTitle { width: 100%; float: left; height: 30px; background: #fff; overflow: hidden; }
+.calendar .calMain .calTitle .t_date { width: 238px; float: left; height: 30px; font-size: 15px; color: #60b034; font-weight: bold; line-height: 30px; text-align: center; }
+.calendar .calMain .calTitle .prevMonth { width: 20px; height: 30px; float: left; }
+.calendar .calMain .calTitle .nextMonth { width: 20px; height: 30px; float: right; }
+.calendar .calMain .calTitle .prevMonth i{ width: 0; height: 0; float: left; margin: 11px 0 0 6px;border-bottom: 4px solid transparent;border-top: 4px solid transparent;border-right: 4px solid #60b034; }
+.calendar .calMain .calTitle .nextMonth i{ width: 0; height: 0; float: right; margin: 11px 6px 0 0;border-bottom: 4px solid transparent;border-top: 4px solid transparent;border-left: 4px solid #60b034; }
+.calendar .calMain .calTitle .currentYear { }
+.calendar .calMain .calTitle .currentMonth { }
+.calendar .calMain .calTitle .currentYearText { margin-right: 6px; }
+.calendar .calMain .calTitle .currentMonthText { display: inline-block; width: 40px; text-align: center;margin-left: 7px; }
+.calendar .calMain .calContent { width: 558px; height: 214px; float: left; }
+.calendar .calMain .calContent .enabled { position: absolute; width: 100%; height: 214px; float: left; }
+.calendar .calMain .calContent .reserve { position: absolute; width:100%; height: 214px; float: left; }
+.calendar .calMain .calContent .tabD { width: 100%; float: left; border-collapse: collapse; border-spacing: 0; border: 0; }
+.calendar .calMain .calContent .tabD th { background: #60b034; line-height: 30px; font-size: 15px; font-weight: normal; padding-bottom: 4px; color: #fff; }
+.calendar .calMain .calContent .tabD td { color: #1f3959; text-align: center; /*line-height: 19px;*/line-height: 30px; font-size: 13px; width: 40px; text-align: center; /*font-family: "Georgia";*/ }
+.calendar .calMain .calContent .tabD td span { color: #C0C0C0; }
+.calendar .calMain .calContent .tabD td a { width: 23px; line-height: 18px;/* float: left;*/ margin: auto; cursor: pointer; color: #60b034; }
+.calendar .calMain .calContent .tabD td .nextD { color: #BCCADC; }
+.calendar .calMain .calContent .tabD td .prevD { color: #BCCADC; }
+.calendar .calMain .calContent .tabD td .hover { width: 21px; line-height: 16px; border: 1px solid #7D99BD;/* float: left; margin: 1px 0 0 2px;*/ }
+.calendar .calMain .calContent .tabD td .current { width: 21px; line-height: 16px; border: 1px solid #60b034;/* float: left; margin: 1px 0 0 2px;*/ }
+.calendar .calMain .calContent .tabD td .select { width: 21px; line-height: 16px; background: #60b034; border: 1px solid #60b034; color: #fff;/* float: left; margin: 1px 0 0 2px;*/ }
+.calendar .calMain .calContent .tabM { width: 100%; float: left; border-collapse: collapse; border-spacing: 0; border: 0; }
+.calendar .calMain .calContent .tabM td { color: #1F3959; text-align: center; height: 50px; width: 47px; /*font-family: "Georgia";*/ }
+.calendar .calMain .calContent .tabM td a { width: 42px; line-height: 42px; float: left; margin: 0px 0 0 2px; cursor: pointer; color: #60b034; }
+.calendar .calMain .calContent .tabM td .hover { width: 40px; line-height: 40px; border: 1px solid #7D99BD; float: left; margin: 0px 0 0 2px; }
+.calendar .calMain .calContent .tabM td .current { width: 40px; line-height: 40px; border: 1px solid #60b034; float: left; margin: 0px 0 0 2px; }
+.calendar .calMain .calContent .tabM td .select { width: 40px; line-height: 40px; background: #60b034; border: 1px solid #60b034; color: #fff; float: left; margin: 0px 0 0 2px; }
+.calendar .calMain .calContent .tabY { width: 100%; float: left; border-collapse: collapse; border-spacing: 0; border: 0; }
+.calendar .calMain .calContent .tabY td { color: #1F3959; text-align: center; height: 50px; width: 47px; /*font-family: "Georgia";*/ }
+.calendar .calMain .calContent .tabY td a { width: 42px; line-height: 42px; float: left; margin: 0px 0 0 2px; cursor: pointer; color: #60b034; }
+.calendar .calMain .calContent .tabY td .nextY { color: #BCCADC; }
+.calendar .calMain .calContent .tabY td .prevY { color: #BCCADC; }
+.calendar .calMain .calContent .tabY td .hover { width: 40px; line-height: 40px; border: 1px solid #7D99BD; float: left; margin: 0px 0 0 2px; }
+.calendar .calMain .calContent .tabY td .current { width: 40px; line-height: 40px; border: 1px solid #60b034; float: left; margin: 0px 0 0 2px; }
+.calendar .calMain .calContent .tabY td .select { width: 40px; line-height: 40px; background: #60b034; border: 1px solid #60b034; color: #fff; float: left; margin: 0px 0 0 2px; }
+.calendar .calMain a:hover { text-decoration: none; }
+
+.calendar .arrow{
+	width: 8px;
+	height: 8px;
+	z-index: 100;
+	background: #fff;
+	border-left: 1px solid #60b034;
+	border-top: 1px solid #60b034;
+	/*border-right: 1px solid #60b034;
+	border-bottom: 1px solid #60b034;*/
+	position: absolute;
+	left: 30px;
+	top: -5px;
+	transform:rotate(45deg);
+	-ms-transform:rotate(45deg); 	/* IE 9 */
+	-moz-transform:rotate(45deg); 	/* Firefox */
+	-webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+	-o-transform:rotate(45deg); 	/* Opera */
+}
+#main{
+    width: 100%;
+    height: 100%;
+}
+.content_tr, .content_th{
+    width: 100%;
+    height: 45px;
+    color: #282828;
+    background: #ffffff;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #efefef;
+    display: table;
+}
+.content_td{
+    width: 25%;
+    height: 44px;
+    font-size: 13px;
+    display: table-cell;
+    vertical-align: middle;
+    overflow: hidden;
+    text-align: center;
+}
+.content_th .content_td p{
+    font-size: 15px;
+}
+.content_td em, .content_r em{
+    color: #60b034;
+}
+.content_td p{
+    line-height: 14px;
+}
+.content_name p{
+    word-break : break-all;
+}
+.content_time p{
+    word-wrap: break-word;
+}
+
+.content_title{
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+    color: #282828;
+    background: #ffffff;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #efefef;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.content_title .content_l{
+    -webkit-box-flex:1;
+        -webkit-flex:1;
+                flex:1;
+}
+.txtBeginDate, .txtEndDate{
+    float: left;
+    width:70px;
+    height: 20px;
+    text-align: center;
+    border:1px solid #828282;
+    margin-top: 11px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+.content_l .riqi{
+    float: left;
+    width: 32px;
+    height: 44px;
+}
+.content_l .line{
+    float: left;
+    width: 20px;
+    height: 12px;
+    border-bottom: 1px solid #828282;
+    margin: 0 3px;
+    margin-top: 11px;
+}
+.content_l .but{
+    float: left;
+    width: 50px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    color: #fff;
+    margin-left: 10px;
+    margin-top: 11px;
+    border-radius: 6px;
+    background: url(../image/content_l_but.png) no-repeat center center;
+    -webkit-background-size: 50px;
+    background-size: 50px;
+}
+@media screen and (max-width: 350px) {
+    .content_title, .content_th .content_td p{
+        font-size: 13px;
+    }
+    .content_td, .content_td p{
+        font-size: 12px;
+    }
+    .txtBeginDate, .txtEndDate{
+        width: 60px;
+        font-size: 10px;
+    }
+    .content_l .line{
+        width: 15px;
+    }
+    .content_l .but{
+        font-size: 12px;
+        width: 40px;
+        margin-left: 6px;
+    }
+    .calendar{
+        left: 20px !important;
+    }
+}
+

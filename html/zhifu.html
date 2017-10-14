@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<title>在线支付</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<link rel="stylesheet" type="text/css" href="../css/zhifu.css" />
+	<style>
+		body {}
+		#statement {
+			position: absolute;
+			bottom: 50px;
+		}
+		.chongzhi2{
+		    float: right;
+		    border: 1px solid #6bba50;
+		    color: #6bba50;
+		    padding: 0 10px;
+		    border-radius: 5px;
+		    line-height: 30px;
+            margin-top: 10px;
+		 }
+		 .reminder{
+		    padding: 5px 15px;
+		    background: #f2f2f2;
+		    color: #888888;
+		    font-size: 10px;
+		    display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		}
+		.reminder .reminder_title{
+		    color: #888888;
+		    line-height: 22px;
+		}
+		.reminder .reminder_content{
+		    -webkit-box-flex:1;
+		    -webkit-flex:1;
+		    flex:1;
+		    color: #888888;
+		}
+		.reminder p{
+		    font-size: 10px;
+		    line-height: 22px;
+		    color: #888888;
+		}
+		#daojishi{color:red;}
+	</style>
+</head>
+
+<body>
+	<div id="main">
+		<div class="pingtai">
+			<div class="pay_way" onclick="fxuan(1)">
+				<div class="yue"></div>
+				<div class="title">钱包余额支付</div>
+				<div class="xuan xuan_on"></div>
+			</div>
+			<div class="t1">您的账户余额为￥<a id="user_money">0</a>元<span class="chongzhi2" onclick="go_chongzhi()">去充值</span></div>
+		</div>
+		<div class="disanfang">
+			<div class="t2">使用第三方平台支付</div>
+			<div class="pay_way" onclick="fxuan(2)">
+				<div class="weixin"></div>
+				<div class="title">微信支付</div>
+				<div class="xuan"></div>
+			</div>
+			<div class="pay_way" onclick="fxuan(3)">
+				<div class="zhifubao"></div>
+				<div class="title">支付宝支付</div>
+				<div class="xuan"></div>
+			</div>
+		</div>
+		<div class="reminder">
+			<div class="reminder_title">温馨提示：</div>
+			<div class="reminder_content">
+				<p>如还不支付，订单将在<span id="daojishi">300</span>秒后无效</p>
+			</div>
+		</div>
+		<div tapmode="go_on" class="go" onclick="fgo()">确认支付</div>
+		<div id="statement" class="f"></div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var pay_way = 3;
+	var pay_money = 0;
+	var pay_pan = -1;
+	var user_money = 0;
+	var isPwd = 0;
+	apiready = function() {
+
+        
+        api.execScript({
+        	name:'xiadan_header',
+	       	frameName:'xiadan',
+	        script: 'fclose();'
+        });
+		//下拉刷新
+		api.setRefreshHeaderInfo({
+			visible: true,
+			loadingImg: '',
+			bgColor: '#f2f2f2',
+			textColor: '#fff',
+			textDown: '下拉刷新...',
+			textUp: '松开刷新...',
+			showTime: true
+		}, function(ret, err) {
+			//从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			fcsh();
+			
+			dingdan();
+			//api.refreshHeaderLoadDone();
+			api.parseTapmode();
+		});
+		dingdan();
+		
+		fcsh();
+	};
+	
+	function dajishi(paytime){
+	    var time = Math.ceil(new Date().getTime() / 1000);
+	    var shengtime = paytime - time;
+	    if(shengtime > 0){
+	        $('#daojishi').html(shengtime);
+	        setTimeout("dajishi("+paytime+")",1000);
+	    }else{
+	       api.execScript({
+				name: 'daifahuo_header',
+				frameName: 'daifahuo',
+				script: 'get_order_list();'
+			});
+	       api.execScript({
+	        	name:'xiadan_header',
+		       	frameName:'xiadan',
+		        script: 'fclose();'
+	        });
+	       api.closeWin({
+           });
+	    }
+	}
+	
+	function dingdan(){
+	    api.showProgress({
+			title: '加载中...'
+		});
+		var jsonobj=api.pageParam.json; 
+		var user_id = $api.getStorage('user_id');
+		var time = Math.ceil(new Date().getTime() / 1000);
+		var sign = get_appkey(time);
+		sign = md5(sign + user_id);
+		api.ajax({
+			url: YAH_web + '/index.php?m=Api&c=Orders&a=get_order_time',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'json',
+			returnAll: false,
+			data: {
+				values: {
+					oid: jsonobj[0]['orderId'],
+					userId: user_id,
+					time: time,
+					sign: sign
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				dajishi(ret['time'])
+			} else {
+				fduanwang();
+
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+	
+	function go_chongzhi(){
+	    api.openWin({
+	        name: 'chongzhi_list_header',
+	        url: 'chongzhi_list_header.html'
+        });
+	}
+
+	
+
+	function fcsh() {
+		if (api.pageParam.zhifupan == 'wb_xq') fget_wb_money();
+		else if (api.pageParam.zhifupan == 'xiadan') fget_xd_money();
+		else fget_money();
+	}
+
+	function fclose() {
+		api.closeWin({
+			name: 'xiadan_header'
+		});
+		api.closeWin({});
+	}
+
+	function fxuan(n) {
+		if (n == 1) pay_way = 3;
+		if (n == 2) pay_way = 2;
+		if (n == 3) pay_way = 1;
+		var xuan = document.getElementsByClassName("xuan");
+		for (var i = 0; i < xuan.length; i++) {
+			if (i + 1 == n) {
+				$api.addCls(xuan.item(i), "xuan_on");
+			} else {
+				$api.removeCls(xuan.item(i), "xuan_on");
+			}
+		}
+	}
+
+	function fget_money() {
+		api.showProgress({
+			title: '加载中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		api.ajax({
+			url: YAH_ajax_name + 'get_pay_money.php',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'text',
+			returnAll: false,
+			data: {
+				values: {
+					json: api.pageParam.json,
+					user_id: user_id
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				var jiequ = ret.indexOf("[");
+				ret = ret.substring(jiequ);
+				ret = eval("(" + ret + ")");
+				if (ret[0].needPay) {
+					pay_pan = 1;
+					user_money = ret[0].userMoney;
+					pay_money = ret[0].needPay;
+					a = api.pageParam.json;
+					document.getElementById("user_money").innerHTML = user_money;
+					if (ret[0].payPwd == 0) isPwd = 0;
+					else isPwd = 1;
+				}
+			} else {
+				fduanwang();
+				//					api.alert({
+				//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+				//		            });
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+
+	function fget_xd_money() {
+		api.showProgress({
+			title: '加载中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		var time = Math.ceil(new Date().getTime() / 1000);
+		var sign = get_appkey(time);
+		sign = md5(sign + api.pageParam.wb_order_id);
+		api.ajax({
+			url: YAH_web + '/index.php?m=Api&c=Orders&a=get_order_money',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'json',
+			returnAll: false,
+			data: {
+				values: {
+					oid: api.pageParam.wb_order_id,
+					userId: user_id,
+					time: time,
+					sign: sign
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				if (ret['needPay']) {
+					pay_pan = 1;
+					user_money = ret['userMoney'];
+					pay_money = ret['needPay'];
+					document.getElementById("user_money").innerHTML = user_money;
+					if (ret['payPwd'] == 0) isPwd = 0;
+					else isPwd = 1;
+				}
+			} else {
+				fduanwang();
+
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+
+	function fget_wb_money() {
+		api.showProgress({
+			title: '加载中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		api.ajax({
+			url: YAH_ajax_name + 'get_wb_pay_money.php',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'json',
+			returnAll: false,
+			data: {
+				values: {
+					wb_order_id: api.pageParam.wb_order_id,
+					user_id: user_id
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				if (ret[0].needPay) {
+					pay_pan = 1;
+					user_money = ret[0].userMoney;
+					pay_money = ret[0].needPay;
+					document.getElementById("user_money").innerHTML = user_money;
+					if (ret[0].payPwd == 0) isPwd = 0;
+					else isPwd = 1;
+				}
+			} else {
+				fduanwang();
+				//					api.alert({
+				//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+				//		            });
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+
+	function fgo() {
+		if (pay_pan == -1) {
+			api.toast({
+				msg: '网络错误！请稍后刷新再试！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if (pay_way == 3) {
+			if (Number(user_money) < Number(pay_money)) {
+				api.toast({
+					msg: '账户余额不足！请选择其他支付方式！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			if (isPwd == 0) {
+				api.openWin({
+					name: 'set_pay_pwd_header',
+					url: 'set_pay_pwd_header.html'
+				});
+			} else if (isPwd == 1) {
+				api.openFrame({
+					name: 'zhifu_tanc',
+					url: 'zhifu_tanc.html',
+					opaque: 'false',
+					rect: {
+						x: 0,
+						y: api.pageParam.header_h,
+						w: 'auto',
+						h: api.winHeight - api.pageParam.header_h
+					}
+				});
+			}
+
+		}
+		if (pay_way == 2) {
+			fpay_dsf();
+		}
+		if (pay_way == 1) {
+			fpay_dsf();
+		}
+	}
+
+	function fpay() {
+
+		if (api.pageParam.zhifupan == 'wb_xq') fpay_wb();
+		else fpay_yungou();
+	}
+
+	function fpay_dsf() {
+
+
+		if (api.pageParam.zhifupan == 'wb_xq') {
+			if (pay_way == 1) fzhifubao_wb();
+			if (pay_way == 2) wb_wx_pay();
+		} else fpay_yungou_yz();
+	}
+
+	function wb_wx_pay() {
+
+		api.showProgress({
+			title: '提交中...'
+		});
+		api.ajax({
+			url: YAH_ajax_name + "weixin/example/app.php",
+			method: 'POST',
+			timeout: '30',
+			dataType: 'json',
+			returnAll: false,
+			cache: true,
+			data: {
+				values: {
+					type: "weibang",
+					money: pay_money,
+					title: '蚂蚁订单',
+					attach: api.pageParam.wb_order_id
+				}
+			}
+		}, function(ret, err) {
+			if (ret) {
+				var back_info = ret;
+				var weiXin = api.require('weiXin');
+				weiXin.registerApp(function(ret, err) {
+					if (ret.status) {
+						//alert(JSON.stringify(ret));
+						//alert(JSON.stringify(back_info));
+						orderNo_lin = back_info.prepayid;
+						weiXin.payOrder({
+							orderId: back_info.prepayid,
+							partnerId: back_info.partnerid,
+							nonceStr: back_info.noncestr,
+							timeStamp: back_info.timestamp,
+							package: back_info.package,
+							sign: back_info.sign
+						}, function(ret, err) {
+							//api.hideProgress();//隐藏加载进度框
+							//alert("支付结果ret："+JSON.stringify(ret));
+							//alert("支付结果err："+JSON.stringify(err));
+							if (ret.status) {
+								//alert('支付成功');
+								fpay_wb();
+							} else {
+								//alert("支付错误");
+								//alert(err.msg);
+								api.hideProgress(); //隐藏加载进度框
+								if (err.code == 2) {
+									//alert("用户已取消");
+								}
+							}
+						});
+					} else {
+						alert("registerApp错误");
+						api.hideProgress(); //隐藏加载进度框
+						//alert(err.msg);
+					}
+				});
+			} else {
+				api.hideProgress(); //隐藏加载进度框
+				fduanwang();
+				//alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function yungou_wx_pay() {
+
+
+		api.showProgress({
+			title: '提交中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		var jsonobj=api.pageParam.json; 
+		api.ajax({
+			url: YAH_ajax_name + "weixin/example/app.php",
+			method: 'POST',
+			timeout: '30',
+			dataType: 'json',
+			returnAll: false,
+			cache: true,
+			data: {
+				values: {
+					type: "yungou",
+					money: pay_money,
+					title: '蚂蚁订单',
+					attach: user_id,
+					orderId: api.pageParam.json.orderId, //这里只能传string 不能传对象
+					chongzhiid:jsonobj[0]['orderId']
+				}
+			}
+		}, function(ret, err) {
+
+			//alert(ret);
+			//alert(JSON.stringify(ret||err));
+			if (ret) {
+				var back_info = ret;
+				var wxPay = api.require('wxPay');
+				wxPay.payOrder({
+					apiKey: 'wx8fbe09646d9da4c5',
+					orderId: back_info.prepayid,
+					mchId: '1484360602',
+					nonceStr: back_info.noncestr,
+					timeStamp: back_info.timestamp,
+					sign: back_info.sign
+				}, function(ret, err) {
+
+					if (ret.status) {
+						api.toast({
+							msg: '支付成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						api.execScript({
+							name: 'root',
+							frameName: 'my',
+							script: 'fget_dingdan_number();'
+						});
+						api.execScript({
+							name: 'daifukuan_header',
+							frameName: 'daifukuan',
+							script: 'fget_daifukuan();'
+						});
+						api.execScript({
+							name: 'daifahuo_header',
+							frameName: 'daifahuo',
+							script: 'get_order_list();'
+						});
+						api.execScript({
+							name: 'dingdan_xx2_header',
+							frameName: 'dingdan_xx2',
+							script: 'fget_dingdan_xx();'
+						});
+						api.execScript({
+							name: 'root',
+							frameName: 'all_dingdan',
+							script: 'fset_page();fget_all_dingdan();'
+						});
+						window.setTimeout('fclose();', 1500);
+					} else {
+						api.hideProgress(); //隐藏加载进度框
+						if (err.code == 2) {
+							//alert("用户已取消");
+						}
+					}
+				});
+				/*var weiXin = api.require('weiXin');
+				weiXin.registerApp(function(ret, err) {
+					if (ret.status) {
+						//alert(JSON.stringify(ret));
+						//alert(JSON.stringify(back_info));
+						orderNo_lin=back_info.prepayid;
+						weiXin.payOrder({
+							orderId : back_info.prepayid,
+							partnerId : back_info.partnerid,
+							nonceStr : back_info.noncestr,
+							timeStamp : back_info.timestamp,
+							package : back_info.package,
+							sign : back_info.sign
+						}, function(ret, err) {
+							//api.hideProgress();//隐藏加载进度框
+							if (ret.status) {
+								//alert('支付成功');
+								fpay_yungou_dsf();
+							} else {
+								//alert("支付错误");
+								//alert(err.msg);
+								api.hideProgress();//隐藏加载进度框
+								if(err.code==2)
+								{
+									//alert("用户已取消");
+								}
+							}
+						});
+					} else {
+						alert("registerApp错误");
+						api.hideProgress();//隐藏加载进度框
+						//alert(err.msg);
+					}
+				});*/
+			} else {
+				api.hideProgress(); //隐藏加载进度框
+				fduanwang();
+				//alert(JSON.stringify(err));
+			}
+		});
+	}
+
+	function fpay_wb() {
+
+		api.showProgress({
+			title: '支付中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		api.ajax({
+			url: YAH_ajax_name + 'wb_pay.php',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'json',
+			returnAll: false,
+			data: {
+				values: {
+					wb_order_id: api.pageParam.wb_order_id,
+					user_id: user_id,
+					pay_way: pay_way
+				}
+			}
+		}, function(ret, err) {
+			api.hideProgress(); //隐藏加载进度框
+			if (ret) {
+				if (ret[0].pan == "-1") {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+				} else if (ret[0].pan == "1") {
+					api.toast({
+						msg: "支付成功",
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+						name: 'jiedan_xiaoxi_xx_header',
+						frameName: 'jiedan_xiaoxi_xx',
+						script: 'fget_jiedan_user();'
+					});
+					api.execScript({
+						name: 'weibang_ddtx_header',
+						frameName: 'weibang_ddtx',
+						script: 'fget_wb_order();'
+					});
+					window.setTimeout("api.closeWin({});", 1500);
+				}
+				api.execScript({
+					name: 'weibang_dingdan_header',
+					frameName: 'weibang_dingdan_header',
+					script: 'fcsh();'
+				});
+				api.execScript({
+					name: 'jiedan_xiaoxi_xx_header',
+					frameName: 'jiedan_xiaoxi_xx',
+					script: 'fget_jiedan_user();'
+				});
+				api.execScript({
+					name: 'weibang_ddtx_header',
+					frameName: 'weibang_ddtx',
+					script: 'fget_wb_order();'
+				});
+				api.execScript({
+					name: 'root',
+					frameName: 'all_dingdan',
+					script: 'fset_page();fget_all_dingdan();'
+				});
+			} else {
+				fduanwang();
+				api.execScript({
+					name: 'weibang_dingdan_header',
+					frameName: 'weibang_dingdan_header',
+					script: 'fcsh();'
+				});
+				api.execScript({
+					name: 'jiedan_xiaoxi_xx_header',
+					frameName: 'jiedan_xiaoxi_xx',
+					script: 'fget_jiedan_user();'
+				});
+				api.execScript({
+					name: 'weibang_ddtx_header',
+					frameName: 'weibang_ddtx',
+					script: 'fget_wb_order();'
+				});
+				api.execScript({
+					name: 'root',
+					frameName: 'all_dingdan',
+					script: 'fset_page();fget_all_dingdan();'
+				});
+				//					api.alert({
+				//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+				//		            });
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+
+	function fpay_yungou() {
+
+		api.showProgress({
+			title: '支付中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		api.ajax({
+			url: YAH_ajax_name + 'pay.php',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'text',
+			returnAll: false,
+			data: {
+				values: {
+					json: api.pageParam.json,
+					user_id: user_id,
+					pay_way: pay_way
+				}
+			}
+		}, function(ret, err) {
+			api.hideProgress(); //隐藏加载进度框
+			if (ret) {
+				var jiequ = ret.indexOf("[");
+				ret = ret.substring(jiequ);
+				//alert(ret);
+				ret = eval("(" + ret + ")");
+				if (ret[0]['pan'] == 1) {
+					api.toast({
+						msg: '支付成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'my',
+						script: 'fget_dingdan_number();'
+					});
+					api.execScript({
+						name: 'daifukuan_header',
+						frameName: 'daifukuan',
+						script: 'fget_daifukuan();'
+					});
+					api.execScript({
+						name: 'daifahuo_header',
+						frameName: 'daifahuo',
+						script: 'get_order_list();'
+					});
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+					window.setTimeout(function(){
+						fclose();
+						api.closeWin({
+						    name: 'zhifu_header'
+						});
+					}, 1500);
+				} else if (ret[0]['pan'] == -1) {
+					api.toast({
+						msg: '账户余额不足！请选择其他支付方式！',
+						duration: 2000,
+						location: 'bottom'
+					});
+				} else if (ret[0]['pan'] == -2) {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+				} else if (ret[0]['pan'] == -3) {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+				}
+				api.execScript({
+					name: 'dingdan_xx2_header',
+					frameName: 'dingdan_xx2',
+					script: 'fget_dingdan_xx();'
+				});
+				api.execScript({
+					name: 'root',
+					frameName: 'all_dingdan',
+					script: 'fset_page();fget_all_dingdan();'
+				});
+			} else {
+				//fduanwang();
+				if (err.code == 3 && err.msg == "服务器返回数据格式错误") {
+					api.toast({
+						msg: '支付成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'my',
+						script: 'fget_dingdan_number();'
+					});
+					api.execScript({
+						name: 'daifukuan_header',
+						frameName: 'daifukuan',
+						script: 'fget_daifukuan();'
+					});
+					api.execScript({
+						name: 'daifahuo_header',
+						frameName: 'daifahuo',
+						script: 'get_order_list();'
+					});
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+					window.setTimeout('fclose();', 1500);
+				} else {
+					fduanwang();
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+				}
+				//					api.alert({
+				//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+				//		            });
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+
+	function fpay_yungou_yz() {
+
+		api.showProgress({
+			title: '支付中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		api.ajax({
+			url: YAH_ajax_name + 'pay_yz.php',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'text',
+			returnAll: false,
+			data: {
+				values: {
+					json: api.pageParam.json,
+					user_id: user_id,
+					pay_way: pay_way
+				}
+			}
+		}, function(ret, err) {
+
+			if (ret) {
+				var jiequ = ret.indexOf("[");
+				ret = ret.substring(jiequ);
+				//alert(ret);
+				ret = eval("(" + ret + ")");
+				if (ret[0]['pan'] == 'true') {
+
+					if (pay_way == 2) yungou_wx_pay();
+					if (pay_way == 1) fzhifubao();
+				} else if (ret[0]['pan'] == -1) {
+					api.toast({
+						msg: '账户余额不足！请选择其他支付方式！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.hideProgress(); //隐藏加载进度框
+				} else if (ret[0]['pan'] == -2) {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.hideProgress(); //隐藏加载进度框
+				} else if (ret[0]['pan'] == -3) {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.hideProgress(); //隐藏加载进度框
+				}
+			} else {
+				fduanwang();
+				api.hideProgress(); //隐藏加载进度框
+				//					api.alert({
+				//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+				//		            });
+			};
+			//api.refreshHeaderLoadDone();
+			//api.hideProgress();//隐藏加载进度框
+		});
+	}
+
+	function fpay_yungou_dsf() {
+		api.showProgress({
+			title: '支付中...'
+		});
+		var user_id = $api.getStorage('user_id');
+		api.ajax({
+			url: YAH_ajax_name + 'pay_dsf.php',
+			method: 'post',
+			cache: false,
+			timeout: 30,
+			dataType: 'text',
+			returnAll: false,
+			data: {
+				values: {
+					json: api.pageParam.json,
+					user_id: user_id,
+					pay_way: pay_way
+				}
+			}
+		}, function(ret, err) {
+			api.hideProgress(); //隐藏加载进度框
+			api.alert({
+					title: '提醒',
+					msg: '支付成功！',
+			}, function(ret, err){
+					if( ret ){
+
+						api.execScript({
+							name: 'root',
+							frameName: 'my',
+							script: 'fget_dingdan_number();'
+						});
+						api.execScript({
+							name: 'daifukuan_header',
+							frameName: 'daifukuan',
+							script: 'fget_daifukuan();'
+						});
+						api.execScript({
+							name: 'daifahuo_header',
+							frameName: 'daifahuo',
+							script: 'get_order_list();'
+						});
+						api.execScript({
+							name: 'dingdan_xx2_header',
+							frameName: 'dingdan_xx2',
+							script: 'fget_dingdan_xx();'
+						});
+						api.execScript({
+							name: 'root',
+							frameName: 'all_dingdan',
+							script: 'fset_page();fget_all_dingdan();'
+						});
+						setTimeout(function(){
+							api.closeWin({
+									name: 'zhifu_header'
+							});
+						},1000);
+						api.openWin({
+						    name: 'daifahuo_header',
+						    url: './daifahuo_header.html',
+						    pageParam: {
+
+						    }
+						});
+
+
+
+					}else{
+
+					}
+			});
+
+			if (ret) {
+				var jiequ = ret.indexOf("[");
+				ret = ret.substring(jiequ);
+				//alert(ret);
+				ret = eval("(" + ret + ")");
+				if (ret[0]['pan'] == 1) {
+					api.toast({
+						msg: '支付成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'my',
+						script: 'fget_dingdan_number();'
+					});
+					api.execScript({
+						name: 'daifukuan_header',
+						frameName: 'daifukuan',
+						script: 'fget_daifukuan();'
+					});
+					api.execScript({
+						name: 'daifahuo_header',
+						frameName: 'daifahuo',
+						script: 'get_order_list();'
+					});
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+					window.setTimeout('fclose();', 1500);
+				} else if (ret[0]['pan'] == -2) {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+				} else if (ret[0]['pan'] == -3) {
+					api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+				}
+				api.execScript({
+					name: 'dingdan_xx2_header',
+					frameName: 'dingdan_xx2',
+					script: 'fget_dingdan_xx();'
+				});
+				api.execScript({
+					name: 'root',
+					frameName: 'all_dingdan',
+					script: 'fset_page();fget_all_dingdan();'
+				});
+			} else {
+				//fduanwang();
+				if (1) {
+					api.toast({
+						msg: '支付成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'my',
+						script: 'fget_dingdan_number();'
+					});
+					api.execScript({
+						name: 'daifukuan_header',
+						frameName: 'daifukuan',
+						script: 'fget_daifukuan();'
+					});
+					api.execScript({
+						name: 'daifahuo_header',
+						frameName: 'daifahuo',
+						script: 'get_order_list();'
+					});
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+					window.setTimeout('fclose();', 1500);
+				} else {
+					fduanwang();
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+				}
+				//					api.alert({
+				//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+				//		            });
+			};
+			api.refreshHeaderLoadDone();
+			api.hideProgress(); //隐藏加载进度框
+		});
+	}
+
+	function fzhifubao() {
+		var aliPay = api.require('aliPay');
+		var jsonobj=api.pageParam.json; 
+		var orderNo = new Date().getTime();
+		orderNo = orderNo+'_dingdan_'+jsonobj[0]['orderId'];
+		aliPay.config({
+		     partner: '2088621916520334',
+		     seller: 'aa13539982313@qq.com',
+		     rsaPriKey: 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKIv4j04sSemBWOxJci5BdiBflLqK/VYx8LaHdMYHq4JSOo176n6WZAt7OXadIXpve0+vHmIFd0jSRv3F7ymUseYlXowlF32wqPqIQ7F1K9GpY84eZFqiulUG/J56r2ardcpmQihS7Y6z6P0iiP748IfEuuJhD2HFeiUKqqM7gr/AgMBAAECgYEAmFo4wN/Pcno/V82hu7MqrZ2/B65YCsoSJJT2LUTcFQo9x11RPDAjEBBEGAslKGJQ+lrTe6p9N1UdKTrsvlbTLJK3zO7sQIWDzBE1ScQdyQX03qP4Gi+kNtCyAa/6CxAPZ0AFVfc6LsyU/pYNRdy3cpjldIWMPF2KJQVMKhmUgSECQQDS++hGrfFsRLwY4+W+Gog5nQeaEBlM1ecAbMslduG8ykLpOiiREXrACC6kqpLEOi995qiKPo5vpgtJPiOCs7HPAkEAxMqm/2O/Cg9jCYy40M4+vOcLV+AG7EIw81pQRNKOffdxNRQJocoj1QQZQSMA4aVTZ5vXO9TF2eEAlBoGw7VP0QJAfwY9LTiSbq3fVVj4PAE7XPyG1CG3KcRqxJ27nP27IO/hYwup2tVcQvtqIae0n0Gs0C8r77eECAI/L0SjGpDXjwJAM3nrGw0FcOU7e8kCoyQABzvMnMzuIqjh0xZBvu7w9QRf6Yl3R4nvu43Z6U71sRCk84oxT+ZFZsvTceoo8NKhsQJBAIE302aKs0cv1B5Ak3Dts+5eqGkSnzYf9aXsrfQTO1KjsKp9IN6GIgNzM1BkD5V6S48VSxAK3jmEuuwzObNwRUo=',
+		     rsaPubKey: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB',
+		     notifyURL: YAH_ajax_name+'alipay_return.php'
+		}, function(ret, err) {
+			aliPay.pay({
+				subject: '蚂蚁订单',
+				body: 'orderId,' + api.pageParam.json[0]['orderId'],
+				amount: pay_money,
+				tradeNO: orderNo
+			}, function(ret, err) {
+				api.hideProgress(); //隐藏加载进度框
+				if (ret.code == 9000) {
+					api.toast({
+						msg: '支付成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'my',
+						script: 'fget_dingdan_number();'
+					});
+					api.execScript({
+						name: 'daifukuan_header',
+						frameName: 'daifukuan',
+						script: 'fget_daifukuan();'
+					});
+					api.execScript({
+						name: 'daifahuo_header',
+						frameName: 'daifahuo',
+						script: 'get_order_list();'
+					});
+					api.execScript({
+						name: 'dingdan_xx2_header',
+						frameName: 'dingdan_xx2',
+						script: 'fget_dingdan_xx();'
+					});
+					api.execScript({
+						name: 'root',
+						frameName: 'all_dingdan',
+						script: 'fset_page();fget_all_dingdan();'
+					});
+					window.setTimeout('fclose();', 1500);
+				}
+			});
+		
+		})
+		
+	}
+</script>
+
+</html>

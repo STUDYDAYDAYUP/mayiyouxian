@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>天天秒杀</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/miaosha.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.money3{
+    		color:#666;
+			font-size: 11px;
+			line-height: 18px;
+    	}
+    	.money3 .s1{
+    		font-size:14px;
+    		color:#000;
+    	}
+    	.jindu_title{
+    		font-size: 13px !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="djs"><span>限时团购</span></div>
+	<div class="goods_list">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<li>
+				<div class="list_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title ccyc">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="num_list">
+						<div class="num_left">
+							<div class="money">现价:<span class="s1">￥297</span></div>
+							<div class="money3">距离结束:<span class="s1">02:23</span></div>
+						</div>
+						<div class="num_right">
+							<span class="go_no">马上抢</span>
+						</div>
+					</div>
+					<div class="jindu"><div class="jindutiao"><div class="jindu_di"></div><div class="jindu_ding"></div></div><div class="jindu_title">15/20人</div></div>
+				</div>
+			</li>
+			<li>
+				<div class="list_left" tapmode="" onclick="fopen_xiadan();"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title ccyc">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="num_list">
+						<div class="num_left">
+							<div class="money">现价:<span class="s1">￥297</span></div>
+							<div class="money3">距离结束:<span class="s1">02:23</span></div>
+						</div>
+						<div class="num_right">
+							<span class="go" tapmode="go_on" onclick="fopen_xiadan();">马上抢</span>
+						</div>
+					</div>
+					<div class="jindu"><div class="jindutiao"><div class="jindu_di"></div><div class="jindu_ding"></div></div><div class="jindu_title">15/20人</div></div>
+				</div>
+			</li>
+		</ul>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    fget_tuangou_list();
+			    api.parseTapmode();
+			});
+		api.hideProgress();//隐藏加载进度框
+		fget_tuangou_list();
+	};
+	var jishiqi;
+	function fopen_xiadan(n,goodsId)
+	{
+		var dq_time=Number($('.time').eq(n).attr('dq_time'));
+		var endTime=Number($('.time').eq(n).attr('time'));
+		if(Number(endTime)-Number(dq_time)<=0 || Number(endTime)-Number(dq_time)==NaN) {return;}
+		var login=$api.getStorage('login');
+		if(login==0 || login=='0' || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'miaosha_xiadan_header',
+	        url: 'miaosha_xiadan_header.html',
+	        pageParam:{
+	        	tuangou:1,
+	        	dq_time:dq_time,
+	        	end_time:endTime,
+	        	goods_id:goodsId,
+	        	num:1
+	        }
+        });
+	}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_info_header',
+		url: 'goods_info_header.html',
+		pageParam:{
+			tuangou:1,
+			goodsId:goods_id
+		}
+	});
+}
+function fget_tuangou_list()
+{
+	//api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_tuangou_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+            		html+='<li>';
+					html+='	<div class="list_left" tapmode="" onclick="fopengoods('+ret[i].goodsId+')"><img src="'+YAH_web+'/'+ret[i].goodsImg+'" /></div>';
+					html+='	<div class="list_right">';
+					html+='		<div class="title ccyc">'+ret[i].goodsName+'</div>';
+					html+='		<div class="num_list">';
+					html+='			<div class="num_left">';
+					html+='				<div class="money">现价:<span class="s1">￥'+ret[i].groupPrice+'</span></div>';
+					html+='				<div class="money3">距离结束:<span class="s1 time" time="'+ret[i].endTime+'" dq_time="'+ret[i].time+'"></span></div>';
+					html+='			</div>';
+					html+='			<div class="num_right">';
+					html+='				<span class="go" tapmode="go_on" onclick="fopen_xiadan(\''+i+'\',\''+ret[i].goodsId+'\');">马上抢</span>';
+					html+='				<span class="go_no" style="display:none;">马上抢</span>';
+					html+='			</div>';
+					html+='		</div>';
+					html+='		<div class="jindu"><div class="jindutiao"><div class="jindu_di"></div><div class="jindu_ding" style="width:'+((Number(ret[i].yimai) / Number(ret[i].groupMaxCount))*100)+'%;"></div></div><div class="jindu_title">'+ret[i].yimai+'/'+ret[i].groupMaxCount+'人</div></div>';
+					html+='	</div>';
+					html+='</li>';
+            	}
+            	html+='</ul>';
+                document.getElementsByClassName("goods_list")[0].innerHTML=html;
+                api.parseTapmode();
+                if(ret.length==0)
+                {
+                	html='<div style="line-height: 50px;text-align: center;">暂无商品</div>';
+            		document.getElementsByClassName("goods_list")[0].innerHTML=html;
+                }
+                window.clearInterval(jishiqi);
+                ftime();
+                jishiqi=window.setInterval('ftime()',1000);
+            }else {
+            	var html='<div style="line-height: 50px;text-align: center;">暂无商品</div>';
+            	document.getElementsByClassName("goods_list")[0].innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+        });
+}
+function ftime()
+{
+	var max=$('.time').length;
+	for(var i=0;i<max;i++)
+	{
+		var dq_time=Number($('.time').eq(i).attr('dq_time'));
+		var endTime=$('.time').eq(i).attr('time');
+		endTime=Number(endTime);
+		var status=0;
+		var time_value='';
+		var sy_time=Number(endTime)-Number(dq_time);
+		if(sy_time>0)
+		{
+			if(sy_time>3600*24) status=1;
+			else if(sy_time>3600) status=2;
+			else status=0;
+			if(status==0)
+			{
+				var fen=parseInt(sy_time/60);
+				var miao=parseInt(sy_time%60);
+				time_value=(fen>=10?fen:'0'+fen)+':'+(miao>=10?miao:'0'+miao);
+			}
+			else if(status==1)
+			{
+				var tian=parseInt(sy_time/(3600*24));
+				var shi=parseInt(sy_time%(3600*24)/3600);
+				var fen=parseInt(sy_time%(3600*24)%3600/60);
+				var miao=parseInt(sy_time%(3600*24)%3600%60);
+				time_value=tian+'天  '+(shi>=10?shi:'0'+shi)+':'+(fen>=10?fen:'0'+fen)+':'+(miao>=10?miao:'0'+miao);
+			}
+			else if(status==2)
+			{
+				var shi=parseInt(sy_time%(3600*24)/3600);
+				var fen=parseInt(sy_time%(3600*24)%3600/60);
+				var miao=parseInt(sy_time%(3600*24)%3600%60);
+				time_value=(shi>=10?shi:'0'+shi)+':'+(fen>=10?fen:'0'+fen)+':'+(miao>=10?miao:'0'+miao);
+			}
+			$('.time').eq(i).html(time_value);
+		}
+		else
+		{
+			$('.money3').eq(i).html('已结束');
+			$('.go').eq(i).css('display','none');
+			$('.go_no').eq(i).css('display','block');
+		}
+		$('.time').eq(i).attr('dq_time',dq_time+1);
+	}
+}
+</script>
+</html>

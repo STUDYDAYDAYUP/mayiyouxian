@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		width: 100%;
+    	}
+    	#main *{
+    		text-indent:0 !important;
+    	 	max-width:100% !important;
+    	 	padding:0;
+    	 	margin:0;
+    	}
+    	#main img{
+    		display:block;
+    		max-width:80%;
+    		margin:5px auto;
+    	}
+    </style>
+</head>
+<body>
+<div id="main" style="width: 93.6%;padding: 0 3.2%;overflow: hidden;">
+	
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+		fget_wenzhang_list();
+	};
+	function fget_wenzhang_list()
+	{
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_wenzhang.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	articleId:api.pageParam.id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("main").innerHTML=ret[0].articleContent;
+                 $('#main').find('img').each(function(){
+                     
+                     var src = $(this).attr('src');
+                     
+                     $(this).attr('src',$api.getStorage("YAH_web")+'/'+src);
+                     $(this).css('max-width','100%');
+                 })
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

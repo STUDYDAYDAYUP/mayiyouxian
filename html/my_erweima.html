@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    background-color: #fff;
+		}
+		body{
+			background-color: #fff;
+		    float:left;
+		    width: 100%;
+		}
+		input,button,select,textarea{outline:none;-webkit-appearance:none;}
+		#main{
+			width: 100%;
+			font-size: 14px;
+			text-align: center;
+		}
+		img{
+			width: 80%;
+			margin-top:20px;
+		}
+		#go{
+			color:#fff;
+			line-height: 50px;
+			margin-top:10px;
+		}
+		#go span{
+			background-color:#ff1b1c;
+			padding:0 20px;
+			border-radius: 5px;
+		}
+		.go_on{
+			background-color:#de0000 !important;
+		}
+		#statement{
+			position: absolute;
+			bottom:50px;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<img src="../image/default.png" alt="" id="qr" />
+	<div id="go"><span tapmode="go_on" onclick="fsev();">保存到手机</span></div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var path='';
+	apiready = function(){
+		fget_user_id();
+	};
+	function fsev()
+	{
+		api.toast({
+			msg: '已保存到'+path+'目录下',
+			duration: 2000,
+			location: 'bottom'
+		});
+	}
+	function fget_user_id()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+	            url: YAH_ajax_name+'/Api/Ueditor/enCodeString_app',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 fshow_erweima(ret[0].user_id);
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fshow_erweima(user_id)
+	{
+		var FNScanner = api.require('FNScanner');
+		FNScanner.encodeImg({
+		    content: YAH_web+'/Wx/Login/register/partner/'+user_id,
+		    saveToAlbum: true,
+		    saveImg: {
+		        path: 'fs://dsh/'+user_id+'.png',
+		        w: 200,
+		        h: 200
+		    }
+		}, function(ret, err){        
+		    if( ret.status ){
+		        document.getElementById("qr").src=ret.imgPath;
+		        path=ret.albumPath;
+		    }else{
+		        //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+</script>
+</html>

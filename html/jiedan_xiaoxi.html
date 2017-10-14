@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jiedan_xiaoxi.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div class="list list_on" tapmode="" onclick="fxuan(0);" style="border-right:1px solid #eee;">已发的微帮</div>
+		<div class="list" tapmode="" onclick="fxuan(1);">已发的报价</div>
+	</div>
+	<div class="content">
+		<div class="left2">
+			<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+			<!--<div class="list" tapmode="a" onclick="fopen_weibang_xx(0,0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">我是提供服务的标题</div>
+						<div class="info">已有1人接单</div>
+					</div>
+					<div class="s3">
+						<div class="tu"><img src="../image/delete.png" /></div>
+						<div class="time">2016-7-5</div>
+					</div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_xx(0,0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">我是提供服务的标题</div>
+						<div class="info">已有1人接单</div>
+					</div>
+					<div class="s3">
+						<div class="tu"><img src="../image/delete.png" /></div>
+						<div class="time">2016-7-5</div>
+					</div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_xx(0,0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">我是提供服务的标题</div>
+						<div class="info">已有1人接单</div>
+					</div>
+					<div class="s3">
+						<div class="tu"><img src="../image/delete.png" /></div>
+						<div class="time">2016-7-5</div>
+					</div>
+			</div>-->
+		</div>
+		<div class="right2">
+			<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+			<!--<div class="list" tapmode="a" onclick="fopen_weibang_xx(1,0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">我是提供服务的标题</div>
+						<div class="info">已有2人接单</div>
+					</div>
+					<div class="s3">
+						<div class="tu"><img src="../image/delete.png" /></div>
+						<div class="time">2016-7-5</div>
+					</div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_xx(1,0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">我是提供服务的标题</div>
+						<div class="info">已有2人接单</div>
+					</div>
+					<div class="s3">
+						<div class="tu"><img src="../image/delete.png" /></div>
+						<div class="time">2016-7-5</div>
+					</div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_xx(1,0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">我是提供服务的标题</div>
+						<div class="info">已有2人接单</div>
+					</div>
+					<div class="s3">
+						<div class="tu"><img src="../image/delete.png" /></div>
+						<div class="time">2016-7-5</div>
+					</div>
+			</div>-->
+		</div>
+		
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_wb_jdxx_list();
+		$api.setStorage('notice_bool['+0+']',0);
+	};
+	function fxuan(n)
+	{
+		var max=$('#header .list').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('#header .list').eq(i).addClass('list_on');
+			}
+			else
+			{
+				$('#header .list').eq(i).removeClass('list_on');
+			}
+		}
+		if(n==0)
+		{
+			$('.left2').css('display','block');
+			$('.right2').css('display','none');
+		} 
+		else if(n==1)
+		{
+			$('.left2').css('display','none');
+			$('.right2').css('display','block');
+		}
+	}
+	function fopen_weibang_xx(xuan_way,wb_id)
+	{
+		api.openWin({
+	        name: 'jiedan_xiaoxi_xx_header',
+	        url: 'jiedan_xiaoxi_xx_header.html',
+	        pageParam:{
+            	xuan_way:xuan_way,
+            	wb_id:wb_id
+            }
+        });
+	}
+	function fget_wb_jdxx_list()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+	            url: YAH_ajax_name+'get_wb_jdxx_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	msg_type:0
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	var html1='';
+	            	var html2='';
+	            	var sum1=0,sum2=0;
+	            	for(var i=0;i<ret.length;i++)
+	            	{
+	            		if(ret[i].msg_type==0)
+	            		{
+//		            		if(ret[i].type==0)
+//		            		{
+		            			html1+='<div class="list" tapmode="" onclick="fopen_weibang_xx(\''+ret[i].type+'\',\''+ret[i].id+'\')">';
+								html1+='		<div class="s1" style="background-image:url(\''+YAH_web+'/'+$api.getStorage('user_img')+'\')"></div>';
+								html1+='		<div class="s2">';
+								html1+='			<div class="title ccyc">'+ret[i].title+'</div>';
+								html1+='			<div class="info">已有'+ret[i].jiedan_num+'人接单</div>';
+								html1+='		</div>';
+								html1+='		<div class="s3">';
+								html1+='			<div class="tu"><img tapmode="" onclick="event.cancelBubble = true;fdelete('+ret[i].xiaoxi_id+');" src="../image/delete.png" /></div>';
+								html1+='			<div class="time">'+ret[i].createTime+'</div>';
+								html1+='		</div>';
+								html1+='</div>';
+								sum1++;
+//		            		}
+//		            		else if(ret[i].type==1)
+//		            		{
+//			            		html2+='<div class="list" tapmode="" onclick="fopen_weibang_xx(1,'+ret[i].id+')">';
+//								html2+='		<div class="s1" style="background-image:url(\''+YAH_web+'/'+$api.getStorage('user_img')+'\')"></div>';
+//								html2+='		<div class="s2">';
+//								html2+='			<div class="title ccyc">'+ret[i].title+'</div>';
+//								html2+='			<div class="info">已有'+ret[i].jiedan_num+'人接单</div>';
+//								html2+='		</div>';
+//								html2+='		<div class="s3">';
+//								html2+='			<div class="tu"><img tapmode="" onclick="event.cancelBubble = true;fdelete('+ret[i].xiaoxi_id+');" src="../image/delete.png" /></div>';
+//								html2+='			<div class="time">'+ret[i].createTime+'</div>';
+//								html2+='		</div>';
+//								html2+='</div>';
+//								sum2++;
+//		            		}
+	            		}
+	            		else if(ret[i].msg_type==2)
+	            		{
+	            				html2+='<div class="list" tapmode="" onclick="fopen_liaotian(\''+ret[i].wb_user_id+'\',\''+ret[i].for_xiaoxi_userPhoto+'\',\''+ret[i].id+'\',\''+ret[i].for_xiaoxi_userName+'\');">';
+								html2+='		<div class="s1" style="background-image:url(\''+YAH_web+'/'+ret[i].for_xiaoxi_userPhoto+'\')"></div>';
+								html2+='		<div class="s2">';
+								html2+='			<div class="title ccyc">'+ret[i].for_xiaoxi_userName+'</div>';
+								html2+='			<div class="info ccyc">'+ret[i].xiaoxi_content+'</div>';
+								html2+='		</div>';
+								html2+='		<div class="s3">';
+								html2+='			<div class="tu"><img tapmode="" onclick="event.cancelBubble = true;fdelete('+ret[i].xiaoxi_id+');" src="../image/delete.png" /></div>';
+								html2+='			<div class="time">'+ret[i].createTime+'</div>';
+								html2+='		</div>';
+								html2+='</div>';
+								sum2++;
+	            		}
+	            		
+	            	}
+	            	if(sum1==0) html1='<div style="text-align: center;line-height: 50px;">暂无最新信息</div>';
+	            	if(sum2==0) html2='<div style="text-align: center;line-height: 50px;">暂无最新信息</div>';
+	            	$('.content .left2').html(html1);
+					$('.content .right2').html(html2);
+					api.parseTapmode();
+	            }else {
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无最新信息</div>';
+					$('.content .left2').html(html);
+					$('.content .right2').html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fdelete(xiaoxi_id)
+	{
+		api.confirm({
+		    title: '提示',
+		    msg: '确定删除该消息吗？',
+		    buttons: ['确定', '取消']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		fdelete_xiaoxi(xiaoxi_id);
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function fdelete_xiaoxi(xiaoxi_id)
+	{
+		api.showProgress({title:'删除中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+	            url: YAH_ajax_name+'set_jdxx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	xiaoxi_id:xiaoxi_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0].pan=="true")
+	            	{
+	            		api.toast({
+							msg: '删除成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						fget_wb_jdxx_list();
+	            	}
+	            	else if(ret[0].pan=="false")
+	            	{
+	            		alert(ret[0].msg);
+	            	}
+	            	else
+	            	{
+	            		api.toast({
+							msg: '删除失败！',
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fopen_liaotian(to_user_id,to_img_src,wb_id,userName)
+	{
+		api.openWin({
+	        name: 'liaotian_header',
+	        url: 'liaotian_header.html',
+	        pageParam:{
+            	to_user_id:to_user_id,
+            	to_img_src:to_img_src,
+            	wb_id:wb_id,
+            	userName:userName,
+            	pan:0
+            }
+        });
+	}
+</script>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dianpu_pingjia.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div class="left">
+			<div class="s1" id="zhpf">5.0</div>
+			<div class="s2">综合评分</div>
+		</div>
+		<div class="right" id="shop_jcpf">
+			<div class="s1">
+				<span>商品评分</span>
+				<div class="sd_wxingji">
+					<div class="sd_xingji x5"></div>
+					<div class="sd_xingji_di"></div>
+				</div>
+				<span class="red">5.0</span>
+			</div>
+			<div class="s2">
+				<span>配送评分</span>
+				<div class="sd_wxingji">
+					<div class="sd_xingji x5"></div>
+					<div class="sd_xingji_di"></div>
+				</div>
+				<span class="red">5.0</span>
+			</div>
+		</div>
+	</div>
+	<div class="min_header"><div class="pan_man tou_on" onclick="fxuan(0);" id="quanbu">全部(0)</div><div class="pan_man" id="man" onclick="fxuan(1);">满意(0)</div><div class="pan_man" id="buman" onclick="fxuan(2);">不满意(0)</div></div>
+	<div class="sd_huifu">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<!--<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_info">
+					<div class="sd_xingji x5"></div>
+					<div class="sd_xingji_di"></div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+					<img src="../image/sp_5.png" />
+					<img src="../image/sp_5.png" />
+					<img src="../image/sp_5.png" />
+				</div>
+			</li>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_info">
+					<div class="sd_xingji x3"></div>
+					<div class="sd_xingji_di"></div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+					<img src="../image/sp_5.png" />
+				</div>
+			</li>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄凡所有相皆是虚妄凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_info">
+					<div class="sd_xingji x1"></div>
+					<div class="sd_xingji_di"></div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+				
+				</div>
+			</li>-->
+			<!--<div class="no_shaidan">暂无评论</div>-->
+		</ul>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_goods_shaidan();
+	};
+	function fget_goods_shaidan()
+	{
+//		api.showProgress({
+//				    style: 'default',
+//				    animationType: 'fade',
+//				    title: '努力加载中...',
+//				    text: '先喝杯茶...',
+//				    modal: true
+//		});
+		api.ajax({
+	            url: YAH_ajax_name+'get_shop_shaidan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	shopId:api.pageParam.shopId
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	var html='<ul>';
+	            	var sum=0,sum2=0,i,max_num=3;
+	            	var man=0,buman=0;
+					for(i=0;i<ret.length;i++)
+					{
+						sum+=Number(ret[i].serviceScore);
+						sum2+=Number(ret[i].timeScore);
+						if(Number(ret[i].serviceScore)>=3)
+						{
+							man++;
+						}
+						else
+						{
+							buman++;						
+						}
+					}
+					if(ret.length>3) max_num=3;
+					else if(ret.length<=3) max_num=ret.length;
+					for(i=0;i<ret.length;i++)
+					{
+						if(Number(ret[i].serviceScore)>=3) html+='<li tapmode="" class="man_list">';
+						else html+='<li tapmode="" class="buman_list">';
+//						html+='	<div class="sd_info">';
+//						html+='		<div class="sd_xingji x"'+ret[i].star+'></div>';
+//						html+='		<div class="sd_xingji_di"></div>';
+//						html+='		<div class="sd_time">'+ret[i].shareTime+'</div>';
+//						html+='		<div class="sd_username">'+ret[i].userName+'</div>';
+//						html+='	</div>';
+						var userName=ret[i].userName;
+						var userName2=ret[i].userName;
+						if(ret[i].anonymity==0)
+						{
+							userName2=userName[0];
+							if(userName.length<6)
+							{
+								for(var j=1;j<userName.length;j++)
+								{
+									userName2+='*';
+									
+								}
+							}
+							else
+							{
+								for(var j=1;j<userName.length-1;j++)
+								{
+									userName2+='*';
+								}
+								userName2+=userName[userName.length-1];
+							}
+						}
+						html+='<div class="sd_info">';
+						html+='	<div class="sd_time">'+ret[i].createTime+'</div>';
+						html+='	<div class="sd_username">'+userName2+'</div>';
+						html+='</div>';
+						html+='<div class="sd_info">';
+						html+='	<div class="sd_xingji x'+ret[i].serviceScore+'"></div>';
+						html+='	<div class="sd_xingji_di"></div>';
+						html+='</div>';
+						html+='	<div class="sd_nr">'+ret[i].content+'</div>';
+						html+='</li>';
+					}
+					html+='</ul>';
+					$('.sd_huifu').eq(0).html(html);
+					$('#quanbu').html('全部('+(man+buman)+')');
+					$('#man').html('满意('+man+')');
+					$('#buman').html('不满意('+buman+')');
+					var fwpf=sum/ret.length;
+					var pspf=sum2/ret.length;
+					if(ret.length>0) $('#zhpf').html(((Number(fwpf)+Number(pspf))/2).toFixed(1));
+					function fzhuan(n)
+					{
+						var shi=parseInt((Number(n)/10));
+						var ge=Number(n)%10;
+						if(ge>0 && ge<=9) return shi+''+5;
+						else return shi;
+					}
+					var html2='';
+					html2+='<div class="s1">';
+					html2+='	<span>商品评分</span>';
+					html2+='	<div class="sd_wxingji">';
+					html2+='		<div class="sd_xingji x'+fzhuan(Number(fwpf)*10)+'"></div>';
+					html2+='		<div class="sd_xingji_di"></div>';
+					html2+='	</div>';
+					html2+='	<span class="red">'+fwpf.toFixed(1)+'</span>';
+					html2+='</div>';
+					html2+='<div class="s2">';
+					html2+='	<span>配送评分</span>';
+					html2+='	<div class="sd_wxingji">';
+					html2+='		<div class="sd_xingji x'+fzhuan(Number(pspf)*10)+'""></div>';
+					html2+='		<div class="sd_xingji_di"></div>';
+					html2+='	</div>';
+					html2+='	<span class="red">'+pspf.toFixed(1)+'</span>';
+					html2+='</div>';
+					if(ret.length>0) $('#shop_jcpf').html(html2);
+					
+					//$('.min-title').eq(0).find('.t2').eq(0).html(ret.length+'人评论');
+					//$('.min-title').eq(0).find('.persen').eq(0).html((sum / Number(ret.length) / 5)*100 +'%');
+					api.parseTapmode();
+	            }else {
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无评论</div>';
+	            	$('.sd_huifu').eq(0).html(html);
+	            	$('#quanbu').html('全部(0)');
+					$('#man').html('满意(0)');
+					$('#buman').html('不满意(0)');
+	            	//$('.min-title').eq(0).find('.t2').eq(0).html('0人评论');
+	            	//$('.min-title').eq(0).find('.persen').eq(0).html('100%');
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fxuan(n)
+	{
+		var max=$('.pan_man').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.pan_man').eq(i).addClass('tou_on');
+			}
+			else
+			{
+				$('.pan_man').eq(i).removeClass('tou_on');
+			}
+		}
+		if(n==1)
+		{
+			$('.man_list').css('display','block');
+			$('.buman_list').css('display','none');
+		}
+		else if(n==2)
+		{
+			$('.man_list').css('display','none');
+			$('.buman_list').css('display','block');
+		}
+		else
+		{
+			$('.man_list').css('display','block');
+			$('.buman_list').css('display','block');
+		}
+		
+	}
+</script>
+</html>

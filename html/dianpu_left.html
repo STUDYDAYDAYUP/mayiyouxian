@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fenlei_left.css"/>
+    <style>
+    	body{
+    		padding-bottom:50px;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="jiazai" style="background-color:#f2f2f2;font-size:10px;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+	<!--<ul>
+		<li tapmode="" class="li_on">&nbsp;</li>
+		<li tapmode="">&nbsp;</li>
+	</ul>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_fenlei_list();
+	};
+	function fget_fenlei_list()
+	{
+			api.ajax({
+	            url: YAH_ajax_name+'get_shops_fenlei_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	shop_id:api.pageParam.shopId
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	 var yiji_z=new Array();
+	            	 var i,j,t;
+	            	 var yiji_i=0;
+	                 var yiji='<ul>';
+	                 var par=ret[0].catId;
+	                 var oneId=0;
+	                 for(i=0;i<ret.length;i++)
+	                 {
+	                 	if(ret[i].parentId==0)
+	                 	{
+	                 		par=ret[i].catId;
+	                 	}
+	                 }
+	                 for(i=0;i<ret.length;i++){
+	                 	if(ret[i].parentId==0)
+	                 	{
+	                 		if(yiji_i==0) oneId=ret[i].catId;
+	                 		yiji_z[yiji_i]=ret[i].catId;
+	                 		if(yiji_i==0)
+	                 		{
+	                 			yiji+='<li tapmode="" class="li_on" onclick="fset_fenlei(\''+yiji_i+'\',\''+ret[i].catId+'\');">'+ret[i].catName+'</li>';
+	                 		}
+	                 		else
+	                 		{
+	                 			yiji+='<li tapmode=""  onclick="fset_fenlei(\''+yiji_i+'\',\''+ret[i].catId+'\');">'+ret[i].catName+'</li>';
+	                 		}
+	                 		yiji_i++;
+	                 	}
+	                 }
+	                 yiji+='</ul>';
+	                 document.getElementById('main').innerHTML=yiji;
+	                 api.parseTapmode();
+	                 fset_fenlei(0,oneId);
+	            }else {
+	            	//fduanwang();
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无分类</div>';
+	            	document.getElementById('main').innerHTML=html;
+	            	fset_fenlei_no();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            //api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	var dqn=-1;
+	function fset_fenlei(n,id)
+	{
+		for(var i=0;i<$('#main li').length;i++)
+		{
+			if(i==Number(n))
+			{
+				//li.item(n).className='li_on';
+				$('#main li').eq(i).addClass('li_on');
+				if(n!=dqn)
+				{
+					api.execScript({
+		                frameName:'dianpu_right',
+		                script: 'fset_fenlei(\''+id+'\');'
+	                });
+				}
+                dqn=n;
+			}
+			else
+			{
+				//li.item(n).className=' ';
+				$('#main li').eq(i).removeClass('li_on');
+			}
+		}
+	}
+	function fset_fenlei_no()
+	{
+		api.execScript({
+	        frameName:'dianpu_right',
+	        script: 'fno_fenlei();'
+        });
+	}
+</script>
+</html>

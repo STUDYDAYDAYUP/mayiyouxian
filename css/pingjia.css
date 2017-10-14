@@ -1,0 +1,223 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+    padding-bottom:70px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+	margin-top: 10px;
+}
+.a0{
+	
+}
+.a{
+    background-color:#eee !important;
+}  
+
+.header{
+	background-color: #fff;
+}
+.header .title{
+	line-height: 50px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin:0 10px;
+    border-bottom:1px solid #eee;
+}
+.header .title .shopName{
+	
+}
+.header .title .tishi{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: right;
+    color:#999;
+}
+.header .list{
+	border-bottom:1px solid #eee;
+	margin:0 10px;
+}
+.header .list .nei{
+	height: 30px;
+	line-height: 30px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.header .list .nei .tishi{
+	color:#999;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.header .list textarea{
+	padding-top: 5px;
+	margin:10px 0;
+	width:100%;
+	height: 50px;
+}
+
+
+
+.goods_list{
+	background-color:#fff;
+	margin-top: 10px;
+}
+.goods_list .goods{
+	border-bottom:1px solid #eee;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding:10px;
+    height: 80px;
+    border-bottom:1px solid #eee;
+}
+.goods_list .goods .left{
+	width: 80px;
+	margin-right: 10px;
+}
+.goods_list .goods .left img{
+	width: 80px;
+	height: 80px;
+}
+.goods_list .goods .con{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.goods_list .goods .con .goodsName{
+	height: 30px;
+	line-height: 30px;
+	margin-top: 10px;
+	font-size: 16px;
+}
+		.sd_wxingji{
+            position: relative;
+            width: 90px;
+            height: 30px;
+            float:left;
+            margin-right: 5px;
+        }
+        .sd_xingji{
+            position: absolute;
+            z-index: 1;
+            height: 30px;
+            width: 90px;
+            background-image: url('../image/xing_huang.png');
+            background-repeat: no-repeat;
+            background-size: 90px 15px;
+            background-position: 0 3px;
+        }
+        .sd_wxingji .x0{
+            width: 0px !important;
+        }
+        .sd_wxingji .x1{
+            width: 18px !important;
+        }
+        .sd_wxingji .x2{
+            width: 36px !important;
+        }
+        .sd_wxingji .x3{
+            width: 54px !important;
+        }
+        .sd_wxingji .x4{
+            width: 72px !important;
+        }
+        .sd_wxingji .x5{
+            width: 90px !important;
+        }
+        .sd_wxingji .sd_xingji_di{
+            position: absolute;
+            z-index: 0;
+            height: 30px;
+            width: 90px;
+            background-image: url('../image/xing_hui.png');
+            background-repeat: no-repeat;
+            background-size: 90px 15px;
+            background-position: 0 3px;
+        }
+        .sd_xingji_xuan{
+			position: absolute;
+			z-index: 2;
+			height: 30px;
+			width: 90px;
+			display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		}
+		.sd_xingji_xuan .xing_xuan{
+			-webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		}
+
+.goods_list .goods .right{
+	padding-right: 20px;
+	background-image: url('../image/xiajiantou2.png');
+	background-repeat: no-repeat;
+	background-size: 15px 10px;
+	background-position: 32px 5px;
+	height: 20px;
+	line-height: 20px;
+	margin-top:40px;
+	color:#999;
+	margin-left: 10px;
+}
+.goods_list .goods .right_on{
+	background-image: url('../image/shangjiantou2.png') !important;
+}
+.goods_list .pj_nr{
+	margin:0 10px;
+	display: none;
+}
+.goods_list .pj_nr textarea{
+	padding-top:5px;
+	padding:10px 0;
+	width: 100%;
+	height: 40px;
+}
+.niming{
+	line-height: 50px;
+	color:#666;
+	padding-left: 25px;
+	background-image: url('../image/xuan_hui2.png');
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	background-position: 0 15px;
+	margin-left: 10px;
+}
+.niming_on{
+	background-image: url('../image/xuan_hong2.png');
+}
+
+.footer{
+	background-color: #fff;
+	border-top:1px solid #e2e2e2;
+	position: fixed;
+	bottom:0;
+	left:0;
+	width: 100%;
+	height: 50px;
+}
+.footer .go{
+	text-align: center;
+	line-height: 30px;
+	border:1px solid #ff4450;
+	color:#ff4450;
+	margin:10px 10px 0 10px;
+	border-radius: 2px;
+}
+.go_on{
+	background-color:#ff4450 !important;
+	color:#fff !important;
+}

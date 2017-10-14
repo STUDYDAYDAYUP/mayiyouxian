@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    	html, body{
+			-webkit-overflow-scrolling:touch;
+    	}
+    	#main{
+    		/*transition: margin-top 0.6s ease-out;*/
+    	}
+    	#banner-top .swiper-slide{font-size: 0;}
+    	.swiper-slide img{
+    		width: 100%;
+    		vertical-align: bottom;
+    	}
+    	.dian{
+			width: 0;
+			height: 0;
+			position: absolute;
+			z-index: 1000;
+			/*方法一
+			*-webkit-transition:left 0.75s ease-out;
+			transition:left 0.75s ease-out;*/
+			/*方法二*/
+			transition:transform 750ms ease-out;
+			transform: translateX(0px);
+			-webkit-backface-visibility: hidden;
+		}
+		.dian_change {
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			/*background: #eb6b67;*/
+			background: #60b034;
+			z-index: 1000;
+			/*方法一
+			*-webkit-transition:top 0.75s cubic-bezier(.25, 0, .4, 0);
+			transition:top 0.75s cubic-bezier(.25, 0, .4, 0);*/
+			/*方法二*/
+			transition:transform 750ms cubic-bezier(.25, 0, .4, 0);
+			transform: translateY(0px);
+			-webkit-backface-visibility: hidden;
+		}
+		.goods-slide-section{
+			display: block;
+			position: relative;
+			overflow: hidden;
+		    width: 100%;
+
+		    text-align: center;
+		    -webkit-transition: height 0.275s ease-out;
+		    transition: height 0.275s ease-out;
+			-webkit-backface-visibility: hidden;
+
+		    height: 0;
+		}
+		.slide-img-box{
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0; right: 0; margin: 0 auto;
+		}
+    </style>
+</head>
+<body>
+
+	<div class="top-notify" style="display:none;">
+		<img src="../image/home_msg.png" alt="" />
+		<span>您的小区距离开通仅剩<em id="minnum">99</em>人</span>
+	</div>
+	<div id="main">
+		<!-- <div class="tou">
+			<div class="left" tapmode="" onclick="fopen_faweibang(1);"><img src="../image/faweibang.png" /></div>
+			<div class="con"><img src="../image/sy_wb_right.png" /></div>
+			<div class="right" tapmode="" onclick="fopen_faweibang(0);"><img src="../image/zhaoweibang.png" /></div>
+		</div> -->
+		<div class="index-banner-top">
+			<div class="swiper-container swiper-container0">
+				<div class="swiper-wrapper" id="banner-top">
+				    <!-- <div class="swiper-slide"><img src="../image/lunbo1.png" alt="" /></div>
+				    <div class="swiper-slide"><img src="../image/lunbo2.png" alt="" /></div>
+				    <div class="swiper-slide"><img src="../image/lunbo1.png" alt="" /></div> -->
+				</div>
+				<div class="swiper-pagination swiper-pagination0"></div>
+			</div>
+		</div>
+		<div id="banner" style="display: none;">
+			<ul>
+				<li tapmode="" onclick="fopen_fenlei('所有发布');" class="ban1"><img src="../image/wlist1.png" /><a>蚂蚁家早餐</a></li>
+				<li tapmode="" onclick="fopen_fenlei('闲置商品');" class="ban2"><img src="../image/wlist2.png" /><a>蚂蚁家餐桌</a></li>
+				<li tapmode="" onclick="fopen_fenlei('家政钟点');" class="ban3"><img src="../image/wlist3.png" /><a>蚂蚁家厨房</a></li>
+				<li tapmode="" onclick="fopen_fenlei('丽人服务');" class="ban4"><img src="../image/wlist4.png" /><a>蚂蚁家果园</a></li>
+				<li tapmode="" onclick="fopen_fenlei('护理保健');" class="ban5"><img src="../image/wlist5.png" /><a>蚂蚁家售后</a></li>
+			</ul>
+
+		</div>
+
+
+
+		<div style="clear: both;"></div>
+		<div class="index-news">
+			<div class="index-news-logo"><img src="../image/menu_logo.png" alt="" /></div>
+			<div class="index-news-content">
+				<div class="swiper-container swiper-container3">
+		        	<div class="swiper-wrapper" id="new_list">
+			            <!-- <div class="swiper-slide"><a href="#">1多个订单算一次运费，次日收取，满39包邮</a></div>
+			            <div class="swiper-slide"><a href="#">2多个订单算一次运费，次日收取，满39包邮</a></div>
+			            <div class="swiper-slide"><a href="#">3多个订单算一次运费，次日收取，满39包邮</a></div>
+			            <div class="swiper-slide"><a href="#">4多个订单算一次运费，次日收取，满39包邮</a></div> -->
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="title-list">
+			<!-- <div class="min-title">
+				<span class="t4">最新</span><span tapmode="a" class="ty" onclick="fhuanyizu_css3(0);fget_new_info();"><span class="t6"></span><span class="t5">手动刷新</span></span>
+			</div> -->
+			<div class="goods-list-title block-box">
+				<div class="fill fill-l"></div>
+				<h3 class="block-flex">热门推荐</h3>
+				<div class="fill fill-r"><!-- <a href="javascript:void(0);" onclick="go_goodslist(4,'热门推荐')" class="more">更多<i></i></a> --></div>
+			</div>
+			<div class="neirong3" id="jingpin">
+				<!-- <div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+				<div class="goods-list-box">
+					<div class="goods-list-section">
+						<div class="goods-list-content block-box" onclick="slide_section(this);">
+							<div class="goods-img"><img src="../image/pic_thumbnail.png" alt="" /></div>
+							<div class="goods-ifo block-flex">
+								<p class="goods-name">家猪筒骨－新鲜</p>
+								<p class="goods-explain">新鲜家猪限量供应</p>
+								<div class="goods-spec">
+									<span>约250g</span>
+									<span>广东</span>
+									<span>限量上市</span>
+								</div>
+								<div class="goods-price">
+									<strong>￥1.00</strong>
+									<span>￥29.00</span>
+								</div>
+							</div>
+							<div class="goods-labels">
+								<em><i></i>一元特价<i></i></em>
+								<em>大于10份</em>
+							</div>
+						</div>
+						<a href="#" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a>
+					</div>
+					<div class="goods-slide-section" style="display: none;">
+						<div class="swiper-container swiper-container2">
+							<div class="swiper-wrapper">
+							    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+							    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+							    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+							</div>
+							<div class="swiper-pagination swiper-pagination2"></div>
+						</div>
+					</div>
+				</div>-->
+
+
+			</div>
+			<div class="index-banner">
+				<div class="swiper-container swiper-container1">
+					<div class="swiper-wrapper" id="banner-center">
+					    <!-- <div class="swiper-slide"><img src="../image/lunbo1.png" alt="" /></div>
+					    <div class="swiper-slide"><img src="../image/lunbo2.png" alt="" /></div>
+					    <div class="swiper-slide"><img src="../image/lunbo1.png" alt="" /></div> -->
+					</div>
+					<div class="swiper-pagination swiper-pagination1"></div>
+				</div>
+			</div>
+			<div class="goods-list-title block-box">
+				<div class="fill fill-l"></div>
+				<h3 class="block-flex">新品上市</h3>
+				<div class="fill fill-r"><!-- <a href="javascript:void(0);" onclick="go_goodslist(5,'新品上市')" class="more">更多<i></i></a> --></div>
+			</div>
+			<div class="neirong3aa" id="xinpin">
+				 <!-- <div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div> -->
+				<!-- <div class="goods-list-box goods-list-slide">
+					<div class="goods-list-section">
+						<div class="goods-list-content block-box" tapmode ontouchstart="slide_section1(this);">
+							<div class="goods-img"><img src="../image/pic_thumbnail.png" alt="" /></div>
+							<div class="goods-ifo block-flex">
+								<p class="goods-name">家猪筒骨－新鲜</p>
+								<p class="goods-explain">新鲜家猪限量供应</p>
+								<div class="goods-spec">
+									<span>约250g</span>
+									<span>广东</span>
+									<span>限量上市</span>
+								</div>
+								<div class="goods-price">
+									<strong>￥1.00</strong>
+									<span>￥29.00</span>
+								</div>
+							</div>
+							<div class="goods-labels">
+								<em>一元特价</em>
+								<em>大于10份</em>
+							</div>
+						</div>
+						<a href="#" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a>
+					</div>
+					<div class="goods-slide-section" style="display: block;">
+						<div class="slide-img-box">
+							<div class="swiper-container swiper-container2">
+								<div class="swiper-wrapper">
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								</div>
+								<div class="swiper-pagination swiper-pagination2"></div>
+							</div>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		<div id="statement" class="f" onclick="yueicp();">粤ICP备17055995号-1</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/zepto.extend.js"></script>
+<script type="text/javascript" src="../script/zepto.ui.js"></script>
+<script type="text/javascript" src="../script/sliders.js"></script>
+<script type="text/javascript" src="../script/swipe.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js" ></script>
+<script type="text/javascript">
+//点击加购物车出现小球 bycao
+function f_root(){
+	api.execScript({
+		name:'root',
+		script: 'fset_goshop_page();'
+	});
+}
+var end_x, end_y, dian_n = 0, start_x, start_y, m_time;
+function fs_dian(goods_num_x,goods_num_y){
+	dian_n ++;
+	var $start_ = $(cartDom);
+	start_x = $start_.offset().left;
+	start_y = $start_.offset().top;
+	// 方法一
+	// end_x = parseFloat(goods_num_x);
+	// end_y = parseFloat(goods_num_y) + $('body').scrollTop() - start_y + 25;
+	// 方法二
+	end_x = parseFloat(goods_num_x) - start_x;
+	end_y = parseFloat(goods_num_y) + $('body').scrollTop() - start_y;
+
+	if(end_y<150){
+		m_time = 0.5;
+	}
+	else if(end_y<280){
+		m_time = 0.62;
+	}
+	else{
+		m_time = 0.75;
+	}
+	var dianH = '<div class="dian dian'+dian_n+'" style="left:'+start_x+'px;top:'+start_y+'px;transition-duration:'+m_time+'s;"><div class="dian_change" style="transition-duration:'+m_time+'s;"></div></div>';
+	$('body').append(dianH);
+
+	f_setT(dian_n,end_x,end_y,m_time);
+}
+function f_setT(num_,end_x_,end_y_,m_time_){
+	m_time_ = m_time_*1000 + 50;
+	setTimeout(function(){
+		// 方法一
+		// $('.dian'+num_).css('left',end_x_);
+		// $('.dian'+num_).find('.dian_change').css('top',end_y_);
+		// 方法二
+		$('.dian'+num_).css({
+			'transform': 'translateX('+ end_x_ +'px)'
+		});
+		$('.dian'+num_).find('.dian_change').css({
+			'transform': 'translateY('+ end_y_ +'px)'
+		});
+
+	},0)
+	setTimeout(function(){
+		$('.dian'+num_).remove();
+	},m_time_)
+}
+//end
+function yueicp(){
+    api.openWin({
+        name: 'wailian_header',
+        url: 'wailian_header.html',
+        pageParam:{
+        	url:'http://www.miitbeian.gov.cn',
+        	name:'备案系统网站'
+        }
+    });
+}
+
+function show_top_notify(num){
+   $('#minnum').html(num);
+   $('.top-notify').show();
+}
+function show_top_notify1(){
+   $('.top-notify').hide();
+}
+
+function go_xuan_xiaoqu(){
+	api.openWin({
+	    name: 'xuan_xiaoqu_header',
+	    url: 'xuan_xiaoqu_header.html',
+	});
+}
+
+function shownotify(){
+    var login=$api.getStorage('login');
+	if(login=='0' || login==0 || login==undefined)
+	{
+		return;
+	}
+
+	var user_id=$api.getStorage('user_id');
+    var time = Math.ceil(new Date().getTime()/1000);
+    var sign = get_appkey(time);
+    sign = md5(sign);
+
+    api.ajax({
+        url: YAH_web+'/index.php?m=Api&c=User&a=get_community_byuser',
+        method: 'post',
+        cache: false,
+        timeout: 30,
+        dataType: 'json',
+        returnAll:false,
+        data:{
+            values: {
+            	userId:user_id,
+            	time:time,
+                sign:sign
+            }
+        }
+    },function(ret,err){
+
+    	 if(ret['people_num'] >0){
+    	    show_top_notify(ret['people_num']);
+    	 }
+    	 else{
+
+    	     show_top_notify1();
+
+    	 }
+    });
+}
+var cartDom;
+function addCart(gid,type,obj_){
+	cartDom = obj_;
+    var login=$api.getStorage('login');
+	if(login=='0' || login==0 || login==undefined)
+	{
+		api.toast({
+			msg: '请先登录！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+
+	var user_id=$api.getStorage('user_id');
+    var time = Math.ceil(new Date().getTime()/1000);
+    var sign = get_appkey(time);
+    sign = md5(sign);
+
+    api.ajax({
+        url: YAH_web+'/index.php?m=Api&c=User&a=get_community_byuser',
+        method: 'post',
+        cache: false,
+        timeout: 30,
+        dataType: 'json',
+        returnAll:false,
+        data:{
+            values: {
+            	userId:user_id,
+            	time:time,
+                sign:sign
+            }
+        }
+    },function(ret,err){
+
+    	 if(ret['people_num'] == -2){
+    	 	if(type == 1) f_root();
+    	    goods_addCart(gid,type);
+    	 }
+    	 else{
+
+    	     if(type == 1){
+    	         open_xuan_xiaoqu(ret['people_num']);
+    	     }
+    	     else if(type == 2){
+	    	     api.execScript({
+		        	name:'fenlei_shaixuan_header',
+		           	frameName:'fenlei_shaixuan',
+		            script: 'open_xuan_xiaoqu('+ret['people_num']+');'
+		         });
+    	     }
+    	     else if(type == 3){
+    	         api.execScript({
+		        	name:'goods_info_header',
+		           	frameName:'goods_info_footer',
+		            script: 'open_xuan_xiaoqu('+ret['people_num']+');'
+		         });
+    	     }
+    	     else if(type == 4){
+    	         api.execScript({
+		        	name:'goods_list_header',
+		           	frameName:'goods_list',
+		            script: 'open_xuan_xiaoqu('+ret['people_num']+');'
+		         });
+    	     }
+
+    	 }
+    });
+
+}
+var addcart = 1;
+function goods_addCart(gid,type){
+    if(addcart == -1)return;
+    addcart = -1;
+    var user_id=$api.getStorage('user_id');
+    var time = Math.ceil(new Date().getTime()/1000);
+    var sign = get_appkey(time);
+    sign = md5(sign+gid);
+
+    api.ajax({
+        url: YAH_web+'/index.php?m=Api&c=Orders&a=goods_addCart',
+        method: 'post',
+        cache: false,
+        timeout: 30,
+        dataType: 'json',
+        returnAll:false,
+        data:{
+            values: {
+            	userId:user_id,
+            	gid:gid,
+            	time:time,
+                sign:sign
+            }
+        }
+    },function(ret,err){
+         //alert(JSON.stringify(ret||err));
+         addcart=1;
+         fget_buycar();
+    	 if(ret['status'] == 1){
+    	     if(type == 1){
+	            api.toast({
+					msg: '加入成功！',
+					duration: 2000,
+					location: 'bottom'
+				});
+		     }
+		     else if(type == 2){
+			     api.execScript({
+		        	name:'fenlei_shaixuan_header',
+		           	frameName:'fenlei_shaixuan',
+		            script: 'add_cart_sus(1);'
+		         });
+		     }
+		     else if(type == 3){
+		         api.execScript({
+		        	name:'goods_info_header',
+		           	frameName:'goods_info_footer',
+		            script: 'add_cart_sus(1);'
+		         });
+		     }
+		     else if(type == 4){
+		         api.execScript({
+		        	name:'goods_list_header',
+		           	frameName:'goods_list',
+		            script: 'add_cart_sus(1);'
+		         });
+		     }
+    	 }
+    	 else{
+    	     if(type == 1){
+	            api.toast({
+					msg: '加入失败！',
+					duration: 2000,
+					location: 'bottom'
+				});
+		     }
+		     else if(type == 2){
+			     api.execScript({
+		        	name:'fenlei_shaixuan_header',
+		           	frameName:'fenlei_shaixuan',
+		            script: 'add_cart_sus(-1);'
+		         });
+		     }
+		     else if(type == 3){
+		         api.execScript({
+		        	name:'goods_info_header',
+		           	frameName:'goods_info_footer',
+		            script: 'add_cart_sus(-1);'
+		         });
+		     }
+		     else if(type == 4){
+		         api.execScript({
+		        	name:'goods_list_header',
+		           	frameName:'goods_list',
+		            script: 'add_cart_sus(-1);'
+		         });
+		     }
+    	 }
+
+    });
+
+
+}
+
+function open_xuan_xiaoqu(type){
+
+    api.openFrame({
+        name: 'go_xuan_xiaoqu',
+        url: 'go_xuan_xiaoqu.html',
+        pageParam:{
+            type:type
+        },
+        rect: {
+	        x:0,
+	        y:0,
+	        w:'auto',
+	        h:'auto'
+        }
+    });
+}
+function c_xuan_xiaoqu(){
+    $('.xuanze_bg').hide();
+    $('.xuanze_xiaoqu').hide();
+}
+
+
+
+    function get_limbo(type){
+        var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+type);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=get_limbo_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	type:type,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+//      	/alert(JSON.stringify(ret||err));
+        	if (ret) {
+                 var html = '';
+                 $(ret).each(function(i,val){
+	                 if(type == -5){
+	                     html += '<div class="swiper-slide" onclick="fopen_ad(\''+val.adURLApp+'\',\''+val.adName+'\',\''+val.adURL+'\')"><a href="#">'+val.adName+'</a></div>';
+	                 }
+	                 else{
+	                     html += '<div class="swiper-slide" onclick="fopen_ad(\''+val.adURLApp+'\',\''+val.adName+'\',\''+val.adURL+'\')"><img src="'+$api.getStorage("YAH_web")+'/'+val.adFile+'" alt="" /></div>';
+	                 }
+                 })
+                 if(type == -1){
+                     $('#banner-top').html(html);
+                     var mySwiper1 = new Swiper('.swiper-container0',{
+						autoplay: 3000,
+						pagination : '.swiper-pagination0',
+						loop: true,
+						autoplayDisableOnInteraction: false,
+						observer:true,
+						observeParents:true
+					})
+                 }
+                 else if(type == -4){
+                     $('#banner-center').html(html);
+                      var mySwiper1 = new Swiper('.swiper-container1',{
+						autoplay: 3000,
+						pagination : '.swiper-pagination1',
+						loop: true,
+						autoplayDisableOnInteraction: false,
+						observer:true,
+						observeParents:true
+					})
+                 }
+                 else if(type == -5){
+                     $('#new_list').html(html);
+                     var mySwiper3 = new Swiper('.swiper-container3',{
+						autoplay: 5000,
+						speed: 500,
+					    direction: 'vertical',
+						loop: true,
+						autoplayDisableOnInteraction: false,
+						observer:true,
+						observeParents:true
+					})
+                 }
+
+
+
+
+
+
+            }else {
+
+            };
+        });
+
+    }
+// bycao
+
+// 商品列表点击弹出图片
+var slide_img_h;
+	function slide_section1(obj) {
+		var status_ = true;
+		$(obj).on('touchmove',function(e){
+			// e.preventDefault();
+			status_ = false;
+		})
+		$(obj).one('touchend',function(e){
+			e.preventDefault();
+			if(status_ == false ){
+
+			}else {
+				slide_section2(obj);
+			}
+		})
+		return false;
+	}
+	function slide_section2(obj){
+
+		slide_img_h = $(window).width() - parseFloat($('.goods-slide-section .swiper-slide').css('padding-left')) - parseFloat($('.goods-slide-section .swiper-slide').css('padding-right'));
+		var type = $(obj).attr('data-type');
+		if(type == 4){
+		    var gid = $(obj).attr('data-id');
+		    api.openWin({
+		        name: 'goods_info_header',
+		        url: 'goods_info_header.html',
+		        pageParam:{
+		            gid:gid
+		        }
+		    });
+		}
+		else{
+			if($(obj).attr('data-h') == 'true'){
+			    $(obj).parent().siblings('.goods-slide-section').css('height',0);
+			    $(obj).attr('data-h',false);
+			    return false;
+			}else{
+				$('.goods-slide-section').css('height',0);
+				$('.goods-list-content').attr('data-h',false);
+			    $(obj).parent().siblings('.goods-slide-section').css('height',slide_img_h);
+			    $(obj).attr('data-h',true);
+			}
+		}
+
+	}
+//end
+	function fget_buycar()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0' || pan==0)
+		{
+			return;
+		}
+		var user_id=$api.getStorage('user_id');
+		var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+		api.ajax({
+            //url: YAH_ajax_name+'get_buycar_num.php',
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=get_cart_byuser',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+	            values: {
+	            	userId:user_id,
+	            	type:1,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+
+            if (ret) {
+
+                 if(ret['num'] > 0){
+	                 api.execScript({
+		                 name:'root',
+		                 script: 'fset_goshop_num(\"'+ret['num']+'\");'
+	                 });
+	                 api.execScript({
+		                  name: 'goods_info_header',
+	                      frameName: 'goods_info_footer',
+		                  script: 'fset_goshop_num(\"'+ret['num']+'\");'
+	                 });
+                 }
+                 else{
+	                 api.execScript({
+		                 name:'root',
+		                 script: 'fset_goshop_num(0);'
+	                 });
+	                 api.execScript({
+		                  name: 'goods_info_header',
+	                      frameName: 'goods_info_footer',
+		                  script: 'fset_goshop_num(0);'
+	                 });
+                 }
+            }else {
+            	api.execScript({
+	                 name:'root',
+	                 script: 'fset_goshop_num(0);'
+                 });
+                 api.execScript({
+	                  name: 'goods_info_header',
+                      frameName: 'goods_info_footer',
+	                  script: 'fset_goshop_num(0);'
+                 });
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+
+
+	function get_goods_by_cat(cid,type){
+
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+type);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Goods&a=get_goods_by_cat',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	cid:cid,
+                	start:0,
+                	num:100,
+                	type:type,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+//      	/alert(JSON.stringify(ret||err));
+        	if (ret) {
+                 var html = '';
+                 $(ret).each(function(i,val){
+	                 html += '<div class="goods-list-box goods-list-slide">';
+	                 html += '<div class="goods-list-section">';
+	                //  html += '<div class="goods-list-content block-box" data-type="'+type+'" data-id="'+val.goodsId+'" onclick="slide_section(this)">';
+	                 html += '<div class="goods-list-content block-box" data-type="'+type+'" data-id="'+val.goodsId+'" ontouchstart="slide_section1(this)">';
+	                 html += '<div class="goods-img"><img onload="fnLoadImage(this)" data-url="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsThums+'" alt=""  src="../image/default_goods.png"  /></div>';
+	                 html += '<div class="goods-ifo block-flex">';
+	                 html += '<p class="goods-name">'+val.goodsName+'</p>';
+	                 html += '<p class="goods-explain">'+val.goodsSpec+'</p>'
+	                 if(val.keywordlist.length > 0 && val['keywordlist'][0] != ''){
+		                 var abc = 0;
+		                 html += '<div class="goods-spec">';
+		                 $(val.keywordlist).each(function(m,val2){
+		                      if(abc < 3 ){
+			                      if(val2 != ''){
+			                         html += '<span>'+val2+'</span>';
+			                         abc++
+			                      }
+		                      }
+		                 })
+
+		                 html += '</div>';
+	                 }
+	                 html += '<div class="goods-price">';
+	                 if(ret[i].isOneyuan == 1 && ret[i].goodsStock > 0 && ret[i].userone > 0){
+	                      html += '<strong>￥1.00</strong>';
+	                      html += '<span>￥'+ret[i].shopPrice+'</span>';
+	                 }
+	                 else{
+	                      html += '<strong>￥'+ret[i].shopPrice+'</strong>';
+	                      html += '<span></span>';
+	                 }
+
+	                 html += '</div>';
+	                 html += '</div>';
+	                 if(ret[i].isOneyuan == 1 && ret[i].userone > 0){
+	                     html += '<div class="goods-labels">';
+	                     html += '<em><i></i>一元特价<i></i></em>';
+	                     if(ret[i].goodsStock > 10){
+	                         html += '<em>大于10份</em>';
+	                     }
+	                     else if(ret[i].goodsStock > 0){
+	                         html += '<em>仅剩'+ret[i].goodsStock+'份</em>';
+	                     }
+	                     else{
+	                         html += '<em>剩余0份</em>';
+	                     }
+	                     html += '</div>';
+	                 }
+	                 html += '</div>';
+	                 html += '<a href="javascript:void(0)" onclick="addCart('+ret[i].goodsId+',1,this);" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a>';
+	                 html += '</div>';
+	                 html += '<div class="goods-slide-section" style="display: block;">';
+	                 html += '<div class="slide-img-box">';
+	                 html += '<div class="swiper-container swiper-container2">';
+	                 html += '<div class="swiper-wrapper">';
+	                 html += '<div class="swiper-slide"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" alt="" /></div>';
+	                 $(val.imglist).each(function(n,val1){
+	                      html += '<div class="swiper-slide"><img src="'+$api.getStorage("YAH_web")+'/'+val1.goodsImg+'" alt="" /></div>';
+	                 })
+
+	                 html += '</div>';
+	                 html += '<div class="swiper-pagination swiper-pagination2"></div>';
+	                 html += '</div>';
+	                 html += '</div>';
+	                 html += '</div>';
+	                 html += '</div>';
+                 })
+                 if(type == 4){
+                     $('#jingpin').html(html);
+                 }
+                 else if(type == 5){
+                     $('#xinpin').html(html);
+                 }
+
+
+
+
+                  /*var mySwiper2 = new Swiper('.swiper-container2',{
+					pagination : '.swiper-pagination2',
+					loop: true,
+					observer:true,
+					observeParents:true
+				 })
+                 slide_img_h = $(window).width() - parseFloat($('.goods-slide-section .swiper-slide').css('padding-left')) - parseFloat($('.goods-slide-section .swiper-slide').css('padding-right'));
+                  // alert(slide_img_h)
+                  $('.goods-slide-section .swiper-slide').css({
+                  	'height': slide_img_h
+                  })
+                   $('.goods-list-content').attr('data-h',false);*/
+
+
+            }else {
+            	var html='<div style="text-align:center;">暂无商品</div>';
+            	if(type == 4){
+                     $('#jingpin').html(html);
+                 }
+                 else if(type == 5){
+                     $('#xinpin').html(html);
+                 }
+            };
+        });
+	}
+
+	function fnLoadImage(ele_) {
+        var dataUrl = $api.attr(ele_, 'data-url');
+//            alert(fnLoadImage)
+        if (dataUrl) {
+            api.imageCache({
+                url : dataUrl
+            }, function(ret, err) {
+                if (ret) {
+                    ele_.src = ret.url;
+                    $api.attr(ele_, 'data-url', '');
+                } else {
+                }
+            });
+        }
+    }
+
+
+	function fget_address_list()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_address_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 $api.setStorage("address_list",ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+
+	function go_goodslist(type,name){
+	    /*api.openWin({
+	        name: 'goods_list_header',
+	        url: 'goods_list_header.html',
+	        pageParam:{
+	            type:type,
+	            name:name
+	        }
+	    });*/
+	}
+
+	function get_fenlei_list(type){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+type);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=get_limbo_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	type:type,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+            if (ret) {
+                 var html = '<ul>';
+                 $(ret).each(function(i,val){
+	                 html += '<li tapmode="" onclick="fopen_ad(\''+val.adURLApp+'\',\''+val.adName+'\',\''+val.adURL+'\')" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+val.adFile+'" /><a>'+val.adName+'</a></li>';
+	             })
+                 html += '</ul>';
+                 $('#banner').html(html);
+                 $('#banner').show();
+            }else {
+
+            };
+        });
+	}
+
+	function fopen_ad(key,name,url){
+	    if(url != ''){
+	        api.openWin({
+		        name: 'wailian_header',
+		        url: 'wailian_header.html',
+		        pageParam:{
+		        	url:url,
+		        	name:name
+		        }
+	        });
+	    }
+	    else{
+		    var key1 = key.split('|');
+		    id = key1[1];
+		    type = key1[0];
+		    if(type == 'C'){
+			    api.openWin({
+		            name: 'fenlei_shaixuan_header',
+		            url: 'fenlei_shaixuan_header.html',
+		            pageParam:{
+		                catId:id,
+		                catName:name
+		            }
+		        });
+		    }
+		    else if(type == 'A'){
+		        api.openWin({
+			        name: 'wenzhang_header',
+			        url: 'wenzhang_header.html',
+			        pageParam:{
+			        	id:id,
+			        	name:name
+			        }
+		        });
+		    }
+	    }
+
+	}
+
+// bycao end
+var elem = document.getElementById('mySwipe');
+window.mySwipe = Swipe(elem, {
+
+});
+//
+function tiao_url(url,name){
+    alert(2345);
+    api.openWin({
+        name: 'tiao_url_header',
+        url: 'tiao_url_header.html',
+        pageParam:{
+        	url:url,
+        	name:name
+        }
+    });
+}
+//检测更新
+function check_update(){
+    if(api.systemType == 'android'){
+	    var mam = api.require('mam');
+		mam.checkUpdate(function( ret, err ){
+		    //alert(JSON.stringify(ret||err));
+		    if(ret['result']['update']){
+		        api.confirm({
+				    title: '更新提示',
+				    msg: ret['result']['updateTip'],
+				    buttons: ['下载更新', '取消']
+				},function( ret1, err1 ){
+				    if( ret1 ){
+				    	if(ret1.buttonIndex == 1)
+				    	{
+				    		api.download({
+                                url : ret['result']['source'],
+                                report : true
+                            }, function(ret2, err2) {
+                                if (ret2 && 1 == ret2.state) {
+                                    var savePath = ret2.savePath;
+                                    api.installApp({
+                                        appUri : savePath
+                                    });
+                                }
+                            });
+				    	}
+				    }else{
+				         //alert( JSON.stringify( err ) );
+				    }
+				});
+		    }
+		});
+    }
+    else if(api.systemType == 'ios'){
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=check_update_ios',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+
+                }
+            }
+        },function(ret,err){
+            if(ret['version'] != '' && ret['version'] != api.appVersion){
+                api.confirm({
+				    title: '更新提示',
+				    msg: ret['releaseNotes'],
+				    buttons: ['下载更新', '取消']
+				},function( ret1, err1 ){
+				    if( ret1 ){
+				    	if(ret1.buttonIndex == 1)
+				    	{
+				    		window.location.href=ret['trackViewUrl'];
+				    	}
+				    }else{
+				         //alert( JSON.stringify( err ) );
+				    }
+				});
+            }
+        });
+    }
+
+}
+$api.setStorage("YAH_web",YAH_web);
+	apiready = function() {
+		get_goods_by_cat(0,4);
+		get_goods_by_cat(0,5);
+		get_limbo(-1);
+		get_limbo(-4);
+		get_limbo(-5);
+		get_fenlei_list(-6);
+		fget_address_list();
+		shownotify();
+		check_update();
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: '',
+		    bgColor: '#f2f2f2',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+		    api.refreshHeaderLoading();
+		    get_goods_by_cat(0,4);
+		    get_goods_by_cat(0,5);
+		    get_limbo(-1);
+		    get_limbo(-4);
+		    get_limbo(-5);
+		    get_fenlei_list(-6);
+		    fget_address_list();
+		    shownotify();
+		    api.refreshHeaderLoadDone();
+		});
+
+
+	}
+
+</script>
+</html>

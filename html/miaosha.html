@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>天天秒杀</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/miaosha.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div tapmode="" class="h_list"><span><div class="a1">20:00</div><div class="a2">未开始</div></span></div>
+		<div tapmode="" class="h_list"><span><div class="a1">00:00</div><div class="a2">未开始</div></span></div>
+		<div tapmode="" class="h_list"><span><div class="a1">08:00</div><div class="a2">未开始</div></span></div>
+		<div tapmode="" class="h_list"><span><div class="a1">12:00</div><div class="a2">未开始</div></span></div>
+		<div tapmode="" class="h_list"><span><div class="a1">16:00</div><div class="a2">未开始</div></span></div>
+	</div>
+	<div class="djs"><span>限时限量抢购</span><a id="djs_a">距离下场开始：00:00:00</a></div>
+	<div class="goods_list">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<li>
+				<div class="list_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_7.png" /><div class="xiangou"></div><div class="xiangou2">每人限购2件</div></div>
+				<div class="list_right">
+					<div class="title ccyc">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="num_list">
+						<div class="num_left">
+							<div class="money">现价:<span class="s1">￥297</span></div>
+							<div class="money2">原价:<span class="s1">￥698</span></div>
+						</div>
+						<div class="num_right">
+							<span class="go_no" tapmode="go_on" onclick="fopen_xiadan();">马上抢</span>
+						</div>
+					</div>
+					<div class="jindu"><div class="jindutiao"><div class="jindu_di"></div><div class="jindu_ding"></div></div><div class="jindu_title">100%</div></div>
+				</div>
+			</li>
+			<li>
+				<div class="list_left" tapmode="" onclick="fopen_xiadan();"><img src="../image/sp_7.png" /><div class="xiangou"></div><div class="xiangou2">每人限购2件</div></div>
+				<div class="list_right">
+					<div class="title ccyc">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="num_list">
+						<div class="num_left">
+							<div class="money">现价:<span class="s1">￥297</span></div>
+							<div class="money2">原价:<span class="s1">￥698</span></div>
+						</div>
+						<div class="num_right">
+							<span class="go" tapmode="go_on" onclick="fopen_xiadan();">马上抢</span>
+						</div>
+					</div>
+					<div class="jindu"><div class="jindutiao"><div class="jindu_di"></div><div class="jindu_ding"></div></div><div class="jindu_title">100%</div></div>
+				</div>
+			</li>
+		</ul>-->
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var w=api.winWidth;
+		var djs_a=document.getElementById("djs_a");
+		var djs_a_w=$api.offset(djs_a).w;
+		//djs_a.style.left=((w-djs_a_w)/2)+"px";
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		api.hideProgress();//隐藏加载进度框
+		fget_miaosha_time();
+		fmiaosha();
+	};
+	function fopen_xiadan(n,goodsId)
+	{
+		var dq_time=Number($('.goods_list li .go').eq(n).attr('dq_time'));
+		var end_time=Number($('.goods_list li .go').eq(n).attr('time'));
+		if(Number(end_time)-Number(dq_time)<=0 || Number(end_time)-Number(dq_time)==NaN) {return;}
+		var login=$api.getStorage('login');
+		
+		if(login==0 || login=='0' || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'miaosha_xiadan_header',
+	        url: 'miaosha_xiadan_header.html',
+	        pageParam:{
+	        	miaosha:1,
+	        	dq_time:dq_time,
+	        	end_time:end_time,
+	        	goods_id:goodsId,
+	        	num:1
+	        }
+        });
+	}
+function fopengoods(n,goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	var num=$('.num').eq(n).val();
+	api.openWin({
+		name: 'goods_info_header',
+	    url: 'goods_info_header.html',
+		pageParam:{
+			miaosha:1,
+			num:1,
+			goodsId:goods_id
+		}
+	});
+}
+var jishi;
+var dq_time=0;
+var js_time=0;
+var sy_time=0;
+var dq_pan=0;
+function ftime()
+{
+	sy_time--;
+	if(sy_time<0)
+	{
+		document.getElementsByClassName("goods_list")[0].innerHTML='<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>';
+		if(dq_pan==1)
+		{
+			$('.h_list').eq(1).addClass('h_list_end');
+			$('.a2').eq(1).html('已结束');
+		}
+		if(dq_pan==2)
+		{
+			$('.h_list').eq(2).addClass('h_list_end');
+			$('.a2').eq(2).html('已结束');
+		}
+		if(dq_pan==3)
+		{
+			$('.h_list').eq(3).addClass('h_list_end');
+			$('.a2').eq(3).html('已结束');
+		}
+		if(dq_pan==4)
+		{
+			$('.h_list').eq(4).addClass('h_list_end');
+			$('.a2').eq(4).html('已结束');
+		}
+		if(dq_pan==5)
+		{
+			$('.h_list').eq(0).addClass('h_list_end');
+			$('.a2').eq(0).html('已结束');
+		}
+		fmiaosha();
+		return;
+	} 
+	if(sy_time<10) fget_miaosha_time();
+	var h=parseInt(Number(sy_time/3600));
+	var i=parseInt(Number((sy_time%3600)/60));
+	var s=parseInt(Number(sy_time%60));
+	document.getElementById("djs_a").innerHTML="距离下场开始："+(h<10?'0'+h:h)+':'+(i<10?'0'+i:i)+':'+(s<10?'0'+s:s);
+}
+function fjia(n)
+{
+	var max=$('.max_num').eq(n).val();
+	var max_stock=$('.max_stock').eq(n).val();
+	var val=$('.num').eq(n).val();
+	var hval=Number(val)+1;
+	if(hval>Number(max))
+	{
+		api.toast({
+			msg: '每人限购'+max+'件！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	} 
+	else if(hval>Number(max_stock))
+	{
+		api.toast({
+			msg: '库存不足！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	else $('.num').eq(n).val(hval);
+}
+function fjian(n)
+{
+	var max=$('.max_num').eq(n).val();
+	var max_stock=$('.max_stock').eq(n).val();
+	var val=$('.num').eq(n).val();
+	var hval=Number(val)-1;
+	if(hval<0) return;
+	else $('.num').eq(n).val(hval);
+}
+function fget_miaosha_time()
+{
+		api.ajax({
+            url: YAH_ajax_name+'get_miaosha_time.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan==-1)
+                 {
+                 	api.toast({
+						msg: '活动未开启！',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 if(ret[0].pan==1)
+                 {
+                 	dq_pan=1;
+                 	$('.h_list').eq(1).addClass('h_list_on');
+					$('.a2').eq(1).html('抢购中');
+					$('.h_list').eq(0).removeClass('h_list_on');
+					$('.h_list').eq(0).addClass('h_list_end');
+					$('.a2').eq(0).html('已结束');
+					$('.h_list').eq(2).removeClass('h_list_on');
+					$('.h_list').eq(2).removeClass('h_list_end');
+					$('.a2').eq(2).html('未开始');
+					$('.h_list').eq(3).removeClass('h_list_on');
+					$('.h_list').eq(3).removeClass('h_list_end');
+					$('.a2').eq(3).html('未开始');
+					$('.h_list').eq(4).removeClass('h_list_on');
+					$('.h_list').eq(4).removeClass('h_list_end');
+					$('.a2').eq(4).html('未开始');
+                 }
+                 if(ret[0].pan==2)
+                 {
+                 	dq_pan=2;
+                 	$('.h_list').eq(2).addClass('h_list_on');
+					$('.a2').eq(2).html('抢购中');
+					$('.h_list').eq(1).removeClass('h_list_on');
+					$('.h_list').eq(1).addClass('h_list_end');
+					$('.a2').eq(1).html('已结束');
+					$('.h_list').eq(3).removeClass('h_list_on');
+					$('.h_list').eq(3).removeClass('h_list_end');
+					$('.a2').eq(3).html('未开始');
+					$('.h_list').eq(4).removeClass('h_list_on');
+					$('.h_list').eq(4).removeClass('h_list_end');
+					$('.a2').eq(4).html('未开始');
+					$('.h_list').eq(0).removeClass('h_list_on');
+					$('.h_list').eq(0).removeClass('h_list_end');
+					$('.a2').eq(0).html('未开始');
+                 }
+                 if(ret[0].pan==3)
+                 {
+                 	dq_pan=3;
+                 	$('.h_list').eq(3).addClass('h_list_on');
+					$('.a2').eq(3).html('抢购中');
+					$('.h_list').eq(2).removeClass('h_list_on');
+					$('.h_list').eq(2).addClass('h_list_end');
+					$('.a2').eq(2).html('已结束');
+					$('.h_list').eq(1).removeClass('h_list_on');
+					$('.h_list').eq(1).addClass('h_list_end');
+					$('.a2').eq(1).html('已结束');
+					$('.h_list').eq(4).removeClass('h_list_on');
+					$('.h_list').eq(4).removeClass('h_list_end');
+					$('.a2').eq(4).html('未开始');
+					$('.h_list').eq(0).removeClass('h_list_on');
+					$('.h_list').eq(0).removeClass('h_list_end');
+					$('.a2').eq(0).html('未开始');
+                 }
+                 if(ret[0].pan==4)
+                 {
+                 	dq_pan=4;
+                 	$('.h_list').eq(4).addClass('h_list_on');
+					$('.a2').eq(4).html('抢购中');
+					$('.h_list').eq(2).removeClass('h_list_on');
+					$('.h_list').eq(2).addClass('h_list_end');
+					$('.a2').eq(2).html('已结束');
+					$('.h_list').eq(1).removeClass('h_list_on');
+					$('.h_list').eq(1).addClass('h_list_end');
+					$('.a2').eq(1).html('已结束');
+					$('.h_list').eq(3).removeClass('h_list_on');
+					$('.h_list').eq(3).addClass('h_list_end');
+					$('.a2').eq(3).html('已结束');
+					$('.h_list').eq(0).removeClass('h_list_on');
+					$('.h_list').eq(0).removeClass('h_list_end');
+					$('.a2').eq(0).html('未开始');
+                 }
+                 if(ret[0].pan==5)
+                 {
+                 	dq_pan=5;
+                 	$('.h_list').eq(0).addClass('h_list_on');
+					$('.a2').eq(0).html('抢购中');
+					$('.h_list').eq(1).removeClass('h_list_on');
+					$('.h_list').eq(1).removeClass('h_list_end');
+					$('.a2').eq(1).html('未开始');
+					$('.h_list').eq(2).removeClass('h_list_on');
+					$('.h_list').eq(2).removeClass('h_list_end');
+					$('.a2').eq(2).html('未开始');
+					$('.h_list').eq(3).removeClass('h_list_on');
+					$('.h_list').eq(3).removeClass('h_list_end');
+					$('.a2').eq(3).html('未开始');
+					$('.h_list').eq(4).removeClass('h_list_on');
+					$('.h_list').eq(4).removeClass('h_list_end');
+					$('.a2').eq(4).html('未开始');
+                 }
+                 dq_time=ret[0].time;
+                 js_time=ret[0].end_time;
+                 clearInterval(jishi);
+                 jishi=window.setInterval("ftime();",1000);
+                 sy_time=Number(js_time)-Number(dq_time);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fmiaosha()
+{
+	//api.showProgress({title:'加载中...'});
+		var user_id='0';
+		var login=$api.getStorage('login');
+		if(login==1 || login=='1')
+		{
+			user_id=$api.getStorage('user_id');
+		}
+		api.ajax({
+            url: YAH_ajax_name+'get_miaosha_list2.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(ret.length);
+                var html='<ul>';
+                for(var i=0;i<ret.length;i++)
+                {
+                	html+='<li>';
+					if(Number(ret[i].goods_yimai)>=Number(ret[i].seckillStock)) html+='	<div class="list_left"><img src="'+YAH_web+'/'+ret[i].goodsImg+'" /></div>';
+					else html+='	<div class="list_left" tapmode="" onclick="fopengoods(\''+i+'\',\''+ret[i].goodsId+'\');"><img src="'+YAH_web+'/'+ret[i].goodsImg+'" /></div>';
+					html+='	<div class="list_right">';
+					var per=((ret[i].goods_yimai / (ret[i].seckillStock))*100).toFixed(2);
+					if(Number(ret[i].goods_yimai)>=Number(ret[i].seckillStock)) html+='		<div class="title">'+ret[i].goodsName+'</div>';
+					else html+='		<div class="title" onclick="fopengoods(\''+i+'\',\''+ret[i].goodsId+'\');">'+ret[i].goodsName+'</div>';
+					html+='<div class="num_list">';
+					html+='	<div class="num_left">';
+					html+='		<div class="money">现价:<span class="s1">￥'+ret[i].seckillPrice+'</span></div>';
+					html+='		<div class="money2">原价:<span class="s1">￥'+ret[i].marketPrice+'</span></div>';
+					html+='	</div>';
+					html+='	<div class="num_right">';
+					if(Number(ret[i].goods_yimai)>=Number(ret[i].seckillStock)) html+='				<span class="go go_hui" time="'+ret[i].seckillEndTime+'" dq_time="'+ret[i].time+'">马上抢</span>';
+					else html+='				<span tapmode="go_on time" class="go" time="'+ret[i].seckillEndTime+'" dq_time="'+ret[i].time+'" onclick="fopen_xiadan(\''+i+'\',\''+ret[i].goodsId+'\');">马上抢</span>';
+					html+='	</div>';
+					html+='</div>';
+					html+='<div class="jindu"><div class="jindutiao"><div class="jindu_di"></div><div class="jindu_ding" style="width:'+per+'%"></div></div><div class="jindu_title">'+per+'%</div></div>';
+					html+='	</div>';
+					html+='</li>';
+                }
+                html+='</ul>';
+                document.getElementsByClassName("goods_list")[0].innerHTML=html;
+                api.parseTapmode();
+            }else {
+            	var html='<div style="line-height: 50px;text-align: center;">暂无商品</div>';
+            	document.getElementsByClassName("goods_list")[0].innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+        });
+}
+</script>
+</html>

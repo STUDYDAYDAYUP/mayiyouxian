@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/tuikuan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header" tapmode="" onclick="fopen_xuan();">
+		<div class="s1"><span style="color:red;">*</span>退款原因</div><div class="s2" id="tkyy">多拍/错拍/不想要</div><div class="s3"></div>
+	</div>
+	<div class="max_list">
+		<div class="list"><span style="color:red;">*</span>退款金额<span class="s1">不可修改</span></div>
+		<div class="list"><span class="s2" id="tkje">￥0.00</span><span class="s3" id="yunfei">含运费￥0.00</span></div>
+	</div>
+	<div class="max_list">
+		<div class="list">退款说明<span class="s1">可不填</span></div>
+		<div class="list"><input type="text" placeholder="请输入退款说明" maxlength="100" id="shuoming" /></div>
+	</div>
+	<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+	<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+	<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+	<div class="go_tu" tapmode="a" onclick="fxuan_tu();" style="display:none;">
+		<div class="s1"></div>
+		<div class="s4"></div>
+		<div class="s2">上传凭证</div>
+		<div class="s3">最多3张</div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_order();
+	};
+	var xuan_pan=0;
+	var order_pan=-1;
+	var img_num=0;
+	var src1='',src2='',src3='';
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fopen_xuan()
+	{
+		if(Number(xuan_pan)==0)
+		{
+			xuan_pan=1;
+			api.openFrame({
+	            name: 'tuikuan_tanc',
+	            url: 'tuikuan_tanc.html',
+	            pageParam:{
+            		header_h:api.pageParam.header_h+50,
+            		rect_h:api.pageParam.rect_h-50
+            	},
+	            rect:{
+	            	x:0,
+	            	y:api.pageParam.header_h+50,
+	            	w:'auto',
+	            	h:api.pageParam.rect_h-50
+	            }
+            });
+            fopen_content();
+		}
+		else
+		{
+			xuan_pan=0;
+			api.execScript({
+	           	frameName:'tuikuan_tanc',
+	            script: 'fclose();'
+            });
+		}
+	}
+	function fopen_content()
+	{
+		var tanc_h=50*10;
+		if(tanc_h>api.pageParam.rect_h-50) tac_h=api.pageParam.rect_h-50;
+		api.openFrame({
+	        name: 'tuikuan_xuan',
+	        url: 'tuikuan_xuan.html',
+	        rect: {
+		        x:0,
+		        y:api.pageParam.header_h+50,
+		        w:'auto',
+		        h:tanc_h
+	        },
+	        animation:{
+			    type:"movein",                //动画类型（详见动画类型常量）
+			    subType:"from_top",       //动画子类型（详见动画子类型常量）
+			    duration:300                //动画过渡时间，默认300毫秒
+			}
+        });
+	}
+	function fset_xuan_pan(n)
+	{
+		xuan_pan=n;
+	}
+	function fset_xuan(n)
+	{
+		document.getElementById("tkyy").innerHTML=n;
+	}
+	function fget_order()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_order.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	orderId:api.pageParam.orderId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 order_pan=1;
+                 document.getElementById("tkje").innerHTML="￥"+ret[0].needPay;
+                 document.getElementById("yunfei").innerHTML="含运费￥"+ret[0].deliverMoney;
+                 if(ret[0].orderStatus==1 || ret[0].orderStatus==2 || ret[0].orderStatus==3)
+                 {
+                 	document.getElementsByClassName("go_tu")[0].style.display="flex";
+                 }
+            }else {
+            	order_pan=-1;
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fxuan_tu()
+	{
+		api.openFrame({
+	        name: 'goodspingjia_tanc',
+	        url: 'goodspingjia_tanc.html',
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fshangchuan(src)
+	{
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		$('.xuan_tu').eq(img_num).css('display','block');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_goodspingjia.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		    	
+		         if(ret[0]['pan']==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0]['pan']==1)
+		         {
+//		         	api.toast({
+//						msg: '上传成功',
+//						duration: 2000,
+//						location: 'bottom'
+//				    });
+				    $('.xuan_tu').eq(img_num).html('<img src="'+$api.getStorage("YAH_web")+'/'+ret[0]['msg']+'" width="100%"/>');
+				    img_num++;
+				    if(img_num==1) src1=ret[0]['msg'];
+				    if(img_num==2) src2=ret[0]['msg'];
+				    if(img_num==3) src3=ret[0]['msg'];
+				    if(img_num>=3) $('.go_tu').css('display','none');
+		         }
+		    } else {
+		    	$('.xuan_tu').eq(img_num).css('display','none');
+		        fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fgo()
+	{
+		var user_id=$api.getStorage('user_id');
+		var shuoming=document.getElementById("shuoming").value;
+		var yy=document.getElementById("tkyy").innerHTML;
+		api.showProgress({title:'提交中...'});
+		api.ajax({
+            url: YAH_ajax_name+'tuikuan.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	orderId:api.pageParam.orderId,
+                	yy:yy,
+                	shuoming:shuoming,
+                	src1:src1,
+                	src2:src2,
+                	src3:src3
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan==1)
+                 {
+                 	api.toast({
+						msg: '提交成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.openWin({
+				        name: 'tuikuan_xx_header',
+				        url: 'tuikuan_xx_header.html',
+				        pageParam:{
+				        	orderId:api.pageParam.orderId
+				        }
+			        });
+			        api.execScript({
+	                   	name:'dingdan_xx_header',
+	                    script: 'fclose();'
+                    });
+                    api.execScript({
+	                   	name:'root',
+	                   	frameName:'my',
+	                    script: 'fget_dingdan_number();'
+                    });
+					window.setTimeout('fclose();',1000);
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: '提交失败，请稍后再试',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		float:left;
+    		margin:0;
+    		padding:0 0 20px 0;
+    		width:100%;
+    		height:100%;
+    		background-color: transparent;
+    	}
+        .a{
+            background-color:#eee !important;
+        }
+    	input,button,select,textarea{outline:none;-webkit-appearance:none;}
+        .ssk{
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            z-index: 99999;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            background-color:#000;
+            filter:alpha(opacity=60);  
+              -moz-opacity:0.6;  
+              -khtml-opacity: 0.6;  
+              opacity: 0.6; 
+             line-height: 50px;
+        }
+        .di{
+       		background-color:#ff1b1c;
+       		width:100%;
+       		height:50px;
+       		position: absolute;
+       		z-index: -2;
+       		filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; 
+        }
+        .ssk .left{
+    		background-image:url('../image/gouwuche.png');
+            background-size:20px 20px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+            padding-left:40px;
+            color:#fff;
+            position: relative;
+        }
+        .goods_num{
+        	position: absolute;
+    		left:25px;
+    		top:8px;
+    		background-color:#60b034;
+    		border-radius: 50%;
+    		line-height:15px;
+    		font-size:12px;
+    		height: 15px;
+    		width:15px;
+    		text-align: center;
+    		z-index: 1;
+            display: none;
+        }
+        .ssk .con{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            /*background-color:#000;
+            height: 30px;
+            margin:10px 0;
+            border-radius: 15px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+            filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4;  */
+        }
+        .ssk .right{
+            margin-right:10px;
+            color:#fff;
+            font-size: 14px;
+        }
+        .go{
+        	color:#666;
+        	background-color:#ffd014;
+        	text-align: center;
+        	width:100px;
+        	display:none;
+        }
+        .go_on{
+        	background-color:#c6a10c !important;
+        }
+        .footer{
+        	width: 100%;
+            height: 50px;
+            position: absolute;
+            z-index: 99999;
+            background-color:#000;
+            filter:alpha(opacity=60);  
+              -moz-opacity:0.6;  
+              -khtml-opacity: 0.6;  
+              opacity: 0.6; 
+             line-height: 50px;
+             color:#fff;
+             text-align: center;
+             display: none;
+        }
+    </style>
+</head>
+<body>
+	<div class="ssk" tapmode="" onclick="fopen_goshop();">
+		<!--<div class="di"></div>-->
+		<div class="left"><div class="goods_num" id="goods_num">0</div><div id="goods_money">￥0</div></div>
+		<div class="con">
+			
+		</div>
+		<div class="right" id="tishi">
+			
+		</div>
+		<div class="go" id="go" tapmode="go_on" onclick="event.cancelBubble = true;fgo();">去结算</div>
+	</div>
+	<div class="footer">商家休息中</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_buycar();
+		api.parseTapmode();
+	};
+	var goshop_pan=0;
+	var goshop_num=0;
+	var ps_money=0;
+	var ps_time=20;
+	var end_time=20.00;
+	function fset_goshop_pan(n)
+	{
+		goshop_pan=n;
+	}
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fset_xiuxi()
+	{
+		$('.footer').css('display','block');
+		$('.ssk').css('display','none');
+	}
+	function fopen_sousuo()
+	{
+		api.openWin({
+	        name: 'ssy_header',
+	        url: 'ssy_header.html',
+	        pageParam:{
+	        	type:'dianpu'
+	        }
+        });
+	}
+	function fopen_goshop()
+	{
+		if(Number(goshop_pan)==0)
+		{
+			var pan=$api.getStorage('login');
+			if(pan=='0')
+			{
+				api.toast({
+					msg: '请先登录！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			goshop_pan=1;
+			api.openFrame({
+		        name: 'dianpu_goshop_tanc',
+		        url: 'dianpu_goshop_tanc.html',
+		        rect: {
+			        x:0,
+			        y:0,
+			        w:'auto',
+			        h:api.winHeight-50
+		        }
+	        });
+			var header_h=70;
+			var footer_h=50;
+			if(api.systemType=='ios'){
+	       		header_h=90;
+	    	}
+	    	else
+	    	{
+	    		var sVer = api.systemVersion;
+	    		var banben=parseFloat(sVer);
+	    		if(banben>=4.4)
+	    		{
+	    			header_h=95;
+	    		}
+	    	}
+	    	var sh=31+51*goshop_num;
+	    	var max_h=api.winHeight-header_h-footer_h;
+	    	if(sh>max_h) sh=max_h;
+			api.openFrame({
+		        name: 'dianpu_goshop',
+		        url: 'dianpu_goshop.html',
+		        rect: {
+			        x:0,
+			        y:api.winHeight-sh-50,
+			        w:'auto',
+			        h:sh
+		        },
+		        pageParam:{
+		        	shopId:api.pageParam.shopId
+		        },
+		        animation:{
+				    type:"movein",                //动画类型（详见动画类型常量）
+				    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+				    duration:300                //动画过渡时间，默认300毫秒
+				}
+	        });
+		}
+		else
+		{
+			goshop_pan=0;
+			api.execScript({
+	           	frameName:'dianpu_goshop_tanc',
+	            script: 'fclose();'
+            });
+		}
+	}
+	function fset_ps_money(n)
+	{
+		ps_money=n;
+		$('#go').css('display','none');
+		fget_buycar();
+	}
+	function fset_ps_time(psTime,endTime)
+	{
+		ps_time=psTime;
+		end_time=endTime;
+	}
+	function fget_buycar()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			return;
+		}
+		var ret=$api.getStorage('buycar');
+		var sum=0,money=0;
+		if(ret!=undefined)
+		{
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_shopId==api.pageParam.shopId)
+				{
+					sum++;
+					money+=Number(ret[i].shuxing_money)*Number(ret[i].goods_num);
+				}
+			}
+			money=money.toFixed(2);
+			goshop_num=sum;
+		    if(sum<=0)
+		    {
+		    	$('#goods_num').css('display','none');
+		    	$('#go').css('display','none');
+		    }
+		    else
+		    {
+		         $('#goods_num').html(sum);
+		         $('#goods_num').css('display','block');
+		    } 
+		    $('#goods_money').html('￥'+money);
+//		    alert(money+"<"+ps_money);
+//		    alert('还差'+(ps_money-money)+'元起送');
+			var lin_ps_money=Number(ps_money)-Number(money);
+			lin_ps_money=lin_ps_money.toFixed(2);
+		    if(Number(money)<Number(ps_money))
+		    {
+		         $('#tishi').html('还差'+lin_ps_money+'元起送');
+		         $('#tishi').css('display','block');
+		         $('#go').css('display','none');
+		    }
+		    else
+		    {
+		         $('#tishi').css('display','none');
+		         $('#go').css('display','block');
+		    }
+		    if(sum<=0)
+		    {
+		    	$('#tishi').html('还差'+lin_ps_money+'元起送');
+		         $('#tishi').css('display','block');
+		         $('#go').css('display','none');
+		    	api.execScript({
+	                frameName:'dianpu_right',
+	                script: 'fget_buycar_csh();'
+                });
+		    	api.execScript({
+	                   	frameName:'dianpu_goshop_tanc',
+	                    script: 'fclose();'
+                    });
+		    }
+		}
+		else
+		{
+			$('#goods_num').css('display','none');
+	        $('#goods_money').html('￥0');
+	        $('#tishi').html('还差'+ps_money+'元起送');
+		    $('#tishi').css('display','block');
+		    $('#go').css('display','none');
+		    api.execScript({
+	                   	frameName:'dianpu_goshop_tanc',
+	                    script: 'fclose();'
+                    });
+		}
+		return;
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'get_buycar.php',
+	            url: YAH_ajax_name+'get_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {user_id:user_id}
+	            }
+	        },function(ret,err){
+		        	api.hideProgress();//隐藏加载进度框
+		        	$api.setStorage('buycart',ret);
+		            if (ret) {
+		            var i,sum=0,money_sum=0;
+		            for(var i=0;i<ret.length;i++)
+		            {
+		            	if(ret[i].shopId==api.pageParam.shopId)
+		            	{
+		            		sum++;
+		            		//lin=(Number(ret[i].shopPrice)+Number(ret[i].shuxing_money))*Number(ret[i].goods_num);
+		            		//alert(money_sum+"+=("+ret[i].shopPrice+"+"+ret[i].shuxing_money+")*"+ret[i].goods_num+"="+lin.toFixed(2));
+		            		if(ret[i].isGroup==1 || ret[i].isGroup=='1') money_sum+=tran(Number(ret[i].shopPrice),Number(ret[i].goods_num));
+							else if(ret[i].isSeckill==1 || ret[i].isSeckill=='1') money_sum+=tran(Number(ret[i].shopPrice),Number(ret[i].goods_num));
+							else money_sum+=tran((Number(ret[i].shopPrice)+Number(ret[i].shuxing_money)),Number(ret[i].goods_num));
+		            	}
+		            }
+		            goshop_num=sum;
+		            if(sum<=0) $('#goods_num').css('display','none');
+		            else
+		            {
+		            	$('#goods_num').html(sum);
+		            	$('#goods_num').css('display','block');
+		            } 
+		            $('#goods_money').html('￥'+money_sum);
+		            if(money_sum<ps_money)
+		            {
+		            	$('#tishi').html('还差'+(ps_money-money_sum)+'元起送');
+		            	$('#tishi').css('display','block');
+		            	$('#go').css('display','none');
+		            }
+		            else
+		            {
+		            	$('#tishi').css('display','none');
+		            	$('#go').css('display','block');
+		            }
+		            api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	$('#goods_num').css('display','none');
+	            	$('#goods_money').html('￥0');
+	            	$('#tishi').html('还差'+ps_money+'元起送');
+		            $('#tishi').css('display','block');
+		            $('#go').css('display','none');
+	//          	api.toast({
+	//					msg: '购物车没有商品！',
+	//					duration: 2000,
+	//					location: 'bottom'
+	//				});
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        });
+	}
+	function fgo()
+	{
+		if(goshop_num<=0)
+		{
+			api.toast({
+				msg: '购物车还没有商品！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		} 
+		api.openWin({
+	        name: 'miaosha_xiadan_header',
+	        url: 'miaosha_xiadan_header.html',
+	        pageParam:{
+	        	shopId:api.pageParam.shopId,
+	        	ps_time:ps_time,
+	        	end_time:end_time
+	        }
+        });
+	}
+</script>
+</html>

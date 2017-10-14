@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    background-color: transparent;  
+		}
+		body{
+			background-color: black;
+		    float:left;
+		    width: 100%;
+		    height:100%;
+		    background-color: transparent;  
+		}
+		#main{
+			float:left;
+			width: 100%;
+		    font-size: 14px;
+		    height:100%;
+		    color:#fff;
+		    background-color: black;
+		    filter:alpha(opacity=40);  
+		      -moz-opacity:0.4;  
+		      -khtml-opacity: 0.4;  
+		      opacity: 0.4;  
+		}
+    </style>
+</head>
+<body>
+<div id="main" tapmode="a" onclick="fclose()">
+	
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fopen_content();
+	};
+	function fopen_content()
+	{
+		api.openFrame({
+	        name: 'youhuiquan_dailingqu_chenggong',
+	        url: 'youhuiquan_dailingqu_chenggong.html',
+	        rect: {
+		        x:(api.winWidth-120)/2,
+		        y:(api.winHeight-120)/2-50,
+		        w:120,
+		        h:120
+	        },
+	        pageParam:{
+	        	phone:api.pageParam.phone
+	        },
+	        animation:{
+			    type:"fade",                //动画类型（详见动画类型常量）
+			    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+			    duration:300                //动画过渡时间，默认300毫秒
+			}
+        });
+        window.setTimeout('fclose();',2000);
+	}
+function fclose()
+{
+	api.closeFrame({
+	    name: 'youhuiquan_dailingqu_chenggong'
+    });
+	api.closeFrame({
+	    name: 'youhuiquan_dailingqu_tanc'
+    });
+}
+</script>
+</html>

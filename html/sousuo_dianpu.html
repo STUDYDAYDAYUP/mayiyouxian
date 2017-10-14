@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_dianpu.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="goods_list">
+			<div class="content" id="content">
+				<!--<ul>
+					<li tapmode="" onclick="fopen_goods(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l">月售100份    23评价</span></div>
+								<div class="s2">
+									<span class="red">￥10元</span>
+									<span class="s_r">
+										<div class="jian" tapmode="" onclick="event.cancelBubble = true;fjian(0);"></div>
+										<div class="num">0</div>
+										<div class="jia" tapmode="" onclick="event.cancelBubble = true;fjia(0);"></div>
+										<div class="xgg" tapmode="xgg_on">选规格</div>
+									</span>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li tapmode="" onclick="fopen_goods(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l">月售100份    23评价</span></div>
+								<div class="s2"><span class="red">￥10元</span><span class="s_r"><div class="jian" tapmode="" onclick="event.cancelBubble = true;fjian(1);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="event.cancelBubble = true;fjia(1);"></div></span></div>
+							</div>
+						</div>
+					</li>
+					<li tapmode="" onclick="fopen_goods(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l">月售100份    23评价</span></div>
+								<div class="s2"><span class="red">￥10元</span><span class="s_r"><div class="jian" tapmode="" onclick="event.cancelBubble = true;fjian(2);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="event.cancelBubble = true;fjia(2);"></div></span></div>
+							</div>
+						</div>
+					</li>
+					<li tapmode="" onclick="fopen_goods(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l">月售100份    23评价</span></div>
+								<div class="s2"><span class="red">￥10元</span><span class="s_r"><div class="jian" tapmode="" onclick="event.cancelBubble = true;fjian(3);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="event.cancelBubble = true;fjia(3);"></div></span></div>
+							</div>
+						</div>
+					</li>
+					<li tapmode="" onclick="fopen_goods(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l">月售100份    23评价</span></div>
+								<div class="s2"><span class="red">￥10元</span><span class="s_r"><div class="jian" tapmode="" onclick="event.cancelBubble = true;fjian(4);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="event.cancelBubble = true;fjia(4);"></div></span></div>
+							</div>
+						</div>
+					</li>
+					<li tapmode="" onclick="fopen_goods(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l">月售100份    23评价</span></div>
+								<div class="s2"><span class="red">￥10元</span><span class="s_r"><div class="jian" tapmode="" onclick="event.cancelBubble = true;fjian(5);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="event.cancelBubble = true;fjia(5);"></div></span></div>
+							</div>
+						</div>
+					</li>
+				</ul>-->
+			</div>
+		</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/jquery.fly.min.js"></script>
+<script type="text/javascript" src="../script/jQueryRotate.js"></script>
+<script type="text/javascript" src="../script/requestAnimationFrame.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fset_fenlei();
+	};
+	function fshuaxin()
+	{
+		fset_fenlei();
+	}
+	function fset_fenlei()
+	{
+		html='<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>';
+        document.getElementById("content").innerHTML=html;
+		api.ajax({
+            url: YAH_ajax_name+'get_sousuo_dianpu_goods.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	text:api.pageParam.text,
+                	shop_id:api.pageParam.shopId
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++)
+                 {
+//               	html+='<li tapmode="a" onclick="fopengoods('+ret[i].goodsId+');">';
+//					html+=	'<img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" />';
+//					html+=	'<div class="title">'+ret[i].goodsName+'</div>';
+//					html+=	'<div class="money">￥'+ret[i].shopPrice+'</div>';
+//					html+='</li>';
+					
+					html+='<li id="'+ret[i].goodsId+'" i="'+i+'">';
+					html+='	<div class="nei">';
+					html+='		<div class="left"><img tapmode="" onclick="fopen_goods('+ret[i].goodsId+');" src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /></div>';
+					html+='		<div class="right">';
+					html+='			<div class="title ccyc" tapmode="" onclick="fopen_goods('+ret[i].goodsId+');">'+ret[i].goodsName+'</div>';
+					html+='			<div class="s1"><span class="s_l">月售'+ret[i].yue_xiaoliang+'份    0评价</span></div>';
+					html+='			<div class="s2">';
+					html+='				<span class="red">￥'+ret[i].shopPrice+'元</span>';
+					html+='				<span class="s_r">';
+					//alert(ret[i].goodsName+"="+ret[i].is_shuxing);
+					var is_chu='',is_xuan='';
+					if(ret[i].is_shuxing==0) {is_jia='';is_xuan='none';}
+					else {is_jia='none';is_xuan='';}
+						html+='					<div class="jian '+is_jia+'" tapmode="" onclick="event.cancelBubble = true;fjian(\''+i+'\',\''+ret[i].goodsId+'\');"></div>';
+						html+='					<div class="num '+is_jia+'">0</div>';
+						html+='					<div class="jia '+is_jia+'" tapmode="" onclick="event.cancelBubble = true;fjia(\''+i+'\',\''+ret[i].goodsId+'\');"></div>';
+
+						html+='					<div class="xgg '+is_xuan+'" tapmode="xgg_on" onclick="fopen_goods('+ret[i].goodsId+');">选规格</div>';
+					html+='<input type="hidden" class="max_num" value="'+ret[i].goodsStock+'" />';
+					html+='<input type="hidden" class="money" value="'+ret[i].shopPrice+'" />';
+					html+='<input type="hidden" class="goodsName" value="'+ret[i].goodsName+'" />';
+					html+='<input type="hidden" class="img" value="'+ret[i].goodsImg+'" />';
+					html+='				</span>';
+					html+='			</div>';
+					html+='		</div>';
+					html+='	</div>';
+					html+='</li>';
+                 }
+                 html+='</ul>';
+				 document.getElementById("content").innerHTML=html;
+				 fget_buycar_csh();
+                 api.parseTapmode();
+            }else {
+            	var html='';
+				html+='<div style="text-align: center;line-height: 50px;">暂无商品</div>';
+            	document.getElementById("content").innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.hideProgress();//隐藏加载进度框
+        });
+	}
+	function fopen_goods(goodsId)
+	{
+		api.openWin({
+	        name: 'goods_info_header',
+	        url: 'goods_info_header.html',
+	        pageParam:{
+	        	goodsId:goodsId,
+	        	shopId:api.pageParam.shopId
+	        }
+        });
+	}
+	function fjia(n,goods_id)
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var obj=$('.jia').eq(n);
+		var left=$('.jia').eq(n).offset().left;
+		var top=$('.jia').eq(n).offset().top;
+		var num=Number($('.num').eq(n).html());
+		var max_num=Number($('.max_num').val());
+		var attr_id=$('#'+goods_id).attr('attr_id');
+		if(num==0)
+		{
+			$(".num").eq(n).css('display','block');
+			$(".jian").eq(n).css('display','block');
+			$(".num").eq(n).rotate({
+	            angle: 180,
+	            animateTo: 0,
+	            duration:200,
+	            callback: function () {
+	               
+	            }
+	        })
+	        $(".jian").eq(n).rotate({
+	            angle: 180,
+	            animateTo: 0,
+	            duration:200,
+	            callback: function () {
+	               
+	            }
+	        })
+	        $(".num").eq(n).attr('left_pan',1);
+			$(".num").eq(n).animate({left:'-=22px'},200);
+			$(".jian").eq(n).animate({left:'-=44px'},200);
+			fadd_buycar(n,goods_id);
+		}
+		else
+		{
+			if(num+1<=max_num) fset_buycar(goods_id,'goods_num',(num+1),attr_id);
+		}
+		if(num+1>max_num) $('.num').eq(n).html(max_num);
+		else $('.num').eq(n).html(num+1);
+		api.execScript({
+	       	name:'dianpu',
+	       	frameName:'dianpu_right',
+	        script: 'fshuaxin();'
+        });
+        api.execScript({
+            	name:'dianpu',
+	           	frameName:'dianpu_footer',
+	            script: 'fget_buycar();'
+            });
+//		var flyer = $('<img class="u-flyer" src="../image/jia_lan.png" width="25px">');
+//		flyer.fly({
+//			start: {
+//				left: left,
+//				top: top
+//			},
+//			end: {
+//				left: 40,
+//				top: api.winHeight-50,
+//				width: 22,
+//				height: 22
+//			},
+//			onEnd: function(){
+//				this.destory();
+//			}
+//		});
+	}
+	function fjian(n,goods_id)
+	{
+		var num=Number($('.num').eq(n).html());
+		var attr_id=$('#'+goods_id).attr('attr_id');
+		if(num==0) return;
+		if(num==1)
+		{
+			 $(".num").eq(n).rotate({
+	            angle: 0,
+	            animateTo: 180,
+	            duration:200,
+	            callback: function () {
+	                
+	            }
+	        })
+	        $(".jian").eq(n).rotate({
+	            angle: 0,
+	            animateTo: 180,
+	            duration:200,
+	            callback: function () {
+	                
+	            }
+	        })
+	        var pan=$(".num").eq(n).attr('left_pan');
+	        if(pan!=0)
+	        {
+	        	$(".num").eq(n).attr('left_pan',0);
+		        $(".num").eq(n).animate({left:'+=22px'},200);
+				$(".jian").eq(n).animate({left:'+=44px'},200);
+	        }
+			setTimeout('fyin('+n+')',200);
+			fdel(goods_id,attr_id);
+		}
+		else
+		{
+			fset_buycar(goods_id,'goods_num',(num-1),attr_id);
+		}
+		if(num>1) $('.num').eq(n).html(num-1);
+		if(num==1) setTimeout("$('.num').eq("+n+").html("+(num-1)+")",200);
+		api.execScript({
+	       	name:'dianpu',
+	       	frameName:'dianpu_right',
+	        script: 'fshuaxin();'
+        });
+        api.execScript({
+            	name:'dianpu',
+	           	frameName:'dianpu_footer',
+	            script: 'fget_buycar();'
+            });
+	}
+	function fyin(n)
+	{
+		$(".num").eq(n).css('display','none');
+		$(".jian").eq(n).css('display','none');
+	}
+	function fno_fenlei()
+	{
+		var html='<div style="text-align: center;line-height: 50px;">暂无商品</div>';
+	    document.getElementById('content').innerHTML=html;
+	}
+	function fadd_buycar(n,goods_id)
+	{
+		var goods_num=1;
+		var shuxing_title='0';
+		var shuxing_id=0;
+		var user_id=$api.getStorage('user_id');
+		var goods_title=$('.goodsName').eq(n).val();
+		var goods_shopPrice=$('.money').eq(n).val();
+		var goods_img=$('.img').eq(n).val();
+		var goods_goodsStock=$('.max_num').eq(n).val();
+		var goods_shopId=api.pageParam.shopId;
+		var shuxing_money=$('.money').eq(n).val();
+		var isSeckill=0;
+		var isGroup=0;
+		var ret=$api.getStorage('buycar');
+		if(ret==undefined)
+		{
+			var add={
+				goods_id:goods_id,
+				goods_num:goods_num,
+				shuxing_title:shuxing_title,
+				shuxing_id:shuxing_id,
+				goods_title:goods_title,
+				goods_shopPrice:goods_shopPrice,
+				goods_img:goods_img,
+				goods_goodsStock:goods_goodsStock,
+				goods_shopId:goods_shopId,
+				shuxing_money:shuxing_money
+				};
+			ret=[];
+			ret.push(add);
+			$api.setStorage('buycar',ret);
+			api.execScript({
+	           	frameName:'goods_info_footer',
+	            script: 'fget_buycar();'
+            });
+            api.execScript({
+            	name:'dianpu',
+	           	frameName:'dianpu_footer',
+	            script: 'fget_buycar();'
+            });
+		}
+		else
+		{
+			var goods_pan=0;
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_id==goods_id && ret[i].shuxing_id==shuxing_id)
+				{
+					goods_pan=1;
+					break;
+				}
+			}
+			if(goods_pan==0)
+			{
+				var add={
+						goods_id:goods_id,
+						goods_num:goods_num,
+						shuxing_title:shuxing_title,
+						shuxing_id:shuxing_id,
+						goods_title:goods_title,
+						goods_shopPrice:goods_shopPrice,
+						goods_img:goods_img,
+						goods_goodsStock:goods_goodsStock,
+						goods_shopId:goods_shopId,
+						shuxing_money:shuxing_money
+						};
+					ret.push(add);
+					$api.setStorage('buycar',ret);
+		            api.execScript({
+		            	name:'dianpu',
+			           	frameName:'dianpu_footer',
+			            script: 'fget_buycar();'
+		            });
+			}
+		}
+		api.execScript({
+	       	name:'dianpu',
+	       	frameName:'dianpu_right',
+	        script: 'fshuaxin();'
+        });
+		return;
+		//alert(goods_id+":"+user_id+":"+goods_num+":"+shuxing_id+":"+shuxing_title+":"+isSeckill+":"+isGroup);
+		api.ajax({
+	            //url: YAH_ajax_name+'add_buycar.php',
+	            url: YAH_ajax_name+'add_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	goods_id:goods_id,
+	                	user_id:user_id,
+	                	goods_num:goods_num,
+	                	shuxing_id:shuxing_id,
+	                	shuxing_title:shuxing_title,
+	                	isSeckill:isSeckill,
+	                	isGroup:isGroup
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret=='true')
+	                 {
+//	                 	api.toast({
+//						    msg: '已成功加入购物车!',
+//						    duration: 2000,
+//						    location: 'bottom'
+//						});
+						api.execScript({
+	                        frameName:'dianpu_footer',
+	                        script: 'fget_buycar();'
+                        });
+	                 }
+	                 else if(ret=="2")
+	                 {
+//	                 	api.toast({
+//						    msg: '购物车已存在!',
+//						    duration: 2000,
+//						    location: 'bottom'
+//						});
+	                 }
+	                 else
+	                 {
+//	                 	api.toast({
+//						    msg: '加入购物车失败!',
+//						    duration: 2000,
+//						    location: 'bottom'
+//						});
+//						api.toast({
+//						    msg: '已成功加入购物车!',
+//						    duration: 2000,
+//						    location: 'bottom'
+//						});
+						api.execScript({
+	                        frameName:'dianpu_footer',
+	                        script: 'fget_buycar();'
+                        });
+	                 }
+	                 fget_buycar();
+	                 //fget_buycar();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fset_buycar(goods_id,pan,val,attr_id)
+	{
+		if(pan=='goods_num')
+		{
+			var ret=$api.getStorage('buycar');
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_id==goods_id && ret[i].shuxing_id==attr_id)
+				{
+					ret[i].goods_num=val;
+					break;
+				}
+			}
+			$api.setStorage('buycar',ret);
+			api.execScript({
+	            frameName:'dianpu_footer',
+	            script: 'fget_buycar();'
+            });
+            fget_buycar_csh();
+		}
+		return;
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'set_buycar.php',
+	            url: YAH_ajax_name+'set_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	               		user_id:user_id,
+	               		goods_id:goods_id,
+	               		pan:pan,
+	               		val:val,
+	               		attr_id:attr_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 api.execScript({
+	                        frameName:'dianpu_footer',
+	                        script: 'fget_buycar();'
+                     });
+	            }else {
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fdel(goods_id,attr_id)
+	{
+			//api.showProgress({title:'删除中...'});
+			var ret=$api.getStorage('buycar');
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_id==goods_id && ret[i].shuxing_id==attr_id)
+				{
+					ret.splice(i,1);//开始位置,删除个数
+					i--;
+					break;
+				}
+			}
+			$api.setStorage('buycar',ret);
+					api.execScript({
+	                    frameName:'dianpu_footer',
+	                    script: 'fget_buycar();'
+                    });
+                    api.execScript({
+	                    frameName:'dianpu_goshop',
+	                    script: 'fget_buycart();'
+                    });
+                    fcsh2(goods_id);
+                    //fget_buycar_csh();
+			return;
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'del_buycart_for_attrId.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	attr_id:attr_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                if(ret[0].pan==1)
+	                {
+//	                	api.toast({
+//							msg: '删除成功',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+                        api.execScript({
+	                        frameName:'dianpu_footer',
+	                        script: 'fget_buycar();'
+                        });
+                        api.execScript({
+	                       	frameName:'dianpu_goshop',
+	                        script: 'fget_buycart();'
+                        });
+	                }
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fget_buycar()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+	//		api.toast({
+	//			msg: '请先登录！',
+	//			duration: 2000,
+	//			location: 'bottom'
+	//		});
+			return;
+		}
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'get_buycar.php',
+	            url: YAH_ajax_name+'get_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {user_id:user_id}
+	            }
+	        },function(ret,err){
+		        	api.hideProgress();//隐藏加载进度框
+		            if (ret) {
+		            var i,sum=0,money_sum=0;
+		            for(var i=0;i<ret.length;i++)
+		            {
+		            	if(ret[i].shopId==api.pageParam.shopId)
+		            	{
+		            		$('#'+ret[i].goods_id).attr('attr_id',ret[i].goodss_attr_id);
+		            		var n=$('#'+ret[i].goods_id).attr('i');
+		            		$(".num").eq(n).html(0);
+		            		$(".num").eq(n).css('display','block');
+							$(".jian").eq(n).css('display','block');
+							$(".num").eq(n).rotate({
+					            angle: 180,
+					            animateTo: 0,
+					            duration:200,
+					            callback: function () {
+					               
+					            }
+					        })
+					        $(".jian").eq(n).rotate({
+					            angle: 180,
+					            animateTo: 0,
+					            duration:200,
+					            callback: function () {
+					               
+					            }
+					        })
+//							$(".num").eq(n).animate({left:'-=22px'},200);
+//							$(".jian").eq(n).animate({left:'-=44px'},200);
+		            	}
+		            }
+		            api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        });
+	}
+	function fget_buycar_csh()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			return;
+		}
+		var ret=$api.getStorage('buycar');
+		if(ret!=undefined)
+		{
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_shopId==api.pageParam.shopId)
+				{
+					$('#'+ret[i].goods_id).attr('attr_id',ret[i].shuxing_id);
+		            		var n=$('#'+ret[i].goods_id).attr('i');
+		            		$(".num").eq(n).html(ret[i].goods_num);
+		            		$(".num").eq(n).css('display','block');
+							$(".jian").eq(n).css('display','block');
+							
+					        var pan=$(".num").eq(n).attr('left_pan');
+					        if(pan!=1)
+					        {
+					        	$(".num").eq(n).rotate({
+						            angle: 180,
+						            animateTo: 0,
+						            duration:200,
+						            callback: function () {
+						               
+						            }
+						        })
+						        $(".jian").eq(n).rotate({
+						            angle: 180,
+						            animateTo: 0,
+						            duration:200,
+						            callback: function () {
+						               
+						            }
+						        })
+						        $(".num").eq(n).attr('left_pan',1);
+								$(".num").eq(n).animate({left:'-=22px'},200);
+								$(".jian").eq(n).animate({left:'-=44px'},200);
+					        }
+				}
+			}
+		}
+		return;
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'get_buycar.php',
+	            url: YAH_ajax_name+'get_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {user_id:user_id}
+	            }
+	        },function(ret,err){
+		        	api.hideProgress();//隐藏加载进度框
+		            if (ret) {
+		            var i,sum=0,money_sum=0;
+		            for(var i=0;i<ret.length;i++)
+		            {
+		            	if(ret[i].shopId==api.pageParam.shopId)
+		            	{
+		            		$('#'+ret[i].goods_id).attr('attr_id',ret[i].goodss_attr_id);
+		            		var n=$('#'+ret[i].goods_id).attr('i');
+		            		$(".num").eq(n).html(ret[i].goods_num);
+		            		$(".num").eq(n).css('display','block');
+							$(".jian").eq(n).css('display','block');
+							
+					        var pan=$(".num").eq(n).attr('left_pan');
+					        if(pan!=1)
+					        {
+					        	$(".num").eq(n).rotate({
+						            angle: 180,
+						            animateTo: 0,
+						            duration:200,
+						            callback: function () {
+						               
+						            }
+						        })
+						        $(".jian").eq(n).rotate({
+						            angle: 180,
+						            animateTo: 0,
+						            duration:200,
+						            callback: function () {
+						               
+						            }
+						        })
+						        $(".num").eq(n).attr('left_pan',1);
+								$(".num").eq(n).animate({left:'-=22px'},200);
+								$(".jian").eq(n).animate({left:'-=44px'},200);
+					        }
+					        
+		            	}
+		            }
+		            api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        });
+	}
+	function fcsh2(goods_id)
+	{
+		var ret=$api.getStorage('buycar');
+		            		var n=$('#'+goods_id).attr('i');
+		            		$(".num").eq(n).html(0);
+		            		$(".num").eq(n).css('display','none');
+							$(".jian").eq(n).css('display','none');
+							
+					        var pan=$(".num").eq(n).attr('left_pan');
+					        if(pan==1)
+					        {
+					        	$(".num").eq(n).rotate({
+						            angle: 0,
+						            animateTo: 180,
+						            duration:200,
+						            callback: function () {
+						               
+						            }
+						        })
+						        $(".jian").eq(n).rotate({
+						            angle: 0,
+						            animateTo: 180,
+						            duration:200,
+						            callback: function () {
+						               
+						            }
+						        })
+						        $(".num").eq(n).attr('left_pan',0);
+								$(".num").eq(n).animate({left:'+=22px'},200);
+								$(".jian").eq(n).animate({left:'+=44px'},200);
+					        }
+		return;
+	}
+</script>
+</html>

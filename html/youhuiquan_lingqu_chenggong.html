@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html,body{
+    		height:100%;
+    		width:100%;
+    		background-color:#fff;
+    	}
+    	#main{
+    		height:100%;
+    		width:100%;
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+            font-size:14px;
+    	}
+    	.bai1{
+    		-webkit-box-flex: 2;
+            -webkit-flex: 2;
+            flex: 2;
+    	}
+    	.bai2{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+    	}
+    	.bai3{
+    		-webkit-box-flex: 4;
+            -webkit-flex: 4;
+            flex: 4;
+    	}
+    	.lan{
+    		text-align: center;
+    		line-height: 50px;
+    		font-size:16px;
+    		color:#00a2ff;
+    		font-weight: bold;
+    	}
+    	.hei{
+    		text-align: center;
+    		line-height: 30px;
+    	}
+    	.go{
+    		text-align: center;
+    		line-height: 50px;
+    		font-size:16px;
+    		font-weight: bold;
+    		color:#523200;
+    		background-color:#ffd014;
+    		width: 40%;
+    		margin:0 30%;
+    		border-radius: 5px;
+    	}
+    	.go_on{
+    		background-color:#c19e11 !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="bai1"></div>
+	<div class="lan">恭喜你，领取成功</div>
+	<div class="hei">优惠券将会尽快发到你的账户上</div>
+	<div class="bai2"></div>
+	<div class="go" tapmode="go_on" onclick="fclose();">去使用</div>
+	<div class="bai3"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+</script>
+</html>

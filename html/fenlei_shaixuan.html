@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_pingtai.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    	html, body{
+			height: 100%;
+			background-color: #e5e5e5;
+			-webkit-overflow-scrolling:touch;
+    	}
+    	#main{
+    		/*transition: margin-top 0.3s ease-out;*/
+    	}
+		#mainbox{
+			/*height: 100%;*/
+		}
+		.swiper-slide img{
+    		width: 100%;
+    		vertical-align: bottom;
+    	}
+    	.goods-slide-section{
+			display: block;
+			position: relative;
+			overflow: hidden;
+		    width: 100%;
+
+		    text-align: center;
+		    -webkit-transition: height 0.275s ease-out;
+		    transition: height 0.275s ease-out;
+			-webkit-backface-visibility: hidden;
+		    height: 0;
+		}
+		.slide-img-box{
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0; right: 0; margin: 0 auto;
+		}
+		.mycart{
+			position: fixed;
+			bottom: 20px;
+			left: 30px;
+			width: 50px;
+			height: 50px;
+			background-image: url('../image/my_cart.png');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			z-index: 9999;
+		}
+		.mycart .num{
+			position: absolute;
+			right: 0;
+			top: 0;
+			color: #fff;
+			background-color: red;
+			border-radius: 50%;
+			line-height: 15px;
+			font-size: 12px;
+			height: 15px;
+			width: 15px;
+			text-align: center;
+		}
+		.dian{
+			width: 0;
+			height: 0;
+			position: absolute;
+			z-index: 1000;
+			/*方法一
+			*-webkit-transition:left 0.75s ease-out;
+			transition:left 0.75s ease-out;*/
+			/*方法二*/
+			transition:transform 750ms ease-out;
+			transform: translateX(0px);
+			-webkit-backface-visibility: hidden;
+		}
+		.dian_change {
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			/*background: #eb6b67;*/
+			background: #60b034;
+			z-index: 1000;
+			/*方法一
+			*-webkit-transition:top 0.75s cubic-bezier(.25, 0, .4, 0);
+			transition:top 0.75s cubic-bezier(.25, 0, .4, 0);*/
+			/*方法二*/
+			transition:transform 750ms cubic-bezier(.25, 0, .4, 0);
+			transform: translateY(0px);
+			-webkit-backface-visibility: hidden;
+		}
+		.min_header{
+            height: 38px;
+            background-color: #fff;
+            width: 100%;
+            padding:5px 0 0;
+			/*position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 9999;*/
+        }
+		.header_line{
+			/*height: 44px;
+			background: transparent;
+			width: 100%;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 9999;*/
+		}
+    </style>
+</head>
+<script>
+function fopen_goshop()
+{
+	api.execScript({
+		name:'root',
+        script: 'randomSwitchBtn("","goshop",3);'
+    });
+    api.closeWin({name:'fenlei_shaixuan_header'});
+}
+</script>
+<body>
+	<!-- <div class="mycart" onclick="fopen_goshop();"><span class="num" id="goods_num">0</span></div> -->
+	<!-- <div class="header_line"></div> -->
+	<div id="min_header" class="min_header" style="display: none;">
+		<div class="option_title">
+			<ul>
+				<!--<li class="active">全部</li>
+				<li>猪牛羊肉</li>
+				<li>家禽蛋类</li>
+				<li>水产海鲜</li>
+				<li>豆腐鲜菇</li>
+				<li>猪牛羊肉</li>-->
+			</ul>
+		</div>
+		<div class="option_next" style="display: none;">
+			<ul>
+				<li class="active">全部</li>
+				<!--<li>新鲜鸡肉</li>
+				<li>鸡翅鸡腿</li>
+				<li>新鲜鸭鹅</li>
+				<li>蛋类</li>-->
+			</ul>
+		</div>
+	</div>
+	<div id="main" style="display:none">
+		<div class="goods_list">
+				<div class="content" style="display:none">
+					<!-- <div class="goods-list-box goods-list-slide">
+						<div class="goods-list-section">
+							<div class="goods-list-content block-box" tapmode onclick="slide_section(this);">点击弹出图片
+								<div class="goods-img"><img src="../image/pic_thumbnail.png" alt="" /></div>
+								<div class="goods-ifo block-flex">
+									<p class="goods-name">家猪筒骨－新鲜</p>
+									<p class="goods-explain">新鲜家猪限量供应</p>
+									<div class="goods-spec">
+										<span>约250g</span>
+										<span>广东</span>
+										<span>限量上市</span>
+									</div>
+									<div class="goods-price">
+										<strong>￥1.00</strong>
+										<span>￥29.00</span>
+									</div>
+								</div>
+								<div class="goods-labels">
+									<em>一元特价</em>
+									<em>大于10份</em>
+								</div>
+							</div>
+							<a href="#" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a>加入购物车
+						</div>
+						<div class="goods-slide-section" style="display: none;">
+							<div class="swiper-container swiper-container2">
+								<div class="swiper-wrapper">
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								</div>
+								<div class="swiper-pagination swiper-pagination2"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="goods-list-box goods-list-slide">
+						<div class="goods-list-section">
+							<div class="goods-list-content block-box" tapmode onclick="slide_section(this);">点击弹出图片
+								<div class="goods-img"><img src="../image/pic_thumbnail.png" alt="" /></div>
+								<div class="goods-ifo block-flex">
+									<p class="goods-name">家猪筒骨－新鲜</p>
+									<p class="goods-explain">新鲜家猪限量供应</p>
+									<div class="goods-spec">
+										<span>约250g</span>
+										<span>广东</span>
+										<span>限量上市</span>
+									</div>
+									<div class="goods-price">
+										<strong>￥1.00</strong>
+										<span>￥29.00</span>
+									</div>
+								</div>
+								<div class="goods-labels">
+									<em>一元特价</em>
+									<em>大于10份</em>
+								</div>
+							</div>
+							<a href="#" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a>加入购物车
+						</div>
+						<div class="goods-slide-section" style="display: none;">
+							<div class="swiper-container swiper-container2">
+								<div class="swiper-wrapper">
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+								</div>
+								<div class="swiper-pagination swiper-pagination2"></div>
+							</div>
+						</div>
+					</div> -->
+					<!-- <ul>
+						<li tapmode="a" onclick="fopen_dianpu(0);">
+							<div class="nei">
+								<div class="left"><img src="../image/sp_9.png" /></div>
+								<div class="right">
+									<div class="title">五谷香粥</div>
+									<div class="s1"><span class="s_l"><span class="red">4.5</span> 月售23份</span><span class="s_r"><span class="red">10</span>元起送</span></div>
+									<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+								</div>
+							</div>
+							<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+						</li>
+						<li tapmode="a" onclick="fopen_dianpu(0);">
+							<div class="nei">
+								<div class="left"><img src="../image/sp_9.png" /></div>
+								<div class="right">
+									<div class="title">五谷香粥</div>
+									<div class="s1"><span class="s_l"><span class="red">4.5</span> 月售23份</span><span class="s_r"><span class="red">10</span>元起送</span></div>
+									<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+								</div>
+							</div>
+							<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+						</li>
+					</ul> -->
+
+				</div>
+			</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js" ></script>
+<script type="text/javascript">
+
+	// 分类列表点击事件
+
+	var cid = 0;
+	var type = 0;
+	var start = 0;
+	var lock = 0;
+	var lock1 = 1;
+
+	function fclose_xuan_xiaoqu(){
+	    api.closeFrame({
+		    name: 'go_xuan_xiaoqu'
+	    });
+	}
+
+	function qiehuanli2(obj){
+	    $(obj).siblings().removeClass('active');
+		$(obj).addClass('active');
+	}
+
+	function qiehuanli1(obj){
+	    $(obj).siblings().removeClass('active');
+		$(obj).addClass('active');
+		/*if ($(obj).index() != 0) {
+			$('.min_header .option_next').css('display','block');
+		}else{
+			$('.min_header .option_next').css('display','none');
+		}*/
+	}
+
+	function set_lock(){
+	    lock1 = 1;
+	    api.hideProgress();//隐藏加载进度框
+	}
+
+	function alert_msg(msg){
+	    api.toast({
+			msg: msg,
+			duration: 2000,
+			location: 'bottom'
+		});
+	}
+
+	function open_xuan_xiaoqu(type){
+	    api.openFrame({
+	        name: 'go_xuan_xiaoqu',
+	        url: 'go_xuan_xiaoqu.html',
+	        pageParam:{
+	            type:type
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+	    });
+	}
+
+	// var cartDom;
+	// function addCart(gid,obj_){
+	// 	cartDom = obj_;
+	//     var login=$api.getStorage('login');
+	// 	if(login=='0' || login==0 || login==undefined)
+	// 	{
+	// 		api.toast({
+	// 			msg: '请先登录！',
+	// 			duration: 2000,
+	// 			location: 'bottom'
+	// 		});
+	// 		return;
+	// 	}
+	// 	fs_dian();
+	// 	api.execScript({
+    //     	name:'root',
+    //        	frameName:'home',
+    //         script: 'addCart('+gid+',2);'
+    //      });
+    // }
+	//
+    function add_cart_sus(type){
+	    if(type == 1){
+		    api.toast({
+				msg: '加入成功！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	    }
+	    else{
+	        api.toast({
+				msg: '加入失败！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	    }
+	    // fget_buycar();
+		api.execScript({
+			name:'fenlei_shaixuan_header',
+			frameName: 'mycart_frame',
+			script: 'fget_buycar();'
+		});
+	}
+
+	function get_cat_list(cid,type){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+cid);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Goods&a=get_cat_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	cid:cid,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//  console.log(JSON.stringify(ret||err));
+			var fenlei_groups = [];
+			fenlei_group_frames =[];
+			fenlei_groups.push({
+				title: '全部',
+				bg: '#fff'
+			})
+			fenlei_group_frames.push({
+				name: 'fenlei_group_' + i,
+				url: 'fenlei_group.html',
+				vScrollBarEnabled: false,
+				pageParam: {
+					type: '全部',
+					cid1: cid,
+					type1: 2,
+					start1: 0
+				}
+			});
+			var index_=0;
+	        for (var i = 0; i < ret.length; i++) {
+	            fenlei_groups.push({
+	                title: ret[i]['catName'],
+	                bg: '#fff'
+	            });
+				fenlei_group_frames.push({
+					name: 'fenlei_group_' + i,
+					url: 'fenlei_group.html',
+					vScrollBarEnabled: false,
+					pageParam: {
+						type: ret[i]['catName'],
+						cid1: ret[i]['catId'],
+						type1: 3,
+						start1: 0
+					}
+				});
+				if(type > 0){
+					if(type == ret[i]['catId']){
+						index_ = i+1;
+					}
+				}
+	        }
+	        fenlei_group.item = fenlei_groups;
+	        fenlei_group.font = {
+	            color: '#656565',
+	            colorSelected: '#60b034',
+	            size: 13,
+	            sizeSelected: 13
+	        };
+	 		fnNavigationBar(index_);	//头部导航
+			fnOpenFrameGroup(index_); // 内容
+			// console.log(JSON.stringify(fenlei_group));
+			return false;
+
+        	 var html = '<ul>';
+        	 if(type > 0){
+        	     html += '<li onclick="qiehuanli1(this);get_goods_by_cat1('+cid+',2,0)">全部</li>';
+        	     $(ret).each(function(i){
+        	         if(type == ret[i]['catId']){
+        	             html += '<li  class="active" onclick="qiehuanli1(this);get_goods_by_cat1('+ret[i]['catId']+',3,0)">'+ret[i]['catName']+'</li>';
+        	             get_goods_by_cat1(ret[i]['catId'],3,0);
+        	         }else{
+        	             html += '<li onclick="qiehuanli1(this);get_goods_by_cat1('+ret[i]['catId']+',3,0)"">'+ret[i]['catName']+'</li>';
+        	         }
+
+        	     })
+        	 }
+        	 else{
+        	     html += '<li class="active" onclick="qiehuanli1(this);get_goods_by_cat1('+cid+',2,0)">全部</li>';
+        	     $(ret).each(function(i){
+        	         html += '<li onclick="qiehuanli1(this);get_goods_by_cat1('+ret[i]['catId']+',3,0)">'+ret[i]['catName']+'</li>';
+        	     })
+        	     get_goods_by_cat1(cid,2,0);
+
+        	 }
+             html += '</ul>';
+
+             $('.option_title').html(html);
+             var option_li_w = $('.min_header .option_title li').width();
+			 var option_li_num = $('.min_header .option_title li').length;
+			 $('.min_header .option_title ul').width(option_li_w*option_li_num);
+			 var win_w = $(window).width();
+		 	 var option_li_i = $('.min_header .option_title ul .active').index();
+		 	 //var option_li_w = $(this).width();
+	 		 $('.option_title').animate({
+	 			 'scrollLeft':option_li_i*option_li_w + option_li_w/2 - win_w/2
+	 		 },400);
+
+
+        });
+	}
+
+	apiready = function(){
+
+		//get_goods_by_cat(api.pageParam.catId,1,0);
+		get_cat_list(api.pageParam.catId,api.pageParam.cid);
+		// fget_buycar();
+		fnInit();
+	};
+	var headerHeight, headerTop;
+	var NVNavigationBar, fenlei_group_id;
+	var fenlei_group = {};
+	var fenlei_group_frames = [];
+
+	function fnInit() {
+		headerHeight = 38;
+		headerTop = api.pageParam.header_h;
+		NVNavigationBar = api.require('NVNavigationBar');
+	};
+
+	// 头部导航
+	function fnNavigationBar(index_) {
+		if (typeof fenlei_group_id == 'undefined') {
+			NVNavigationBar.open({
+				rect: {
+			        x: 0,
+			        y: headerTop,
+			        w: api.winWidth,
+			        h: headerHeight
+			    },
+			    styles: {
+			        orientation: 'horizontal',
+			        bg: '#fff',
+			        bgAlpha: 1,
+			        font: {
+				        size: 13,
+				        sizeSelected: 15,
+				        color: '#888',
+				        colorSelected: '#60b034',
+				        alpha: 1
+			        },
+			        itemSize: {
+			            w: 85,
+			            h: headerHeight
+			        }
+			    },
+				items: fenlei_group.item,
+				selectedIndex: index_,
+				id: 'first'
+			}, function(ret, err) {
+				switch (ret.eventType) {
+					case 'show':
+						fenlei_group_id = ret.id;
+						break;
+					case 'click':
+						api.setFrameGroupIndex({
+							name: 'fenlei_group',
+							index: ret.index,
+							scroll: true
+						});
+						break;
+				}
+			});
+		} else {
+			NVNavigationBar.show({
+				id: fenlei_group_id
+			});
+		}
+	};
+
+	// 内容
+	function fnOpenFrameGroup(index_) {
+		api.openFrameGroup({
+			name: 'fenlei_group',
+			scrollEnabled: true,
+			rect: {
+				x: 0,
+				y: headerHeight+headerTop+1,
+				w: 'auto',
+				h: api.winHeight - headerHeight - headerTop-1
+			},
+			index: index_,
+			frames: fenlei_group_frames
+		}, function(ret, err) {
+			// 购物车
+			api.openFrame({
+		        name: 'mycart_frame',
+		        url: 'mycart_frame.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:false,
+		        rect: {
+			        x : 30,
+					y : api.winHeight - 80,
+					w : 60,
+					h : 60
+		        },
+		        bgColor:"transparent"
+	        });
+
+			NVNavigationBar.setSelected({
+			    id: 'first',
+			    index: ret.index,
+			    selected: true
+			}, function(ret) {
+			    // alert(JSON.stringify(ret));
+			});
+		});
+	};
+
+</script>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/header.css"/>
+    <style>
+    	*{
+    		margin:0;
+    		padding:0;
+    	}
+    	header{
+    		height:auto;
+    	}
+    	body{
+    		background-color:#f2f2f2;
+    	}
+    	#goshop{
+    		display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+    	}
+    	.topzuo{
+    		position: relative;
+    	}
+    	.topzhong{
+    		-webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		    padding:0;
+    	}
+    	.topyou_tu_xiaoxi{
+    		width: 50px;
+			background-image: url('../image/pinglun_logo_bai.png');
+			background-repeat: no-repeat;
+			background-size: 16px 16px;
+			background-position: 17px 17px;
+			position: relative;
+    	}
+    	.topzhong .con{
+    		/*display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;*/
+		    margin:0 auto;
+		    border-radius: 3px;
+		    border:1px solid #fff;
+		    height:30px;
+		    margin-top:10px;
+		    line-height: 30px;
+		    font-size:14px;
+		    text-align: center;
+    	}
+    	.topzhong .con .left{
+    		border-right:1px solid #fff;
+    		float:left;
+    		padding:0 10px;
+    	}
+    	.topzhong .con .right{
+    		background-color:#93268f;
+    		color:#fff;
+    		float:left;
+    		padding:0 10px;
+    	}
+    	.topzhong .con .on{
+    		background-color:#fff;
+    		color:#93268f;
+    	}
+    	.min_header{
+    		height:50px;
+    		line-height: 50px;
+    		border-bottom:1px solid #eee;
+    		display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		    text-align: center;
+		    background-color:#fff;
+    	}
+    	.min_header .left{
+    		-webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		    border-right:1px solid #eee;
+    	}
+    	.min_header .right{
+    		-webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+    	}
+    	.sanjiao{
+    		width:12px;
+    		height:8px;
+    		background-image:url('../image/xiajiantou2.png');
+    		background-repeat: no-repeat;
+    		background-size:100% 100%;
+    		margin-left:5px;
+    	}
+    	.sanjiao_on{
+    		background-image:url('../image/shangjiantou2.png') !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="wrap">
+	<header id="headers">
+        <div id="goshop" class="topbar ">
+	        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+	      	<!--<div class="topzhong">
+	      		<span class="con">
+	      			<div class="left" tapmode="" onclick="fxuan1(0);">发微帮</div>
+	      			<div class="right on" tapmode="" onclick="fxuan1(1);">找微帮</div>
+	      		</span>
+	      	</div>-->
+	      	<div class="topzhong" id="title"></div>
+	      	<!--<div tapmode="a" class="topyou">编辑</div>-->
+	      	<div tapmode="" class="topyou_tu_xiaoxi" onclick="fopen_xiaoxizhongxin();"></div>
+        </div>
+        <div class="min_header">
+			<div class="left" tapmode="" onclick="fxuan(0);">找微帮<span class="sanjiao"></span></div>
+			<div class="right" tapmode="" onclick="fxuan(1);">筛选<span class="sanjiao"></span></div>
+		</div>
+	</header>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+function freturn()
+{
+	api.closeWin({
+    });
+}
+	apiready = function(){
+			api.parseTapmode();
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+    	catName=api.pageParam.catName;
+    	//$('.min_header div').eq(0).html(catName+'<span class="sanjiao"></span>');
+    	$('#title').html(catName);
+    	setTimeout("fopencontent()",200);
+	};
+	function fxuan1(n)
+	{
+		var max=$('.con div').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.con div').eq(i).addClass('on');
+				
+			}
+			else
+			{
+				$('.con div').eq(i).removeClass('on');
+			}
+		}
+		var j='';
+		if(n==0) j=1;
+		if(n==1) j=0;
+		api.execScript({
+	               	frameName:'weibang_fenlei',
+	                script: 'fset_type(\''+j+'\');'
+        });
+	}
+	function fopen_xiaoxizhongxin()
+	    {
+	    	api.openWin({
+	            name: 'xiaoxizhongxin_header',
+	            url: 'xiaoxizhongxin_header.html'
+            });
+	    }
+	    var fenlei_pan=0;
+	    var shaixuan_pan=0;
+	    var catName='所有发布';
+	    var shaixuan='时间';
+	    function fxuan(n)
+	    {
+	    	var max=$('.min_header div').length;
+			for(var i=0;i<max;i++)
+			{
+				if(i==n)
+				{
+					$('.sanjiao').eq(i).addClass('sanjiao_on');
+				}
+				else
+				{
+					$('.sanjiao').eq(i).removeClass('sanjiao_on');
+				}
+			}
+			if(Number(fenlei_pan)==0 && n==0)
+			{
+				fenlei_pan=1;
+	            shaixuan_pan=0;
+	            api.closeFrame({
+	                name: 'weibang_fenlei_shaixuan'
+                });
+	            api.closeFrame({
+	                name: 'weibang_fenlei_tanc'
+                });
+                fopen_cat_list();
+				$('.sanjiao').eq(1).removeClass('sanjiao_on');
+			}
+			else if(Number(fenlei_pan)==1 && n==0)
+			{
+				fenlei_pan=0;
+				api.closeFrame({
+	                name: 'weibang_fenlei_xuan'
+                });
+	            api.closeFrame({
+	                name: 'weibang_fenlei_tanc'
+                });
+				$('.sanjiao').eq(n).removeClass('sanjiao_on');
+			}
+			if(Number(shaixuan_pan)==0 && n==1)
+			{
+				shaixuan_pan=1;
+	            fenlei_pan=0;
+				api.closeFrame({
+	                name: 'weibang_fenlei_xuan'
+                });
+	            api.closeFrame({
+	                name: 'weibang_fenlei_tanc'
+                });
+	            fopen_shaixuan();
+				$('.sanjiao').eq(0).removeClass('sanjiao_on');
+			}
+			else if(Number(shaixuan_pan)==1 && n==1)
+			{
+				shaixuan_pan=0;
+				api.closeFrame({
+	                name: 'weibang_fenlei_shaixuan'
+                });
+	            api.closeFrame({
+	                name: 'weibang_fenlei_tanc'
+                });
+				$('.sanjiao').eq(n).removeClass('sanjiao_on');
+			}
+	    }
+	    function fset_catName(n)
+	    {
+	    	catName=n;
+	    	$('.min_header div').eq(0).html(catName+'<span class="sanjiao"></span>');
+	    }
+	    function fset_shaixuan(n)
+	    {
+	    	shaixuan=n;
+	    }
+	    function fclose_tanc()
+	    {
+	    		api.closeFrame({
+	                name: 'weibang_fenlei_xuan'
+                });
+                api.closeFrame({
+	                name: 'weibang_fenlei_shaixuan'
+                });
+	            api.closeFrame({
+	                name: 'weibang_fenlei_tanc'
+                });
+                shaixuan_pan=0;
+	            fenlei_pan=0;
+	            $('.sanjiao').eq(0).removeClass('sanjiao_on');
+	            $('.sanjiao').eq(1).removeClass('sanjiao_on');
+	    }
+	    function fopen_cat_list()
+	    {
+	    	var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+			api.openFrame({
+	            name: 'weibang_fenlei_tanc',
+	            url: 'weibang_fenlei_tanc.html',
+	            rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        }
+            });
+	    	api.openFrame({
+		        name: 'weibang_fenlei_xuan',
+		        url: 'weibang_fenlei_xuan.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:false,
+            	pageParam:{
+		        	catName:catName
+		        },
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : 150
+		        },
+		        bgColor:"#f2f2f2"
+	        });
+	    }
+	    function fopen_shaixuan()
+	    {
+	    	var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+			api.openFrame({
+	            name: 'weibang_fenlei_tanc',
+	            url: 'weibang_fenlei_tanc.html',
+	            rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        }
+            });
+	    	api.openFrame({
+		        name: 'weibang_fenlei_shaixuan',
+		        url: 'weibang_fenlei_shaixuan.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:false,
+            	pageParam:{
+		        	shaixuan:shaixuan
+		        },
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : 204
+		        },
+		        bgColor:"#f2f2f2"
+	        });
+	    }
+	    function fopen_faweibang()
+	    {
+	    	api.openWin({
+	            name: 'faweibang_header',
+	            url: 'faweibang_header.html'
+            });
+	    }
+function fopencontent()
+{
+			var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+	    	api.openFrame({
+		        name: 'weibang_fenlei',
+		        url: 'weibang_fenlei.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:true,
+            	pageParam:{
+		        	catName:api.pageParam.catName,
+		        	shaixuan:shaixuan
+		        },
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        },
+		        bgColor:"#f2f2f2"
+	        });
+}
+function fopen_goshop()
+	{
+		api.closeWin({name:'bimaizhuanqu_header'});
+		api.closeWin({name:'chaoshi_header'});
+		api.closeWin({name:'dingdan_header'});
+		api.closeWin({name:'dingdan_xx_header'});
+		api.closeWin({name:'fenlei_header'});
+		api.closeWin({name:'fuzhuangcheng_header'});
+		api.closeWin({name:'miaosha_header'});
+		api.closeWin({name:'tuangou_header'});
+		api.closeWin({name:'wuliu_xx_header'});
+		api.execScript({
+			name:'root',
+	        script: 'randomSwitchBtn("","goshop",3);'
+        });
+        api.closeWin({name:'goods_header'});
+	}
+</script>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang_fenlei_xuan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content">
+		<!--<div class="list" tapmode="" onclick="fxuan(0,'所有发布');">
+			<div class="left ccyc">所有发布</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(1,'闲置商品');">
+			<div class="left ccyc">闲置商品</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(2,'店铺租售');">
+			<div class="left ccyc">店铺租售</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(3,'家政钟点');">
+			<div class="left ccyc">家政钟点</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(4,'招聘求职');">
+			<div class="left ccyc">招聘求职</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(5,'认证专员');">
+			<div class="left ccyc">认证专员</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(6,'汽车服务');">
+			<div class="left ccyc">汽车服务</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(7,'跟随快递');">
+			<div class="left ccyc">跟随快递</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(8,'宠物服务');">
+			<div class="left ccyc">宠物服务</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(9,'更多');">
+			<div class="left ccyc">更多</div>
+			<div class="right"></div>
+		</div>-->
+		<div class="list" tapmode="" onclick="fxuan(0,'全部');">
+			<div class="left ccyc">全部</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" tapmode="" onclick="fxuan(1,'找微帮');">
+			<div class="left ccyc">找微帮</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" tapmode="" onclick="fxuan(2,'发微帮');">
+			<div class="left ccyc">发微帮</div>
+			<div class="right"></div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fcsh();
+	};
+	function fxuan(n,name)
+	{
+		var max=$('.list').length;
+		xuan=n;
+		xuan_name=name;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.left').eq(i).addClass('color_zi');
+				$('.right').eq(i).css('display','block');
+//				api.execScript({
+//	               	frameName:'weibang_fenlei',
+//	                script: 'fset_catName(\''+name+'\');'
+//              });
+                api.execScript({
+	               	frameName:'weibang_fenlei',
+	                script: 'fset_type(\''+(n-1)+'\');'
+        		});
+				api.execScript({
+	               	name:'weibang_fenlei_header',
+	                script: 'fset_catName(\''+name+'\');fclose_tanc();'
+                });
+			}
+			else
+			{
+				$('.left').eq(i).removeClass('color_zi');
+				$('.right').eq(i).css('display','none');
+			}
+		}
+	}
+	function fcsh()
+	{
+		var max=$('.list').length;
+		var t=0;
+		for(var i=0;i<max;i++)
+		{
+			var val=$('.left').eq(i).html();
+			if(val==api.pageParam.catName)
+			{
+				$('.left').eq(i).addClass('color_zi');
+				$('.right').eq(i).css('display','block');
+				t++;
+				break;
+			}
+		}
+		if(t==0) 
+		{
+			$('.left').eq(1).addClass('color_zi');
+			$('.right').eq(1).css('display','block');
+		}
+	}
+</script>
+</html>

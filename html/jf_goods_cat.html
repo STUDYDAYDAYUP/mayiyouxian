@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jifen.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="content">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+		</ul>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_jf_goods_cat();
+	};
+	function fget_jf_goods_cat()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_jf_goods_cat.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	catName:api.pageParam.catName
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	var lin='';
+                 	if(i%2==0) lin='margin-left:0;';
+					html+='<li tapmode="" onclick="fopen_jf_goods('+ret[i].goodsId+');" style="'+lin+'">';
+					html+='	<img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" />';
+					html+='	<div class="title">'+ret[i].goodsName+'</div>';
+					html+='	<div class="footer"><div class="money">'+ret[i].shopPrice+'积分</div><div class="on" tapmode="on_on" onclick="event.cancelBubble = true;fgo('+ret[i].goodsId+');">兑换</div></div>';
+					html+='</li>';
+                 }
+                 html+='</ul>';
+				 document.getElementById("content").innerHTML=html;
+                 api.parseTapmode();
+            }else {
+            	var html='';
+				html+='<div class="no_data">暂无商品</div>';
+				document.getElementById("content").innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.hideProgress();//隐藏加载进度框
+        });
+	}
+	function fopen_jf_goods(goods_id)
+	{
+		$api.setStorage('jf_goods_id',goods_id);
+		api.openWin({
+	        name: 'jf_goods_header',
+	        url: 'jf_goods_header.html'
+        });
+	}
+	function fgo(id)
+	{
+		api.openWin({
+	        name: 'jf_zhifu_header',
+	        url: 'jf_zhifu_header.html',
+	        pageParam:{
+	        	goods_id:id
+	        }
+        });
+	}
+</script>
+</html>

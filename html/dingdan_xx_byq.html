@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dingdan_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+	<div id="main">
+		<div class="shangjia">
+			<div class="min-title" tapmode="a">
+				<span class="t2"></span><span class="t1">大吉祥天</span><span class="t3"></span>
+			</div>
+			<div class="goods" onclick="fopengoods(0);">
+				<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+				<div class="goods_cen"><div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div></div>
+				<div class="goods_right"><div class="goods_money">￥13</div><div class="goods_num">X2</div></div>
+			</div>
+			<div class="ps_info">
+				<span class="ps_zt">订单配送中</span><span class="ps_xx">共2件商品 合计:￥26 (含运费：￥0)</span>
+			</div>
+		</div>
+	</div>
+	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+</script>
+</html>

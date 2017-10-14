@@ -1,0 +1,236 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+}
+.a{
+            background-color:#eee !important;
+        }  
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+	-webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+}
+
+.header{
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    border-bottom:1px solid #ccc;
+    position: relative;
+    z-index: 2;
+}
+.header .left{
+	width: 50px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	margin-top: 10px;
+	border-right: 1px solid #eee;
+}
+.header .right{
+	width: 40px;
+	height: 30px;
+	margin-top: 10px;
+	border-left: 1px solid #eee;
+	/*background-image: url('../image/xiajiantou.png');*/
+	background-repeat: no-repeat;
+	background-size:16px 10px;
+	background-position:12px 10px;
+}
+.header .right img{
+	width:16px;
+	margin-top:10px;
+	margin-left:12px;
+}
+.header2{
+	float:left;
+	min-height: 40px;
+	background-color:#fff;
+	border-bottom:1px solid #e2e2e2;
+	padding:5px 0 5px 10px;
+	position: relative;
+}
+.header2 div{
+	float:left;
+	margin:5px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	background-color:#eee;
+	border-radius: 5px;
+	min-width: 60px;
+	margin-right:10px;
+	color:#999;
+}
+.header2 .on{
+	background-color:red !important;
+	color:#fff !important;
+}
+.content{
+	float:left;
+	position: relative;
+}
+#nav-smartSetup{
+	-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        #nav-smartSetup ul{
+            /*padding-bottom: 10px;*/
+        }
+        #nav-smartSetup ul li{
+            padding:0px 10px;
+            font-size: 16px;
+            position: relative;
+            background-color: #fff;
+        }
+        #nav-smartSetup ul li span{
+			padding:15px 0;
+        }
+        .header_on{
+            color:red;
+            border-bottom:1px solid red;
+        }
+
+
+
+.list{
+	margin:10px 10px 0 10px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 80px;
+    color:#fff;
+}
+.list .left{
+	background-image: url('../image/youhuiquan_di_left.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.list .left_cheng{
+	background-image: url('../image/youhuiquan_di_left_cheng.png') !important;
+}
+.list .left .ll{
+	margin:10px;
+	width: 60px;
+}
+.list .left .ll img{
+	width: 60px;
+	height: 60px;
+}
+.list .left .lr{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    position: relative;
+}
+.list .left .lr .r1{
+	background-image: url('../image/youhuiquan_yilingqu.png');
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-size: auto 100%;
+	width: 50px;
+	height: 40px;
+	position: absolute;
+	right:5px;
+	top:0px;
+	z-index: 0;
+}
+.list .left .lr .lr1{
+	margin-top: 10px;
+	height: 25px;
+	font-size: 11px;
+	position: relative;
+    z-index: 2;
+}
+.list .left .lr .lr1 .a1{
+	font-size: 18px;
+}
+.list .left .lr .lr1 .a2{
+	font-size: 12px;
+}
+.list .left .lr .lr2{
+	height: 20px;
+	line-height: 20px;
+	position: relative;
+    z-index: 2;
+}
+.list .left .lr .lr3{
+	height: 20px;
+	line-height: 20px;
+	font-size: 10px;
+	position: relative;
+    z-index: 2;
+}
+.list .right{
+	width: 100px;
+	background-image: url('../image/youhuiquan_di_right.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.list .right_cheng{
+	background-image: url('../image/youhuiquan_di_right_cheng.png') !important;
+}
+.list .right .r1{
+	background-image: url('../image/youhuiquan_yilingqu.png');
+	background-repeat: no-repeat;
+	background-position: 25px 0;
+	background-size: auto 100%;
+	width: 100%;
+	height: 40px;
+}
+.list .right .r1_cheng{
+	background-image: url('../image/youhuiquan_yilingqu_cheng.png');
+}
+.list .right .r2{
+	width: 70%;
+	margin:0 15%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 10px;
+	background-color: #fffc00;
+	color:#582900;
+	font-size: 12px;
+	margin-top: 10px;
+}
+.list .right .r3{
+	width: 70%;
+	margin:30px 15%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 10px;
+	background-color: #fffc00;
+	color:#582900;
+	font-size: 12px;
+}
+.list .right .r3_on{
+	background-color: #bdbb01 !important;
+}
+.list .right .r4{
+	font-size: 10px;
+	line-height: 13px;
+	height:40px;
+	overflow: hidden;
+	margin:5px 5px 5px 10px;
+}

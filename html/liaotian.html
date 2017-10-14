@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/liaotian.css"/>
+    <style>
+    	#o{  height:auto!important;
+            overflow-x: hidden;
+            word-wrap: break-word;
+            outline:0px;
+            min-height:30px;
+             max-height:30px;
+             /*line-height: 20px;
+             color:#999;*/
+             -webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		    border:1px solid #e2e2e2;
+		    border-radius: 5px;
+		    margin:10px 10px 10px 10px;
+		    line-height: 30px;
+		    padding:0 5px;
+		    overflow-y:visible;
+             }
+        #o img{
+        	outline:none;
+        	width:20px;
+        	height:20px;
+        }
+    </style>
+</head>
+<body id="body" onclick="fclose_emotion();fclose_emotion2();">
+<div id="main">
+	<ul class="chat_info">
+		<!--<div class="time">2016-03-23  15:23:23</div>
+		<li class="me">
+			<div class="s1"></div><div class="s2"><span class="nr">两斤牛肉，一坛老干妈</span></div><div class="jiao"></div><div class="s3" tapmode="" onclick="fopen_look_user(0);"></div>
+		</li>
+		<li class="you">
+			<div class="s1" tapmode="" onclick="fopen_look_user(0);"></div><div class="jiao"></div><div class="s2"><span class="nr">本店是卖水的，亲</span></div><div class="s3"></div>
+		</li>
+		<li class="you">
+			<div class="s1" tapmode="" onclick="fopen_look_user(0);"></div>
+			<div class="jiao"></div>
+			<div class="s2">
+				<span class="nr">
+					<div class="img"><div class="logoing"><img src="../image/login1.gif" /></div><img class="sc_img" src="../image/sp_5.png" sev_src="0" /></div>
+				</span>
+			</div>
+			<div class="s3"></div>
+		</li>
+		<li class="me">
+			<div class="s1"></div>
+			<div class="jiao"></div>
+			<div class="s2">
+				<span class="nr">
+					<div class="img"><div class="logoing"><img src="../image/login1.gif" /></div><img class="sc_img" src="../image/sp_5.png" sev_src="0" /></div>
+				</span>
+			</div>
+			<div class="s3" tapmode="" onclick="fopen_look_user(0);"></div>
+		</li>-->
+	</ul>
+</div>
+<div id="footer" style="z-index: 10;">
+	<div class="scanf">
+		<!--<input type="text" placeholder="输入消息" id="shuru" />-->
+		<div id="o" contenteditable="true" onblur="blur(this);foshi_jd();" onfocus="fohuo_jd();fg_di();">请输入你想要说的话</div>
+		<!--<textarea name="" id="shuru"  rows=15 onpropertychange='this.style.posHeight=this.scrollHeight' onfocus='textarea.style.posHeight=this.scrollHeight'></textarea>-->
+		<div class="fs" tapmode="fs_on" onclick="fasong();">发送</div>
+		<!--<div class="jia"></div>-->
+	</div>
+	<div class="memu">
+		<div class="tu_hui"><img src="../image/tu_hui.png" tapmode="" onclick="fadd_tu();" /><img src="../image/tu_bq.png" onclick="event.cancelBubble = true;fopen_emotion();fopen_emotion2();" /></div>
+		<ul>
+			<li></li>
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/emotion.json.js"></script>
+<script type="text/javascript" src="../script/emotion.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		user_id=$api.getStorage('user_id');
+		to_user_id=api.pageParam.to_user_id;
+		img_src=$api.getStorage('user_img');
+		to_img_src=api.pageParam.to_img_src;
+		wb_id=api.pageParam.wb_id;
+		fcsh();
+		window.setInterval('fget();',2000);
+		document.getElementById("main").addEventListener('touchstart',function(){
+			fclose_emotion();
+			$('#o').blur();
+			fclose_emotion2();
+		});
+		document.getElementById("main").addEventListener('touchmove', onTouchStart);
+		document.getElementById("footer").addEventListener('touchmove','',false);
+	};
+	var onTouchStart=function (e)
+	{
+		var isFocus=$("#o").is(":focus");  
+		if(true==isFocus){  
+		    
+		}else{  
+		    $('#footer').css('position','fixed');
+		} 
+		
+	}
+	var user_id=0;
+	var to_user_id=0;
+	var img_src='';
+	var to_img_src='';
+	var wb_id=0;
+	function fg_di()
+	{
+		//$('#footer').css('bottom','0px');
+		$('body').animate({scrollTop: $('#main').height()}, 500);
+		window.setTimeout(function(){
+			$('body').animate({scrollTop: $('#main').height()}, 500);
+		},20);
+		
+	}
+	function fadd_tu()
+	{
+		api.openFrame({
+	        name: 'goodspingjia_tanc',
+	        url: 'goodspingjia_tanc.html',
+	        pageParam:{
+	        	num:4
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fopen_emotion2()
+	{
+		$('#footer').css('bottom',(241-34)+'px');
+	}
+	function fclose_emotion2()
+	{
+		$('#footer').css('position','fixed');
+		$('#footer').css('bottom','0px');
+	}
+	function fadd_sc_img(src)
+	{
+		var html='';
+		html+='<li class="me">';
+		html+='	<div class="s1"></div>';
+		html+='	<div class="s2">';
+		html+='		<span class="nr">';
+		html+='			<div class="img"><div class="logoing"><img src="../image/login1.gif" /></div><img class="sc_img" src="'+src+'" sev_src="0" /></div>';
+		html+='		</span>';
+		html+='	</div>';
+		html+='	<div class="jiao"></div>';
+		html+='	<div class="s3" style="background-image:url(\''+YAH_web+'/'+img_src+'\')" tapmode="" onclick="fopen_look_user('+user_id+');"></div>';
+		html+='</li>';
+		$('.chat_info').append(html);
+		//document.getElementById('body').scrollTop = document.getElementById('main').scrollHeight;
+		$('body').animate({scrollTop: $('#main').height()}, 500);
+		ftutu_csh();
+	}
+	function fshangchuan(src)
+	{
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+        fadd_sc_img(src);
+		//api.showProgress({title:'上传中...'});
+		//var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_chat.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id,
+		            ysrc:src,
+		            wb_id:wb_id,
+		            to_user_id:to_user_id,
+		            fabu_id:user_id
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		         if(ret[0].pan==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0].pan==1)
+		         {
+					var max=$('.sc_img').length;
+					for(var i=0;i<max;i++)
+					{
+						var lin_src=$('.sc_img').eq(i).attr('src');
+						if(lin_src==ret[0].ysrc)
+						{
+							$('.logoing').eq(i).css('display','none');
+							$('.sc_img').eq(i).attr('sev_src',ret[0].msg);
+						}
+					}
+		         }
+		    } else {
+		         fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fcsh()
+	{
+		api.ajax({
+	            url: YAH_ajax_name+'liaotian_csh.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	to_user_id:to_user_id,
+	                	wb_id:wb_id,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 var html='';
+	                 for(var i=0;i<ret.length;i++)
+	                 {
+	                 	if(ret[i].userId==user_id)
+	                 	{
+	                 		var reg=new RegExp("class=\"tutu\" src=\"","g"); //创建正则RegExp对象  
+							var stringObj=ret[i].content;  
+							var newstr=stringObj.replace(reg,"class=\"tutu\" src=\""+YAH_web+"/");
+//							var reg;
+//							for(var j=0;j<emotion_json.length;j++)
+//							{
+//								reg=new RegExp(emotion_json[j].text,"g"); //创建正则RegExp对象 
+//								newstr=newstr.replace(reg,"\<img src=\"../emotion/"+emotion_json[j].name+".png\"\>");
+//							}
+	                 		html+='<div class="time">'+ret[i].createTime+'</div>';
+	                 		html+='<li class="me" id="'+ret[i].id+'">';
+							html+='	<div class="s1"></div><div class="s2"><span class="nr">'+newstr+'</span></div><div class="jiao"></div><div class="s3" style="background-image:url(\''+YAH_web+'/'+img_src+'\')" tapmode="" onclick="fopen_look_user('+user_id+');"></div>';
+							html+='</li>';
+	                 	}
+	                 	else if(ret[i].userId==to_user_id)
+	                 	{
+	                 		var reg=new RegExp("class=\"tutu\" src=\"","g"); //创建正则RegExp对象  
+							var stringObj=ret[i].content;  
+							var newstr=stringObj.replace(reg,"class=\"tutu\" src=\""+YAH_web+"/");
+//							var reg;
+//							for(var j=0;j<emotion_json.length;j++)
+//							{
+//								reg=new RegExp(emotion_json[j].text,"g"); //创建正则RegExp对象 
+//								newstr=newstr.replace(reg,"\<img src=\"../emotion/"+emotion_json[j].name+".png\"\>");
+//							}
+	                 		html+='<div class="time">'+ret[i].createTime+'</div>';
+	                 		html+='<li class="you" id="'+ret[i].id+'">';
+							html+='	<div class="s1" style="background-image:url(\''+YAH_web+'/'+to_img_src+'\')" tapmode="" onclick="fopen_look_user('+to_user_id+');"></div><div class="jiao"></div><div class="s2"><span class="nr">'+newstr+'</span></div><div class="s3"></div>';
+							html+='</li>';
+	                 	}
+	                 }
+	                 $('.chat_info').html(html);
+	                 api.parseTapmode();
+	                 //document.getElementById('body').scrollTop = document.getElementById('main').scrollHeight;
+	                 $('body').animate({scrollTop: $('#main').height()}, 500);
+	                 ftutu_csh();
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	        
+	}
+	function fget()
+	{
+		api.ajax({
+	            url: YAH_ajax_name+'liaotian_csh.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	to_user_id:to_user_id,
+	                	wb_id:wb_id,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 var html='';
+	                 for(var i=0;i<ret.length;i++)
+	                 {
+	                 	html='';
+	                 	if(ret[i].userId==to_user_id)
+	                 	{
+	                 		var reg=new RegExp("class=\"tutu\" src=\"","g"); //创建正则RegExp对象  
+							var stringObj=ret[i].content;  
+							var newstr=stringObj.replace(reg,"class=\"tutu\" src=\""+YAH_web+"/");
+//							var reg;
+//							for(var j=0;j<emotion_json.length;j++)
+//							{
+//								reg=new RegExp("\["+emotion_json[j].text+"\]","g"); //创建正则RegExp对象 
+//								newstr=newstr.replace(reg,"\<img src=\"../emotion/"+emotion_json[j].name+".png\"\>");
+//							}
+	                 		html+='<div class="time">'+ret[i].createTime+'</div>';
+	                 		html+='<li class="you" id="'+ret[i].id+'">';
+							html+='	<div class="s1" style="background-image:url(\''+YAH_web+'/'+to_img_src+'\')" tapmode="" onclick="fopen_look_user('+to_user_id+');"></div><div class="jiao"></div><div class="s2"><span class="nr">'+newstr+'</span></div><div class="s3"></div>';
+							html+='</li>';
+							if($('#'+ret[i].id).length>=1)
+		                 	{
+		                 	
+		                 	}
+		                 	else
+		                 	{
+		                 		$('.chat_info').append(html);
+		                 		//document.getElementById('body').scrollTop = document.getElementById('main').scrollHeight;
+		                 		$('body').animate({scrollTop: $('#main').height()}, 500);
+		                 		if(api.systemType=='ios') $('#footer').css('position','relative');
+		                 		//$('#footer').css('top',"0px");
+		                 	}
+	                 	}
+	                 }
+	                 api.parseTapmode();
+	                 ftutu_csh();
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fasong()
+	{
+		var content=$('#o').html();
+		var content2=$('#o').html();
+		if(Trim(content,'g').length==0 || content=="请输入你想要说的话" || content=="请输入内容")
+		{
+			api.toast({
+				msg: '请输入内容！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var reg;
+//		for(var i=0;i<emotion_json.length;i++)
+//		{
+//			reg=new RegExp("\<img src=\"../emotion/"+emotion_json[i].name+".png\"\>","g"); //创建正则RegExp对象 
+//			content=content.replace(reg,emotion_json[i].text);
+//		}
+//		var html='';
+//		html+='<li class="me">';
+//		html+='	<div class="s1"></div><div class="s2"><span class="nr">'+content2+'</span></div><div class="jiao"></div><div class="s3" style="background-image:url(\''+YAH_web+'/'+img_src+'\')" tapmode="" onclick="fopen_look_user('+user_id+');"></div>';
+//		html+='</li>';
+//		$('.chat_info').append(html);
+		$('#o').html('');
+		api.ajax({
+	            url: YAH_ajax_name+'liaotian_fasong.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	to_user_id:to_user_id,
+	                	wb_id:wb_id,
+	                	user_id:user_id,
+	                	content:content
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret[0].pan=="true")
+	                 {
+	                 	var html='';
+						html+='<li class="me">';
+						html+='	<div class="s1"></div><div class="s2"><span class="nr">'+ret[0].content+'</span></div><div class="jiao"></div><div class="s3" style="background-image:url(\''+YAH_web+'/'+img_src+'\')" tapmode="" onclick="fopen_look_user('+user_id+');"></div>';
+						html+='</li>';
+						$('.chat_info').append(html);
+	                 	$('#o').html('');
+	                 	document.getElementById('body').scrollTop = document.getElementById('main').scrollHeight;
+	                 	if(api.systemType=='ios') $('#footer').css('position','relative');
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							msg: '发送失败',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	                 api.parseTapmode();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function ftutu_csh()
+	{
+		var tu_list=document.getElementsByClassName('tutu');
+		var tu_list2=document.getElementsByClassName('sc_img');
+	    for(i=0;i<tu_list.length;i++)
+	    {
+	        tu_list[i].onclick=function(){flook_img(this.src)};
+	    }
+	    for(i=0;i<tu_list2.length;i++)
+	    {
+	        tu_list2[i].onclick=function(){flook_img(this.src)};
+	    }
+	}
+</script>
+</html>

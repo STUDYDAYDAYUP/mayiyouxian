@@ -1,0 +1,108 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+    padding-bottom:50px;
+}
+#main{
+	float:left;
+	width: 100%;
+}
+.a{
+    background-color:#eee !important;
+}
+.goods_list{
+	float:left;
+	width: 100%;
+}
+.goods_list ul{
+	float:left;
+	width: 100%;
+}
+.goods_list ul li{
+	float:left;
+	width: 100%;
+	border-bottom:1px solid #ccc;
+	padding:10px 0;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.goods_list ul li .list_left{
+	float:left;
+	height:80px;
+	text-align: center;
+	margin-left:10px;
+}
+.goods_list ul li .list_left img{
+	height:80px;
+	width:80px;
+}
+.goods_list ul li .list_right{
+	float:left;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+	height:80px;
+	position: relative;
+}
+.goods_list ul li .list_right .title{
+	font-size: 14px;
+	line-height: 20px;
+	height: 20px;
+	margin:0 10px 0 5px;
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.goods_list ul li .list_right .money{
+	margin:5px 10px 5px 5px;
+	color:#999;
+	font-size: 14px;
+	line-height: 26px;
+}
+.goods_list ul li .list_right .money2{
+	margin:0 10px 0 5px;
+	font-size: 16px;
+	color: red;
+}
+.goods_list ul li .list_right .di{
+	margin:0 10px 0 5px;
+	font-size: 12px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.goods_list ul li .list_right .di .s1{
+	border:1px solid #00b4ff;
+	color:#00b4ff;
+	padding:0 5px;
+	margin-right: 10px;
+}
+.goods_list ul li .list_right .di .s2{
+	border:1px solid #ffa200;
+	color:#ffa200;
+	padding:0 5px;
+	margin-right: 10px;
+	height:17px;
+	line-height: 17px;
+}
+.goods_list ul li .list_right .di .s3{
+	color:#999;
+	height:17px;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    line-height: 19px;
+}
+.goods_list ul li .list_right_right{
+	width: 20px;
+	background-image: url('../image/youjiantou.png');
+	background-repeat: no-repeat;
+	background-size:10px 16px;
+	background-position:0px 32px;
+}

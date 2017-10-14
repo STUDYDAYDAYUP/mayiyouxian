@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fenlei_goods.css"/>
+    <style>
+    	/*html{
+			height: 100%;
+		    width: 100%;
+		    background-color: #f2f2f2;
+		}*/
+    	body {    
+			width: 100%;
+			height:100%;
+			margin:0;
+			padding:0;
+			background-color:#f2f2f2;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+		}
+		input,button,select,textarea{outline:none;-webkit-appearance:none;}
+		#main{
+			width:100%;
+			background-color:#fff;
+			border-bottom:1px solid #eee;
+			padding:10px 0 9px 0;
+		}
+		#content{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+		}
+		#left{
+			width:100px;
+		}
+		#right{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            background-color:#fff;
+		}
+		#di{
+			width:90%;
+			border-radius: 30px;
+			background-color:#eee;
+			height:30px;
+			margin:0 5%;
+			text-align: center;
+			font-size: 14px;
+			color:#999;
+			position: relative;
+		}
+		#di .s1{
+			background-image:url('../image/sousuo.png');
+			background-repeat:no-repeat;
+			background-size:16px 16px;
+			height:16px;
+			width:16px;
+			line-height: 10px;	
+		}
+		#di .s2{
+			line-height: 30px;		
+		}
+		#ssk{
+			position: absolute;
+			top:0;
+			left:0;
+			width:80%;
+			height:30px;
+			margin:0 10px;
+		}
+    </style>
+</head>
+<body>
+<div id="main" tapmode="">
+	<div id="di" tapmode="">
+		<input type="text" id="ssk" maxlength="20"  onfocus="fhuo();"  onblur="fshi();"/>
+		<span class="s1"></span>
+		<span class="s2">输入您喜欢的商店、商品</span>
+	</div>
+</div>
+<div class="goods_list">
+	<div class="jiazai" style="background-color:#fff;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_fenlei_goods();
+	};
+	function fhuo()
+	{
+		document.getElementsByClassName('s1')[0].style.display="none";
+		document.getElementsByClassName('s2')[0].style.display="none";
+	}
+	function fshi()
+	{
+		var val=document.getElementById("ssk").value;
+		if(val=="")
+		{
+			document.getElementsByClassName('s1')[0].style.display="";
+			document.getElementsByClassName('s2')[0].style.display="";
+		}
+	}
+	$('#ssk').bind('keyup', function(event) {
+        if (event.keyCode == "13") {
+            //回车执行查询
+            var value=document.getElementById("ssk").value;
+            if(value=='') return;
+            api.openWin({
+	            name: 'sousuo_header',
+	            url: 'sousuo_header.html',
+	            pageParam:{
+	            	text:value
+	            }
+            });
+        }
+    });
+    function fget_fenlei_goods()
+    {
+    	//api.showProgress({title:'加载中...'});
+    	api.ajax({
+            url: YAH_ajax_name+'get_cat_goods.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	get_num:1,
+                	yiji_id:api.pageParam.catId,
+                	erji_id:''
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	html+='<li tapmode="a" onclick="fopengoods('+ret[i].goodsId+');">';
+					html+=	'<img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" />';
+					html+=	'<div class="title">'+ret[i].goodsName+'</div>';
+					html+=	'<div class="money">￥'+ret[i].shopPrice+'</div>';
+					html+='</li>';
+                 }
+                 html+='</ul>';
+                 document.getElementsByClassName("goods_list")[0].innerHTML=html;
+                 api.parseTapmode();
+            }else {
+            	var html='';
+				html+='<div class="no_data">没有更多数据</div>';
+				document.getElementsByClassName("goods_list")[0].innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.hideProgress();//隐藏加载进度框
+        });
+    }
+    function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html'
+		});
+	}
+</script>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wb_pingjia.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content">
+		<div class="tou">
+			<div class="left"><img src="../image/default.png" /></div>
+			<div class="right">
+				<div class="userName">&nbsp;</div>
+				<div class="time">&nbsp;</div>
+			</div>
+		</div>
+		<div class="xuan">
+					<div class="sd_xingji x0" xing="0"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_xingji_xuan">
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,1);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,2);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,3);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,4);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,5);"></div>
+					</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="go" tapmode="go_on" onclick="fset_pingjia();">提交</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_pingjia();
+	};
+	var pan=-1;
+	function fxuan(n,t)
+	{
+		$('.sd_xingji').eq(n).attr('xing',t);
+		$('.sd_xingji').eq(n).removeClass('x0');
+		$('.sd_xingji').eq(n).removeClass('x1');
+		$('.sd_xingji').eq(n).removeClass('x2');
+		$('.sd_xingji').eq(n).removeClass('x3');
+		$('.sd_xingji').eq(n).removeClass('x4');
+		$('.sd_xingji').eq(n).removeClass('x5');
+		$('.sd_xingji').eq(n).addClass('x'+t);
+	}
+	function fget_pingjia()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		//alert("请求地址:"+YAH_ajax_name+'get_help_pingjia.php');
+		//alert("user_id:"+user_id+",wb_id:"+api.pageParam.wb_id);
+		api.ajax({
+            url: YAH_ajax_name+'get_help_pingjia.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	wb_id:api.pageParam.wb_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='';
+            	html+='<div class="left"><img src="'+YAH_web+'/'+ret[0].userPhoto+'" /></div>';
+				html+='<div class="right">';
+				html+='	<div class="userName ccyc">'+ret[0].userName+'</div>';
+				html+='	<div class="time">'+ret[0].time+'  完成服务</div>';
+				html+='</div>';
+				$('.tou').html(html);
+				pan=ret[0].isPj;
+				if(ret[0].isPj==1)
+				{
+					$('.footer').css('display','none');
+					$('.sd_xingji_xuan').css('display','none');
+					$('.sd_xingji').removeClass('x0');
+					$('.sd_xingji').addClass('x'+ret[0].star);
+				}
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fset_pingjia()
+	{
+		if(pan==-1 || pan==1)
+		{
+			api.toast({
+				msg: '请稍后再试',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var star=$('.sd_xingji').eq(0).attr('xing');
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'提交中...'});
+		api.ajax({
+            url: YAH_ajax_name+'set_help_pingjia.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	wb_id:api.pageParam.wb_id,
+                	star:star
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan=="true")
+                 {
+                 	api.toast({
+						msg: '评价成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					fget_pingjia();
+					api.execScript({
+	                   	name:'root',
+	                   	frameName:'all_dingdan',
+	                    script: 'fget_all_dingdan();'
+                    });
+                    api.execScript({
+	                   	name:'weibang_dingdan_header',
+	                   	frameName:'weibang_dingdan',
+	                    script: 'fget_wb_order_xx();'
+                    });
+					window.setTimeout('api.closeWin({});',1000);
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: '提交失败，请稍后再试',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

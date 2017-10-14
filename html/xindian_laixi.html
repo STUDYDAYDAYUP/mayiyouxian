@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/home.css"/>
+</head>
+<body>
+	<div id='main'>
+		<div class="goods_list">
+			<div class="content" id="content">
+				<!--<ul>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x2"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x25"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+				</ul>-->
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+$api.setStorage("YAH_web",YAH_web);
+	window.apiready = function() {
+			var gao = api.winHeight;
+			var tugao = gao * 0.25;
+			var obj = api.require('UIScrollPicture');
+			var paths = ['widget://image/lunbo.jpg', 'widget://image/lunbo.jpg'];
+			document.getElementById("main").style.marginTop = tugao + "px";
+			obj.open({
+			    rect: {
+			        x: 0,
+			        y: 0,
+			        w: api.winWidth,
+			        h: tugao
+			    },
+			    styles : {
+					caption : {
+						height : 35,
+						color : '#E0FFFF',
+						size : 13,
+						bgColor : '#696969',
+						position : 'bottom'
+					},
+					indicator : {
+						align : 'center',
+						color : '#FFFFFF',
+						activeColor : '#DA70D6'
+					}
+				},
+			    data: {
+			        paths: paths
+			    },
+			    placeholderImg: 'widget://image/default.png',
+			    contentMode: 'scaleToFill',
+			    interval: 3,
+			    fixedOn: api.frameName,
+			    loop: true,
+			    fixed: false
+			}, function(ret, err){
+			    if (ret.status) {
+					if (ret.eventType == 'click') {
+						fonclick_lunbo(ret.index);
+					}
+				}
+			});
+			head_h=55;
+	        if(api.systemType=='ios'){
+	       		head_h=70;
+	    	}
+	    	else
+	    	{
+	    		var sVer = api.systemVersion;
+	    		var banben=parseFloat(sVer);
+	    		if(banben>=4.4)
+	    		{
+	    			head_h=70;
+	    		}
+	    	}
+			//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    fget_lunbo();
+			    fget_dianpu();
+			    api.parseTapmode();
+			});
+			fget_lunbo();
+			fget_dianpu();
+		}
+function fremove(obj,n)
+{
+	$api.removeCls(obj,n);
+}	
+//function fopengoods(goods_id)
+//{
+//	$api.setStorage('goods_id',goods_id);
+//	api.openWin({
+//		name: 'goods_header',
+//		url: 'goods_header.html'
+//	});
+//}
+function fget_lunbo()
+{
+	api.ajax({
+            url: YAH_ajax_name+'get_home_lunbo.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	type:3
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+				var obj = api.require('UIScrollPicture');
+				var paths = '[';
+				for(var i=0;i<ret.length;i++)
+				{
+					if(i==0)
+					{
+						paths+='"'+YAH_web+'/'+ret[i].adFile+'"';
+					}
+					else
+					{
+						paths+=',"'+YAH_web+'/'+ret[i].adFile+'"';
+					}
+				}
+				paths+=']';
+				paths=$api.strToJson(paths);
+				obj.reloadData({
+				    data: {
+				        paths: paths
+				    }
+				});
+				$api.setStorage('xindian_lunbo',ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+        });
+}
+function fonclick_lunbo(n)
+{
+	var ret=$api.getStorage('xindian_lunbo');
+		var url=ret[n].adURL;
+		var adId=ret[n].adId;
+		var adURLApp=ret[n].adURLApp;
+		if(adURLApp=='0' || adURLApp=="" || adURLApp=="null" || adURLApp==null)
+		{
+			if(url=='0' || url=="" || url=="null" || url==null || url.length<10) return;
+			if(adId==0);
+			else fadd_ads(adId);
+			 api.openApp({
+	             androidPkg : 'android.intent.action.VIEW',
+	             mimeType : 'text/html',
+	             uri :url,
+	             iosUrl:url
+	         }, function(ret, err) {
+	//           var msg = JSON.stringify(ret);
+	//           api.alert({
+	//            title : 'openApp',
+	//            msg : msg,
+	//            buttons : ['确定']
+	//           });
+	        });
+        }
+        else
+        {
+        	if(adId==0);
+			else fadd_ads(adId);
+			adURLApp=adURLApp.split("|");
+			if(adURLApp[0]=='G'){
+				fopengoods(adURLApp[1]);
+			}
+			else if(adURLApp[0]=='S'){
+				fopen_dianpu(adURLApp[1]);
+			}
+        }
+}
+function fadd_ads(adId)
+	{
+		api.ajax({
+            url: YAH_ajax_name+'add_ads_count.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	adId:adId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 
+            }else {
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html'
+		});
+	}
+function fget_dianpu()
+{
+		document.getElementById("content").innerHTML='<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>';
+		api.ajax({
+            url: YAH_ajax_name+'get_new_dianpu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	lat:$api.getStorage('lat'),
+                	lon:$api.getStorage('lon')
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+            		html+='<li tapmode="a" onclick="fopen_dianpu('+ret[i].shopId+');">';
+					html+='	<div class="nei">';
+					html+='		<div class="left"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+					html+='		<div class="right">';
+					//html+='			<div class="title">'+ret[i].shopName+'</div>';
+					html+='		<div class="s0"><div class="title">'+ret[i].shopName+'</div>';
+					var timestamp=new Date().getTime();
+					timestamp=timestamp/1000;
+					if(ret[i].isBondShow==1 && timestamp>=ret[i].bondStartTime && timestamp<=ret[i].bondEndTime) html+='<div class="right2"><span class="l1">保</span><span class="l2">'+ret[i].bond+'</span></div>';
+					function fzhuan(n)
+					{
+							n=n*10;
+							var shi=parseInt((Number(n)/10));
+							var ge=Number(n)%10;
+							if(ge>0 && ge<=9) return shi+''+5;
+							else return shi;
+					}
+					html+='		</div>';
+					html+='			<div class="s1">';
+					html+='				<span class="s_l">';
+					html+='					<div class="sd_wxingji">';
+					html+='						<div class="sd_xingji x'+fzhuan((ret[i].score).toFixed(1))+'"></div>';
+					html+='						<div class="sd_xingji_di"></div>';
+					html+='					</div>';
+					html+='					<span class="red">'+(ret[i].score).toFixed(1)+'</span> 月售'+ret[i].yue_xiaoliang+'份</span>';
+					html+='					<span class="s_r"><span class="red">'+ret[i].deliveryStartMoney+'</span>元起送';
+					html+='				</span>';
+					html+='			</div>';
+//					var juli='';
+//					if(Number(ret[i].juli)<1000) juli=ret[i].juli+"米";
+//					else{
+//						juli=Number(ret[i].juli)/1000;
+//						juli=juli.toFixed(1)+"KM";
+//					}
+					html+='			<div class="s2"><span class="s_l">预计送达时间：'+ret[i].deliveryCostTime+'分钟/'+ret[i].juli2+'</span><span class="s_r">'+ret[i].deliveryMoney+'元配送费</span></div>';
+					html+='		</div>';
+					html+='	</div>';
+					html+='	<div class="di"><div class="list"><div class="bao"></div>满'+ret[i].deliveryFreeMoney+'元包邮</div></div>';
+					html+='</li>';
+            	}
+            	html+='</ul>';
+            	document.getElementById("content").innerHTML=html;
+            }else {
+            	var html='<div style="text-align: center;line-height: 50px;">暂无店铺</div>';
+            	document.getElementById("content").innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+</script>
+</html>

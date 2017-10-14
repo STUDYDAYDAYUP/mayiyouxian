@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+    		width:100%;
+    		height:100%;
+    		background-color:#fff;
+    	}
+    	body{
+    		width:100%;
+    		height:100%;
+    		background-color:#fff;
+    	}
+    	#main{
+    		width:100%;
+    		height:100%;
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+            font-size: 14px;
+    	}
+    	.kong1{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+    	}
+    	.kong2{
+    		-webkit-box-flex: 3;
+            -webkit-flex: 3;
+            flex: 3;
+    	}
+    	.content{
+    		text-align: center;
+    	}
+    	.content img{
+    		height:80px;
+    	}
+    	.content .title{
+    		color:#999;
+    		margin-top:10px;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="kong1"></div>
+	<div class="content">
+		<img id="tu" src="../image/shanghu_logo.png" />
+		<div class="title"></div><br/>
+		<img id="tu" src="../image/shanghu_logo.png" />
+		<div class="title"></div>
+	</div>
+	<div class="kong2"></div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var lin_ret=$api.getStorage('sys');
+		var html='';
+		html+='<img id="tu" src="'+YAH_web+'/'+lin_ret[0].Android+'" />';
+		html+='<div class="title">'+lin_ret[0].mallName+'Android APP</div><br/>';
+		html+='<img id="tu" src="'+YAH_web+'/'+lin_ret[0].iPhone+'" />';
+		html+='<div class="title">'+lin_ret[0].mallName+'IOS APP</div>';
+		$('.content').html(html);
+		//$('.title').html(lin_ret[0].mallName+"app");
+	};
+</script>
+</html>

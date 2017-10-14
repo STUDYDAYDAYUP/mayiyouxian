@@ -1,0 +1,619 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>slide</title>
+    <link rel="stylesheet" type="text/css" href="css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/header.css"/>
+</head>
+<body>
+<div id="wrap">
+    <header id="headers">
+        <div id="home" class="topbar  activebar">
+        	<div tapmode="a" class="topzuo" style="background: none;"></div>
+        	<div class="topzhong ccyc" >蚂蚁优鲜</div>
+        	<div tapmode="a" class="topyou"></div>
+        </div>
+        <!-- <div id="fenlei" class="topbar  "><div class="topzhong">菜品分类</div></div> -->
+        <div id="fenlei" class="topbar  "><div class="topzhong" onclick="fopen_sousuo();"><div class="search"><span>输入你想要的关键字</span></div></div></div>
+        <!-- <div id="jifen" class="topbar "><div class="topzhong">发现</div></div> -->
+        <div id="goshop" class="topbar ">
+	        <!--<div tapmode="a" class="topzuo"></div>-->
+	      	<div class="topzhong">购物车</div>
+	      	<div tapmode="a" class="topyou" id="bianji" onclick="del();">删除</div>
+        </div>
+        <!-- <div id="my" class="topbar " style="display: none;"><div class="topzhong">我的</div></div> -->
+    </header>
+    <div id="main" style="overflow: auto;">
+
+    </div>
+    <div id="footer">
+        <ul>
+            <li tapmode="a" class="home2 active" onClick="randomSwitchBtn(this,'home',0)">
+                <a class="bottom_btn home">首页</a>
+            </li>
+
+            <li tapmode="a" class="fenlei2" onClick="randomSwitchBtn(this,'fenlei',1)">
+                <a class="bottom_btn fenlei ">菜品分类</a>
+            </li>
+            <!-- <li tapmode="a" class="jifen2" onClick="randomSwitchBtn(this,'jifen',2)">
+                <a class="bottom_btn jifen ">发现</a>
+            </li> -->
+            <li tapmode="a" class="goshop2" onClick="randomSwitchBtn(this,'goshop',3)">
+            	<span id="goods_num">0</span>
+                <a class="bottom_btn goshop ">购物车</a>
+            </li>
+            <li tapmode="a" class="my2" onClick="randomSwitchBtn(this,'my',4)">
+                <a class="bottom_btn my " style="background-size:21px;">我的</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/config.js"></script>
+<script type="text/javascript">
+document.getElementById("footer").ontouchmove = function(e){ e.preventDefault(); };
+document.getElementById("main").ontouchmove = function(e){ e.preventDefault(); };
+document.getElementById("headers").ontouchmove = function(e){ e.preventDefault(); };
+
+    apiready = function () {
+
+	    $api.fixIos7Bar($api.dom('.title'));
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err){
+            api.closeWidget();
+        });
+
+        //fdingwei();
+    }
+
+    var header_h2,rect_h2;
+    apiready = function () {
+    	api.parseTapmode();
+     	if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+       	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+        api.setStatusBarStyle({
+            style: 'dark'
+        });
+    	fget_fenlei_list();
+    	fget_sys();
+    	api.addEventListener({
+		    name:'offline'
+		},function(ret,err){
+		   api.toast({
+			    msg: '网络连接不上呀...',
+			    duration: 2000,
+			    location: 'bottom'
+			});
+		});
+    	var kuan=api.winWidth;
+        var $header = $api.dom('header');
+        $api.fixIos7Bar($header);
+        var $body = $api.dom('body');
+        var $footer = $api.byId('footer');
+        var header_h = $api.offset($header).h;
+        var body_h = $api.offset($body).h;
+        var footer_h = $api.offset($footer).h;
+        var rect_h = body_h - header_h - footer_h;
+        header_h2=header_h;
+        rect_h2=rect_h;
+        document.getElementById("home").style.display="none";
+        api.openFrameGroup({
+            name: 'group',
+            preload:4,
+            bounces:false,
+            scrollEnabled: false,
+            rect: {x: 0, y: header_h, w: 'auto', h: rect_h},
+            index: 0,
+            frames: [
+                {
+                    name: 'home',
+                    url: 'html/home.html',
+                    vScrollBarEnabled:false,
+            		hScrollBarEnabled:false
+                },
+                {
+                    name: 'all_dingdan',
+                    url: 'html/fenlei_xin2.html',
+                    vScrollBarEnabled:false,
+            		hScrollBarEnabled:false,
+            		pageParam:{
+		            	header_h:header_h,
+		            	rect_h:rect_h
+		            },
+                }
+                ,
+                {
+                    name: 'jifen',
+                    url: 'html/jifen.html',
+                    vScrollBarEnabled:false,
+            		hScrollBarEnabled:false
+                }
+                ,
+                {
+                    name: 'goshop',
+                    url: 'html/goodscart.html',
+                    vScrollBarEnabled:false,
+            		hScrollBarEnabled:false
+                }
+                ,
+                {
+                    name: 'my',
+                    url: 'html/my2.html',
+                    vScrollBarEnabled:false,
+            		hScrollBarEnabled:false
+                }
+            ]
+        }, function (ret, err) {
+        	//randomSwitchBtn('', ret.name, ret.index);
+        	if(lin_one_get==0) {lin_one_get=1;fdingwei();}
+        	function exitApp()
+        	{
+				api.addEventListener({
+			            name: 'keyback'
+			        }, function(ret, err){
+			            api.toast({
+			                    msg: '再按一次返回键退出'+api.appName,
+			                    duration:2000,
+			                    location: 'bottom'
+			                });
+
+			                api.addEventListener({
+			                    name: 'keyback'
+			                }, function(ret, err){
+			                    api.closeWidget({
+                                    silent: true,
+                                });
+			                });
+			                setTimeout(function(){
+			                        exitApp();
+			                },3000)
+			        });
+			 }
+			var index = ret.index;
+        	if(index==0) exitApp();
+//			api.closeFrame({
+//	            name: 'right0'
+//          });
+        });
+        var lin_one_get=0;
+		// document.getElementById("weizhi").innerHTML=$api.getStorage('city');
+
+    }
+    //删除购物车
+    function del(){
+
+        var num = $api.getStorage('goshop_goods_num');
+        if(num > 0){
+            api.confirm({
+			    title: '提示',
+			    msg: '确定要删除所选中的吗？',
+			    buttons: ['确定', '取消']
+			},function( ret, err ){
+			    if( ret ){
+			    	if(ret.buttonIndex == 1)
+			    	{
+			    		api.execScript({
+	                       	name:'root',
+	                       	frameName:'goshop_footder',
+	                        script: 'fdel();'
+                        });
+			    	}
+			    }else{
+			         //alert( JSON.stringify( err ) );
+			    }
+			});
+        }
+    }
+
+    var bianji_pan=1;
+    function fset_bj(obj)
+    {
+    	if(bianji_pan==1)
+    	{
+    		obj.innerHTML='取消';
+    		api.execScript({
+	           	frameName:'goshop_footder',
+	            script: 'fset_js(0);'
+            });
+    		bianji_pan=0;
+    	}
+    	else if(bianji_pan==0)
+    	{
+    		obj.innerHTML='编辑';
+    		api.execScript({
+	           	frameName:'goshop_footder',
+	            script: 'fset_js(1);'
+            });
+    		bianji_pan=1;
+    	}
+    }
+
+    function fset_bj1(){
+        /*var a=$api.byId('bianji');
+    	a.innerHTML='编辑';
+	    	api.execScript({
+           	frameName:'goshop_footder',
+            script: 'fset_js(1);'
+        });
+		bianji_pan=1;*/
+    }
+
+
+
+    // 随意切换按钮
+    function randomSwitchBtn(obj, name, index) {
+        var $header = $api.dom('header');
+        var $titleBar = $api.domAll($header, '.topbar');
+        for (var i = 0; i < $titleBar.length; i++) {
+            $api.removeCls($titleBar[i], 'activebar');
+        }
+        $api.addCls($api.byId(name), 'activebar');
+        var $footer = $api.byId('footer');
+        var $footerBar = $api.domAll($footer, 'li');
+        for (var j = 0; j < $footerBar.length; j++) {
+            $api.removeCls($footerBar[j], 'active');
+        }
+        var obj2=document.getElementsByClassName(name+"2")[0];
+        $api.addCls(obj2, 'active');
+        //alert("header_h2:"+header_h2+" rect_h2:"+rect_h2);
+        if(index==0)
+        {
+//      	api.setFrameGroupAttr({
+//			    name: 'group',
+//			    rect:{
+//			    x: 0, y: header_h2-50, w: 'auto', h: rect_h2+50
+//			    }
+//			});
+//			api.execScript({
+//	           	frameName:'home',
+//	            script: 'fmiaosha();'
+//          });
+            api.execScript({
+	           	frameName:'home',
+	            script: 'shownotify();'
+            });
+            api.setFrameAttr({
+		        name: 'ssk',
+		        hidden:false
+	        });
+        }
+        else if(index==3)
+        {
+//      	api.setFrameGroupAttr({
+//				 name: 'group',
+//				 rect:{
+//				   x: 0, y: header_h2, w: 'auto', h: rect_h2-50
+//				 }
+//			});
+			api.execScript({
+	           	frameName:'goshop',
+	            script: 'fget_buycar();'
+            });
+            api.setFrameAttr({
+		        name: 'ssk',
+		        hidden:true
+	        });
+        }
+        else
+        {
+//	        api.setFrameGroupAttr({
+//				 name: 'group',
+//				 rect:{
+//				   x: 0, y: header_h2, w: 'auto', h: rect_h2
+//				 }
+//			});
+			api.setFrameAttr({
+		        name: 'ssk',
+		        hidden:true
+	        });
+        }
+        if(index==2)
+        {
+        	api.execScript({
+		           	frameName:'jifen',
+		            script: 'fcz();'
+	        });
+        }
+        if(index==3)
+	    {
+	    	/*var a=$api.byId('bianji');
+	    	a.innerHTML='编辑';
+		    	api.execScript({
+	           	frameName:'goshop_footder',
+	            script: 'fset_js(1);'
+	        });
+			bianji_pan=1;*/
+//          api.execScript({
+//		       frameName:'buycar_footder',
+//		        script: 'fczqx();'
+//	        });
+
+            api.execScript({
+	            frameName:'goshop',
+		        script: 'api.setFrameAttr({name: "goshop_footder", hidden:false});'
+            });
+	    }
+	    else{
+	    	api.execScript({
+	            frameName:'goshop',
+		        script: 'api.setFrameAttr({name: "goshop_footder", hidden:true});'
+            });
+	    }
+	    if(index==1)
+	    {
+	    	api.execScript({
+	           	frameName:'fenlei',
+	            script: 'get_fenlei_list();'
+            });
+	    	api.execScript({
+	           	frameName:'all_dingdan',
+	            script: 'fset_page();fget_all_dingdan();'
+            });
+	    	api.setFrameAttr({
+		        name: 'fenlei_left',
+		        hidden:false
+	        });
+	        api.setFrameAttr({
+		        name: 'fenlei_right',
+		        hidden:false
+	        });
+	        var fenlei_over=$api.getStorage('fenlei_over');
+	        if(fenlei_over!='true')
+	        {
+		        api.execScript({
+		           	frameName:'fenlei_left',
+		            script: 'fget_cart_list();'
+	            });
+	        }
+
+
+	    }
+	    else
+	    {
+	    	api.setFrameAttr({
+		        name: 'fenlei_left',
+		        hidden:true
+	        });
+	        api.setFrameAttr({
+		        name: 'fenlei_right',
+		        hidden:true
+	        });
+	    }
+	    if(index==4)
+	    {
+
+	    	api.setFrameGroupAttr({
+				 name: 'group',
+				 rect:{
+				   x: 0, y: header_h2-50, w: 'auto', h: rect_h2+50
+				 }
+			});
+	    	//document.getElementById("headers").style.backgroundImage="url(../image/my_bj.png)";
+	    	api.execScript({
+	           	frameName:'my',
+	            script: 'fget_dingdan_number();fyslogin();fget_sj_status();fget_user();hehuoren();'
+            });
+	    }
+	    else{
+
+	        api.setFrameGroupAttr({
+				 name: 'group',
+				 rect:{
+				   x: 0, y: header_h2, w: 'auto', h: rect_h2
+				 }
+			});
+	    }
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+    }
+    function fget_fenlei_list()
+	{
+			var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+			api.ajax({
+	            url: YAH_ajax_name+'get_fenlei_list_n2.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	lon:lon,
+	                	lat:lat,
+	                	n:0
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret.length>0 && ret[0]['catId'])
+	            	{
+	            		$api.setStorage('fenlei_list_home',ret);
+	            		api.execScript({
+	                       	frameName:'home',
+	                        script: 'fcz_fenlei_xuan();'
+                        });
+	            	}
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            //api.hideProgress();//隐藏加载进度框
+	        });
+	        api.ajax({
+	            url: YAH_ajax_name+'get_fenlei_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {}
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret.length>0 && ret[0]['catId'])
+	            	{
+	            		$api.setStorage('fenlei_list',ret);
+	            	}
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            //api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fget_sys()
+	{
+			api.ajax({
+	            url: YAH_ajax_name+'get_info.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {}
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret.length>0) $api.setStorage('sys',ret);
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            //api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fset_goshop_num(n)
+	{
+		if(Number(n)>0){
+		   document.getElementById("goods_num").style.display="block";
+           document.getElementById("goods_num").innerHTML=n;
+		}
+		else{
+		   document.getElementById("goods_num").innerHTML=0;
+           document.getElementById("goods_num").style.display="none";
+		}
+
+	}
+	//点击加购物车出现小球 bycao
+	var $goods_num = $api.byId('goods_num');
+	var goods_num_l = $api.offset($goods_num).l;
+	var goods_num_t = $api.offset($goods_num).t;
+	var goods_num_x, goods_num_y;
+	function fset_goshop_page(){
+		var $header = $api.dom('header');
+        var header_h = $api.offset($header).h;
+        goods_num_y = goods_num_t - header_h;
+        goods_num_x = goods_num_l;
+        api.execScript({
+            frameName: 'home',
+            script: 'fs_dian(\"'+goods_num_x+'\",\"'+goods_num_y+'\");'
+        });
+	}
+	//end
+	function fdingwei()
+	    {
+	    	api.toast({
+				msg: '正在获取位置',
+				duration: 2000,
+				location: 'bottom'
+			});
+	    	var bMap = api.require('bMap');
+			bMap.getLocation({
+			    accuracy: '10m',
+			    autoStop: true,
+			    filter: 1
+			}, function(ret, err){
+			    if(ret.status){
+			        //alert(JSON.stringify(ret));
+			        if(ret.status==true)
+			        {
+			        	$api.setStorage('lon',ret.lon);
+			        	$api.setStorage('lat',ret.lat);
+			        	fzhuan(ret.lon,ret.lat);
+			        	fget_fenlei_list();
+			        	api.execScript({
+	                       	frameName:'home',
+	                        script: 'fget_dianpu(\''+ret.lat+'\',\''+ret.lon+'\');'
+                        });
+			        }
+			    }else{
+			        //alert(err.code);
+			    }
+			});
+	    }
+	    function fzhuan(lon,lat)
+	    {
+	    				var map = api.require('bMap');
+						map.getNameFromCoords({
+						    lon: lon,
+						    lat: lat
+						},function(ret,err){
+						    if(ret.status){
+						        //alert(JSON.stringify(ret));
+						        if(ret.city!=undefined)
+						        {
+							        document.getElementById("weizhi").innerHTML=ret.address;
+							        $api.setStorage('city',ret.address);
+						        }
+						        else
+						        {
+						        	var city=$api.getStorage('city');
+						        	if(city!=undefined)
+						        	{
+						        		document.getElementById("weizhi").innerHTML=city;
+						        	}
+						        	else
+						        	{
+						        		document.getElementById("weizhi").innerHTML='广州市';
+						        	}
+						        }
+
+						    }
+						});
+	    }
+	    function fopen_sousuo()
+	    {
+            api.openWin({
+		        name: 'ssy_header',
+		        url: 'html/ssy_header.html',
+		        pageParam:{
+		        	type:'dianpu'
+		        }
+	        });
+	    }
+	    function xuanzexiaoqu(){
+
+	    }
+</script>
+</body>
+
+</html>

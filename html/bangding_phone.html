@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/reg.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.t6{
+    		height:50px;
+            width: 100px;
+            background-color:#ffbc1b;
+            text-align: center;
+            color:#fff;
+    	}
+    	.t6_on{
+    		background-color:#bb8a16 !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="from">
+		<div class="min-title3" tapmode="" onclick="" id="ys" style="display: none;">
+			<span class="t1">原绑定手机号：</span><span class="t2"><input type="text" id="yzh" maxlength="11" placeholder="请输入您的手机号" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></span>
+		</div>
+		<div class="min-title3" tapmode="" onclick="" id="ym" style="margin-bottom:10px;display: none;">
+			<span class="t1">验证码：</span><span class="t2"><input type="text" id="yyzm" maxlength="6" placeholder="请输入验证码" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></span><span class="t6" tapmode="t6_on" id="yfs" onclick="yfs();">获取验证码</span><span class="t5" id="ydjs">重新获取(120S)</span>
+		</div>
+		
+		<div class="min-title3" tapmode="" onclick="">
+			<span class="t1">手机号：</span><span class="t2"><input type="text" id="hzh" maxlength="11" placeholder="请输入您的手机号" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></span>
+		</div>
+		<div class="min-title3" tapmode="" onclick="">
+			<span class="t1">验证码：</span><span class="t2"><input type="text" id="hyzm" maxlength="6" placeholder="请输入验证码" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></span><span class="t6" tapmode="t6_on" id="hfs" onclick="hfs();">获取验证码</span><span class="t5" id="hdjs">重新获取(120S)</span>
+		</div>
+	</div>
+	<div id="go" tapmode="go_on" onclick="fgo()">保存</div>
+	<div id="statement" class="f"></div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_user();
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	var pan=1;
+   var ytime=120;
+   var yjishi;
+   var ydqtime=new Date().getTime();
+   ydqtime=Number(ydqtime/1000);
+   if(ydqtime-Number(localStorage.yyzm_time)<120 && ydqtime-Number(localStorage.yyzm_time)>=0)
+   {
+       document.getElementById("yfs").style.display="none";
+	    document.getElementById("ydjs").style.display="block";
+       ytime=parseInt(120-(ydqtime-localStorage.yyzm_time));
+       document.getElementById("ydjs").innerHTML="重新获取("+ytime+"S)";
+       jishi=window.setInterval("yftime()","1000");
+   }
+   if(ydqtime-localStorage.yyzm_time>600)
+   {
+       localStorage.yyzm=-1;
+   }
+   
+   var htime=120;
+   var hjishi;
+   var hdqtime=new Date().getTime();
+   hdqtime=Number(hdqtime/1000);
+   if(hdqtime-Number(localStorage.hyzm_time)<120 && hdqtime-Number(localStorage.hyzm_time)>=0)
+   {
+       document.getElementById("hfs").style.display="none";
+	    document.getElementById("hdjs").style.display="block";
+       htime=parseInt(120-(hdqtime-localStorage.hyzm_time));
+       document.getElementById("hdjs").innerHTML="重新获取("+htime+"S)";
+       jishi=window.setInterval("hftime()","1000");
+   }
+   if(hdqtime-localStorage.hyzm_time>600)
+   {
+       localStorage.hyzm=-1;
+   }
+	function yfs()
+	{
+		var mobile=document.getElementById("yzh").value;
+	    if(mobile.length==11 && mobile[0]=='1' && (mobile[1]=='3' || mobile[1]=='5' || mobile[1]=='7' || mobile[1]=='8'))
+	    {
+	         
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	       return;
+	    }
+	    var ytimestamp=new Date().getTime();
+	    localStorage.yyzm_time=Number(ytimestamp/1000);
+	    document.getElementById("yfs").style.display="none";
+	    document.getElementById("ydjs").style.display="block";
+	    localStorage.yyzm=Math.floor(Math.random()*899999)+100000;
+	    localStorage.yyzm_sj=mobile;
+	    ytime=120;
+	    document.getElementById("ydjs").innerHTML="重新获取("+ytime+"S)";
+	    yjishi=window.setInterval("yftime()","1000");
+	    //alert("验证码是："+localStorage.yyzm);
+	    api.toast({
+				msg: '发送成功！',
+				duration: 2000,
+				location: 'bottom'
+		});
+		api.ajax({
+            url: YAH_ajax_name+'fssms_yzm.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	mobile:mobile,
+                	yzm:localStorage.yyzm
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function hfs()
+	{
+		var mobile=document.getElementById("hzh").value;
+	    if(mobile.length==11 && mobile[0]=='1' && (mobile[1]=='3' || mobile[1]=='5' || mobile[1]=='7' || mobile[1]=='8'))
+	    {
+	         
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	       return;
+	    }
+	    var htimestamp=new Date().getTime();
+	    localStorage.hyzm_time=Number(htimestamp/1000);
+	    document.getElementById("hfs").style.display="none";
+	    document.getElementById("hdjs").style.display="block";
+	    localStorage.hyzm=Math.floor(Math.random()*899999)+100000;
+	    localStorage.hyzm_sj=mobile;
+	    htime=120;
+	    document.getElementById("hdjs").innerHTML="重新获取("+htime+"S)";
+	    hjishi=window.setInterval("hftime()","1000");
+	    //alert("验证码是："+localStorage.hyzm);
+	    api.toast({
+				msg: '发送成功！',
+				duration: 2000,
+				location: 'bottom'
+		});
+		api.ajax({
+            url: YAH_ajax_name+'fssms_yzm.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	mobile:mobile,
+                	yzm:localStorage.hyzm
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function yftime()
+	{
+	    if(ytime!=0)
+	    {
+	        ytime--;
+	        document.getElementById("ydjs").innerHTML="重新获取("+ytime+"S)";
+	    }
+	    else
+	    {
+	        window.clearInterval(yjishi);
+	        document.getElementById("yfs").style.display="block";
+	        document.getElementById("ydjs").style.display="none";
+	    }
+	}
+	function hftime()
+	{
+	    if(htime!=0)
+	    {
+	        htime--;
+	        document.getElementById("hdjs").innerHTML="重新获取("+htime+"S)";
+	    }
+	    else
+	    {
+	        window.clearInterval(hjishi);
+	        document.getElementById("hfs").style.display="block";
+	        document.getElementById("hdjs").style.display="none";
+	    }
+	}
+	function fgo()
+	{
+		if(pan==0) fgo1();
+		else fgo2();
+	}
+	function fgo1()
+	{
+	    var ymobile=document.getElementById("yzh").value;
+	    var hmobile=document.getElementById("hzh").value;
+	    var yyzm=document.getElementById("yyzm").value;
+	    var hyzm=document.getElementById("hyzm").value;
+	    if(ymobile.length==11 && ymobile[0]=='1'  && (ymobile[1]=='3' || ymobile[1]=='5' || ymobile[1]=='7' || ymobile[1]=='8') && hmobile.length==11 && hmobile[0]=='1'  && (hmobile[1]=='3' || hmobile[1]=='5' || hmobile[1]=='7' || hmobile[1]=='8'))
+	    {
+	        if(ymobile==hmobile)
+	        {
+	        	api.toast({
+					msg: '两次手机号不能相同',
+					duration: 2000,
+					location: 'bottom'
+			    });
+	            return;
+	        }
+	        if(yyzm==localStorage.yyzm && localStorage.yyzm_sj==ymobile)
+	        {
+	        }
+	        else
+	        {
+	            api.toast({
+					msg: '原绑定的手机号验证码错误',
+					duration: 2000,
+					location: 'bottom'
+			   });
+			   return;
+	        }
+	        if(hyzm==localStorage.hyzm && localStorage.hyzm_sj==hmobile)
+	        {
+	        }
+	        else
+	        {
+	            api.toast({
+					msg: '要绑定的手机号验证码错误',
+					duration: 2000,
+					location: 'bottom'
+			   });
+			   return;
+	        }
+	        fshow(ymobile,hmobile);
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码',
+				duration: 2000,
+				location: 'bottom'
+		   });
+	       return;
+	    }
+	    
+	}
+	function fgo2()
+	{
+	    var hmobile=document.getElementById("hzh").value;
+	    var hyzm=document.getElementById("hyzm").value;
+	    if(hmobile.length==11 && hmobile[0]=='1'  && (hmobile[1]=='3' || hmobile[1]=='5' || hmobile[1]=='7' || hmobile[1]=='8'))
+	    {
+	        if(hyzm==localStorage.hyzm && localStorage.hyzm_sj==hmobile)
+	        {
+	        }
+	        else
+	        {
+	            api.toast({
+					msg: '要绑定的手机号验证码错误',
+					duration: 2000,
+					location: 'bottom'
+			   });
+			   return;
+	        }
+	        fshow2('1',hmobile);
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码',
+				duration: 2000,
+				location: 'bottom'
+		   });
+	       return;
+	    }
+	}
+	function fshow(ymobile,hmobile)
+	{
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+	    api.ajax({
+            url: YAH_ajax_name+'bangding_phone.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	ymobile:ymobile,
+                	hmobile:hmobile,
+                	pan:pan
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            		if(ret[0]['pan']==-1)
+            		{
+            			api.toast({
+							msg: '要绑定的手机已存在',
+							duration: 2000,
+							location: 'bottom'
+					   });
+            		}
+            		else if(ret[0]['pan']==-2)
+            		{
+            			api.toast({
+							msg: '绑定失败',
+							duration: 2000,
+							location: 'bottom'
+					   });
+            		}
+            		else if(ret[0]['pan']==1)
+            		{
+            			api.toast({
+							msg: '绑定成功',
+							duration: 2000,
+							location: 'bottom'
+					   });
+					   api.execScript({
+	                       name:'root',
+	                       frameName:'my',
+	                       script: 'fclose_user();'
+                       });
+                       api.closeWin({
+                       		name:'user_info_header'
+                       });
+					   window.setTimeout('fclose();',1500);
+            		}
+            		else if(ret[0]['pan']==-3)
+            		{
+            			api.toast({
+							msg: '原绑定手机号不匹配',
+							duration: 2000,
+							location: 'bottom'
+					   });
+            		}
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_user()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+	    api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	if(ret[0]['userPhone']=="" || ret[0]['userPhone']==null || ret[0]['userPhone']=='undefined')
+            	{
+            		pan=1;
+            	}
+            	else
+            	{
+            		pan=0;
+            		document.getElementById("ys").style.display="-webkit-box";
+            		document.getElementById("ys").style.display="-webkit-flex";
+            		document.getElementById("ys").style.display="flex";
+            		document.getElementById("ym").style.display="-webkit-box";
+            		document.getElementById("ym").style.display="-webkit-flex";
+            		document.getElementById("ym").style.display="flex";
+            	}
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

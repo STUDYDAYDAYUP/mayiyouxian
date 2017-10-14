@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/faweibang_xuan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">范围</div>
+	<div class="list" tapmode="" onclick="fxuan(0,'5');">5KM</div>
+	<div class="list" tapmode="" onclick="fxuan(1,'10');">10KM</div>
+	<div class="list" tapmode="" onclick="fxuan(2,'15');">15KM</div>
+	<div class="list" tapmode="" onclick="fxuan(3,'30');">30KM</div>
+	<div class="list" tapmode="" onclick="fxuan(4,'0');">不限范围</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fxuan(n,name)
+	{
+		var max=$('.list').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.list').eq(i).addClass('list_on');
+				api.execScript({
+	               	frameName:'faweibang',
+	                script: 'fset_fanwei(\''+name+'\');'
+                });
+                api.execScript({
+	               	frameName:'faweibang_tanc',
+	                script: 'fclose();'
+                });
+			}
+			else
+			{
+				$('.list').eq(i).removeClass('list_on');
+			}
+		}
+	}
+</script>
+</html>

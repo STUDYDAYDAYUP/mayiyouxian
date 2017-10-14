@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang_dingdan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div class="title1" id="dd_tishi">订单状态：订单已提交</div>
+		<div class="dd_status">
+			<div class="d_list">
+				<img src="../image/dd_ytj1.png" />
+				<a>订单已提交</a>
+			</div>
+			<div class="d_list">
+				<img src="../image/dd_yjd1.png" />
+				<a>订单进行中</a>
+			</div>
+			<div class="d_list">
+				<img src="../image/dd_ywc1.png" />
+				<a>订单完成</a>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="title1" tapmode="" onclick="">
+			<div class="left">
+				<div class="bt ccyc">&nbsp;</div>
+				<div class="nr ccyc">&nbsp;</div>
+			</div>
+			<div class="right"></div>
+		</div>
+		<div class="title2">
+			<div class="left">接单者</div>
+			<div class="user_name"></div>
+		</div>
+		<div class="title2">
+			<div class="left">价钱</div>
+			<div class="money"></div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="no_over" id="qxdd" tapmode="no_over_on" onclick="fqxdd();">取消订单</div>
+		<div class="no_over" id="no_over" tapmode="no_over_on" onclick="fover();">已完成微帮</div>
+		<div class="no_over2" id="no_over2">已完成</div>
+		
+		<div class="no_over" id="sqptjr" tapmode="no_over_on" onclick="fsqptjr();" style="display:none;">申请平台介入</div>
+		<div class="no_over" id="qxtk" tapmode="no_over_on" onclick="fqxtk();" style="display:none;">取消退款</div>
+		<div class="no_over" id="tytk" tapmode="no_over_on" onclick="ftytk();" style="display:none;">同意退款</div>
+		<div class="no_over" id="jjtk" tapmode="no_over_on" onclick="fjjtk();" style="display:none;">拒绝退款</div>
+		<div class="no_over2" id="tksqz">退款申请中</div>
+		<div class="no_over2" id="ddptcl">等待平台处理</div>
+		<div class="no_over2" id="ytk">已退款</div>
+		<div class="over">
+			<div class="tousu" id="ts" tapmode="tousu_on" onclick="ftousu();">投诉</div>
+			<div class="go" id="sqtk" tapmode="go_on" onclick="fsqtk();">申请退款</div>
+			<div class="go" id="qrsh" tapmode="go_on" onclick="fqueren();">确认收货</div>
+			<div class="go" id="qpj" tapmode="go_on" onclick="fopen_wb_pingjia();">去评价</div>
+		</div>
+	</div>
+	<div class="footer2">
+		<div class="left">总计：</div>
+		<div class="right" tapmode="no_over_on" onclick="fgo_pay();">下一步</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fcsh();
+	};
+	var wb_id2=0;
+	var to_user_id=0;
+	var to_userName='';
+	var isPj=0,isTs=0;
+	function fcsh()
+	{
+		fget_wb_order_xx();
+		if(api.pageParam.zt==1 || api.pageParam.zt==4)
+		{
+			$('#no_over').css('display','none');
+			$('#no_over2').css('display','none');
+			$('#qxdd').css('display','none');
+			$('.over').css('display','-webkit-box');
+			$('.over').css('display','-webkit-flex');
+			$('.over').css('display','flex');
+		}
+	}
+	function fget_wb_order_xx()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	var html='';
+	            	isPj=ret[0].isPj;
+	            	isTs=ret[0].isTs;
+	            	if(ret[0].isPj==1) $('#qpj').html('已评价');
+	            	if(ret[0].isTs==1) $('#ts').html('已投诉');
+	            	html+='<div class="title1" tapmode="" onclick="fopen_weibang_xx('+ret[0].helpId+');">';
+					html+='		<div class="left">';
+					html+='			<div class="bt ccyc">'+ret[0].title+'</div>';
+					html+='			<div class="nr ccyc">'+ret[0].content+'</div>';
+					html+='		</div>';
+					html+='		<div class="right"></div>';
+					html+='	</div>';
+					html+='	<div class="title2">';
+					html+='		<div class="left">接单者</div>';
+					html+='		<div class="user_name">'+ret[0].userName+'</div>';
+					html+='	</div>';
+					html+='	<div class="title2">';
+					html+='		<div class="left">价钱</div>';
+					html+='		<div class="money">'+ret[0].money+'元</div>';
+					html+='	</div>';
+					$('.content').html(html);
+					//alert(ret[0].orderStatus+" "+api.pageParam.zt);
+					if(ret[0].orderStatus==0)
+					{
+						var html2='';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_ytj2.png" />';
+						html2+='	<a>订单已提交</a>';
+						html2+='</div>';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_yjd1.png" />';
+						html2+='	<a>订单进行中</a>';
+						html2+='</div>';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_ywc1.png" />';
+						html2+='	<a>订单完成</a>';
+						html2+='</div>';
+						$('.dd_status').html(html2);
+						$('#dd_tishi').html("订单状态：订单已提交");
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)
+						{
+						
+						}
+						else
+						{
+							$('#no_over').css('display','none');
+						}
+					}
+					if(ret[0].orderStatus==1 || ret[0].orderStatus==2)
+					{
+						var html2='';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_ytj2.png" />';
+						html2+='	<a>订单已提交</a>';
+						html2+='</div>';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_yjd2.png" />';
+						html2+='	<a>订单进行中</a>';
+						html2+='</div>';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_ywc1.png" />';
+						html2+='	<a>订单完成</a>';
+						html2+='</div>';
+						$('.dd_status').html(html2);
+						$('#dd_tishi').html("订单状态：接单者已接单");
+						if(ret[0].orderStatus==2 && api.pageParam.zt!=4 && api.pageParam.zt!=1)
+						{
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#no_over2').css('display','block');
+						}
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)
+						{
+							if(ret[0].isRefund==3)
+							{
+								$('#dd_tishi').html("订单状态：对方拒绝了您的退款申请");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#tytk').css('display','none');
+								$('#jjtk').css('display','none');
+								$('#sqptjr').css('display','block');
+								$('#qxtk').css('display','block');
+								$('.over').css('display','none');
+							}
+							if(ret[0].isRefund==0)
+							{
+								$('#ts').css('display','none');
+							}
+							$('#qpj').css('display','none');
+						}
+						else
+						{
+							
+						}
+					}
+					if(ret[0].orderStatus==3)
+					{
+						var html2='';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_ytj2.png" />';
+						html2+='	<a>订单已提交</a>';
+						html2+='</div>';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_yjd2.png" />';
+						html2+='	<a>订单进行中</a>';
+						html2+='</div>';
+						html2+='<div class="d_list">';
+						html2+='	<img src="../image/dd_ywc2.png" />';
+						html2+='	<a>订单完成</a>';
+						html2+='</div>';
+						$('.dd_status').html(html2);
+						$('#dd_tishi').html("订单状态：订单已完成");
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)
+						{
+							$('#ts').css('display','block');
+							$('#qpj').css('display','block');
+							$('#qrsh').css('display','none');
+							$('#sqtk').css('display','none');
+						}
+						else
+						{
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#no_over2').css('display','block');
+						}
+					}
+					if(ret[0].orderStatus==-1)
+					{
+							var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj1.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd1.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)//付款的人   发需求、接服务
+						{
+							
+							$('#dd_tishi').html("订单状态：对方已取消订单");
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#no_over2').html('对方取消订单');
+							$('#no_over2').css('display','block');
+							$('.over').css('display','none');
+						}
+						else
+						{
+							$('#dd_tishi').html("订单状态：已取消订单");
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#no_over2').html('已取消订单');
+							$('#no_over2').css('display','block');
+						}
+					}
+					if(ret[0].orderStatus==-2)
+					{
+							var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj1.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd1.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)//付款的人   发需求、接服务
+						{
+							
+							$('#dd_tishi').html("订单状态：对方已取消订单,已退款至账户");
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#no_over2').html('对方取消订单，已退款');
+							$('#no_over2').css('display','block');
+							$('.over').css('display','none');
+						}
+						else
+						{
+							$('#dd_tishi').html("订单状态：已取消订单");
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#no_over2').html('已取消订单');
+							$('#no_over2').css('display','block');
+						}
+					}
+					if(ret[0].orderStatus==-3)
+					{	
+							var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj2.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd2.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)//付款的人   发需求、接服务
+						{
+							if(ret[0].isRefund==1)
+							{
+								$('#dd_tishi').html("订单状态：退款申请中");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#no_over2').html('退款申请中');
+								$('#no_over2').css('display','block');
+								$('.over').css('display','none');
+							}
+						}
+						else
+						{
+							$('#dd_tishi').html("订单状态：对方申请退款");
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#tytk').css('display','block');
+							$('#jjtk').css('display','block');
+						}
+					}
+					if(ret[0].orderStatus==-4)
+					{
+						var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj2.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd2.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)//付款的人   发需求、接服务
+						{
+							if(ret[0].isRefund==1)
+							{
+								$('#dd_tishi').html("订单状态：退款申请中");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#no_over2').html('退款申请中');
+								$('#no_over2').css('display','block');
+								$('.over').css('display','none');
+							}
+						}
+						else
+						{
+							$('#dd_tishi').html("订单状态：对方申请退款");
+							$('#no_over').css('display','none');
+							$('#qxdd').css('display','none');
+							$('#tytk').css('display','block');
+							$('#jjtk').css('display','block');
+						}
+					}
+					if(ret[0].orderStatus==-5)
+					{
+						var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj1.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd1.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+						if(api.pageParam.zt==1 || api.pageParam.zt==4)//付款的人   发需求、接服务
+						{
+							if(ret[0].isRefund==2)
+							{
+								$('#dd_tishi').html("订单状态：退款成功");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#no_over2').html('已退款');
+								$('#no_over2').css('display','block');
+								$('.over').css('display','none');
+							}
+						}
+						else
+						{
+							if(ret[0].isRefund==2)
+							{
+								$('#dd_tishi').html("订单状态：退款成功");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#tytk').css('display','none');
+								$('#jjtk').css('display','none');
+								$('#no_over2').html('已退款');
+								$('#no_over2').css('display','block');
+							}
+						}
+					}
+					if(ret[0].orderStatus==-6)
+					{
+						var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj1.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd1.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+								$('#dd_tishi').html("订单状态：退款成功");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#no_over2').html('已退款');
+								$('#no_over2').css('display','block');
+								$('.over').css('display','none');
+					}
+					if(ret[0].orderStatus==-7)
+					{
+						var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj2.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd2.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+							$('.dd_status').html(html2);
+								$('#dd_tishi').html("订单状态：等待平台处理");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#no_over2').html('等待平台处理');
+								$('#sqptjr').css('display','none');
+								$('#qxtk').css('display','none');
+								$('#no_over2').css('display','block');
+								$('.over').css('display','none');
+					}
+					if(ret[0].orderStatus==-8)
+					{
+						var html2='';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ytj2.png" />';
+							html2+='	<a>订单已提交</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_yjd2.png" />';
+							html2+='	<a>订单进行中</a>';
+							html2+='</div>';
+							html2+='<div class="d_list">';
+							html2+='	<img src="../image/dd_ywc1.png" />';
+							html2+='	<a>订单完成</a>';
+							html2+='</div>';
+							$('.dd_status').html(html2);
+							$('.dd_status').html(html2);
+								$('#dd_tishi').html("订单状态：等待平台处理");
+								$('#no_over').css('display','none');
+								$('#qxdd').css('display','none');
+								$('#sqptjr').css('display','none');
+								$('#qxtk').css('display','none');
+								$('#no_over2').html('等待平台处理');
+								$('#no_over2').css('display','block');
+								$('.over').css('display','none');
+					}
+					$('.footer2 .left').html("总计：<a>"+ret[0].money+"元</a>");
+					if((api.pageParam.isPay==0 || api.pageParam.isPay=='0') && (api.pageParam.zt==1 || api.pageParam.zt==4) && ret[0].orderStatus==0)
+					{
+						//$('.footer2').css('display','block');
+						$('.footer2').css('display','-webkit-box');
+						$('.footer2').css('display','-webkit-flex');
+						$('.footer2').css('display','flex');
+						$('.footer').css('display','none');
+						$('.header').css('display','none');
+						$('.content').css('margin-top','0px');
+					} 
+					wb_id2=ret[0].helpId;
+					var user_id=$api.getStorage('user_id');
+					if(ret[0].userId==user_id) to_user_id=ret[0].acceptUserId;
+					else if(ret[0].acceptUserId==user_id) to_user_id=ret[0].userId;
+					to_userName=ret[0].to_userName;
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fopen_weibang_xx(wb_id)
+	{
+		api.openWin({
+	        name: 'weibang_xx_header',
+	        url: 'weibang_xx_header.html',
+	        pageParam:{
+	        	wb_id:wb_id
+	        }
+        });
+	}
+	function fover()
+	{
+		//api.pageParam.order_id
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:2,
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: '提交失败',
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: '提交成功',
+							duration: 2000,
+							location: 'bottom'
+						});
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function ftousu()
+	{
+		//api.pageParam.order_id
+		api.openWin({
+	        name: 'wb_tousu_header',
+	        url: 'wb_tousu_header.html',
+	        pageParam:{
+	        	wb_id:wb_id2,
+	        	to_user_id:to_user_id,
+	        	to_userName:to_userName
+	        }
+        });
+	}
+	function fqueren()
+	{
+		//api.pageParam.order_id
+		//api.pageParam.order_id
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:3,
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	//alert(ret);
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: '提交失败',
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: '提交成功',
+							duration: 2000,
+							location: 'bottom'
+						});
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fopen_wb_pingjia()
+	{
+		api.openWin({
+	        name: 'wb_pingjia_header',
+	        url: 'wb_pingjia_header.html',
+	        pageParam:{
+	        	wb_id:wb_id2,
+	        	isPj:isPj
+	        }
+        });
+	}
+	function fgo_pay()
+	{
+		api.openWin({
+	        name: 'zhifu_header',
+	        url: 'zhifu_header.html',
+	        pageParam:{
+	        	zhifupan:'wb_xq',
+	        	wb_order_id:api.pageParam.order_id
+	        }
+        });
+	}
+	function fsqptjr()
+	{
+		//alert("申请平台介入");
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:'ptjr',
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	//alert(ret);
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						$('#sqptjr').css('display','none');
+						$('#qxtk').css('display','none');
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function ftytk()
+	{
+		//alert("同意退款");
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:'tytk',
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	//alert(ret);
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						$('#tytk').css('display','none');
+						$('#jjtk').css('display','none');
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fjjtk()
+	{
+		//alert("拒绝退款");	
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:'jjtk',
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	//alert(ret);
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						$('#tytk').css('display','none');
+						$('#jjtk').css('display','none');
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fqxtk()
+	{
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:'qxtk',
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						$('#sqptjr').css('display','none');
+						$('#qxtk').css('display','none');
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fsqtk()
+	{
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:'sqtk',
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	//alert(ret);
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fqxdd()
+	{
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_wb_order_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	order_id:api.pageParam.order_id,
+	                	status:'qx',
+	                	user_id:user_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	//alert(ret);
+	            	if(ret[0].pan==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan==1)
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						fcsh();
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'all_dingdan',
+	                        script: 'fget_all_dingdan();'
+                        });
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+</script>
+</html>

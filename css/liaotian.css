@@ -1,0 +1,246 @@
+html{
+	width: 100%;
+	height: 100%;
+}
+body {
+	margin:0;
+	width: 100%;
+	min-height: 100%;
+	background-color:#f2f2f2;
+	background-image: url('../image/liaotian_bg.png');
+	background-size: 100% 100%;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+.a{
+    background-color:#eee !important;
+}
+#main{
+	width: 100%;
+	font-size: 14px;
+	padding-bottom:84px;
+}
+#main ul{
+
+}
+#main ul .time{
+	text-align: center;
+	color:#666;
+	font-size: 12px;
+	min-height: 30px;
+	line-height: 30px;
+}
+#main ul .me{
+	min-height: 80px;
+	width: 100%;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+}
+#main ul .me .s1{
+	margin:10px;
+	height: 60px;
+	width: 60px;
+}
+#main ul .me .s2{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#main ul .me .s2 .nr{
+	background-color:#fff;
+	border-radius: 5px;
+	padding:10px;
+	margin-top: 20px;
+	float:right;
+}
+#main ul .me .s2 .nr .tutu{
+	max-width:100% !important;
+	max-height:200px !important;
+}
+#main ul .me .s2 .nr img{
+	max-height:16px;
+}
+#main ul .me .s3{
+	margin:10px;
+	height: 60px;
+	width: 60px;
+	border-radius: 30px;
+	background-image: url('../image/user_img_cs.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+#main ul .me .jiao{
+	height: 60px;
+	margin-top: 10px;
+	width: 20px;
+	background-image: url('../image/bai_you_jiao.png');
+	background-size: 16px 14px;
+	background-repeat: no-repeat;
+	background-position: 0 20px;
+}
+#main ul .you{
+	min-height: 80px;
+	width: 100%;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+#main ul .you .s1{
+	margin:10px;
+	height: 60px;
+	width: 60px;
+	border-radius: 30px;
+	background-image: url('../image/sp_5.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+#main ul .you .s2{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#main ul .you .s2 .nr{
+	background-color:#00b4ff;
+	border-radius: 5px;
+	padding:10px;
+	margin-top: 20px;
+	color:#fff;
+}
+#main ul .you .s2 .nr .tutu{
+	max-width:100% !important;
+	max-height:200px !important;
+}
+#main ul .you .s2 .nr img{
+	max-height:16px;
+}
+#main ul .you .s3{
+	margin:10px;
+	height: 60px;
+	width: 60px;
+}
+#main ul .you .jiao{
+	height: 60px;
+	margin-top: 10px;
+	width: 20px;
+	background-image: url('../image/lan_zuo_jiao.png');
+	background-size: 16px 14px;
+	background-repeat: no-repeat;
+	background-position: 4px 20px;
+}
+#main ul .me .s2 .nr .img{
+	position: relative;
+}
+#main ul .me .s2 .nr .img .logoing{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	filter:alpha(opacity=40);  
+    -moz-opacity:0.4;  
+    -khtml-opacity: 0.4;  
+    opacity: 0.4;
+    text-align: center;
+}
+#main ul .me .s2 .nr .img .logoing img{
+	width: 30px;
+	height: 30px;
+	margin-top: 30%;
+}
+#main ul .you .s2 .nr .img{
+	position: relative;
+}
+#main ul .you .s2 .nr .wenzi img{
+	height: 20px;
+}
+#main ul .me .s2 .nr .wenzi img{
+	height: 20px;
+}
+#main ul .you .s2 .nr .img .logoing{
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	filter:alpha(opacity=40);  
+    -moz-opacity:0.4;  
+    -khtml-opacity: 0.4;  
+    opacity: 0.4;
+    text-align: center;
+}
+#main ul .you .s2 .nr .img .logoing img{
+	width: 30px;
+	height: 30px;
+	margin-top: 30%;
+}
+#main ul .you .s2 .nr .img .sc_img{
+	max-width:100%;
+	max-height:200px;
+}
+#main ul .me .s2 .nr .img .sc_img{
+	max-width:100%;
+	max-height:200px;
+}
+
+#footer{
+	position: fixed;
+	left:0;
+	bottom:0;
+	width: 100%;
+}
+#footer .scanf{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    min-height: 50px;
+    background-color: #fff;
+    border-top:1px solid #e2e2e2;
+}
+#footer .scanf #shuru{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    border:1px solid #e2e2e2;
+    border-radius: 5px;
+    margin:10px 10px 10px 10px;
+    line-height: 30px;
+    padding:0 5px;
+    overflow-y:visible;
+}
+#footer .scanf .fs{
+	height: 30px;
+	line-height: 30px;
+	margin-top: 10px;
+	padding:0 20px;
+	background-color: #00b4ff;
+	color:#fff;
+	border-radius: 5px;
+	margin-right: 10px;
+}
+#footer .scanf .fs_on{
+	background-color: #0287bf !important;
+}
+#footer .scanf .jia{
+	width: 30px;
+	height: 30px;
+	margin-top: 10px;
+	margin-right: 10px;
+	background-image: url('../image/jia_hui.png');
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	background-position: 5px 5px;
+}
+#footer .scanf .jia_on{
+	background-image: url('../image/jia_lan3.png') !important;
+}
+.tu_hui{
+	background-color: #fff;
+	padding:0px 10px 10px 10px;
+}
+.tu_hui img{
+	width: 20px;
+	height: 20px;
+	margin-right: 20px;
+}

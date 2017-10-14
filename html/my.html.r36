@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/my.css"/>
+</head>
+<body>
+	<div id="main">
+		<div id="tou">
+			<div id='tou-list-1'>
+				<div id="tou-list-11"></div>
+				<div id="tou-list-12">
+					<div id="yq-w">
+						<div id="yq-z" tapmode="userimg">
+							<div id="yq-n"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id='tou-list-2'>用户名登陆</div>
+			<div tapmode="shezhi2" id="shezhi"></div>
+		</div>
+		<div id="lists">
+			<ul>
+				<li tapmode="a" onclick="fopen_list('dingdan');"><img src="../image/daifukuan.png" /><a>待付款</a><span>99</span></li>
+				<li tapmode="a" onclick="fopen_list('dingdan');"><img src="../image/daifahuo.png" /><a>待发货</a><span>7</span></li>
+				<li tapmode="a" onclick="fopen_list('dingdan');"><img src="../image/daishouhuo.png" /><a>待收货</a><span>8</span></li>
+				<li tapmode="a" onclick="fopen_list('dingdan');"><img src="../image/daipingjia.png" /><a>待评价</a><span>9</span></li>
+				<li tapmode="a" onclick="fopen_list('dingdan');" style="border:0px;"><img src="../image/tuikuan.png" /><a>退款/售后</a><span>10</span></li>
+			</ul>
+		</div>
+		<div id="max_lists">
+			<ul>
+				<li tapmode="a"><img src="../image/wodeqianbao.png" /><a>我的钱包</a></li>
+				<li tapmode="a"><img src="../image/fenxiaozhognxin.png" /><a>分销中心</a></li>
+				<li tapmode="a"><img src="../image/wodejifen.png" /><a>我的积分</a></li>
+				<li tapmode="a"><img src="../image/woshishagnjia.png" /><a>我是商家</a></li>
+			</ul>
+			<ul>
+				<li tapmode="a"><img src="../image/yiyuanmaidao.png" /><a>一元买到</a></li>
+				<li tapmode="a"><img src="../image/shoucangjia.png" /><a>收藏夹</a></li>
+				<li tapmode="a"><img src="../image/xiaoyuanjiedai.png" /><a>校园借贷</a></li>
+				<li tapmode="a"><img src="../image/bangzhufankui.png" /><a>帮助与反馈</a></li>
+			</ul>
+			<ul>
+				<li tapmode="a"><img src="../image/nianhuojie.png" /><a>年货节</a></li>
+				<li tapmode="a"><img src="../image/tuangoujie.png" /><a>团购节</a></li>
+				<li tapmode="a" onclick="fopen_list('miaosha')"><img src="../image/miaoshahuodong.png" /><a>秒杀活动</a></li>
+				<li tapmode="a"><img src="../image/ershougoumai.png" /><a>二手购买</a></li>
+			</ul>
+		</div>
+		<div class="title-list">
+			<div class="min-title">
+				<span class="t7"></span><span class="t4">热销商品</span><span tapmode="a" class="ty" onclick="fhuanyizu('rexiao');"><span class="t5">换一组</span><span class="t6"></span></span>
+			</div>
+			<div class="neirong2" id="rexiao">
+				<ul>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban1"><img src="../image/sp_4.png" /><a class="a1">丹麦进口丹麦皇冠曲奇</a><a class="a2">￥137.00</a></li>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban2"><img src="../image/sp_4.png" /><a class="a1">丹麦进口丹麦皇冠曲奇</a><a class="a2">￥137.00</a></li>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban3"><img src="../image/sp_4.png" /><a class="a1">丹麦进口丹麦皇冠曲奇</a><a class="a2">￥137.00</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var gao = api.winHeight;
+		fhuanyizu('rexiao');
+	};
+	function fremove(obj,n)
+	{
+		$api.removeCls(obj,n);
+	}
+	function fopen_list(n)
+			{
+				api.openWin({
+			        name: n+'_header',
+			        url: n+'_header.html',
+//			        animation:{
+//			        	type:"movein",                //动画类型（详见动画类型常量）
+//					    subType:"from_right",       //动画子类型（详见动画子类型常量）
+//					    duration:300 
+//			        }
+		        });
+			}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+function fhuanyizu(name)
+{
+	api.toast({
+		msg: '加载中...',
+		duration: 2000,
+		location: 'bottom'
+	});
+	api.ajax({
+            url: YAH_ajax_name+'huanyizu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	huan_name:name
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	html+='<li tapmode="" onclick="fopengoods('+ret[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /><a class="a1">'+ret[i].goodsName+'</a><a class="a2">￥'+ret[i].shopPrice+'</a></li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById(name).innerHTML=html;
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+</script>
+</html>

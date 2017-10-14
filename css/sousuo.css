@@ -1,0 +1,126 @@
+/*html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}*/
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+}
+.a{
+            background-color:#eee !important;
+}
+#main{
+	width: 100%;
+    font-size: 14px;
+    background-color: #fff;
+}
+.sanjiao{
+            /*width: 0;
+            height: 0;*/
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #000;
+            margin-left:5px;
+            /*position: absolute;*/
+            /*left: 50%;
+            top:100%;
+            margin-left: -4px;*/
+        }
+        .sanjiao_on{
+            border-bottom: 4px solid red !important;
+            border-top:0 !important;
+        }
+#header{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 49px;
+    border-bottom:1px solid #eee;
+}
+.h_l{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    line-height: 49px;
+    text-align: center;
+}
+.h_l_on{
+	color:red !important;
+}
+#sstishi{
+	width: 80%;
+	margin-left:10%;
+	border:1px solid #999;
+	background-color:#fff;
+	text-align: center;
+	line-height: 20px;
+	height: 20px;
+	font-size: 12px;
+	color:#666;
+	border-radius: 2px;
+	margin-top:10px;
+}
+
+.goods_list{
+	float:left;
+	width: 100%;
+}
+.goods_list ul{
+	float:left;
+	width: 100%;
+	margin-top: 10px;
+}
+.goods_list ul li{
+	float:left;
+	width: 100%;
+	border-bottom:1px solid #ccc;
+	padding:10px 0;
+	background-color: #fff;
+}
+.goods_list ul li .list_left{
+	float:left;
+	width: 50%;
+	height:100px;
+	text-align: center;
+}
+.goods_list ul li .list_left img{
+	height:100px;
+	max-width: 90%;
+}
+.goods_list ul li .list_right{
+	float:left;
+	width: 50%;
+	height:100px;
+	position: relative;
+}
+.goods_list ul li .list_right .title{
+	font-size: 14px;
+	line-height: 20px;
+	height: 40px;
+	overflow:hidden;
+	margin:0 10px 0 5px;
+}
+.goods_list ul li .list_right .money{
+	/*margin:5px 10px 5px 5px;*/
+	color:red;
+	font-size: 16px;
+}
+.goods_list ul li .list_right .money2{
+	margin:0 10px 0 5px;
+	bottom:0px;
+	font-size: 13px;
+	position: absolute;
+}
+.goods_list ul li .list_right .money2 .s1{
+	color:#999;
+	padding: 0 5px;
+	/*border-right:1px solid #eee;*/
+	text-decoration:line-through;
+}
+.goods_list ul li .list_right .money2 .s2{
+	padding: 0 5px;
+	color:#999;
+}

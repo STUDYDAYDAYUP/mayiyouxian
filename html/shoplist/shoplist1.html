@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../../css/shopping.css"/>
+    <style>
+    	*{ margin: 0; padding: 0;}
+    	body{ width: 100%; height: 100%; background-color: #fff;}
+    	.list{width:26%; height:100px; float: left; text-align: center;font-size: 12px; margin-top: 20px;margin-left: 5%;}
+    	
+    	.listright{width:26%; height:100px; float: left; text-align: center;font-size: 12px; margin-top: 20px;margin-left: 5%;}
+    </style>
+</head>
+<body id="aa">
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var pan=$api.getStorage('shoplist['+api.pageParam.showPersonInfo+']_pan');
+		if(pan=='1') showPersonInfo(api.pageParam.showPersonInfo);
+		else showPersonInfo(api.pageParam.showPersonInfo);
+		fyc();
+		setTimeout("fcx()",150);
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/shuaxin.png',
+		    bgColor: '#f9f9f9',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+		    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+		    showPersonInfo(api.pageParam.showPersonInfo);
+		    api.refreshHeaderLoadDone();
+		});
+	};
+	
+function fsearch(cat_id,pan)
+{
+	api.openWin({
+	    name: 'search',
+	    url: '../search.html',
+	    pageParam:{cat_id:cat_id,pan:pan}
+    });
+}
+	//查询商品详细分类信息
+function showPersonInfo(par){
+			$api.setStorage('i',0);
+			api.showProgress({title:'请稍后...'});//显示加载进度框
+			api.ajax({
+	        url: 'http://101.200.0.213/api_ajax/get_shoplists.php',
+	        method: 'post',
+	        cache: true,
+	        timeout: 10,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            parent_id:par
+	            }
+	        }
+	    },function(ret,err){
+	    	api.hideProgress();//隐藏加载进度框
+	        if (ret) {
+	        	var max=ret.length;
+	          	var html='<div style="background-color:#fff;float:left; width:100%;">';
+				for(var i=0;i<max;i++)
+				{
+					var url='http://101.200.0.213/'+ret[i].goods_thumb;
+					
+					api.imageCache({
+					    url: url
+					},function(ret,err){
+					    if (ret) {
+					        var path = ret.url;
+					        var i=$api.getStorage('i');
+					        $api.setStorage('shoplist['+api.pageParam.showPersonInfo+']['+i+']_thumb',path);
+					        i=Number(i)+1;
+					        $api.setStorage('i',i);
+					    }
+					});
+					$api.setStorage('shoplist['+api.pageParam.showPersonInfo+']['+i+']_name',ret[i].cat_name);
+					$api.setStorage('shoplist['+api.pageParam.showPersonInfo+']['+i+']_id',ret[i].cat_id);
+					if((ret[i].goods_thumb).length>4) thumb='http://101.200.0.213/'+ret[i].goods_thumb;
+					else thumb="../image/default_image.png";
+					html+='<div onclick="fsearch('+ret[i].cat_id+','+2+')" class="listright"><img src="'+thumb+'" width="100%" heigth="100%" style=" background-color: #FFC78E; "/>'+ret[i].cat_name+'</div>';
+				}
+				$api.setStorage('shoplist['+api.pageParam.showPersonInfo+']_max',i);
+				$api.setStorage('shoplist['+api.pageParam.showPersonInfo+']_pan','1');
+				html+='</div>';
+				document.getElementById("aa").innerHTML=html;
+				api.hideProgress();//隐藏加载进度框
+	        }else {
+//	            api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+	        };
+	    });
+}
+function showPersonInfo2(index)
+{
+	var max=$api.getStorage('shoplist['+api.pageParam.showPersonInfo+']_max');
+	var html='<div style="background-color:#fff;float:left; width:100%;">';
+	for(var i=0;i<max;i++)
+	{
+		var thumb=$api.getStorage('shoplist['+api.pageParam.showPersonInfo+']['+i+']_thumb');
+		var name=$api.getStorage('shoplist['+api.pageParam.showPersonInfo+']['+i+']_name');
+		var id=$api.getStorage('shoplist['+api.pageParam.showPersonInfo+']['+i+']_id');
+		html+='<div onclick="fsearch('+id+','+2+')" class="listright"><img src="'+thumb+'" width="100%" heigth="100%" style=" background-color: #FFC78E; "/>'+name+'</div>';
+	}
+	html+='</div>';
+	document.getElementById("aa").innerHTML=html;
+}
+function fyc()
+{
+	api.setFrameAttr({
+	    name: 'right',
+	    hidden:true
+    });
+}
+function fcx()
+{
+	api.setFrameAttr({
+	    name: 'right',
+	    hidden:false
+    });
+}
+</script>
+</html>

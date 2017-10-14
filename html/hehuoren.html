@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/hehuoren.css"/>
+    <style>
+	    html, body{
+	    	
+	    }
+        
+    </style>
+</head>
+<body>
+<div id="main" style="">
+    <div class="content_list content_code" onclick="erweima()">
+        <div class="content_list_l" style="display: none"></div>
+        <div class="content_list_c">我的推广二维码</div>
+        <div class="content_list_r"><span></span></div>
+    </div>
+    <div class="content_list my_partner">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">我的合伙人</div>
+        <div class="content_list_r" id="total_num">0人</div>
+    </div>
+    <div class="content_list optimum" onclick="fopen_hehuoren(1,'我的最佳合伙人')">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">我的最佳合伙人</div>
+        <div class="content_list_r" id="xiaji1_num">0人</div>
+    </div>
+    <div class="content_list_additional">
+        <span class="icon">累积奖励：</span>
+        <span id="xiaji1_money">￥0</span>
+    </div>
+    <div class="content_list excellent" onclick="fopen_hehuoren(2,'我的优秀合伙人')">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">我的优秀合伙人</div>
+        <div class="content_list_r" id="xiaji2_num">0人</div>
+    </div>
+    <div class="content_list_additional">
+        <span class="icon">累积奖励：</span>
+        <span id="xiaji2_money">￥0</span>
+    </div>
+    <div class="content_list consumer" onclick="fopen_xiaofei(1)">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">我的消费团队</div>
+        <div class="content_list_r" id="xiaji3_num">0人</div>
+    </div>
+    <div class="content_list_additional">
+        <span class="icon">累积奖励：</span>
+        <span id="xiaji3_money" id="xiaji3_money">￥0</span>
+    </div>
+    <div class="content_list consumer" onclick="fopen_xiaofei(2)">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">最佳消费团队</div>
+        <div class="content_list_r" id="xiaji4_num">0人</div>
+    </div>
+    <div class="content_list_additional">
+        <span class="icon">累积奖励：</span>
+        <span id="xiaji4_money">￥0</span>
+    </div>
+    
+    <div class="content_list consumer" onclick="fopen_xiaofei(3)">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">优秀消费团队</div>
+        <div class="content_list_r" id="xiaji5_num">0人</div>
+    </div>
+    <div class="content_list_additional">
+        <span class="icon">累积奖励：</span>
+        <span id="xiaji5_money">￥0</span>
+    </div>
+    
+    <div class="content_list reward">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">我的本月奖励</div>
+        <div class="content_list_r content_list_m"><em id="rebateMoney1">￥0</em></div>
+    </div>
+    <div class="content_list all_reward">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">我的累计奖励</div>
+        <div class="content_list_r content_list_m"><em id="rebateMoney2">￥0</em></div>
+    </div>
+    <div class="content_list all_reward">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">奖励余额</div>
+        <div class="content_list_r content_list_m"><em id="rebateMoney">￥0</em></div>
+    </div>
+    <div class="content_list withdrawals" onclick="fopen_tixian();">
+        <div class="content_list_l"></div>
+        <div class="content_list_c">申请提现</div>
+        <div class="content_list_r"></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+        api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '努力加载中...',
+		    text: '先喝杯茶...',
+		    modal: true
+		});
+        get_hehuoren_info();
+    }
+    function fopen_hehuoren(type,name){
+        api.openWin({
+	        name: 'yx_hehuoren_header',
+	        url: 'yx_hehuoren_header.html',
+	        pageParam:{
+                type:type,
+                name:name
+            }
+        });
+    }
+    
+    function fopen_xiaofei(type){
+        api.openWin({
+	        name: 'my_xiaofeizhe_header',
+	        url: 'my_xiaofeizhe_header.html',
+	        pageParam:{
+                type:type
+            }
+        });
+    }
+    
+    function fopen_tixian()
+	{
+		api.openWin({
+	        name: 'tixian_header',
+	        url: 'tixian_header.html'
+        });
+	}
+	
+	function erweima(){
+    
+	    api.openFrame({
+	        name: 'erweima',
+	        url: 'erweima.html',
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+	    });
+	}
+    
+    function get_hehuoren_info(){
+        var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_hehuoren_info',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	time:time,
+	                sign:sign
+                }
+            }	
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 $('#rebateMoney2').html('￥'+ret['rebateMoney2']);
+                 $('#rebateMoney').html('￥'+ret['rebateMoney']);
+                 $('#rebateMoney1').html('￥'+ret['rebateMoney1']);
+                 $('#xiaji1_num').html(ret['xiaji1_num']+'人');
+                 $('#xiaji1_money').html('￥'+ret['xiaji1_money']);
+                 $('#xiaji2_num').html(ret['xiaji2_num']+'人');
+                 $('#xiaji2_money').html('￥'+ret['xiaji2_money']);
+                 $('#xiaji3_num').html(ret['xiaji3_num']+'人');
+                 $('#xiaji3_money').html('￥'+ret['xiaji3_money']);
+                 $('#xiaji4_num').html(ret['xiaji4_num']+'人');
+                 $('#xiaji4_money').html('￥'+ret['xiaji4_money']);
+                 $('#xiaji5_num').html(ret['xiaji5_num']+'人');
+                 $('#xiaji5_money').html('￥'+ret['xiaji5_money']);
+                 $('#total_num').html(ret['total_num']+'人');
+            }else {
+            	fduanwang();
+            };
+        });
+    }
+        
+</script>
+</html>

@@ -1,0 +1,141 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+    padding-bottom:50px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	float:left;
+	width: 100%;
+}
+.a{
+    background-color:#eee !important;
+}
+.h1{
+	height: 50px;
+	background-color: #fff;
+	line-height: 50px;
+	border-bottom: 1px solid #eee;
+	color:#666;
+}
+.h1 span{
+	margin-left: 10px;
+}
+.hj{
+	height: 50px;
+	background-color: #fff;
+	line-height: 50px;
+}
+.hj span{
+	float:right;
+	margin-right: 10px;
+}
+.hj span a{
+	color:red;
+}
+.goods_list{
+	width: 100%;
+}
+.goods_list ul{
+	width: 100%;
+}
+.goods_list ul li{
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #eee;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    line-height: 50px;
+    font-size: 14px;
+}
+.goods_list ul li .l1{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:0 10px;
+    text-align: left;
+    display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.goods_list ul li .l2{
+	width: 50px;
+	text-align: center;
+}
+.goods_list ul li .l3{
+	width: 80px;
+    margin:0 10px;
+    color:red;
+    text-align: right;
+}
+.min-title{
+    		height:50px;
+    		line-height: 50px;
+    		font-size: 0.9em;
+    		border-bottom:1px solid #eee;
+    		background-color: #fff;
+    		margin-top: 10px;
+    	}
+    	.min-title .t1{
+    		margin-left:10px;
+    		color:#555;
+    		float:left;
+    	}
+    	.min-title .t2{
+    		color:#ff3c3c;
+    		float:right;
+    	}
+    	.min-title .t3{
+    		background-image:url('../image/youjiantou.png');
+    		background-repeat: no-repeat;
+    		background-size:10px 18px;
+    		background-position:0px 16px;
+    		height:50px;
+    		width:10px;
+    		margin:0 10px;
+    		float:right;
+    	}
+.shouhuoren{
+	height: 50px;
+	background-color: #fff;
+}
+.shouhuoren .s1{
+	margin:0 10px;
+	border-bottom: 1px solid #eee;
+	height: 49px;
+	line-height: 50px;
+	font-size: 14px;
+}
+.shouhuoren .s1 .username{
+	float:left;
+}
+.shouhuoren .s1 .usersex{
+	float:left;
+	background-image: url('../image/sex_0.png');
+	height: 50px;
+	width: 16px;
+	margin-left: 10px;
+	background-position: 0 17px;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
+}
+.lianxi{
+	background-color: #fff;
+	width: 100%;
+}
+.lianxi .lianxi_list{
+	margin:0 10px;
+	line-height: 30px;
+	height: 30px;
+	color:#666;
+	font-size: 14px;
+}
+.lianxi span{
+	color:#000;
+}

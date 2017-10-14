@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/address.css"/>
+    <style>
+    	#address_list .list {
+		    display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		    height: 50px;
+		    background-color: #fff;
+		    border-bottom: 1px solid #e2e2e2;
+		}
+		#address_list .list .s2 {
+		    margin: 0 10px;
+		    -webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		    line-height: 50px;
+		    color: #656565;
+		}
+		#address_list .list .s3 {
+		    background-image: url(../image/youjiantou.png);
+		    background-repeat: no-repeat;
+		    background-size: 10px 18px;
+		    background-position: 0px 16px;
+		    height: 50px;
+		    width: 10px;
+		    margin: 0 10px;
+		}
+		#xiaoqu{color:#282828;margin-right:10px;}
+		#address_list .list li{margin: 0;border: 0;padding: 0; font-style: normal;list-style-type:none;line-height:40px;}
+		#adduser{color:#282828}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="address_list">
+        <div class="list" tapmode="a" onclick="go_xuan_xiaoqu();">
+			<div class="s2"><span id="xiaoqu">岭南新天地</span>小区</div>
+			<div class="s3"></div>
+		</div>
+		<div class="list" tapmode="a" style="height:80px;" onclick="set_user_address();">
+			<div class="s2">
+			   <li id="address">H5区B栋2603号</li>
+			   <li id="adduser">魏小平 15985452545</li>
+			</div>
+			<div class="s3" style="height:80px;background-position: 0px 30px;"></div>
+		</div>
+		
+	</div>
+	
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '努力加载中...',
+		    text: '先喝杯茶...',
+		    modal: true
+		});
+		get_user_info();
+	};
+	
+	function get_user_info(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_user_info',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var comname = $api.getStorage('user_communityName');
+                 if(comname != '' && ret['communityId'] > 0){
+                     $('#xiaoqu').html(comname);
+                 }else{
+                     $('#xiaoqu').html('未选择');
+                 }
+                 
+                 
+                 if(ret['receiptName'] && ret['receiptTel'] && ret['receiptAddress']){
+                     
+                     $('#address').html(ret['receiptAddress']);
+                     $('#adduser').html(ret['receiptName']+' '+ret['receiptTel']);
+                 }
+                 else{
+                     
+                     $('#address').html('地址');
+                     $('#adduser').html('联系人、电话');
+                 }
+                 
+            }else {
+            	//fduanwang();
+            };
+        });
+	
+	}
+	
+	function set_user_address(){
+	   api.openWin({
+		    name: 'address_user_header',
+		    url: 'address_user_header.html',
+		    
+		});
+	}
+	
+	function go_xuan_xiaoqu(){
+		api.openWin({
+		    name: 'xuan_xiaoqu_header',
+		    url: 'xuan_xiaoqu_header.html',
+		    
+		});
+	}
+	
+</script>
+</html>

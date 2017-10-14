@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    border-radius: 10px;
+		    background-color: transparent; 
+		}
+		body{
+			background-color: #fff;
+		    /*float:left;*/
+		    /*border-radius: 10px;*/
+		    border:1px solid #eee;
+		}
+		.a{
+            background-color:#eee !important;
+        }
+		#content{
+			height:97px;
+			line-height: 97px;
+			color:red;
+			text-align: center;
+			font-size:18px;
+		}
+		#content .s1{
+			font-size:18px;
+			height:97px;
+			line-height: 97px;
+			color:#000;
+			text-align: center;
+		}
+		#content .s2{
+			font-size:18px;
+			height:40px;
+			line-height: 60px;
+			color:#000;
+			text-align: center;
+			font-weight: bold;
+		}
+		#content .s3{
+			font-size:16px;
+			height:40px;
+			line-height: 40px;
+			color:#999;
+			text-align: center;
+		}
+		#footer{
+			height:50px;
+			line-height: 50px;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            text-align: center;
+		}
+		#esc{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            color:#1982db;
+		}
+		#left{
+			margin:5px;
+			line-height: 40px;
+			border-radius: 5px;
+			background-color:#ffd014;
+			color:#523200;
+		}
+		#call{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            margin:5px;
+			line-height: 40px;
+			border-radius: 5px;
+			background-color:#eee;
+			color:#999;
+		}
+		.c_on{
+			background-color:#c09c0d !important;
+		}
+		.z_on{
+			background-color:#e2e2e2 !important;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="content">
+		<!--<div class="s1">很遗憾，您没中奖</div>-->
+		<div class="s2">恭喜你中奖</div>
+		<div class="s3">中奖码：123456789</div>
+	</div>
+	<div id="footer">
+		<div tapmode="a" onclick="fclose()" id="esc"><div id="left" tapmode="c_on">再抽一次</div></div>
+		<div tapmode="a" onclick="fcall()" id="call"><div id="right" tapmode="z_on">知道了</div></div>
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		//document.getElementById("content").innerHTML=api.pageParam.phone;
+	};
+	function fcall()
+	{
+		api.call({
+		    type: 'tel',
+		    number: api.pageParam.phone
+		});
+		fclose();
+	}
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'jf_goods_cj_tanc',
+	        script: 'fclose();'
+        });
+	}
+</script>
+</html>

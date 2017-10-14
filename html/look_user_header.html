@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+    		background-color: transparent;
+    	}
+    	body{
+    		float:left;
+    		margin:0;
+    		padding:0 0 20px 0;
+    		width:100%;
+    		height:100%;
+    		background-color: transparent;
+    	}
+        .a{
+            background-color:#eee !important;
+        }
+    	input,button,select,textarea{outline:none;-webkit-appearance:none;}
+        .ssk{
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            z-index: 99999;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            /*filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; */
+        }
+        .di{
+       		background-color:#ff1b1c;
+       		width:100%;
+       		height:50px;
+       		position: absolute;
+       		z-index: -2;
+       		filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; 
+        }
+        .ssk .ssk_left{
+            width: 50px;
+			height: 50px;
+			background-image: url('../image/return.png');
+			background-size: 11px 19px;
+			background-repeat: no-repeat;
+			background-position: 13px 15px;
+        }
+        .ssk .ssk_con{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            /*background-color:#000;*/
+            height: 30px;
+            margin:10px 0;
+            color:#fff;
+            /*border-radius: 15px;*/
+            /*display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+            filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; */ 
+              text-align: center;
+              font-size: 16px;
+              line-height: 30px;
+        }
+        .ssk .ssk_con .icon{
+            width: 30px;
+            background-image: url('../image/sousuo_bai.png');
+            background-repeat: no-repeat;
+            background-size: 16px 16px;
+            background-position: 7px 2px;
+			border-right: 1px solid #fff;
+			height: 20px;
+			margin-top: 5px;
+        }
+        .ssk .ssk_con #input{
+            font-size: 12px;
+            line-height: 20px;
+            height: 20px;
+            margin-top: 5px;
+            padding:0 5px;
+            color:#fff;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        .ssk .ssk_right{
+            color:#fff;
+            width: 50px;
+            line-height: 50px;
+           /* margin:0 10px;*/
+            text-align: center;
+            font-size: 12px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+        }
+        .ssk .ssk_right .icon2{
+            background-image: url('../image/weizhi_bai.png');
+            background-repeat: no-repeat;
+            background-size: 12px 16px;
+            background-position: 0px 17px;
+            width: 12px;
+            height: 50px;
+        }
+        .ssk .ssk_right .weizhi{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+	<div class="ssk">
+		<!--<div class="di"></div>-->
+		<div class="ssk_left" tapmode="" onclick="fclose();"></div>
+		<div class="ssk_con ccyc" id="user_name">
+			
+		</div>
+		<div class="ssk_right">
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		//document.getElementById("weizhi").innerHTML=$api.getStorage('city');
+		//fdingwei();
+	};
+	$('#input').bind('keyup', function(event) {
+	        if (event.keyCode == "13") {
+	            //回车执行查询
+	            var value=document.getElementById("input").value;
+	            if(value=='') return;
+	            api.openWin({
+		            name: 'sousuo_header',
+		            url: 'sousuo_header.html',
+		            pageParam:{
+		            	text:value
+		            }
+	            });
+	        }
+	    });
+	    function fset_userName(name)
+	    {
+	    	$('#user_name').html(name);
+	    }
+	    function fclose()
+	    {
+	    	api.closeWin({
+            });
+	    }
+	    function fset(n)
+	    {
+	    	$('.di').eq(0).css('filter','alpha(opacity='+n+')');
+	    	$('.di').eq(0).css('-moz-opacity',n/100);
+	    	$('.di').eq(0).css('-khtml-opacity',n/100);
+	    	$('.di').eq(0).css('opacity',n/100);
+	    }
+	    function fopen_sousuo()
+	    {
+	    	var value=document.getElementById("input").value;
+	            if(value=='') return;
+	            api.openWin({
+		            name: 'sousuo_header',
+		            url: 'sousuo_header.html',
+		            pageParam:{
+		            	text:value
+		            }
+	            });
+	    }
+	    function fdingwei()
+	    {
+	    	api.toast({
+				msg: '正在获取位置',
+				duration: 2000,
+				location: 'bottom'
+			});
+	    	var bMap = api.require('bMap');
+			bMap.getLocation({
+			    accuracy: '10m',
+			    autoStop: true,
+			    filter: 1
+			}, function(ret, err){
+			    if(ret.status){
+			        //alert(JSON.stringify(ret));
+			        if(ret.status==true)
+			        {
+			        	$api.setStorage('lon',ret.lon);
+			        	$api.setStorage('lat',ret.lat);
+			        	var map = api.require('bMap');
+						map.getNameFromCoords({
+						    lon: ret.lon,
+						    lat: ret.lat
+						},function(ret,err){
+						    if(ret.status){
+						        //alert(JSON.stringify(ret));
+						        document.getElementById("weizhi").innerHTML=ret.city;
+						        $api.setStorage('city',ret.city);
+						    }
+						});
+			        }
+			    }else{
+			        //alert(err.code);
+			    }
+			});
+	    }
+</script>
+</html>

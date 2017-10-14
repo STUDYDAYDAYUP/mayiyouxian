@@ -1,0 +1,119 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+    padding-bottom: 1px;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100%;
+    padding-bottom:50px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+}
+.a{
+    background-color:#ccc !important;
+}
+.header{
+	background-color: #fff;
+	padding:10px 0;
+}
+.list_h{
+	height: 30px;
+	line-height: 30px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+}
+.list_h .s1{
+	width: 16px;
+	height: 30px;
+	background-image: url('../image/xuan_lv.png');
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	background-position: 0 7px;
+	margin:0 10px;
+}
+.list_h .s3{
+	width: 16px;
+	height: 30px;
+	background-image: url('../image/tanhao.png');
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	background-position: 0 7px;
+	margin:0 10px;
+}
+.list_h .s2{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.list_c{
+	margin:5px 0;
+	padding:0 10px;
+}
+.list_c .s1{
+	color:#999;
+	margin:0 10px 0 0;
+}
+.list_c .s2{
+
+}
+
+.h1{
+	height: 50px;
+	background-color: #fff;
+	border-bottom:1px solid #eee;
+	line-height: 50px;
+}
+.h1 .s1{
+	margin:0 10px;
+	float:left;
+}
+.h1 .s2{
+	background-image: url('../image/youjiantou.png');
+	background-repeat: no-repeat;
+	width: 10px;
+	height: 50px;
+	margin-right: 10px;
+	float:right;
+	background-size: 10px 15px;
+	background-position: 0px 17px;
+}
+.h2{
+	background-color: #fff;
+	height: 50px;
+	border-bottom:1px solid #eee;
+	line-height: 50px;
+	margin:10px;
+}
+.h2 .s1{
+	color:#999;
+	margin-left:10px;
+}
+.h2 .s2{
+	margin-left: 10px;
+}
+.list_l{
+	background-color: #fff;
+	height: 50px;
+	border-bottom:1px solid #eee;
+	line-height: 50px;
+	margin:0 10px;
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.list_l .s1{
+	color:#999;
+	margin-left:10px;
+}
+.list_l .s2{
+	margin-left: 10px;
+}
+.bsjb{
+	height: 11px;
+	background-image: url('../image/bai_sjb.png');
+	background-size:500px 11px;
+	margin-bottom: 10px;
+}

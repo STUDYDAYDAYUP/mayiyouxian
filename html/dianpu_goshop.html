@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dianpu_goshop.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.header{
+    		position: fixed;
+    		top:0;
+    		left:0;
+    		width:100%;
+    		z-index: 999;
+    		background-color:#fff;
+    	}
+    	#main{
+    		padding-top:30px;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header"><div class="s1"></div><div class="s2" tapmode="" onclick="fqk();"></div><div class="s3" tapmode="" onclick="fqk();">清空购物车</div></div>
+	<div class="content">
+		<!--<ul>
+			<li>
+				<span class="s_l">商品名</span>
+				<span class="s_c red">￥10元</span>
+				<span class="s_r"><div class="jian" tapmode="" onclick="fjian(0);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="fjia(0);"></div></span>
+			</li>
+			<li>
+				<span class="s_l">商品名</span>
+				<span class="s_c red">￥10元</span>
+				<span class="s_r"><div class="jian" tapmode="" onclick="fjian(1);"></div><div class="num">0</div><div class="jia" tapmode="" onclick="fjia(1);"></div></span>
+			</li>
+		</ul>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/jQueryRotate.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_buycart();
+	};
+	function fjia(n,goods_id)
+	{
+		var obj=$('.jia').eq(n);
+		var left=$('.jia').eq(n).offset().left;
+		var top=$('.jia').eq(n).offset().top;
+		var num=Number($('.num').eq(n).html());
+		var max_num=Number($('.max_num').val());
+		//var attr_id=$('#'+goods_id).attr('attr_id');
+		var attr_id=$('.content li').eq(n).attr('attr_id');
+		if(num==0)
+		{
+			$(".num").eq(n).css('display','block');
+			$(".jian").eq(n).css('display','block');
+			$(".num").eq(n).rotate({
+	            angle: 180,
+	            animateTo: 0,
+	            duration:200,
+	            callback: function () {
+	               
+	            }
+	        })
+	        $(".jian").eq(n).rotate({
+	            angle: 180,
+	            animateTo: 0,
+	            duration:200,
+	            callback: function () {
+	               
+	            }
+	        })
+			$(".num").eq(n).animate({left:'-=22px'},200);
+			$(".jian").eq(n).animate({left:'-=44px'},200);
+		}
+		else
+		{
+			if(num+1<=max_num)
+			{
+				//fset_buycar(goods_id,'goods_num',(num+1),attr_id);
+				api.execScript({
+		            frameName:'dianpu_right',
+		            script: 'fset_buycar(\''+goods_id+'\',\'goods_num\',\''+(num+1)+'\',\''+attr_id+'\');'
+	            });
+			} 
+		}
+		if(num+1>max_num) $('.num').eq(n).html(max_num);
+		else $('.num').eq(n).html(num+1);
+	}
+	function fjian(n,goods_id)
+	{
+		var num=Number($('.num').eq(n).html());
+//		var attr_id=$('#'+goods_id).attr('attr_id');
+		var attr_id=$('.content li').eq(n).attr('attr_id');
+		if(num==0) return;
+		if(num>1) $('.num').eq(n).html(num-1);
+		//if(num==1) setTimeout("$('.num').eq("+n+").html("+(num-1)+")",200);
+		if(num==1)
+		{
+			 $(".num").eq(n).rotate({
+	            angle: 0,
+	            animateTo: 180,
+	            duration:200,
+	            callback: function () {
+	                
+	            }
+	        })
+	        $(".jian").eq(n).rotate({
+	            angle: 0,
+	            animateTo: 180,
+	            duration:200,
+	            callback: function () {
+	                
+	            }
+	        })
+			$(".num").eq(n).animate({left:'+=22px'},200);
+			$(".jian").eq(n).animate({left:'+=44px'},200);
+			//setTimeout('fyin('+n+')',200);
+			api.execScript({
+	            frameName:'dianpu_right',
+	            script: 'fdel(\''+goods_id+'\',\''+attr_id+'\');'
+            });
+		}
+		else
+		{
+			//fset_buycar(goods_id,'goods_num',(num-1),attr_id);
+			api.execScript({
+		            frameName:'dianpu_right',
+		            script: 'fset_buycar(\''+goods_id+'\',\'goods_num\',\''+(num-1)+'\',\''+attr_id+'\');'
+	        });
+		}
+		
+	}
+	function fyin(n)
+	{
+		$(".num").eq(n).css('display','none');
+		$(".jian").eq(n).css('display','none');
+	}
+	function fget_buycart()
+	{
+		var j=0;
+		var ret=$api.getStorage('buycar');
+		var html='<ul>';
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].goods_shopId==api.pageParam.shopId)
+			{
+				html+='<li id="'+ret[i].goods_id+'" attr_id="'+ret[i].shuxing_id+'">';
+				html+='	<span class="s_l ccyc">'+ret[i].goods_title+'</span>';
+				//alert(Number(ret[i].shopPrice)+"+"+Number(ret[i].shuxing_money)+"="+(Number(ret[i].shopPrice)+Number(ret[i].shuxing_money)));
+				html+='	<span class="s_c red">￥'+Number(ret[i].shuxing_money)+'元</span>';
+				html+='	<span class="s_r"><div class="jian" onclick="fjian(\''+j+'\',\''+ret[i].goods_id+'\');"></div><div class="num">'+ret[i].goods_num+'</div><div class="jia" tapmode="" onclick="fjia(\''+j+'\',\''+ret[i].goods_id+'\');"></div></span>';
+				html+='<input type="hidden" class="max_num" value="'+ret[i].goods_goodsStock+'" />';
+				html+='</li>';
+				j++;
+			}
+		}
+		html+='</ul>';
+		$('.content').eq(0).html(html);
+		api.parseTapmode();
+		api.execScript({
+	                        frameName:'dianpu_footer',
+	                        script: 'fget_buycar();'
+        });
+	}
+	function fqk()
+	{
+			//api.showProgress({title:'删除中...'});
+			var ret=$api.getStorage('buycar');
+			for(var i=ret.length-1;i>=0;i--)
+			{
+				if(ret[i].goods_shopId==api.pageParam.shopId)
+				{
+					ret.splice(i,1);//开始位置,删除个数
+				}
+			}
+			$api.setStorage('buycar',ret);
+					api.execScript({
+	                    frameName:'dianpu_footer',
+	                    script: 'fget_buycar();'
+                    });
+                    api.execScript({
+	                    frameName:'dianpu_goshop',
+	                    script: 'fget_buycart();'
+                    });
+                    api.execScript({
+	                   	frameName:'dianpu_right',
+	                    script: 'fget_buycar_csh();fshuaxin();'
+                    });
+                    api.execScript({
+	                   	frameName:'dianpu_goshop_tanc',
+	                    script: 'fclose();'
+                    });
+			return;
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'del_buycart_for_shopId.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	shopId:api.pageParam.shopId
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                if(ret[0].pan==1)
+	                {
+//	                	api.toast({
+//							msg: '删除成功',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+                        api.execScript({
+	                        frameName:'dianpu_footer',
+	                        script: 'fget_buycar();'
+                        });
+	                }
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

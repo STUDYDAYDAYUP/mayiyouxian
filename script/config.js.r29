@@ -1,0 +1,2 @@
+var YAH_web='http://m.kepindb.com';/*网址m.kepindb.com*/
+var YAH_ajax_name=YAH_web+'/Cjson/';/*数据交互ajax链接地址*/

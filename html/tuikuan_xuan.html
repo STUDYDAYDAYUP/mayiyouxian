@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+			background-color: #fff;
+		    float:left;
+		    width: 100%;
+		}
+		.a{
+		            background-color:#eee !important;
+		}
+		#main{
+			width: 100%;
+		    font-size: 14px;
+		    background-color: #fff;
+		}
+		ul{
+		
+		}
+		li{
+			height:49px;
+			border-bottom:1px solid #eee;
+			line-height: 49px;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+		}
+		li .s1{
+			width:50px;
+			line-height: 49px;
+			text-align: center;
+		}
+		li .s1 img{
+			height:16px;
+			display:block;
+			margin:15px auto 0 auto;
+		}
+		li .s2{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: center;
+		}
+		li .s3{
+			width:50px;
+			background-image:url('../image/dui_hong.png');
+			background-repeat: no-repeat;
+			background-size:20px 15px;
+			background-position: 17px 17px;
+			display:none;
+		}
+		.s3_on{
+			display:block !important;
+		}
+		.s2_on{
+			color:red !important;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<ul>
+		<li tapmode="" onclick="fqie(0);" paixu="多拍/错拍/不想要"><div class="s2 s2_on">多拍/错拍/不想要</div></li>
+		<li tapmode="" onclick="fqie(1);" paixu="服务承诺"><div class="s2">服务承诺</div></li>
+		<li tapmode="" onclick="fqie(2);" paixu="商品少件/破损/污渍等"><div class="s2">商品少件/破损/污渍等</div></li>
+		<li tapmode="" onclick="fqie(3);" paixu="功能未达到标准效果"><div class="s2">功能未达到标准效果</div></li>
+		<li tapmode="" onclick="fqie(4);" paixu="质量问题"><div class="s2">质量问题</div></li>
+		<li tapmode="" onclick="fqie(5);" paixu="功能缺失"><div class="s2">功能缺失</div></li>
+		<li tapmode="" onclick="fqie(6);" paixu="假冒品牌"><div class="s2">假冒品牌</div></li>
+		<li tapmode="" onclick="fqie(7);" paixu="外观/型号/参数描述不符"><div class="s2">外观/型号/参数描述不符</div></li>
+		<li tapmode="" onclick="fqie(8);" paixu="卖家发错货"><div class="s2">卖家发错货</div></li>
+		<li tapmode="" onclick="fqie(9);" paixu="其他"><div class="s2">其他</div></li>
+	</ul>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fqie(n)
+	{
+		var max=$('#main li').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.s2').eq(i).addClass('s2_on');
+				//$('.s3').eq(i).addClass('s3_on');
+				var paixu=$('#main li').eq(i).attr('paixu');
+				api.execScript({
+	               	frameName:'tuikuan',
+	                script: 'fset_xuan(\''+paixu+'\');'
+                });
+                api.execScript({
+	                frameName:'tuikuan_tanc',
+	                script: 'fclose();'
+                });
+			}
+			else
+			{
+				$('.s2').eq(i).removeClass('s2_on');
+				//$('.s3').eq(i).removeClass('s3_on');
+			}
+		}
+	}
+</script>
+</html>

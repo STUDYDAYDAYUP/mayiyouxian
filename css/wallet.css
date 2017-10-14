@@ -1,0 +1,206 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100% !important;
+}
+.a{
+            background-color:#eee !important;
+}
+#main{
+    width: 100% !important;
+    font-size: 16px;
+}
+#header{
+	background-color: #fff;
+	/*height: 60px;*/
+    margin:5px 10px 5px 10px;
+    border-radius: 5px;
+    padding:10px;
+}
+#header .s1{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+}
+#header .s1 .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#header .s1 .right{
+	color:#fff;
+	font-size: 12px;
+	background-color:#60b034;
+	height:30px;
+	padding:0 15px;
+	line-height:30px;
+	border-radius:5px;
+	margin-top:10px;
+}
+.money{
+    color:#df5354;
+}
+#header .s2{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+	color:#ff9e40;
+	height: 50px;
+	line-height: 60px;
+}
+#header .s2 .money{
+	font-size: 24px;
+}
+#header .s2 .money a{
+	font-size: 12px;
+}
+#header .s3{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+}
+#header .s3 .left{
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 5px;
+	background-color: #ffd014;
+	color:#5e3d01;
+	padding:0 30px;
+}
+#header .s3 .con{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#header .s3 .right{
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 5px;
+	background-color: #00b4ff;
+	color:#fff;
+	padding:0 30px;
+}
+.tixian_on{
+	background-color: #bc990f !important;
+}
+.chongzhi_on{
+	background-color: #028ac2 !important;
+}
+
+/*#header .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin-left: 10px;
+}
+#header .left div{
+	line-height: 30px;
+}
+#header .left #money{
+	font-size: 20px;
+	color:red;
+}
+#header .right{
+	width: 100px;
+}
+#header .right .chongzhi{
+	width: 80px;
+	color: #52c4ff;
+	background-color:#fff;
+	border:1px solid #52c4ff;
+	border-radius: 5px;
+	text-align: center;
+	height: 30px;
+	line-height: 30px;
+	margin: 20px 10px 10px 10px;
+}*/
+.chongzhi_on{
+	background-color: #52c4ff !important;
+	color:#fff !important;
+}
+.list_header{
+	height: 30px;
+	line-height: 30px;
+	border-bottom: 1px solid #eee;
+	background-color:#f2f2f2;
+	color:#666;
+	margin-top: 10px;
+	padding-left: 10px;
+}
+
+#content{
+
+}
+#content ul{
+
+}
+#content ul li{
+	color:#999;
+    background-color:#fff;
+    border-bottom:1px solid #eee;
+	padding:10px;
+	font-size: 14px;
+}
+#content ul li .s1{
+	width: 100%;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    line-height: 30px;
+}
+#content ul li .s1 .left{
+	color:#000;
+	font-size: 16px;
+}
+#content ul li .s1 .right{
+	text-align: right;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#content ul li .s2{
+	width: 100%;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+#content ul li .s2 .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#content ul li .s2 .z_money{
+	text-align: right;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color:#ff9e40;
+}
+.lv{
+	color:#05a915 !important;
+}
+
+#yituantequan .user_info{width:100%;height:50px;background-color:#fff;}
+#yituantequan .user_info .user_last{float:left;margin-left:10px;line-height:50px;color:#282828;}
+#yituantequan .user_info .user_num{margin-left:10px;color:#6bba50;}
+#yituantequan .user_info .duihuan{line-height:30px;float:right;margin:10px 20px;color:#fff;background-color:#6bba50;padding:0 10px;border-radius:5px;}
+#yituantequan .list_header{height:50px;line-height:50px;margin-top:0px;}
+#yituantequan .list_title{height:50px;line-height:50px;background-color:#fff;width:100%;display: -webkit-box;display: -webkit-flex;display: flex;border-bottom:1px solid #fafafa;}
+#yituantequan .list_title .list_class{-webkit-box-flex: 1;-webkit-flex: 1;flex: 1;text-align:center;}
+
+
+
+#duihuan{width:100%;height:100%;background-image:url('../image/duihuan_bg.png');background-size:100% 100%;background-repeat: no-repeat;}
+#duihuan .code_input{width:80%;margin:0 auto;}
+#duihuan .code_input input{margin-top:200px;width:100%;height:50px;text-align:center;border:1px solid #6bba50;background-color:#fff;border-radius:10px;}
+#duihuan .code_sub{width:80%;height:50px;margin:50px auto;border-radius:10px;line-height:50px;color:#fff;text-align:center;background-image:url('../image/duihuan_bg2.png');}
+#duihuan .code_sub1{background-image:url('../image/duihuan_bg1.png');}
+#duihuan .duihuan_c{display:none;background-image:url('../image/duihuanc.png');width:90%;background-size:100%;background-repeat: no-repeat;position:fixed;top:50%;color:#fff;text-align:center;padding-top:40%;left:50%;}

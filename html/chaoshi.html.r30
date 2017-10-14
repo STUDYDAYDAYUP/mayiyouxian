@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--组件依赖css begin-->
+	<link rel="stylesheet" type="text/css" href="../css/navigator/navigator.css" />
+	<link rel="stylesheet" type="text/css" href="../css/navigator/navigator.iscroll.css" />
+	<!--组件依赖css end-->
+    <link rel="stylesheet" type="text/css" href="../css/chaoshi.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+		<div class="title-list">
+			<div class="min-title">
+				<span class="t4">精选推荐</span><span tapmode="a" class="ty" onclick="fhuanyizu();"><span class="t5">换一组</span><span class="t6"></span></span>
+			</div>
+			<div class="neirong2">
+				<ul>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban1"><img src="../image/sp_4.png" /><a class="a1">丹麦进口丹麦皇冠曲奇</a><a class="a2">￥137.00</a></li>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban2"><img src="../image/sp_4.png" /><a class="a1">丹麦进口丹麦皇冠曲奇</a><a class="a2">￥137.00</a></li>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban3"><img src="../image/sp_4.png" /><a class="a1">丹麦进口丹麦皇冠曲奇</a><a class="a2">￥137.00</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="fenlei">
+			<div id="nav-smartSetup">
+				<ul>
+			        <li tapmode="a"><span class="red">要闻</span></li>
+			        <li tapmode="a"><span>国内</span></li>
+			        <li tapmode="a"><span>国际</span></li>
+			        <li tapmode="a"><span>军事</span></li>
+			        <li tapmode="a"><span>社会</span></li>
+			        <li tapmode="a"><span>娱乐</span></li>
+			        <li tapmode="a"><span>女人</span></li>
+			        <li tapmode="a"><span>体育</span></li>
+			        <li tapmode="a"><span>科技</span></li>
+			        <li tapmode="a"><span>互联网</span></li>
+			        <li tapmode="a"><span>教育</span></li>
+			        <li tapmode="a"><span>财经</span></li>
+			        <li tapmode="a"><span>房产</span></li>
+			        <li tapmode="a"><span>汽车</span></li>
+			    </ul>
+		    </div>
+		</div>
+		<div class="goods_list">
+		<ul>
+			<li tapmode="a" onclick="fopengoods(0)">
+				<img src="../image/sp_6.png" />
+				<div class="title">衣锦 iPhone6s冬装新款羽绒服奢华大毛领韩中风格</div>
+				<div class="money">￥135.70</div>
+			</li>
+			<li tapmode="a" onclick="fopengoods(0)">
+				<img src="../image/sp_6.png" />
+				<div class="title">衣锦 iPhone6s冬装新款羽绒服奢华大毛领韩中风格</div>
+				<div class="money">￥135.70</div>
+			</li>
+			<li tapmode="a" onclick="fopengoods(0)">
+				<img src="../image/sp_6.png" />
+				<div class="title">衣锦 iPhone6s冬装新款羽绒服奢华大毛领韩中风格</div>
+				<div class="money">￥135.70</div>
+			</li>
+			<li tapmode="a" onclick="fopengoods(0)">
+				<img src="../image/sp_6.png" />
+				<div class="title">衣锦 iPhone6s冬装新款羽绒服奢华大毛领韩中风格</div>
+				<div class="money">￥135.70</div>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<!--组件依赖js begin-->
+	<script type="text/javascript" src="../script/js/zepto.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.extend.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.ui.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.iscroll.js"></script>
+	<script type="text/javascript" src="../script/js/widget/navigator.js"></script>
+	<script type="text/javascript" src="../script/js/widget/navigator.iscroll.js"></script>
+<!--组件依赖js end-->
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		api.hideProgress();//隐藏加载进度框
+	};
+	(function () {
+        /*组件初始化js begin*/
+        $('#nav-smartSetup').navigator();    //smart setup方式创建 推荐方式
+    })();
+	function fremove(obj,n)
+	{
+		$api.removeCls(obj,n);
+	}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+function fhuanyizu()
+{
+	api.toast({
+		msg: '加载中...',
+		duration: 2000,
+		location: 'bottom'
+	});
+}
+</script>
+</html>

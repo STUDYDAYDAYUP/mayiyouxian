@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		padding-top:50px;
+    	}
+    	.header{
+    		height: 50px;
+    		line-height: 50px;
+    		display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		    border-bottom:1px solid #eee;
+		    position: fixed;
+		    top:0;
+		    left:0;
+		    width:100%;
+		    background-color:#fff;
+    	}
+    	.header .s1{
+    		margin-left:10px;
+    		color:#00c0ff;
+    	}
+    	.header .s2{
+    		margin-right:10px;
+    		color:#60b034;
+    	}
+    	.header .s3{
+    		-webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+    	}
+    	.list{
+    		height:50px;
+    		line-height: 50px;
+    		border-bottom:1px solid #eee;
+    		text-align: center;
+    	}
+    	.list_on{
+    		color:#60b034 !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header"><div class="s1" tapmode="" onclick="fclose();">取消</div><div class="s3"></div><div class="s2" tapmode="" onclick="fclose();">确定</div></div>
+	<div class="list" tapmode="" onclick="fxuan(0)" title='立即送出'>尽快送达(预计15:13送达)</div>
+	<div class="list" tapmode="" onclick="fxuan(1)" title='16:00-16:20'>16:00-16:20</div>
+	<div class="list" tapmode="" onclick="fxuan(2)" title='16:20-16:40'>16:20-16:40</div>
+	<div class="list" tapmode="" onclick="fxuan(3)" title='16:40-17:00'>16:40-17:00</div>
+	<div class="list" tapmode="" onclick="fxuan(4)" title='17:00-17:20'>17:00-17:20</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fshow();
+	};
+//	function fshow()
+//	{
+//		var dq_time=new Date().getTime();
+//		var dq_shifen=getTime_shifen(dq_time/1000);
+//		var shi=getTime_shi(dq_time/1000);
+//		var fen=getTime_fen(dq_time/1000);
+//		fe=Number(fen)+Number(api.pageParam.ps_time);
+//		if(fen>=60)
+//		{
+//			var lin_n=(fen-(fen%60))/60;
+//			shi=Number(shi)+lin_n;
+//			fen=fen-lin_n*60;
+//		}
+//		if(fen==0) fen='0';
+//		else if(fen>0 && fen<=20) fen='20';
+//		else if(fen>20 && fen<=40) fen='40';
+//		else if(fen>40 && fen<60) fen='00';
+//		dq_shifen=shi+"."+fen;
+//		//alert(dq_shifen+":"+api.pageParam.ps_time);
+//		api.pageParam.ps_time=api.pageParam.ps_time/100;
+//		//alert(dq_shifen+" "+api.pageParam.ps_time+" "+api.pageParam.end_time);
+//		
+//		var shi2=shi,fen2=fen;
+//		fen2=Number(fen2)+20;
+//		if(fen2>=60)
+//		{
+//			shi2=Number(shi2)+1;
+//			fen2=Number(fen2)-60;
+//		} 
+//		var html='<div class="header"><div class="s1" tapmode="" onclick="fclose();">取消</div><div class="s3"></div><div class="s2" tapmode="" onclick="fclose();">确定</div></div>';;
+//		html+='<div class="list" tapmode="" onclick="fxuan(0)" title="立即送出">尽快送达(预计'+shi2+'.'+fen2+'送达)</div>';
+//		var zst=Number(dq_shifen);
+//		var i=1;
+//		var zst2=zst;
+//		while(zst2<floatJian(Number(api.pageParam.end_time),0.4) && i<72)
+//		{
+//			zst2=floatJia(zst2,0.2);
+//			while(zst2<floatJia(Number(dq_shifen),Number(api.pageParam.ps_time)))
+//			{
+//				zst2=floatJia(zst2,0.2).toFixed(2);
+//			}
+//			var x1=(parseInt(zst2)+0.6);
+//			var x2=(parseInt(zst2)+1);
+//			//alert(zst2+">="+x1+" && "+zst2+"<"+x2);
+//			if(zst2>=x1 && zst2<x2) zst2=floatJia(x2,floatJian(zst2.toFixed(2),x1)).toFixed(2);
+//			var left=(Number(floatJian(zst2,0.2))).toFixed(2);
+//			var right=(Number(zst2)).toFixed(2);
+//			var y1=parseInt(zst2);
+//			var y2=(parseInt(zst2)+0.2);
+//			if(right>=y1 && right<y2)
+//			{
+//				var cha=y2-right;
+//				left=(y1-0.4-cha).toFixed(2);
+//			}
+//			if(right>api.pageParam.end_time) break;
+//			html+='<div class="list" tapmode="" onclick="fxuan('+i+')" title="'+left+'-'+right+'">'+left+'-'+right+'</div>';
+//			i++;
+//		}
+//		$('#main').html(html);
+//		api.parseTapmode();
+//	}
+	function fshow()
+	{
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_shops_service.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {shopId:api.pageParam.shopId}
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(JSON.stringify(ret));
+            	 var html='<div class="header"><div class="s1" tapmode="" onclick="fclose();">取消</div><div class="s3"></div><div class="s2" tapmode="" onclick="fclose();">确定</div></div>';
+                 for(var i=0;i<ret[0]['time_list'].length;i++)
+                 {
+                 	if(i==0) html+='<div class="list" tapmode="" onclick="fxuan('+i+')" title="尽快送达">'+ret[0]['time_list'][i]+'</div>';
+                 	else html+='<div class="list" tapmode="" onclick="fxuan('+i+')" title="'+ret[0]['time_list'][i]+'">'+ret[0]['time_list'][i]+'</div>';
+                 }
+                 $('#main').html(html);
+                 api.parseTapmode();
+            }else {
+            	var html='<div class="header"><div class="s1" tapmode="" onclick="fclose();">取消</div><div class="s3"></div><div class="s2" tapmode="" onclick="fclose();">确定</div></div>';
+				html+='<div class="list" tapmode="" onclick="fxuan(0)" title="尽快送达">尽快送达</div>';
+            	$('#main').html(html);
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+        });
+	}
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'miaosha_xiadan_tanc',
+	        script: 'fclose();'
+        });
+	}
+	function fxuan(n)
+	{
+		var max=$('.list').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.list').eq(i).addClass('list_on');
+			}
+			else
+			{
+				$('.list').eq(i).removeClass('list_on');
+			}
+		}
+		var psway=$('.list').eq(n).attr('title');
+		api.execScript({
+			name:'miaosha_xiadan_header',
+	       	frameName:'miaosha_xiadan',
+	        script: 'fset_pstime(\''+psway+'\');'
+        });
+	}
+</script>
+</html>

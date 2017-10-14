@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html,body{
+    		height:140px;
+    		width:100%;
+    		border-radius: 5px;
+    	}
+    	#main{
+    		height:140px;
+    		width:100%;
+    	}
+    	#main #content{
+    		height:80px;
+    		text-align: center;
+    		line-height: 80px;
+    		color:#666;
+    		display:block;
+    	}
+    	#main #content2{
+    		height:80px;
+    		display:none;
+    		text-align: center;
+    	}
+    	#main #content2 .title{
+    		color:#000;
+    		font-weight: bold;
+    		line-height: 50px;
+    	}
+    	#main #content2 .min_title{
+    		color:#999;
+    		line-height: 10px;
+    	}
+    	#main #footer{
+    		height:50px;
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            padding:5px;
+    	}
+    	#main #footer .left{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            margin-right:10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 50px;
+            background-color:#ffd014;
+            color:#523200;
+            height:50px;
+    	}
+    	#main #footer .left_on{
+    		background-color:#bd990b !important;
+    	}
+    	#main #footer .right{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 50px;
+            background-color:#f2f2f2;
+            color:#999;
+            height:50px;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="content">
+		<img src="../image/login1.gif" width="20" height="20" />
+	</div>
+	<div id="content2">
+		<div class="title">恭喜你中奖</div>
+		<div class="min_title">中奖券码：</div>
+	</div>
+	<div id="footer">
+		<div class="left" tapmode="left_on" onclick="fgo();">再抽一次</div>
+		<div class="right" tapmode="" onclick="fclose();">知道了</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		if(api.pageParam.pan=='0')
+		{
+			$('#content2').css('display','none');
+			$('#content').css('display','block');
+			$('#content').html('很遗憾,您没中奖');
+		}
+		else if(api.pageParam.pan=='1')
+		{
+			$('#content').css('display','none');
+			$('#content2').css('display','block');
+			$('.min_title').html('中奖券码：'+api.pageParam.luckNo);
+		}
+	};
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'jf_goods_tanc2',
+	        script: 'fclose();'
+        });
+	}
+	function fgo()
+	{
+		api.execScript({
+	       	frameName:'jf_goods',
+	        script: 'fzbc();'
+        });
+		api.execScript({
+	       	frameName:'jf_goods_tanc2',
+	        script: 'fclose();'
+        });
+	}
+</script>
+</html>

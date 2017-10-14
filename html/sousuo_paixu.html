@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+			background-color: #fff;
+		    float:left;
+		    width: 100%;
+		}
+		.a{
+		            background-color:#eee !important;
+		}
+		#main{
+			width: 100%;
+		    font-size: 14px;
+		    background-color: #fff;
+		}
+		ul{
+		
+		}
+		li{
+			height:49px;
+			border-bottom:1px solid #eee;
+			line-height: 49px;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+		}
+		li .s1{
+			width:50px;
+			line-height: 49px;
+			text-align: center;
+		}
+		li .s1 img{
+			height:16px;
+			display:block;
+			margin:15px auto 0 auto;
+		}
+		li .s2{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+		}
+		li .s3{
+			width:50px;
+			background-image:url('../image/dui_hong.png');
+			background-repeat: no-repeat;
+			background-size:20px 15px;
+			background-position: 17px 17px;
+			display:none;
+		}
+		.s3_on{
+			display:block !important;
+		}
+		.s2_on{
+			color:red !important;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<ul>
+		<li tapmode="" onclick="fqie(0);" paixu="zhineng"><div class="s1"><img src="../image/zhinengpaixu.png" /></div><div class="s2 s2_on">智能排序</div><div class="s3 s3_on"></div></li>
+		<li tapmode="" onclick="fqie(1);" paixu="juli"><div class="s1"><img src="../image/julizuijin.png" /></div><div class="s2">距离最近</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fqie(2);" paixu="qisongjia"><div class="s1"><img src="../image/qisongjiapaixu.png" /></div><div class="s2">起送价最低</div><div class="s3"></div></li>
+		<li tapmode="" onclick="fqie(3);" paixu="xiaoliang"><div class="s1"><img src="../image/xiaoliangpaixu.png" /></div><div class="s2">销量最高</div><div class="s3"></div></li>
+	</ul>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fqie(n)
+	{
+		var max=$('#main li').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.s2').eq(i).addClass('s2_on');
+				$('.s3').eq(i).addClass('s3_on');
+				var paixu=$('#main li').eq(i).attr('paixu');
+				api.execScript({
+	               	frameName:'sousuo',
+	                script: 'fset_pai(\''+paixu+'\');'
+                });
+                api.execScript({
+	               	frameName:'tuangou',
+	                script: 'fset_pai(\''+paixu+'\');'
+                });
+                api.execScript({
+	               	frameName:'sousuo_pingtai',
+	                script: 'fset_paixu(\''+paixu+'\');'
+                });
+                api.execScript({
+	                frameName:'sousuo_tanc',
+	                script: 'fclose();'
+                });
+                api.execScript({
+	                frameName:'fenlei_paixu',
+	                script: 'fclose();'
+                });
+			}
+			else
+			{
+				$('.s2').eq(i).removeClass('s2_on');
+				$('.s3').eq(i).removeClass('s3_on');
+			}
+		}
+	}
+</script>
+</html>

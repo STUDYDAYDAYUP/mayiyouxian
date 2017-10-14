@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wallet.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="yituantequan">
+    <div class="user_info">
+        <div class="user_last">剩余次数<span class="user_num">0</span></div>
+        <span class="duihuan" onclick="fopen_duihuan();">兑换</span>
+    </div>
+	
+	<div class="list_header">记录</div>
+	<div class="list_title" style="background-color:#fafafa;"><div class="list_class">使用/充值</div><div class="list_class">次数</div><div class="list_class">时间</div></div>
+	<div id="content">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!-- <div class="list_title"><div class="list_class">使用/充值</div><div class="list_class">次数</div><div class="list_class">时间</div></div>
+		<div class="list_title"><div class="list_class">使用/充值</div><div class="list_class">次数</div><div class="list_class">时间</div></div>
+		<div class="list_title"><div class="list_class">使用/充值</div><div class="list_class">次数</div><div class="list_class">时间</div></div>
+		<div class="list_title"><div class="list_class">使用/充值</div><div class="list_class">次数</div><div class="list_class">时间</div></div> -->
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		get_user();
+		get_one_list();
+	};
+	function fopen_duihuan(){
+	    api.openWin({
+	        name: 'duihuan_header',
+	        url: 'duihuan_header.html'
+        });
+	}
+	function get_user(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_user_info',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            if (ret) {
+                 //document.getElementById("money").innerHTML=ret[0].userMoney;
+                 $('.user_num').html(ret.yiyuanNum);
+            }else {
+            	fduanwang();
+            };
+        });
+    }
+    
+    function get_one_list(){
+        var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_one_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            if (ret) {
+                 var html = '';
+                 $(ret).each(function(i){
+                     html += '<div class="list_title">';
+                     html += '<div class="list_class">'+ret[i]['typename']+'</div>';
+                     html += '<div class="list_class">'+ret[i]['IncDec']+ret[i]['change']+'</div>';
+                     html += '<div class="list_class">'+ret[i]['time']+'</div>';
+                     html += '</div>';
+                 })
+                 $('#content').html(html);
+            }else {
+            	var html='<div style="text-align: center;line-height: 50px;">暂无账单</div>';
+            	$('#content').html(html);
+            };
+        });
+    }
+	
+	
+</script>
+</html>

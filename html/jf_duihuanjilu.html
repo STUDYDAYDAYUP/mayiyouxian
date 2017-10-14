@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jf_duihuanjilu.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="goods_list">
+		<!--<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>-->
+		<ul id="content2">
+			<!--<li tapmode="a" onclick="fopen_jf_duihuan_xx(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">10000积分</div>
+					<div class="di"><span class="s1">兑换</span></div>
+				</div>
+				<div class="list_right_right"></div>
+			</li>
+			<li tapmode="a" onclick="fopen_jf_duihuan_xx(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">10000积分</div>
+					<div class="di"><span class="s2">抽奖</span><span class="s3 ccyc">中奖码：132456789adfasfsafasfsad</span></div>
+				</div>
+				<div class="list_right_right"></div>
+			</li>
+			<li tapmode="a" onclick="fopen_jf_duihuan_xx(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">10000积分</div>
+					<div class="di"><span class="s2">抽奖</span><span class="s3">未中奖</span></div>
+				</div>
+				<div class="list_right_right"></div>
+			</li>
+			<li tapmode="a" onclick="fopen_jf_duihuan_xx(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">10000积分</div>
+					<div class="di"><span class="s1">兑换</span></div>
+				</div>
+				<div class="list_right_right"></div>
+			</li>-->
+		</ul>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+//		api.showProgress({
+//			    style: 'default',
+//			    animationType: 'fade',
+//			    title: '努力加载中...',
+//			    text: '先喝杯茶...',
+//			    modal: true
+//			});
+//		api.hideProgress();//隐藏加载进度框
+		api.addEventListener({
+			name:'scrolltobottom',
+			extra:{
+			    threshold:10//设置距离底部多少距离时触发，默认值为0，数字类型   
+			}},function(ret, err){
+			if(look==0) fget_jf_jilu();
+		});
+		fget_jf_jilu();
+	};
+	var page=0;
+	var look=0;
+function fget_jf_jilu()
+{
+		look=1;
+		if(page<0) return;
+		$('.add_data').remove();
+		$('#content2').append('<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_jf_jilu.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	start:page,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	look=0;
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	 var html='';
+	            	 for(var i=0;i<ret.length;i++)
+	            	 {
+	            	 	html+='<li tapmode="a" onclick="fopen_jf_duihuan_xx('+ret[i].orderId+');">';
+						html+='	<div class="list_left"><img src="'+YAH_web+'/'+ret[i].goodsThums+'" /></div>';
+						html+='	<div class="list_right">';
+						html+='		<div class="title">'+ret[i].goodsName+'</div>';
+						var score='';
+						if(ret[i].payType==4) score=parseInt(ret[i].needPay)+'积分';
+						if(ret[i].payType==1) score=ret[i].needPay+'元';
+						if(ret[i].payType==2) score=ret[i].needPay+'元';
+						if(ret[i].payType==3) score=ret[i].needPay+'元';
+						html+='		<div class="money">'+score+'</div>';
+						//html+='		<div class="money2">兑换成功</div>';
+						if(ret[i].orderType==4) html+='<div class="di"><span class="s1">兑换</span></div>';
+						else if(ret[i].orderType==5){
+							var zjm='未中奖';
+							if(ret[i].winningCode==null || ret[i].winningCode=="" || ret[i].winningCode==0) zjm='未中奖';
+							else zjm='中奖券码：'+ret[i].winningCode;
+							html+='<div class="di"><span class="s2">抽奖</span><span class="s3 ccyc">'+zjm+'</span></div>';
+						}
+						html+='	</div>';
+						html+='	<div class="list_right_right"></div>';
+						html+='</li>';
+	            	 }
+	            	 //html+='</ul>';
+//	            	 if(ret.length==0) html='<div style="text-align: center;line-height: 50px;">暂无订单</div>';
+//	                 document.getElementsByClassName('goods_list')[0].innerHTML=html;
+	                 
+	                 if(page==0) $('#content2').html(html);
+					 else
+					 {
+					 	$('.jiazai').remove();
+					 	$('#content2').append(html);
+					 }
+					 if(ret.length>0) page+=ret.length;
+					 if(ret.length<10)
+					 {
+					 	$('#content2').append('<div class="no_data">没有更多数据</div>');
+					 	page=-1;
+					 } 
+					 else $('#content2').append('<div class="add_data" tapmode="add_data_on" onclick="fget_jf_goods();">加载更多>></div>');
+		             api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	document.getElementsByClassName('goods_list')[0].innerHTML='<div style="text-align: center;line-height: 50px;">暂无订单</div>';
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	            api.hideProgress();//隐藏加载进度框
+	        });
+}
+function fopen_jf_duihuan_xx(orderId)
+{
+	$api.setStorage('jf_duihuan_xx',orderId);
+	api.openWin({
+		name: 'jf_duihuan_xx_header',
+		url: 'jf_duihuan_xx_header.html',
+		pageParam:{
+			orderId:orderId
+		}
+	});
+}
+</script>
+</html>

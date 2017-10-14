@@ -1,0 +1,340 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+    padding-bottom:70px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+	margin-top: 10px;
+}
+.a0{
+	
+}
+.a{
+    background-color:#eee !important;
+}  
+.header{
+	background-color: #fff;
+}
+.tishi{
+	margin:0 10px;
+	border-bottom:1px solid #eee;
+	padding:5px 0;
+}
+.tishi .title{
+	line-height: 20px;
+	font-size: 12px;
+}
+.tishi .content{
+	line-height: 20px;
+	color:#999;
+	font-size: 12px;
+}
+.zhuangtai{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin:0 10px;
+    padding: 10px 0;
+}
+.zhuangtai .list{
+	text-align: center;
+	height: 60px;
+	width: 60px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;  
+    -webkit-box-orient: vertical;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+}
+.zhuangtai .list img{
+	height: 40px;
+}
+.zhuangtai .list .tu{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.zhuangtai .list a{
+	text-align: center;
+	font-size: 12px;
+	color:#666;
+}
+.zhuangtai .heng{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    background-image: url('../image/heng.png');
+    background-repeat: no-repeat;
+    background-position: 0 20px;
+}
+
+.shop_info{
+	margin-top: 10px;
+	background-color:#fff;
+}
+.min-title{
+    height:50px;
+    line-height: 50px;
+    font-size: 0.9em;
+    border-bottom:1px solid #eee;
+    background-color:#fff;
+}
+.min-title .t1{
+    		margin-left:10px;
+    		color:#555;
+    		float:left;
+    	}
+    	.min-title .t2{
+            background-image:url('../image/default.png');
+            background-repeat: no-repeat;
+            background-size:22px 22px;
+            background-position:0px 14px;
+            height:50px;
+            width:22px;
+            margin:0 0 0 10px;
+            float:left;
+        }
+    	.min-title .t3{
+    		background-image:url('../image/youjiantou.png');
+    		background-repeat: no-repeat;
+    		background-size:10px 18px;
+    		background-position:0px 16px;
+    		height:50px;
+    		width:10px;
+    		margin:0 10px;
+    		float:right;
+    	}
+.shop_info .goods_list{
+	border-bottom:1px solid #eee;
+	margin:0 10px;
+}
+.shop_info .goods_list .goods{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+    line-height: 30px;
+}
+.shop_info .goods_list .goods .title{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color:#999;
+}
+.shop_info .goods_list .goods .num{
+	/*-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;*/
+    text-align: center;
+    color:#999;
+}
+.shop_info .goods_list .goods .money{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: right;
+}
+.shop_info .list{
+	line-height: 50px;
+	height: 50px;
+	margin:0 10px;
+	border-bottom:1px solid #eee;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+}
+.shop_info .list .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color:#999;
+}
+.shop_info .list .right{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: right;
+}
+.shop_info .heji{
+	line-height: 50px;
+	color:#ffa811;
+	text-align: right;
+	margin:0 10px;
+}
+
+.ps_info{
+	margin-top: 10px;
+	background-color:#fff;
+}
+.ps_info .title{
+	line-height: 50px;
+	margin-left: 10px;
+	border-bottom:1px solid #eee;
+}
+.ps_info .list{
+	line-height: 30px;
+	margin:0 10px;
+	font-size: 13px;
+	color:#999;
+}
+
+.dingdan_info{
+	background-color: #fff;
+	margin-top: 10px;
+}
+.dingdan_info .title{
+	border-bottom:1px solid #eee;
+	line-height: 50px;
+	margin:0 10px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+}
+.dingdan_info .title .left{
+
+}
+.dingdan_info .title .right{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: right;
+}
+.dingdan_info .list{
+	line-height: 30px;
+	margin:0 10px;
+	font-size: 13px;
+	color:#999;
+}
+
+.footer{
+	position: fixed;
+	bottom:0;
+	left:0;
+	width: 100%;
+	height: 50px;
+	background-color: #fff;
+	border-top:1px solid #e2e2e2;
+	display: none;
+}
+.footer .f0{
+	/*display: none;*/
+}
+.footer .f1{
+	/*display: none;*/
+}
+.footer .f2{
+	/*display: none;*/
+}
+.footer .f3{
+	/*display: none;*/
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.footer .f4{
+	/*display: none;*/
+}
+.footer .f0 .left{
+	border:1px solid #eee;
+	border-radius: 2px;
+	text-align: center;
+	float:left;
+	line-height: 30px;
+	margin:10px 0 0 10px;
+	padding:0 20px;
+}
+.footer .f0 .right{
+	text-align: center;
+	float:right;
+	line-height: 30px;
+	margin:10px 10px 0 0;
+	padding:0 40px;
+	border-radius: 2px;
+	background-color: #00b4ff;
+	color:#fff;
+}
+
+.footer .f1 .content{
+	border:1px solid #eee;
+	border-radius: 2px;
+	text-align: center;
+	line-height: 30px;
+	margin:10px auto;
+	padding:0 20px;
+	width: 60px;
+}
+
+.footer .f2 .go{
+	margin:10px 10px;
+	border-radius: 2px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #ffb400;
+	color:#fff;
+}
+
+.footer .f3 .go{
+	margin:10px 10px;
+	border-radius: 2px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #00b4ff;
+	color:#fff;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.footer .go_ceng{
+	margin:10px 10px;
+	border-radius: 2px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #ffb400;
+	color:#fff;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+
+.footer .f4 .left{
+	text-align: center;
+	float:left;
+	line-height: 30px;
+	margin:10px 0 0 10px;
+	color:#999;
+	padding-left: 25px;
+	background-image: url('../image/bianji.png');
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	background-position: 0 5px;
+}
+.footer .f4 .right{
+	text-align: center;
+	float:right;
+	line-height: 30px;
+	margin:10px 10px 0 0;
+	padding:0 20px;
+	border-radius: 2px;
+	background-color: #00b4ff;
+	color:#fff;
+}
+
+.lan_on{
+	background-color: #0088c1 !important;
+}
+.bai_on{
+	background-color: #eee !important;
+	color:#ccc !important;
+}
+.ceng_on{
+	background-color: #be8600 !important;
+}

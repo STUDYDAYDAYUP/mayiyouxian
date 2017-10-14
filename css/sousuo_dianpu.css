@@ -1,0 +1,224 @@
+
+.a{
+            background-color:#eee !important;
+        }
+        input,button,select,textarea{outline:none;-webkit-appearance:none;}
+/******************************/
+        .goods_list{
+            float:left;
+            width: 100%;
+        }
+        .goods_list .min_header{
+            height: 40px;
+            line-height: 40px;
+            background-color: #fff;
+            border-bottom:1px solid #eee;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            width: 100%;
+            padding:5px 0;
+        }
+        .sanjiao{
+            /*width: 0;
+            height: 0;*/
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #000;
+            margin-left:5px;
+            /*position: absolute;*/
+            /*left: 50%;
+            top:100%;
+            margin-left: -4px;*/
+            position: relative;
+            top:-5px;
+        }
+        .sanjiao_on{
+            border-bottom: 4px solid red !important;
+            border-top:0 !important;
+        }
+        .goods_list .min_header .m_l{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: center;
+        }
+        .goods_list .content{
+            width: 100%;
+        }
+        .goods_list .content ul{
+            width: 100%;
+        }
+        .goods_list .content ul li{
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding-bottom:10px;
+            position: relative;
+        }
+        .goods_list .content ul li .nei{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+        }
+        .goods_list .content ul li .di{
+            margin-left: 80px;
+            font-size: 12px;
+            height: 30px;
+            line-height: 30px;
+        }
+        .goods_list .content ul li .di .list{
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+        }
+        .goods_list .content ul li .di .bao{
+            background-image: url('../image/bao.png');
+            background-repeat: no-repeat;
+            background-size:16px 16px;
+            margin-right: 5px;
+            margin-top:7px;
+            width: 16px;
+            height: 16px;
+        }
+        .goods_list .content ul li .di2{
+        	height: 30px;
+        	overflow: hidden;
+        	display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .goods_list .content ul li .di2 .left{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        .goods_list .content ul li .di2 .left span{
+			font-size: 12px;
+			border:1px solid #eee;
+			border-radius: 30px;
+			margin-left: 10px;
+			padding:0 10px;
+			height: 25px;
+			line-height: 25px;
+        }
+        .goods_list .content ul li .di2 .right{
+			line-height: 30px;
+			margin:0 10px;
+			font-size: 14px;
+        }
+        .goods_list .content ul li .nei .left{
+            width: 60px;
+            height: 60px;
+            margin:10px 10px 0 10px;
+        }
+        .goods_list .content ul li .nei .left img{
+            width: 60px;
+            height: 60px;
+        }
+        .goods_list .content ul li .nei .right{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            margin:10px 10px 0 0;
+        }
+        .goods_list .content ul li .nei .right .title{
+            height: 26px;
+            line-height: 26px;
+        }
+        .goods_list .content ul li .nei .right .s1{
+            font-size: 12px;
+            height: 17px;
+            line-height: 17px;
+        }
+        .goods_list .content ul li .nei .right .s1 .s_l{
+            float:left;
+            margin-right:60px;
+            height:17px;
+        }
+        .goods_list .content ul li .nei .right .s1 .s_r{
+            float:right;
+        }
+        .goods_list .content ul li .nei .right .s2{
+            font-size: 12px;
+            height: 17px;
+            line-height: 17px;
+        }
+        .goods_list .content ul li .nei .right .s2 .red{
+        	margin-right:60px;
+        }
+        .goods_list .content ul li .nei .right .s2 .s_l{
+            float:left;
+            color:#666;
+        }
+        .goods_list .content ul li .nei .right .s2 .s_r{
+            float:right;
+            color:#666;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            /*position: relative;
+            top:-7px;  */
+            position: absolute;
+            right:0px;
+            bottom:0px;
+        }
+        .red{
+            color:red;
+        }
+        .jian{
+            background-image: url('../image/jian_lan.png');
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            width:22px;
+            height: 22px;
+            position: relative;
+            z-index: 0;
+            rotate:180;
+            display:none;
+            left:44px;
+            padding:10px 0 10px 10px;
+            background-position: 10px 10px;
+        }
+        .num{
+            min-width:22px;
+            height: 22px;
+            text-align: center;
+            line-height: 22px;
+            position: relative;
+            z-index: 1;
+            rotate:180;
+            display:none;
+            left:22px;
+            padding:10px 0;
+        }
+        .jia{
+            background-image: url('../image/jia_lan.png');
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            width:22px;
+            height: 22px;
+            position: relative;
+            z-index: 2;
+            padding:10px 10px 10px 0;
+            background-position: 0 10px;
+        }
+        .xgg{
+            background-color: #40beff;
+            color:#fff;
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            width: 56px;
+            border-radius: 33px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .xgg_on{
+            background-color: #2a82b0 !important;
+        }
+        .none{
+        	display:none !important;
+        }
+        /******************************/

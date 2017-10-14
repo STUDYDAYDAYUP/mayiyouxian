@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/youhuiquan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<div class="list">
+			<div class="bian"></div>
+			<div class="quan"></div>
+			<div class="neirong">
+				<div class="zhong">
+					<div class="q_money">
+						<div class="yang">￥</div>
+						<div class="money">30</div>
+					</div>
+					<div class="q_info">
+						<div class="shopName">全品类</div>
+						<div class="del" tapmode="del_on" onclick="fling(1);">点击领取</div>
+					</div>
+				</div>
+				<div class="di">2016.03.23-2016.04.03</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="bian bian_lan"></div>
+			<div class="quan"></div>
+			<div class="neirong">
+				<div class="zhong">
+					<div class="q_money q_money_lan">
+						<div class="yang">￥</div>
+						<div class="money">30</div>
+					</div>
+					<div class="q_info">
+						<div class="shopName">这是一个店铺</div>
+						<div class="del" tapmode="del_on" onclick="fling(1);">点击领取</div>
+					</div>
+				</div>
+				<div class="di">2016.03.23-2016.04.03</div>
+			</div>
+		</div>-->
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var ajax_num_pan=4;
+	apiready = function(){
+		fcz();
+	};
+	function fcz()
+	{
+		fget_yhq_dlq();
+	}
+	function fling(n)
+	{
+		api.showProgress({title:'领取中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'lingqu_youhuiquan.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	youhui_id:n
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan==-1)
+                 {
+                 	api.toast({
+						msg: ret[i].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 else if(ret[0].pan==1)
+                 {
+                 	$('#'+n).css('display','none');
+			        api.execScript({
+	                   	name:'youhuiquan_header',
+	                   	frameName:'youhuiquan',
+	                    script: 'fcz();'
+                    });
+                    fcz();
+                    api.openFrame({
+				        name: 'youhuiquan_dailingqu_tanc',
+				        url: 'youhuiquan_dailingqu_tanc.html',
+				        rect: {
+					        x:0,
+					        y:0,
+					        w:'auto',
+					        h:'auto'
+				        }
+			        });
+                 }
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+		
+	}
+	function fget_yhq_dlq()
+	{
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_yhq_dlq.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	var html='';
+	            	var pan=0;
+	            	for(var i=0;i<ret.length;i++)
+	            	{
+	            		for(var j=0;j<(Number(ret[i].user_count)-Number(ret[i].youhui_user_link));j++)
+	            		{
+	            		html+='<div class="list" id="'+ret[i].id+'">';
+						if(ret[i].youhui_scope==1) html+='	<div class="bian"></div>';
+						else html+='	<div class="bian bian_lan"></div>';
+						html+='	<div class="quan"></div>';
+						html+='	<div class="neirong">';
+						html+='		<div class="zhong">';
+						if(ret[i].youhui_scope==1) html+='			<div class="q_money">';
+						else html+='			<div class="q_money q_money_lan">';
+						if(ret[i].youhui_type==0)
+						{
+							html+='				<div class="yang">￥</div>';
+							html+='				<div class="money">'+ret[i].breaks_menoy+'</div>';
+						}
+						else
+						{
+							html+='				<div class="money">'+ret[i].breaks_menoy+'折</div>';
+						}
+						//html+='				<div class="yang">￥</div>';
+						//html+='				<div class="money">30</div>';
+						html+='			</div>';
+						html+='			<div class="q_info">';
+						html+='				<div class="shopName">'+ret[i].name+'</div>';
+						html+='				<div class="del" tapmode="del_on" onclick="fling('+ret[i].id+');">点击领取</div>';
+						html+='			</div>';
+						html+='		</div>';
+						html+='		<div class="di">'+getTime3(ret[i].begin_time)+'-'+getTime3(ret[i].end_time)+'</div>';
+						html+='	</div>';
+						html+='</div>';
+						pan=1;
+						}
+	            	}
+	            	if(pan==0) html='<div style="text-align: center;line-height: 50px;">暂无可领取的优惠券</div>';
+	                $('.content').eq(0).html(html);
+	                api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无可领取的优惠券</div>';
+	            	$('.content').eq(0).html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

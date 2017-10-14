@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dengji_huiyuan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+	<ul>
+		<!--<li tapmode="a" onclick="fopen_dingdan_list(0);">
+			<div class="left"><img src="../image/sp_5.png" height="80px" /></div>
+			<div class="con">
+				<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">13800138000</span></div>
+				<div class="s2"><span class="title">订单数量：</span><span class="order_num">133</span></div>
+				<div class="s3"><span class="title">提成金额：</span><span class="money">￥99.99</span></div>
+			</div>
+			<div class="right"></div>
+		</li>
+		<li tapmode="a" onclick="fopen_dingdan_list(0);">
+			<div class="left"><img src="../image/sp_5.png" height="80px" /></div>
+			<div class="con">
+				<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">13800138000</span></div>
+				<div class="s2"><span class="title">订单数量：</span><span class="order_num">133</span></div>
+				<div class="s3"><span class="title">提成金额：</span><span class="money">￥99.99</span></div>
+			</div>
+			<div class="right"></div>
+		</li>-->
+	</ul>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_list2();
+	};
+	function fopen_dingdan_list(look_user_id)
+	{
+		api.openWin({
+	        name: 'dingdan_list_header',
+	        url: 'dingdan_list_header.html',
+	        pageParam:{
+	        	look_user_id:look_user_id,
+	        	dengji:api.pageParam.dengji
+	        }
+        });
+	}
+	function fget_list()
+	{
+		var level='';
+		if(api.pageParam.dengji==1) level='4914BwkDCAhRVFNRVQIJUlUKWgkLWQFWAQ4GV1FS';
+		if(api.pageParam.dengji==2) level='4914BwkDCAhRVFNRVQdSUlpcWwAJDQsCB14CAF9R';
+		if(api.pageParam.dengji==3) level='bf8eUwZRAQkBBQECVFNaBFRfBVcFDwQEUAVSAFdQ';
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'加载中...'});
+		$.getJSON(YAH_web+'/Wx/Agent/allFansinfo', {level: level,user_id:user_id}, function(json, textStatus) {
+                /*optional stuff to do after success */
+                //  console.log(json[1]);
+                api.hideProgress();//隐藏加载进度框
+                var html = '<ul>';
+                for (var i in json) {
+                    if (json.hasOwnProperty(i) && typeof json[i]==='object') {
+                        //  console.log(json[i]);
+                        
+                        html+='<li tapmode="a" onclick="fopen_dingdan_list('+i+');">';
+						html+='	<div class="left"><img src="'+$api.getStorage("YAH_web")+'/'+json[i].userPhoto+'" height="80px" /></div>';
+						html+='	<div class="con">';
+						html+='		<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">'+json[i].loginName+'</span></div>';
+						if(json[i].count){
+                            count= json[i].count;
+                        }else{
+                            count=0;
+                        }
+                        if(json[i].price){
+                            price= json[i].price;
+                        }else{
+                            price= 0;
+                        }
+						html+='		<div class="s2"><span class="title">订单数量：</span><span class="order_num">'+count+'</span></div>';
+						html+='		<div class="s3"><span class="title">提成金额：</span><span class="money">￥'+price+'</span></div>';
+						html+='	</div>';
+						html+='	<div class="right"></div>';
+						html+='</li>';
+                    }
+                }
+                html+='</ul>';
+                document.getElementById("main").innerHTML=html;
+                api.parseTapmode();
+            });
+	}
+	function fget_list2()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_dengji_huiyuan.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	dengji:api.pageParam.dengji
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 var html='<ul>';
+                 for(var i=0;i<ret.length;i++)
+                 {
+                 	html+='<li tapmode="a" onclick="fopen_dingdan_list('+ret[i].userId+');">';
+					html+='	<div class="left"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].userPhoto+'" height="80px" /></div>';
+					html+='	<div class="con">';
+					html+='		<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">'+ret[i].loginName+'</span></div>';
+					html+='		<div class="s2"><span class="title">订单数量：</span><span class="order_num">'+ret[i].order_num+'</span></div>';
+					html+='		<div class="s3"><span class="title">提成金额：</span><span class="money">￥'+ret[i].order_tc_money+'</span></div>';
+					html+='	</div>';
+					html+='	<div class="right"></div>';
+					html+='</li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById("main").innerHTML=html;
+                 api.parseTapmode();
+            }else {
+            	var html='<div style="text-align: center;line-height: 50px;">暂无会员</div>';
+            	document.getElementById("main").innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

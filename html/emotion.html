@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title></title>
+
+<link type="text/css" href="../css/style.css" rel="stylesheet"/>
+
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="../script/jquery.touchSlider.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+//	$('li').css('display','none');
+//	$('.main_image li').css('display','block');
+	$(".main_visual").hover(function(){
+		$("#btn_prev,#btn_next").fadeIn()
+	},function(){
+		$("#btn_prev,#btn_next").fadeOut()
+	});
+	
+	$dragBln = false;
+	
+	$(".main_image").touchSlider({
+		flexible : true,
+		speed : 200,
+		btn_prev : $("#btn_prev"),
+		btn_next : $("#btn_next"),
+		paging : $(".flicking_con a"),
+		counter : function (e){
+			$(".flicking_con a").removeClass("on").eq(e.current-1).addClass("on");
+		}
+	});
+	
+	$(".main_image").bind("mousedown", function() {
+		$dragBln = false;
+	});
+	
+	$(".main_image").bind("dragstart", function() {
+		$dragBln = true;
+	});
+	
+	$(".main_image a").click(function(){
+		if($dragBln) {
+			return false;
+		}
+	});
+	
+	timer = setInterval(function(){
+		$("#btn_next").click();
+	}, 5000);
+	
+	$(".main_visual").hover(function(){
+		clearInterval(timer);
+	},function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		},5000);
+	});
+	
+	$(".main_image").bind("touchstart",function(){
+		clearInterval(timer);
+	}).bind("touchend", function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		}, 5000);
+	});
+	
+});
+</script>
+</head>
+<body>
+
+<div class="main_visual">
+	<div class="flicking_con">
+		<a href="#">1</a>
+		<a href="#">2</a>
+		<a href="#">3</a>
+		<a href="#">4</a>
+		<a href="#">5</a>
+		<a href="#">6</a>
+	</div>
+	<div class="main_image">
+		<ul>
+			<li>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_1')"><img src="../emotion/Expression_1.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_2')"><img src="../emotion/Expression_2.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_3')"><img src="../emotion/Expression_3.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_4')"><img src="../emotion/Expression_4.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_5')"><img src="../emotion/Expression_5.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_6')"><img src="../emotion/Expression_6.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_7')"><img src="../emotion/Expression_7.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_8')"><img src="../emotion/Expression_8.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_9')"><img src="../emotion/Expression_9.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_10')"><img src="../emotion/Expression_10.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_11')"><img src="../emotion/Expression_11.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_12')"><img src="../emotion/Expression_12.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_13')"><img src="../emotion/Expression_13.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_14')"><img src="../emotion/Expression_14.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_15')"><img src="../emotion/Expression_15.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_16')"><img src="../emotion/Expression_16.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_17')"><img src="../emotion/Expression_17.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_18')"><img src="../emotion/Expression_18.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_19')"><img src="../emotion/Expression_19.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_20')"><img src="../emotion/Expression_20.png" /></div>
+					<div class="list" tapmode="a" onclick="fdelete_o();"><img src="../emotion/delete.png" /></div>
+				</div>
+			</li>
+			<li>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_21')"><img src="../emotion/Expression_21.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_22')"><img src="../emotion/Expression_22.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_23')"><img src="../emotion/Expression_23.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_24')"><img src="../emotion/Expression_24.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_25')"><img src="../emotion/Expression_25.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_26')"><img src="../emotion/Expression_26.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_27')"><img src="../emotion/Expression_27.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_28')"><img src="../emotion/Expression_28.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_29')"><img src="../emotion/Expression_29.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_30')"><img src="../emotion/Expression_30.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_31')"><img src="../emotion/Expression_31.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_32')"><img src="../emotion/Expression_32.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_33')"><img src="../emotion/Expression_33.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_34')"><img src="../emotion/Expression_34.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_35')"><img src="../emotion/Expression_35.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_36')"><img src="../emotion/Expression_36.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_37')"><img src="../emotion/Expression_37.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_38')"><img src="../emotion/Expression_38.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_39')"><img src="../emotion/Expression_39.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_40')"><img src="../emotion/Expression_40.png" /></div>
+					<div class="list" tapmode="a" onclick="fdelete_o();"><img src="../emotion/delete.png" /></div>
+				</div>
+			</li>
+			<li>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_41')"><img src="../emotion/Expression_41.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_42')"><img src="../emotion/Expression_42.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_43')"><img src="../emotion/Expression_43.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_44')"><img src="../emotion/Expression_44.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_45')"><img src="../emotion/Expression_45.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_46')"><img src="../emotion/Expression_46.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_47')"><img src="../emotion/Expression_47.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_48')"><img src="../emotion/Expression_48.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_49')"><img src="../emotion/Expression_49.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_50')"><img src="../emotion/Expression_50.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_51')"><img src="../emotion/Expression_51.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_52')"><img src="../emotion/Expression_52.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_53')"><img src="../emotion/Expression_53.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_54')"><img src="../emotion/Expression_54.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_55')"><img src="../emotion/Expression_55.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_56')"><img src="../emotion/Expression_56.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_57')"><img src="../emotion/Expression_57.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_58')"><img src="../emotion/Expression_58.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_59')"><img src="../emotion/Expression_59.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_60')"><img src="../emotion/Expression_60.png" /></div>
+					<div class="list" tapmode="a" onclick="fdelete_o();"><img src="../emotion/delete.png" /></div>
+				</div>
+			</li>
+			<li>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_61')"><img src="../emotion/Expression_61.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_62')"><img src="../emotion/Expression_62.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_63')"><img src="../emotion/Expression_63.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_64')"><img src="../emotion/Expression_64.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_65')"><img src="../emotion/Expression_65.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_66')"><img src="../emotion/Expression_66.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_67')"><img src="../emotion/Expression_67.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_68')"><img src="../emotion/Expression_68.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_69')"><img src="../emotion/Expression_69.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_70')"><img src="../emotion/Expression_70.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_71')"><img src="../emotion/Expression_71.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_72')"><img src="../emotion/Expression_72.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_73')"><img src="../emotion/Expression_73.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_74')"><img src="../emotion/Expression_74.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_75')"><img src="../emotion/Expression_75.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_76')"><img src="../emotion/Expression_76.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_77')"><img src="../emotion/Expression_77.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_78')"><img src="../emotion/Expression_78.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_79')"><img src="../emotion/Expression_79.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_80')"><img src="../emotion/Expression_80.png" /></div>
+					<div class="list" tapmode="a" onclick="fdelete_o();"><img src="../emotion/delete.png" /></div>
+				</div>
+			</li>
+			<li>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_81')"><img src="../emotion/Expression_81.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_82')"><img src="../emotion/Expression_82.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_83')"><img src="../emotion/Expression_83.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_84')"><img src="../emotion/Expression_84.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_85')"><img src="../emotion/Expression_85.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_86')"><img src="../emotion/Expression_86.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_87')"><img src="../emotion/Expression_87.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_88')"><img src="../emotion/Expression_88.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_89')"><img src="../emotion/Expression_89.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_90')"><img src="../emotion/Expression_90.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_91')"><img src="../emotion/Expression_91.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_92')"><img src="../emotion/Expression_92.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_93')"><img src="../emotion/Expression_93.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_94')"><img src="../emotion/Expression_94.png" /></div>
+				</div>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_95')"><img src="../emotion/Expression_95.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_96')"><img src="../emotion/Expression_96.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_97')"><img src="../emotion/Expression_97.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_98')"><img src="../emotion/Expression_98.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_99')"><img src="../emotion/Expression_99.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_100')"><img src="../emotion/Expression_100.png" /></div>
+					<div class="list" tapmode="a" onclick="fdelete_o();"><img src="../emotion/delete.png" /></div>
+				</div>
+			</li>
+			<li>
+				<div class="ceng">
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_101')"><img src="../emotion/Expression_101.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_102')"><img src="../emotion/Expression_102.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_103')"><img src="../emotion/Expression_103.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_104')"><img src="../emotion/Expression_104.png" /></div>
+					<div class="list" tapmode="a" onclick="fadd_emotion('Expression_105')"><img src="../emotion/Expression_105.png" /></div>
+					<div class="list"></div>
+					<div class="list"></div>
+				</div>
+				<div class="ceng">
+					<div class="list"><div style="height:25px;margin:12px auto;"></div></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+				</div>
+				<div class="ceng">
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list"></div>
+					<div class="list" tapmode="a" onclick="fdelete_o();"><img src="../emotion/delete.png" /></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	function fadd_emotion(name)
+	{
+		api.execScript({
+	        frameName:'jiedan',
+	        script: 'fadd_emotion(\''+name+'\');'
+        });
+        api.execScript({
+	        frameName:'faweibang',
+	        script: 'fadd_emotion(\''+name+'\');'
+        });
+        api.execScript({
+	        frameName:'liaotian',
+	        script: 'fadd_emotion(\''+name+'\');'
+        });
+        api.execScript({
+	        frameName:'tiezi_xx',
+	        script: 'fadd_emotion(\''+name+'\');'
+        });
+        api.execScript({
+	        frameName:'fatiezi',
+	        script: 'fadd_emotion(\''+name+'\');'
+        });
+	}
+	function fdelete_o()
+	{
+		api.execScript({
+	        frameName:'jiedan',
+	        script: 'fdelete_o();'
+        });
+        api.execScript({
+	        frameName:'faweibang',
+	        script: 'fdelete_o();'
+        });
+	}
+</script>
+</html>

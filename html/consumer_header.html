@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/header.css"/>
+    <style>
+    	body{
+    		background-color:#f2f2f2;
+    	}
+    	header{
+    		background: #60b034;
+    	}
+    	.content_th{
+            width: 100%;
+            height: 45px;
+            color: #282828;
+            background: #ffffff;
+            padding: 0 10px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #efefef;
+            display: table;
+        }
+        .content_td{
+            width: 25%;
+            height: 44px;
+            font-size: 13px;
+            display: table-cell;
+            vertical-align: middle;
+            overflow: hidden;
+            text-align: center;
+        }
+        .content_th .content_td{
+            font-size: 15px;
+        }
+        .content_td em{
+            color: #60b034;
+        }
+        .content_td p{
+            line-height: 14px;
+            margin: auto;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+	<header id="headers">
+        <div id="xuanxiaoqu" class="topbar ">
+	        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+	      	<div class="topzhong" id="title">分销详情</div>
+	      	<!--<div tapmode="a" class="topyou">编辑</div>-->
+	      	<!-- <div tapmode="a" class="topyou_sousuo" onclick="fopen_sousuo();"></div> -->
+        </div>
+	</header>
+	<div class="content_th">
+        <div class="content_td"><p>订单号</p></div>
+        <div class="content_td"><p>订单总额</p></div>
+        <div class="content_td"><p>收益</p></div>
+        <div class="content_td"><p>订单日期</p></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+function freturn()
+{
+	api.closeWin({
+
+    });
+}
+	apiready = function(){
+
+		api.parseTapmode();
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+    	setTimeout("fopencontent()",200);
+	};
+
+function fopencontent()
+{
+	var $header = $api.dom('header');
+	$api.fixIos7Bar($header);
+	var $body = $api.dom('body');
+	var header_h = $api.offset($header).h;
+	var body_h = $api.offset($body).h;
+	var rect_h = api.winHeight - header_h;
+
+	api.openFrame({
+        name: 'consumer',
+        url: 'consumer.html',
+        vScrollBarEnabled:false,
+    	hScrollBarEnabled:false,
+    	bounces:false,
+    	pageParam:{
+    		uid:api.pageParam.uid
+    	},
+        rect: {
+	        x : 0,
+			y : header_h+45,
+			w : 'auto',
+			h : 'auto'
+        },
+        bgColor:"#f2f2f2"
+    });
+}
+
+</script>
+</html>

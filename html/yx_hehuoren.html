@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/hehuoren.css"/>
+    <style>
+	    html, body{
+	    	width: 100%;
+            height: 100%;
+            background: #efefef;
+	    }
+        #main{
+            width: 100%;
+            height: 100%;
+        }
+        .content_tr, .content_th{
+            width: 100%;
+            height: 45px;
+            color: #282828;
+            background: #ffffff;
+            padding: 0 10px;
+            box-sizing: border-box;
+            border-bottom: 1px solid #efefef;
+            display: table;
+        }
+        .content_td{
+            width: 25%;
+            height: 44px;
+            font-size: 13px;
+            display: table-cell;
+            vertical-align: middle;
+            overflow: hidden;
+            text-align: center;
+        }
+        .content_th .content_td{
+            font-size: 15px;
+        }
+        .content_td em{
+            color: #60b034;
+        }
+        .content_td p{
+            line-height: 14px;
+            margin: auto;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+<div id="main" style="">
+    
+    <div class="date_list">
+	    <!-- <div class="content_tr">
+	        <div class="content_td"><p>张三</p></div>
+	        <div class="content_td"><span>￥454586</span></div>
+	        <div class="content_td"><em>￥256545</em></div>
+	        <div class="content_td"><p>2017-8</p></div>
+	    </div>
+	    <div class="content_tr">
+	        <div class="content_td"><p>张三</p></div>
+	        <div class="content_td"><span>￥454586</span></div>
+	        <div class="content_td"><em>￥256545</em></div>
+	    </div> -->
+    </div>
+    
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+        api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '努力加载中...',
+		    text: '先喝杯茶...',
+		    modal: true
+		});
+		get_hehuoren_list(); 
+    }
+    
+    function get_hehuoren_list(){
+        var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_hehuoren_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	type:api.pageParam.type,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html = '';
+                 $(ret).each(function(i,val){
+                     html += '<div class="content_tr">';
+                     html += '<div class="content_td"><p>'+val['userPhone']+'</p></div>';
+                     
+                     html += '<div class="content_td"><span>￥'+val['ordermoney']+'</span></div>';
+                     html += '<div class="content_td"><em>￥'+val['rebateMoney']+'</em></div>';
+                     html += '<div class="content_td"><p>'+val['time']+'</p></div>';
+                     html += '</div>';
+                 })
+                 $('.date_list').html(html);
+            }else {
+            	fduanwang();
+            };
+        });
+    }
+        
+</script>
+</html>

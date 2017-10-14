@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wallet.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body id="duihuan" style="min-height: 568px;">
+
+    <div class="code_input"><input type="text" accept="" id="code" value="" /></div>
+    <div class="code_sub" onclick="duihuan();">兑换</div>
+    <div class="duihuan_c" onclick="fopen_return();">
+        <div class="duihuan_info">恭喜你获得<br/>10次一元特权</div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var div_height = $('.duihuan_c').width();
+	    var div_left = div_height/-2;
+	    $('.duihuan_c').height(div_height);
+	    $('.duihuan_c').css({'margin-left':div_left,'margin-top':div_left});
+		$("#code").keyup(function(){
+		  var abc = $(this).val();
+		  abc = abc.replace(/(^\s*)|(\s*$)/g, "");
+		  if(abc == ''){
+		      if($('.code_sub').hasClass('code_sub1')){
+		          $('.code_sub').removeClass('code_sub1');
+		      }
+		      t0 = -1;
+		  }
+		  else{
+		      if($('.code_sub').hasClass('code_sub1')){
+		          //$('.code_sub').removeClass('code_sub1');
+		      }
+		      else{
+		          $('.code_sub').addClass('code_sub1');
+		      }
+		      t0 = 1;
+		  }
+	   });
+	};
+	
+	function fopen_return(){
+	    api.closeWin({});
+	}
+	
+	
+	var t0 = -1;
+	
+	function duihuan(){
+	    if(t0 == -1)return;
+	    var code = $('#code').val();
+	    code = code.replace(/(^\s*)|(\s*$)/g, "");
+	    if(code == ''){
+	        api.toast({
+				msg: '请输入兑换码！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id+code);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=set_one_code',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	code:code,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	//alert(ret['status']);
+        	if(ret['status'] == -1){
+        	     api.toast({
+					msg: ret.msg,
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+        	}
+        	else{
+	        	 api.execScript({
+        			name:'yiyuantequan_header',
+                   	frameName:'yiyuantequan',
+                    script: 'get_user();get_one_list();'
+                 });
+                 api.execScript({
+                	name:'root',
+                   	frameName:'my',
+                    script: 'fget_user();'
+                 });
+        	     $('.duihuan_info').html('恭喜你获得<br/>'+ret['num']+'次一元特权');
+        	     $('.code_input').hide();
+        	     $('.code_sub').hide();
+        	     $('.duihuan_c').show();
+	        	
+        	}
+            
+        });
+	}
+	
+	
+	
+	
+</script>
+</html>

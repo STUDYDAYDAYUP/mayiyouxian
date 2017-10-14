@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            -webkit-touch-callout: none;
+        }
+    	#dialog{
+    		background-color: #e7e7e7;
+            border-radius: 6px;
+            margin: auto;
+            position: absolute;
+            left: 0; right: 0; top: 0; bottom: 0;
+            -webkit-transition: all .1s;
+            transition:all .1s;
+            -webkit-transform: scale(0);
+            transform:scale(0);
+            opacity: 0;
+            width: 207px; height: 260px;
+            z-index: 1000;
+    	}
+        #dialog.in{
+            -webkit-transform: scale(1);
+            transform:scale(1);
+            opacity: 1;
+        }
+        .dialog_img{
+            width: 100%;
+        }
+        .dialog_x{
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: -12px;
+            top: -12px;
+            background: url(../image/dialog_x_bg.png) no-repeat center center;
+            -webkit-background-size: 30px;
+            background-size: 30px;
+        }
+    	.dialog_but{
+            width: 110px;
+            height: 40px;
+            margin-left: -55px;
+            position: absolute;
+            left: 50%;
+            bottom: 2px;
+            font-size: 15px;
+            color: #fff;
+            text-align: center;
+            line-height: 30px;
+            background: url(../image/dialog_but_bg.png) no-repeat center center;
+            -webkit-background-size: 110px;
+            background-size: 110px;
+        }
+    </style>
+</head>
+<body id="body">
+<div id="dialog">
+    <span class="dialog_x"></span>
+    <img class="dialog_img" src="../image/my_qr_code.png">
+    <span class="dialog_but">邀请好友</span>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript">
+    $('#dialog').addClass('in');
+    apiready = function(){
+        $(document.body).on('touchend',function(e){
+            if(e.target.id == 'body' || e.target.className == 'dialog_x'){
+                $('#dialog').removeClass('in');
+                setTimeout(function(){
+                    api.closeFrame();
+                },200);
+            }
+        });
+    };
+</script>
+</html>

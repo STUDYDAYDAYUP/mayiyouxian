@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    background-color: #fff;
+		}
+		body{
+			background-color: #fff;
+		    float:left;
+		    width: 100%;
+		}
+		.a{
+            background-color:#eee !important;
+        }  
+        #main{
+        	text-align: center;
+        }
+        #a img{
+        	margin-top:20px;
+        }
+        #b{
+        	color:red;
+        	font-size: 18px;
+        	line-height: 40px;
+        }
+        #c{
+        	color:#999;
+        	font-size: 12px;
+        	margin-bottom:10px;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="a"><img src="../image/youhuiquan_dailingqu_chenggong.png" height="30px;" /></div>
+	<div id="b">领取成功</div>
+	<div id="c">请到未使用中查看</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	window.setTimeout('fclose();',2000);
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'youhuiquan_dailingqu_tanc',
+	        script: 'fclose();'
+        });
+	}
+</script>
+</html>

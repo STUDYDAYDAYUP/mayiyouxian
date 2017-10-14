@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	
+    </style>
+</head>
+<body>
+<div class="top-notify">
+	<img src="../image/home_msg.png" alt="" />
+	<span>您的小区距离开通仅剩<em>99</em>人</span>
+</div>
+<div id="ceceshi" style=""></div>
+<div id="main">
+<!-- bycao -->
+	<!-- <div class="tou">
+		<div class="left" tapmode="" onclick="fopen_faweibang(1);"><img src="../image/faweibang.png" /></div>
+		<div class="con"><img src="../image/sy_wb_right.png" /></div>
+		<div class="right" tapmode="" onclick="fopen_faweibang(0);"><img src="../image/zhaoweibang.png" /></div>
+	</div> -->
+	<div id="banner">
+		<ul>
+			<li tapmode="" onclick="fopen_fenlei('所有发布');" class="ban1"><img src="../image/wlist1.png" /><a>蚂蚁家早餐</a></li>
+			<li tapmode="" onclick="fopen_fenlei('闲置商品');" class="ban2"><img src="../image/wlist2.png" /><a>蚂蚁家餐桌</a></li>
+			<li tapmode="" onclick="fopen_fenlei('家政钟点');" class="ban3"><img src="../image/wlist3.png" /><a>蚂蚁家厨房</a></li>
+			<li tapmode="" onclick="fopen_fenlei('丽人服务');" class="ban4"><img src="../image/wlist4.png" /><a>蚂蚁家果园</a></li>
+			<li tapmode="" onclick="fopen_fenlei('护理保健');" class="ban5"><img src="../image/wlist5.png" /><a>蚂蚁家售后</a></li>
+		</ul>
+		<!-- <ul>
+			<li tapmode="" onclick="fopen_fenlei('所有发布');" class="ban1"><img src="../image/wlist1.png" /><a>所有发布</a></li>
+			<li tapmode="" onclick="fopen_fenlei('闲置商品');" class="ban2"><img src="../image/wlist2.png" /><a>闲置商品</a></li>
+			<li tapmode="" onclick="fopen_fenlei('家政钟点');" class="ban3"><img src="../image/wlist3.png" /><a>家政钟点</a></li>
+			<li tapmode="" onclick="fopen_fenlei('丽人服务');" class="ban4"><img src="../image/wlist4.png" /><a>丽人服务</a></li>
+			<li tapmode="" onclick="fopen_fenlei('护理保健');" class="ban5"><img src="../image/wlist5.png" /><a>护理保健</a></li>
+		</ul> -->
+		<!-- <ul>
+			<li tapmode="" onclick="fopen_fenlei('维修安装');" class="ban1"><img src="../image/wlist6.png" /><a>维修安装</a></li>
+			<li tapmode="" onclick="fopen_fenlei('汽车服务');" class="ban2"><img src="../image/wlist7.png" /><a>汽车服务</a></li>
+			<li tapmode="" onclick="fopen_fenlei('配送/快递');" class="ban3"><img src="../image/wlist8.png" /><a>配送/快递</a></li>
+			<li tapmode="" onclick="fopen_fenlei('宠物服务');" class="ban4"><img src="../image/wlist9.png" /><a>宠物服务</a></li>
+			<li tapmode="" onclick="fopen_fenlei('更多');" class="ban5"><img src="../image/wlist10.png" /><a>更多</a></li>
+		</ul> -->
+	</div>
+	<div class="slider" id="mySlider" style="display: none;">
+          <div class="slide-group" id="branner_list">
+            
+            <!--<div class="slide slide1" id="divGoodsNav">
+                <ul class="ul-list1">
+                    <li><a onclick="fopen_fenlei(81,'手机平板')"><img src="../image/meishi.png" /></a><a>美食</a></li>
+                    <li><a onclick="fopen_fenlei(99,'虚拟产品')"><img src="../image/bianlidian.png" /></a><a>便利店</a></li>
+                    <li><a onclick="fopen_fenlei(82,'数码影音')"><img src="../image/shuiguo.png" /></a><a>水果</a></li>
+                    <li><a onclick="fopen_fenlei(83,'旅游攻略')"><img src="../image/tianpin.png" /></a><a>甜点饮品</a></li>
+                    <li><a onclick="fopen_fenlei(83,'旅游攻略')"><img src="../image/tianpin.png" /></a><a>甜点饮品</a></li>
+                </ul>
+                <ul class="ul-list1">
+                    <li><a onclick="fopen_fenlei(84,'电脑设备')"><img src="../image/xianhua.png" /></a><a>鲜花蛋糕</a></li>
+                    <li><a onclick="fopen_fenlei(85,'成人玩具')"><img src="../image/songyao.png" /></a><a>送药上门</a></li>
+                    <li><a onclick="fopen_fenlei(86,'日用彩妆')"><img src="../image/yule.png" /></a><a>休闲娱乐</a></li>
+                    <li><a onclick="fopen_fenlei(87,'穿着打扮')"><img src="../image/shenghuo.png" /></a><a>本地生活</a></li>
+                    <li><a onclick="fopen_fenlei(83,'旅游攻略')"><img src="../image/tianpin.png" /></a><a>甜点饮品</a></li>
+                </ul>
+            </div>
+            <div class="slide slide2">
+                <ul class="ul-list1">
+                    <li><a onclick="fopen_fenlei(107,'奢侈品牌')"><img src="../image/meishi.png" /></a><a>美食</a></li>
+                    <li><a onclick="fopen_fenlei(108,'预前电影')"><img src="../image/bianlidian.png" /></a><a>便利店</a></li>
+                    <li><a onclick="fopen_fenlei(109,'户外工具')"><img src="../image/shuiguo.png" /></a><a>水果</a></li>
+                    <li><a onclick="fopen_fenlei(110,'其他')"><img src="../image/tianpin.png" /></a><a>甜点饮品</a></li>
+                </ul>
+                <ul class="ul-list1">
+                    <li><a><img src="../image/xianhua.png" /></a><a>鲜花蛋糕</a></li>
+                    <li><a><img src="../image/songyao.png" /></a><a>送药上门</a></li>
+                    <li><a><img src="../image/yule.png" /></a><a>休闲娱乐</a></li>
+                    <li><a><img src="../image/shenghuo.png" /></a><a>本地生活</a></li>
+                </ul>
+            </div>-->
+            
+          </div>
+    </div>
+    <div id='mySwipe' style='width:100%;margin:0 auto;display: none;' class='swipe'>
+      <div class='swipe-wrap'>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div style='text-align:center;display: none;'>
+      <button onclick='mySwipe.prev()'>prev</button> 
+      <button onclick='mySwipe.next()'>next</button>
+    </div>
+	<!--<div id="banner">
+		<ul>
+			<li tapmode="" onclick="fopen_fenlei('所有发布');" class="ban1"><img src="../image/wlist1.png" /><a>所有发布</a></li>
+			<li tapmode="" onclick="fopen_fenlei('闲置商品');" class="ban2"><img src="../image/wlist2.png" /><a>闲置商品</a></li>
+			<li tapmode="" onclick="fopen_fenlei('店铺租售');" class="ban3"><img src="../image/wlist3.png" /><a>店铺租售</a></li>
+			<li tapmode="" onclick="fopen_fenlei('家政钟点');" class="ban4"><img src="../image/wlist4.png" /><a>家政钟点</a></li>
+			<li tapmode="" onclick="fopen_fenlei('招聘求职');" class="ban5"><img src="../image/wlist5.png" /><a>招聘求职</a></li>
+		</ul>
+		<ul>
+			<li tapmode="" onclick="fopen_fenlei('认证专员');" class="ban1"><img src="../image/wlist6.png" /><a>认证专员</a></li>
+			<li tapmode="" onclick="fopen_fenlei('汽车服务');" class="ban2"><img src="../image/wlist7.png" /><a>汽车服务</a></li>
+			<li tapmode="" onclick="fopen_fenlei('跟随快递');" class="ban3"><img src="../image/wlist8.png" /><a>跟随快递</a></li>
+			<li tapmode="" onclick="fopen_fenlei('宠物服务');" class="ban4"><img src="../image/wlist9.png" /><a>宠物服务</a></li>
+			<li tapmode="" onclick="fopen_fenlei('更多');" class="ban5"><img src="../image/wlist10.png" /><a>更多</a></li>
+		</ul>
+	</div>-->
+	<div id="tu-list" style="display:none;">
+		<!--<div tapmode="a" class="t-l-1" style="background-image:url('../image/tu_1.png');background-size:100% 100%;"></div>-->
+		<div class="t-l-3">
+			<div class="t-l-31">
+				<img tapmode="a" onclick="fopen_shequ(0,'社区爆料')" src="../image/wlist21.png" />
+			</div>
+			<div class="t-l-32"></div>
+			<div tapmode="a" onclick="fopen_link('新闻资讯')" class="t-l-33">
+				<img src="../image/wlist24.png" />
+			</div>
+		</div>
+		<div class="t-l-2"></div>
+		<div class="t-l-3">
+			<div class="t-l-31">
+				<img tapmode="a" onclick="fopen_shequ(1,'非诚勿扰')" src="../image/wlist22.png" />
+			</div>
+			<div class="t-l-32"></div>
+			<div tapmode="a" onclick="fopen_link('便民查询')" class="t-l-33">
+				<img src="../image/wlist25.png" />
+			</div>
+		</div>
+		<div class="t-l-2"></div>
+		<div class="t-l-3">
+			<div class="t-l-31">
+				<img tapmode="a" onclick="fopen_shequ(2,'邻里聊天/咨询')" src="../image/wlist23.png" />
+			</div>
+			<div class="t-l-32"></div>
+			<div tapmode="a" onclick="fopen_link('休闲娱乐')" class="t-l-33">
+				<img src="../image/wlist26.png" />
+			</div>
+		</div>
+	</div>
+	<div style="clear: both;"></div>
+	<div class="index-news">
+		<div class="index-news-logo"><img src="../image/menu_logo.png" alt="" /></div>
+		<div class="index-news-content">
+			<div class="swiper-container swiper-container3">
+	        	<div class="swiper-wrapper">
+		            <div class="swiper-slide"><a href="#">多个订单算一次运费，次日收取，满39包邮</a></div>
+		            <div class="swiper-slide"><a href="#">多个订单算一次运费，次日收取，满39包邮</a></div>
+		            <div class="swiper-slide"><a href="#">多个订单算一次运费，次日收取，满39包邮</a></div>
+		            <div class="swiper-slide"><a href="#">多个订单算一次运费，次日收取，满39包邮</a></div>
+		        </div>
+		    </div>
+		</div>
+	</div>
+	<div class="title-list">
+		<!-- <div class="min-title">
+			<span class="t4">最新</span><span tapmode="a" class="ty" onclick="fhuanyizu_css3(0);fget_new_info();"><span class="t6"></span><span class="t5">手动刷新</span></span>
+		</div> -->
+		<div class="goods-list-title block-box">
+			<div class="fill fill-l"></div>
+			<h3 class="block-flex">热门推荐</h3>
+			<div class="fill fill-r"><a href="#" class="more">更多<i></i></a></div>
+		</div>
+		<div class="neirong3" id="jingpin">
+			<!-- <div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div> -->
+			<div class="goods-list-box">
+				<div class="goods-list-section">
+					<div class="goods-list-content block-box" onclick=""><!--点击跳转到详情页-->
+						<div class="goods-img"><img src="../image/pic_thumbnail.png" alt="" /></div>
+						<div class="goods-ifo block-flex">
+							<p class="goods-name">家猪筒骨－新鲜</p>
+							<p class="goods-explain">新鲜家猪限量供应</p>
+							<div class="goods-spec">
+								<span>约250g</span>
+								<span>广东</span>
+								<span>限量上市</span>
+							</div>
+							<div class="goods-price">
+								<strong>￥1.00</strong>
+								<span>￥29.00</span>
+							</div>
+						</div>
+						<div class="goods-labels">
+							<em><i></i>一元特价<i></i></em>
+							<em>大于10份</em>
+						</div>
+					</div>
+					<a href="#" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a><!--加入购物车-->
+				</div>
+			</div>
+			<!--<div class="list" tapmode="a">
+				<div class="left"><span>微帮</span>&nbsp;:</div>
+				<div class="right">
+					<div class="title">我需要家政服务</div>
+					<div class="content">今天不想干活，谁来帮我扫个地，做个饭。啤酒饮料矿泉水，花生瓜子八宝粥，这这这这这这这</div>
+					<div class="min_di">
+						<span class="s1">已有7人报名</span><span class="s2">￥23</span><span class="s3">价格：</span>
+					</div>
+				</div>
+			</div>
+			<div class="list2" tapmode="a">
+				<div class="left"><span>论坛</span>&nbsp;:</div>
+				<div class="right">
+					<div class="title">隔壁老王不在家</div>
+					<div class="content">隔壁老王不在家，咋们来报个菜名，蒸羊羔，蒸熊掌，蒸鹿尾儿，烧花鸭，烧雏鸡儿儿儿儿儿</div>
+					<div class="min_di">
+						<span class="s1">0</span>
+						<span class="s2">0</span>
+					</div>
+				</div>
+			</div>-->
+		</div>
+		<div class="index-banner">
+			<div class="swiper-container swiper-container1">
+				<div class="swiper-wrapper">
+				    <div class="swiper-slide"><img src="../image/lunbo1.png" alt="" /></div>
+				    <div class="swiper-slide"><img src="../image/lunbo2.png" alt="" /></div>
+				    <div class="swiper-slide"><img src="../image/lunbo1.png" alt="" /></div>
+				</div>
+				<div class="swiper-pagination swiper-pagination1"></div>
+			</div>
+		</div>
+		<div class="goods-list-title block-box">
+			<div class="fill fill-l"></div>
+			<h3 class="block-flex">新品上市</h3>
+			<div class="fill fill-r"><a href="#" class="more">更多<i></i></a></div>
+		</div>
+		<div class="neirong3aa" id="xinpin">
+			<!-- <div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div> -->
+			<div class="goods-list-box goods-list-slide">
+				<div class="goods-list-section">
+					<div class="goods-list-content block-box" tapmode onclick="slide_section(this);"><!--点击弹出图片-->
+						<div class="goods-img"><img src="../image/pic_thumbnail.png" alt="" /></div>
+						<div class="goods-ifo block-flex">
+							<p class="goods-name">家猪筒骨－新鲜</p>
+							<p class="goods-explain">新鲜家猪限量供应</p>
+							<div class="goods-spec">
+								<span>约250g</span>
+								<span>广东</span>
+								<span>限量上市</span>
+							</div>
+							<div class="goods-price">
+								<strong>￥1.00</strong>
+								<span>￥29.00</span>
+							</div>
+						</div>
+						<div class="goods-labels">
+							<em>一元特价</em>
+							<em>大于10份</em>
+						</div>
+					</div>
+					<a href="#" class="addCart"><img src="../image/btn_shopping-cart.png" alt="" /></a><!--加入购物车-->
+				</div>
+				<div class="goods-slide-section" style="display: none;">
+					<div class="swiper-container swiper-container2">
+						<div class="swiper-wrapper">
+						    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+						    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+						    <div class="swiper-slide"><img src="../image/pic_big-picture.png" alt="" /></div>
+						</div>
+						<div class="swiper-pagination swiper-pagination2"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/zepto.extend.js"></script>
+<script type="text/javascript" src="../script/zepto.ui.js"></script>
+<script type="text/javascript" src="../script/sliders.js"></script>
+<script type="text/javascript" src="../script/swipe.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js" ></script>
+<script type="text/javascript">
+// bycao
+var mySwiper1 = new Swiper('.swiper-container1',{
+	autoplay: 3000,
+	pagination : '.swiper-pagination1',
+	loop: true,
+	autoplayDisableOnInteraction: false,
+	observer:true,
+	observeParents:true
+})
+var mySwiper2 = new Swiper('.swiper-container2',{
+	pagination : '.swiper-pagination2',
+	loop: true,
+	observer:true,
+	observeParents:true
+})
+var mySwiper3 = new Swiper('.swiper-container3',{
+	autoplay: 5000,
+	speed: 500,
+    direction: 'vertical',
+	loop: true,
+	autoplayDisableOnInteraction: false,
+	observer:true,
+	observeParents:true
+})
+// 商品列表点击弹出图片
+	var xinPin_t = $('#xinpin').offset().top;
+	var goodsListBox_h = 0;
+	var st = 0;
+	var goodsList_n = 0;
+	$('.goods-list-slide').each(function(ind){
+		goodsListBox_h = $(this).outerHeight();
+	});
+
+	function slide_section(obj){
+		goodsList_n = $(obj).parent().parent().index();
+		if($(obj).parent().siblings('.goods-slide-section').css('display') == 'block'){
+			$('.goods-slide-section').slideUp();		
+		}else{
+			$('.goods-slide-section').slideUp();
+			$(obj).parent().siblings('.goods-slide-section').slideDown();
+
+			if($(window).height()<500){
+				st = xinPin_t + goodsListBox_h*goodsList_n - 40;
+			}else{
+				st = xinPin_t + goodsListBox_h*goodsList_n - 70;
+			}
+			$('html, body').animate({
+				scrollTop: st
+			},500);
+		}
+	}
+
+// bycao end
+var elem = document.getElementById('mySwipe');
+window.mySwipe = Swipe(elem, {
+// startSlide: 4,
+// auto: 3000,
+// continuous: true,
+// disableScroll: true,
+// stopPropagation: true,
+// callback: function(index, element) {},
+// transitionEnd: function(index, element) {}
+});
+	$api.setStorage("YAH_web",YAH_web);
+	// window.apiready = function() {
+	// 		head_h=55;
+	//         if(api.systemType=='ios'){
+	//        		head_h=70;
+	//     	}
+	//     	else
+	//     	{
+	//     		var sVer = api.systemVersion;
+	//     		var banben=parseFloat(sVer);
+	//     		if(banben>=4.4)
+	//     		{
+	//     			head_h=70;
+	//     		}
+	//     	}
+	// 		//下拉刷新
+	// 		api.setRefreshHeaderInfo({
+	// 		    visible: true,
+	// 		    loadingImg: '',
+	// 		    bgColor: '#f2f2f2',
+	// 		    textColor: '#fff',
+	// 		    textDown: '下拉刷新...',
+	// 		    textUp: '松开刷新...',
+	// 		    showTime: true
+	// 		}, function(ret, err){
+	// 		    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+	// 		    api.refreshHeaderLoading();
+	// 		    lei='0';
+	// 		    fget_lunbo();
+	// 		    fget_fenlei_list();
+	// 		    fget_new_info();
+	// 		    api.execScript({
+	//                	name:'weibang_header',
+	//                 script: 'fget_num();'
+ //                });
+	// 			/*测试用户数据*/
+	// 			// $api.setStorage('user_id','9');
+	// 			// $api.setStorage('login','1');
+	// 			/**/
+				
+	// 		    //api.refreshHeaderLoadDone();
+	// 		    api.parseTapmode();
+	// 		});
+	// 		api.setFrameAttr({
+	// 		    name: 'home',
+	// 		    bounces: true,
+	// 		    vScrollBarEnabled: true,
+	// 		    hScrollBarEnabled: true
+	// 		});
+	// 		api.execScript({
+	//            	name:'root',
+	//             script: 'fdingwei();fget_num();'
+ //            });
+	// 		fget_lunbo();
+	// 		fget_fenlei_list();
+	// 		$api.setStorage('isSeckill',0);
+	// 		$api.setStorage('isGroup',0);
+	// 		fget_new_info();
+	// 		window.setInterval(function (){
+	// 			fget_new_info();
+	// 			api.execScript({
+	//                	name:'weibang_header',
+	//                 script: 'fget_num();'
+ //                });
+	// 		},60000);
+	// 		//window.setInterval("fget_new_info();",60000);
+	// 		// api.execScript({
+	//            	// name:'root',
+	//             // script: 'fdingwei();'
+ //         // });
+	// 		/*测试用户数据*/
+	// 		// $api.setStorage('user_id','9');
+	// 		// $api.setStorage('login','1');
+	// 		/**/
+	// }
+	window.apiready = function() {
+		
+
+		var gao = api.winHeight;
+		var kuan = api.winWidth;
+		var tugao = kuan * 0.293333;
+		var obj = api.require('UIScrollPicture');
+		var paths = ['widget://image/lunbo.png', 'widget://image/lunbo1.png', 'widget://image/lunbo2.png'];
+		document.getElementById("main").style.marginTop = tugao + "px";
+		obj.open({
+		    rect: {
+		        x: 0,
+		        y: 35,
+		        w: api.winWidth,
+		        h: tugao
+		    },
+		    styles : {
+				caption : {
+					height : 35,
+					color : '#E0FFFF',
+					size : 13,
+					bgColor : '#696969',
+					position : 'bottom'
+				},
+				indicator : {
+					align : 'center',
+					color : 'rgba(0,0,0,0.2)',
+					activeColor : '#FFFFFF'
+				}
+			},
+		    data: {
+		        paths: paths
+		    },
+		    placeholderImg: 'widget://image/default.png',
+		    contentMode: 'scaleToFill',
+		    interval: 3,
+		    fixedOn: api.frameName,
+		    loop: true,
+		    fixed: false
+		}, function(ret, err){
+		    if (ret.status) {
+				if (ret.eventType == 'click') {
+					fonclick_lunbo(ret.index);
+				}
+			}
+		});
+		head_h=55;
+        if(api.systemType=='ios'){
+       		head_h=70;
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			head_h=70;
+    		}
+    	}
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: '',
+		    bgColor: '#f2f2f2',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function(ret, err){
+		    api.refreshHeaderLoading();
+		    lei='0';
+		    fget_lunbo();
+		    fget_new_info();
+		    api.execScript({
+               	name:'root',
+                script: 'fget_num();'
+            });
+		    api.parseTapmode();
+		});
+		api.setFrameAttr({
+		    name: 'home',
+		    bounces: true,
+		    vScrollBarEnabled: true,
+		    hScrollBarEnabled: true
+		});
+		api.execScript({
+           	name:'root',
+            script: 'fdingwei();'
+        });
+		fget_lunbo();
+		$api.setStorage('isSeckill',0);
+		$api.setStorage('isGroup',0);
+		fget_new_info();
+		window.setInterval(function (){
+			fget_new_info();
+			api.execScript({
+               	name:'root',
+                script: 'fget_num();'
+            });
+		},60000);
+		api.execScript({
+           	name:'root',
+            script: 'fdingwei();fget_num();'
+        });
+	}
+	function fhuanyizu_css3(n)
+	{
+		$('.t6').eq(n).animate({rotate:'360deg'}, 1000, 'ease-out',function(){$('.t6').eq(n).animate({rotate:'0deg'}, 1, 'ease-out');});
+	}
+	function fhuanyizu(name)
+	{
+			//api.showProgress({title:'加载中...'});//显示加载进度框
+//			api.ajax({
+//	            url: YAH_ajax_name+'huanyizu.php',
+//	            method: 'post',
+//	            cache: false,
+//	            timeout: 30,
+//	            dataType: 'json',
+//	            returnAll:false,
+//	            data:{
+//	                values: {
+//	                	huan_name:name
+//	                }
+//	            }
+//	        },function(ret,err){
+//	        	api.hideProgress();//隐藏加载进度框
+//	            if (ret) {
+//	                 var html='<ul>';
+//	                 for(var i=0;i<ret.length;i++){
+//	                 	html+='<li tapmode="" onclick="fopengoods('+ret[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /><a class="a1">'+ret[i].goodsName+'</a><a class="a2">￥'+ret[i].shopPrice+'</a></li>';
+//	                 }
+//	                 html+='</ul>';
+//	                 document.getElementById(name).innerHTML=html;
+//	                 api.parseTapmode();
+//	                 $api.setStorage(name,ret);
+//	            }else {
+//	            	//fduanwang();
+//	            	var ret2=$api.getStorage(name);
+//	            	var html='<ul>';
+//	                 for(var i=0;i<ret2.length;i++){
+//	                 	html+='<li tapmode="" onclick="fopengoods('+ret2[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret2[i].goodsImg+'" /><a class="a1">'+ret2[i].goodsName+'</a><a class="a2">￥'+ret2[i].shopPrice+'</a></li>';
+//	                 }
+//	                 html+='</ul>';
+//	                 document.getElementById(name).innerHTML=html;
+//	                 api.parseTapmode();
+//	//				api.alert({
+//	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	//	            });
+//	            };
+//	        });
+	}
+	function fget_lunbo()
+	{
+		api.ajax({
+	            url: YAH_ajax_name+'get_home_lunbo.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	type:0
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+					var obj = api.require('UIScrollPicture');
+					var paths = '[';
+					for(var i=0;i<ret.length;i++)
+					{
+						if(i==0)
+						{
+							paths+='"'+YAH_web+'/'+ret[i].adFile+'"';
+						}
+						else
+						{
+							paths+=',"'+YAH_web+'/'+ret[i].adFile+'"';
+						}
+					}
+					paths+=']';
+					paths=$api.strToJson(paths);
+					obj.reloadData({
+					    data: {
+					        paths: paths
+					    }
+					});
+					$api.setStorage('weibang_lunbo',ret);
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        });
+	}
+	function fopen_shequ(n,tiezi_cat)
+	{
+		api.openWin({
+	        name: 'weibang_shequ_header',
+	        url: 'weibang_shequ_header.html',
+	        pageParam:{
+	        	pan:n,
+	        	tiezi_cat:tiezi_cat
+	        }
+        });
+	}
+	function fopen_fenlei(catName)
+	{
+		api.openWin({
+	        name: 'weibang_fenlei_header',
+	        url: 'weibang_fenlei_header.html',
+	        pageParam:{
+	        	catName:catName
+	        }
+        });
+	}
+	function fopen_faweibang(n)
+	    {
+	    	api.openWin({
+	            name: 'faweibang_header',
+	            url: 'faweibang_header.html',
+	            pageParam:{
+	            	type:n
+	            }
+            });
+	    }
+	function fget_new_info()
+	{
+			var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+			//$('#main').html('<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+		 	api.ajax({
+	            url: YAH_ajax_name+'get_new_info_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	lat:lat,
+	                	lon:lon
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	                var html='';
+	                if(ret[0].status==-1);
+	                else
+	                {
+	                	for(var i=0;i<ret.length;i++)
+	                	{
+			                html+='<div class="list" tapmode="a" onclick="fopen_weibang_xx('+ret[i].id+');">';
+							html+='	<div class="left"><span>微帮</span>&nbsp;</div>';
+							html+='	<div class="right">';
+							html+='		<div class="title">'+ret[i].title+'</div>';
+							html+='		<div class="content">'+ret[i].content+'</div>';
+							html+='		<div class="min_di">';
+							html+='			<span class="s1">已有'+ret[i].jiedan_num+'人报名</span><span class="s2">￥'+ret[i].money+'</span><span class="s3">价格：</span>';
+							html+='		</div>';
+							html+='	</div>';
+							html+='</div>';
+						}
+					}
+//					if(ret[1].status==-1);
+//	                else
+//	                {
+//					html+='<div class="list2" tapmode="a" onclick="fopen_tiezi_xx('+ret[1].id+');">';
+//					html+='	<div class="left"><span>论坛</span>&nbsp;:</div>';
+//					html+='	<div class="right">';
+//					html+='		<div class="title">'+ret[1].title+'</div>';
+//					html+='		<div class="content">'+ret[1].content+'</div>';
+//					html+='		<div class="min_di">';
+//					html+='			<span class="s1">'+ret[1].comNum+'</span>';
+//					html+='			<span class="s2">'+ret[1].dianNum+'</span>';
+//					html+='		</div>';
+//					html+='	</div>';
+//					html+='</div>';
+//					}
+					document.getElementById("jingpin").innerHTML=html;
+					if(ret[0].status==-1) document.getElementById("jingpin").innerHTML='<div style="text-align: center;line-height: 50px;">暂无最新信息</div>';
+					api.parseTapmode();
+	            }else {
+	            	document.getElementById("jingpin").innerHTML='<div style="text-align: center;line-height: 50px;">暂无最新信息</div>';
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fopen_tiezi_xx(n)
+	{
+		api.openWin({
+	        name: 'tiezi_xx_header',
+	        url: 'tiezi_xx_header.html',
+	        pageParam:{
+	        	tiezi_id:n
+	        }
+        });
+	}
+	function fopen_weibang_xx(wb_id)
+	{
+		api.openWin({
+	        name: 'weibang_xx_header',
+	        url: 'weibang_xx_header.html',
+	        pageParam:{
+	        	wb_id:wb_id
+	        }
+        });
+	}
+	function fopen_link(name)
+	{
+		var ret=$api.getStorage('link');
+		//alert(JSON.stringify(ret));
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].cateName==name)
+			{
+				api.openWin({
+	                name: 'link_header',
+	                url: 'link_header.html',
+	                pageParam:{
+	                	link:ret[i].linkUrl,
+	                	name:name
+	                }
+                });
+			}
+		}
+	}
+	function fonclick_lunbo(n)
+	{
+		var ret=$api.getStorage('weibang_lunbo');
+		var url=ret[n].adURL;
+		var adId=ret[n].adId;
+		var adURLApp=ret[n].adURLApp;
+		if(adURLApp=='0' || adURLApp=="" || adURLApp=="null" || adURLApp==null)
+		{
+			if(url=='0' || url=="" || url=="null" || url==null || url.length<10) return;
+			if(adId==0);
+			else fadd_ads(adId);
+			 api.openApp({
+	             androidPkg : 'android.intent.action.VIEW',
+	             mimeType : 'text/html',
+	             uri :url,
+	             iosUrl:url
+	         }, function(ret, err) {
+	//           var msg = JSON.stringify(ret);
+	//           api.alert({
+	//            title : 'openApp',
+	//            msg : msg,
+	//            buttons : ['确定']
+	//           });
+	        });
+        }
+        else
+        {
+        	if(adId==0);
+			else fadd_ads(adId);
+			adURLApp=adURLApp.split("|");
+			if(adURLApp[0]=='G'){
+				fopengoods(adURLApp[1]);
+			}
+			else if(adURLApp[0]=='S'){
+				fopen_dianpu(adURLApp[1]);
+			}
+        }
+	}
+	function fadd_ads(adId)
+	{
+		api.ajax({
+            url: YAH_ajax_name+'add_ads_count.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	adId:adId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 
+            }else {
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html'
+		});
+	}
+	function fget_fenlei_list()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_wb_fenlei_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {}
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	$api.setStorage('wb_fenlei_list',ret);
+	            	fget_fenlei_list_ret();
+	            }else {
+	            	api.hideProgress();//隐藏加载进度框
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fget_fenlei_list_ret()
+	{
+		var ret=$api.getStorage('wb_fenlei_list');
+		var html='';
+		var t=0;
+		var list=new Array();
+		for(var i=0;i<ret.length;i++)
+		{
+                html='        <li><a onclick="fopen_fenlei(\''+ret[i].cateName+'\')"><img src="'+YAH_web+'/'+ret[i].cateImg+'" /></a><a>'+ret[i].cateName+'</a></li>';
+                list[t]=html;
+				t++;
+		}
+		html='';
+		html+='<div class="slide slide1" id="divGoodsNav">';
+        html+='    <ul class="ul-list1">';
+		for(i=0;i<list.length;i++)
+		{
+            html+=list[i];
+            if((i+1)%5==0 && i!=0) html+='    </ul>';
+            if((i+1)%10==0 && i!=0) html+='</div>';
+            if((i+1)%10==0 && i!=0 && i+1!=list.length) html+='<div class="slide slide1" id="divGoodsNav">';
+            if((i+1)%5==0 && i!=0 && i+1!=list.length) html+='    <ul class="ul-list1">';
+		}
+		if(list.length%10>0)
+		{
+			if(list.length%10==5)
+			{
+//				html+='    <ul class="ul-list1">';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+			}
+			else if(list.length%10>5)
+			{
+				for(i=0;i<10-list.length%10;i++)
+				{
+					html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+				}
+			}
+			else if(list.length%10<5)
+			{
+				for(i=0;i<5-list.length%10;i++)
+				{
+					html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+				}
+//				html+='    </ul>';
+//				html+='    <ul class="ul-list1">';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+			}
+		}
+		html+='    </ul>';
+        html+='</div>';
+		$('#branner_list').html(html);
+		//document.getElementById("main").innerHTML=html;
+		api.parseTapmode();
+		var length = $('.slider .slide-group').find('div').length;
+		html = '<ul id="slider-ul">';
+		for(i = 0 ; i < length; i ++){
+			if(i == 0){
+				html += '<li item="'+ -i +'" class="selected">●</li>';
+			}else{
+				html += '<li item="'+ -i +'">●</li>';
+			}
+		}
+		html += '</ul>';
+		var obj = $('.slider');
+		var css = '<style type="text/css">';
+		css += '.slider ul#slider-ul {z-index:999999;position:absolute;bottom:-2px;line-height:20px;width:100%;margin:0 auto;text-align:center;font-size:20px;}';
+		css += '.slider ul#slider-ul li{display:inline-block;margin:0 3px;font-weight:bold;font-size:20px;color:#ccc;}';
+		css += '.slider ul#slider-ul li.selected{color:#db3752;}';
+		css += '</style>';
+		$('#slider-ul').remove();
+		obj.append(html+css);
+		window.mySwipe = Swipe(elem, {});
+	}
+</script>
+</html>

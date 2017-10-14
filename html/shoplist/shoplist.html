@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="css/api.css"/>
+    <style>
+    	*{ margin: 0; padding: 0;}
+    	body{background-color: #fff; width: 100%; height: 100%;}
+    	#main{ width: 100px; background-color: #f9f9f9;}
+    	#main2{ width: 100px; background-color: #f9f9f9; height: 100%; position: absolute; top: 0px; left:0px; z-index: -1;}
+    	.list{ line-height: 50px; height: 50px; width: 99px; text-align: center; border-bottom:1px solid #ccc; border-right:1px solid #ccc;}
+    	.list1{ background-color: #fff; border-right:1px solid #FFF; color: #FF5963;}
+    </style>
+</head>
+<body>
+<div id="main">
+
+</div>
+<div id="main2"></div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+apiready =function()
+{
+	api.parseTapmode();
+    showPersonInfo();
+    opengroup(1,0);
+}
+function opengroup(index,d)
+{
+		api.parseTapmode();
+		var gao=api.winHeight;
+        var kuan=api.winWidth;
+        head_h=55;
+        if(api.systemType=='ios'){
+       		head_h=70;
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			head_h=70;
+    		}
+    	}
+    	var tugao = gao * 0.25;
+    	rect_h=gao-tugao-head_h-50;
+        api.openFrame({
+	        name: 'right'+d,
+	        url: 'shoplist1.html',
+	        rect: {x: 100, y:head_h+tugao, w: kuan-100,h:rect_h},
+	        pageParam:{showPersonInfo:index}
+        });
+        api.setFrameAttr({
+	        name: 'right'+d,
+	        hidden:false
+        });
+}
+//function fcx()
+//{
+//	api.setFrameAttr({
+//	        name: 'right'+0,
+//	        hidden:false
+//  });
+//}
+//function fyc()
+//{
+//	api.setFrameAttr({
+//	        name: 'right'+0,
+//	        hidden:true
+//  });
+//}
+function frameyc()
+{
+	api.setFrameAttr({
+	        name: 'right'+0,
+	        hidden:true
+    });
+}
+function framecx()
+{
+	api.setFrameAttr({
+	        name: 'right'+0,
+	        hidden:false
+    });
+    opengroup(1,3);
+}
+//var obj=document.getElementById("main").getElementsByTagName("div");
+//var max=obj.length;
+
+var dq=0;
+function fsetgroup(index,d)
+{
+		if(d==dq) return;
+//		api.closeFrame({
+//	        name: 'right'
+//      });
+		var b=dq;
+		dq=d;
+		opengroup(index,d);
+	    var $footer = $api.byId('main');
+		var $footerBar = $api.domAll($footer, 'div');
+		var max= $footerBar.length;
+        $api.removeCls($footerBar[b], 'list1');
+		$api.addCls($footerBar[d], 'list1');
+//		api.closeFrame({
+//	        name: 'right'+b
+//      });
+		api.setFrameAttr({
+	        name: 'right'+b,
+	        hidden:true
+        });
+}
+
+	//查询商品分类信息
+	function showPersonInfo(){
+		//使用api.ajax请求数据，具体使用方法和参数请看官方文档，这里使用get方法演示
+		api.ajax({
+		url:'http://101.200.0.213/api_ajax/get_shoplist.php',//如果地址访问不到会请求出错，请填写自己的接口地址
+		method:'get',
+		cache:true,
+		timeout:30,
+		dataTpye:'json',
+		},function(ret,err){
+		if(ret){
+			var html='';
+			var max=ret.length;
+			for(var i=0;i<max;i++){
+				html+='<div tapmode="a" class="list" onclick="fsetgroup('+ret[i].cat_id+','+i+')">'+ret[i].cat_name+'</div>';
+			}
+			document.getElementById("main").innerHTML=html;
+			$api.setStorage('shoplist_left',i);
+			api.parseTapmode();
+		}else{
+		api.alert({msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)});
+		}
+		});
+	}
+	function fopenone()
+	{
+		var $footer = $api.byId('main');
+		var $footerBar = $api.domAll($footer, 'div');
+		$api.addCls($footerBar[0], 'list1');
+		var max= $footerBar.length;
+		for(var i=0;i<max;i++)
+		{
+			$api.removeCls($footerBar[i], 'list1');
+		}
+		fsetgroup(1,0);
+		dq=0;
+	}
+</script>
+</html>

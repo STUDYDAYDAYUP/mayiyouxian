@@ -1,0 +1,278 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100%;
+}
+#main{
+	
+}
+.a{
+    background-color:#eee !important;
+}  
+#user_info{
+	height: 60px;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+#user_info .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin-left: 10px;
+}
+#user_info .left .u1{
+	line-height: 30px;
+	color:#666;
+}
+#user_info .left .u1 span{
+	color:red;
+}
+#user_info .left .u2{
+	font-size: 12px;
+	color:#999;
+}
+.duihuan_on{
+	color:#fff !important;
+	background-color: #00baff !important;
+}
+#user_info .right{
+	padding:0 15px;
+	margin:10px 10px 0 10px;
+	border:1px solid #00baff;
+	color:#00baff;
+	border-radius: 5px;
+	height: 35px;
+	line-height: 35px;
+}
+
+#header{
+	margin-top: 10px;
+	height: 80px;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+#header div{
+	text-align: center;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#header div img{
+	height: 40px;
+	display: block;
+	margin:10px auto 2px auto;
+}
+#header div span{
+	font-size: 12px;
+}
+
+#tishi_t{
+	height: 30px;
+	line-height: 30px;
+	position: relative;
+}
+#tishi_t .di{
+	position: absolute;
+	z-index: 0;
+	border-bottom: 1px solid #666;
+	width: 90%;
+	margin:16px 5% 0 5%;
+}
+#tishi_t .ding{
+	position: absolute;
+	z-index: 1;
+	text-align: center;
+	width: 100%;
+}
+#tishi_t .ding span{
+	background-color: #f2f2f2;
+	padding:0 10px;
+	height: 30px;
+	font-size: 12px;
+	color:#666;
+}
+
+		#content ul{
+        	float: left;
+        	width: 100%;
+        	/*margin-right: 10px;*/
+        }
+        #content ul li{
+        	width: 49.5%;
+			margin-left: 1%;
+			float: left;
+			background-color: #fff;
+			margin-top: 4px;
+        }
+        #content ul li img{
+			margin: 5px auto;
+			height: 120px;
+			width: 120px;
+			display: block;
+        }
+        #content ul li .title{
+			font-size: 14px;
+			line-height: 15px;
+			overflow:hidden;
+			margin:0 10px;
+			display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        #content ul li .footer{
+			margin: 5px 10px;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+        }
+        #content ul li .footer .money{
+			color:red;
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            line-height: 30px;
+        }
+        #content ul li .footer .on{
+			padding:0 10px;
+			background-color:#00baff;
+			color:#fff;
+			border-radius: 5px;
+			height: 30px;
+			line-height: 30px;
+        }
+        .on_on{
+        	background-color: #0598cf !important;
+        }
+        .no_data{
+        	text-align: center;
+        	line-height: 50px;
+        }
+
+
+        .min-title{
+    		height:50px;
+    		line-height: 50px;
+    		font-size: 0.9em;
+    		border-bottom:1px solid #eee;
+    		background-color: #fff;
+    		margin-top:10px;
+    		float:left;
+    		width: 100%;
+    	}
+    	.min-title .t1{
+    		margin-left:10px;
+    		color:#555;
+    		float:left;
+    	}
+    	.min-title .t2{
+    		color:#999;
+    		float:right;
+    		font-size: 13px;
+    	}
+    	.min-title .t3{
+    		background-image:url('../image/youjiantou.png');
+    		background-repeat: no-repeat;
+    		background-size:10px 18px;
+    		background-position:0px 16px;
+    		height:50px;
+    		width:10px;
+    		margin:0 10px;
+    		float:right;
+    	}
+
+
+.kuaibao{
+	background-color: #fff4be;
+	line-height: 30px;
+	height: 30px;
+	border:1px solid #ffae00;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+    color:#999;
+    font-size: 13px;
+    padding:0 10px;
+}
+.kuaibao .s1{
+	color:#60b034;
+}
+.kuaibao .da_dong{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    position: relative;
+}
+.kuaibao .s2{
+	color:#000;
+	display: inline;
+}
+.kuaibao .s3{
+	color:#118bfb;
+	display: inline;
+}
+
+		.content{
+			width: 100%;
+		}
+    	.content ul{
+        	float: left;
+        	width: 100%;
+        	/*margin-right: 10px;*/
+        }
+        .content ul li{
+        	width: 49.5%;
+			margin-left: 1%;
+			float: left;
+			background-color: #fff;
+			margin-bottom: 4px;
+			padding:10px 0;
+        }
+        .content ul li img{
+			margin: 5px auto;
+			height: 120px;
+			width: 120px;
+			display: block;
+        }
+        .content ul li .title{
+			font-size: 14px;
+			line-height: 20px;
+			overflow:hidden;
+			margin:0 10px;
+			display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .content ul li .title2{
+			font-size: 12px;
+			line-height: 20px;
+			min-height:20px;
+			overflow:hidden;
+			margin:0 10px;
+			color:#999;
+			display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .content ul li .footer{
+			margin: 5px 10px;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+        }
+        .content ul li .footer .money{
+			color:red;
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            line-height: 30px;
+        }
+        .content ul li .footer .on{
+			padding:0 10px;
+			background-color:#00baff;
+			color:#fff;
+			border-radius: 5px;
+			height: 30px;
+			line-height: 30px;
+        }

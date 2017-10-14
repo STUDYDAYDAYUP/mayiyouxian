@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+    		background-color: transparent;
+    	}
+    	body{
+    		float:left;
+    		margin:0;
+    		padding:0 0 20px 0;
+    		width:100%;
+    		height:100%;
+    		background-color: transparent;
+    	}
+        .a{
+            background-color:#eee !important;
+        }
+    	input,button,select,textarea{outline:none;-webkit-appearance:none;}
+        .ssk{
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            z-index: 99999;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            /*filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; */
+        }
+        .di{
+       		background-color:#ff1b1c;
+       		width:100%;
+       		height:50px;
+       		position: absolute;
+       		z-index: -2;
+       		filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; 
+        }
+        .ssk .ssk_left{
+            width: 50px;
+            height:50px;
+    		background-image:url('../image/return.png');
+            background-size:11px 19px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+        }
+        .ssk .ssk_con{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            /*background-color:#000;
+            height: 30px;
+            margin:10px 0;
+            border-radius: 15px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+            filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4;  */
+        }
+        .ssk .ssk_right{
+            width: 40px;
+            height:50px;
+            margin-right:10px;
+    		background-image:url('../image/xin_bai.png');
+            background-size:16px 16px;
+            background-repeat: no-repeat;
+            background-position: 12px 15px;
+        }
+        .xin_hong{
+        	background-image:url('../image/shoucangjia.png') !important;
+        }
+        .ssk .ssk_sousuo{
+        	width: 40px;
+            height:50px;
+    		background-image:url('../image/sousuo_bai.png');
+            background-size:16px 16px;
+            background-repeat: no-repeat;
+            background-position: 12px 15px;
+        }
+    </style>
+</head>
+<body>
+	<div class="ssk">
+		<!--<div class="di"></div>-->
+		<div class="ssk_left" tapmode="" onclick="fclose();"></div>
+		<div class="ssk_con">
+			
+		</div>
+		<div class="ssk_sousuo" tapmode="" onclick="fopen_sousuo();">
+			
+		</div>
+		<div class="ssk_right" tapmode="" onclick="fguanzhu();">
+			
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.parseTapmode();
+		fget_guanzhu();
+	};
+	var guanzhu=0;
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fopen_sousuo()
+	{
+		api.openWin({
+	        name: 'ssy_header',
+	        url: 'ssy_header.html',
+	        pageParam:{
+               shopId:api.pageParam.shopId,
+               type:'dianpu'
+            }
+        });
+	}
+	function fset_guanzhu(n)
+	{
+		if(n==1)
+		{
+			guanzhu=1;
+			$('.ssk_right').addClass('xin_hong');
+			//document.getElementById("guanzhu").innerHTML='<img src="../image/shoucangjia.png" /><a>已关注</a>';
+		}
+		else
+		{
+			guanzhu=0;
+			$('.ssk_right').removeClass('xin_hong');
+			//document.getElementById("guanzhu").innerHTML='<img src="../image/xin_bai.png" /><a>关注</a>';
+		}
+	}
+	function fget_guanzhu()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0' || pan==0 || pan==undefined)
+		{
+			return;
+		}
+		//var goods_id=$api.getStorage('goods_id');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'guanzhu_shop.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	shopId:api.pageParam.shopId,
+                	user_id:user_id,
+                	pan:'2'
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan=='true')
+                 {
+                 	fset_guanzhu(1);
+                 }
+                 else
+                 {
+                 	fset_guanzhu(0);
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fguanzhu()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var user_id=$api.getStorage('user_id');
+		if(guanzhu==0)
+		{
+		
+		api.ajax({
+            url: YAH_ajax_name+'guanzhu_shop.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	shopId:api.pageParam.shopId,
+                	user_id:user_id,
+                	pan:'1'
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan=='true')
+                 {
+                 	api.toast({
+						    msg: '关注成功!',
+						    duration: 2000,
+						    location: 'bottom'
+					});
+					fset_guanzhu(1);
+                 }
+                 else
+                 {
+                 	api.toast({
+						    msg: '关注失败!',
+						    duration: 2000,
+						    location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+        
+        }
+        else
+        {
+        	api.ajax({
+	            url: YAH_ajax_name+'guanzhu_shop.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	shopId:api.pageParam.shopId,
+	                	user_id:user_id,
+	                	pan:'0'
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret[0].pan=='true')
+	                 {
+	                 	api.toast({
+							    msg: '已取消关注!',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+						fset_guanzhu(0);
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							    msg: '取消关注失败!',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+        }
+	}
+</script>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="../css/sousuo_pingtai.css"/> -->
+    <style>
+	    html, body{
+	    	width: 100%;
+	    	height: 100%;
+    		background: url(../image/yuyue_bg.png) no-repeat center center;
+    		background-size: 100% 100%;
+	    }
+    	#main{
+    		position: relative;
+    		width: 100%;
+    		height: 100%;
+    	}
+    	.yuyue_explain{
+    		position: absolute;
+    		top: 34.494195%;
+    		left: 16%;
+    		width: 67.46666%;
+    		height: 12.271973%;
+    		text-align:center;
+    		font-size:20px;
+    		font-family:KaiTi;
+    		color: #60b034;  
+    		font-weight:bolder;
+        }
+    	.yuyue_explain img{
+    		width: 100%;
+    	}
+    	.yuyue_but{
+    		position: absolute;
+    		bottom: 19.1542288%;
+    		left: 16.4%;
+    		width: 67.33333333%;
+    		height: 12.35489%;
+			background: url(../image/yuyue_radio.png) no-repeat center center;
+			-webkit-background-size: 100%;
+			background-size: 100%;
+    	}
+    	.yuyue_but span{
+    		position: absolute;
+    		top: 37.583892%;
+    		left: 10.891089%;
+    		width: 77.42574%;
+    		height: 23.48993%;
+			background: url(../image/yuyue_radio_words.png) no-repeat center center;
+			-webkit-background-size: 100%;
+			background-size: 100%;
+    	}
+    </style>
+</head>
+<body>
+<div id="main" style="">
+	<div class="yuyue_explain">小区还需56人 <br /> 立即开通配送服务</div>
+	<div class="yuyue_but" onclick="fenxiang_xuan()"><span></span></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	   api.execScript({
+         name: 'root',
+         frameName:'go_xuan_xiaoqu',
+       	 script: 'fclose();'
+       });
+	   var type = api.pageParam.type;
+	   $('.yuyue_explain').html('小区还需'+type+'人 <br /> 立即开通配送服务');
+	}
+</script>
+</html>

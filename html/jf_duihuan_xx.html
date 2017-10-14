@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jf_duihuanjilu_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="goods_list">
+		<!--<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>-->
+		<ul>
+			<li>
+				<div class="list_left"><img id="goodsImg" src="#" /></div>
+				<div class="list_right">
+					<div class="title" id="goodsName"></div>
+					<div class="money" id="payMoney"></div>
+					<!--<div class="money2" id="tishi">3</div>-->
+					<div class="di">
+						<!--<span class="s1">兑换</span><span class="s2">抽奖</span>-->
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="dh_time"><span class="s1">兑换时间</span><span class="s2" id="dh_time"></span></div>
+	<div class="dh_zt"><span class="s1">状态</span><span class="s2" id="dh_zt2">未中奖</span></div>
+	<div class="dh_ma"><span class="s1">兑换码</span><span class="s2" id="dh_no"></span></div>
+	<div class="list" style="margin-top:10px;">
+		<div class="shr">收货人：<span class="s1" id="userName"></span><span class="s2" id="userPhone"></span></div>
+		<div class="shdz" id="user_address"><span class="s1">收货地址：</span></div>
+	</div>
+	<div class="list" style="padding:5px 10px;">
+		<div class="list_l" id="wl_no">商品发货物流号：</div>
+		<div class="list_l" id="wl_gs">物流公司：</div>
+		<div class="list_l" id="wl_dd">物流订单号：<span class="s1"></span></div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+		});
+		fget_jf_jilu_xx();
+		//api.hideProgress();//隐藏加载进度框
+	};
+function fget_jf_jilu_xx()
+{
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_jf_jilu_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	orderId:api.pageParam.orderId
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	 document.getElementById("goodsImg").src=YAH_web+'/'+ret[0].goodsThums;
+	            	 document.getElementById("goodsName").innerHTML=ret[0].goodsName;
+	            	 var score='';
+					 if(ret[0].payType==4) score=parseInt(ret[0].needPay)+'积分';
+					 if(ret[0].payType==1) score=ret[0].needPay+'元';
+					 if(ret[0].payType==2) score=ret[0].needPay+'元';
+					 if(ret[0].payType==3) score=ret[0].needPay+'元';
+	            	 document.getElementById("payMoney").innerHTML=score;
+	            	 //document.getElementById("tishi").innerHTML='兑换成功';
+	            	 document.getElementById("userName").innerHTML=ret[0].userName;
+		             document.getElementById("userPhone").innerHTML=ret[0].userPhone;
+		             document.getElementById("user_address").innerHTML='<span class="s1">收货地址：</span>'+ret[0].userAddress;
+		            	 
+		             document.getElementById("wl_no").innerHTML="商品发货物流号："+ret[0].wl_no;
+		             document.getElementById("wl_gs").innerHTML="物流公司："+ret[0].wl_gs;
+		             document.getElementById("wl_dd").innerHTML="物流订单号："+ret[0].wl_dd;
+	            	 if(ret[0].orderType==4)
+	            	 {
+	            	 	$('#dh_zt2').html('兑换成功');
+	            	 	$('.di').html('<span class="s1">兑换</span>');
+	            	 	document.getElementById("dh_no").innerHTML=ret[0].orderNo;
+	            	 	
+	            	 }
+	            	 else if(ret[0].orderType==5)
+	            	 {
+	            	 	
+	            	 	$('.di').html('<span class="s2">抽奖</span>');
+	            	 	$('.dh_ma').css('display','none');
+	            	 	var zjm='未中奖';
+						if(ret[0].winningCode==null || ret[0].winningCode=="" || ret[0].winningCode==0)
+						{
+							zjm='未中奖';
+	            	 		$('.list').css('display','none');
+						} 
+						else
+						{
+							zjm='中奖券码：'+ret[0].winningCode;
+						} 
+						$('#dh_zt2').html(zjm);
+	            	 }
+	            	 document.getElementById("dh_time").innerHTML=ret[0].createTime;
+	                 api.parseTapmode();
+	            }else {
+	            	fduanwang();
+	            	//document.getElementsByClassName('goods_list')[0].innerHTML='<div style="text-align: center;line-height: 50px;">暂无订单</div>';
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	            api.hideProgress();//隐藏加载进度框
+	        });
+}
+</script>
+</html>

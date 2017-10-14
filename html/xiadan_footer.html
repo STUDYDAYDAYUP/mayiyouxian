@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="api.css"/>
+    <style>
+    	*{ margin: 0; padding: 0;}
+    	.on{ background-color: #b51111 !important;}
+    	.a{}
+    	
+    	#footder{ width: 100%;height:50px;background-color:#fafafa; float:left; z-index: 10;}
+    	#zje{float:left;height: 50px; margin-left: 10px;}
+    	#hj{ font-size: 16px; line-height: 50px;color:#282828;}
+    	/*#hj a{color:#df5354;}*/
+    	#ze{ font-size: 12px;color:#666;}
+    	#zje_a{color: #df5354;}
+    	#jiesuan,#delete{color:#fff; text-align: center; line-height:50px; height: 50px; width:100px; font-size: 16px; background-color: #60b034; border-radius: 0px; float:right; margin-right: 0px; margin-top: 0px;}
+    	#delete{ display: none;}
+    	#quanxuan{ display: block;color:#000; height: 40px; width:80px; font-size: 12px;float:left;padding:10px 0 0 0px}
+
+   		.footerimg{float:left; background-image: url(../image/xuan_hui.png); background-size: 20px 20px; margin-left:5px; margin-right:10px; margin-top:4px; margin-bottom:5px; width: 20px; height: 20px;position: relative;top:3px;left:3px;}
+    	.qx{ line-height: 20px;margin-top:7px; margin-bottom:5px; height: 20px; font-size: 14px;color:#656565;}
+    </style>
+</head>
+<body>
+<div id="footder">
+	<div id="zje"><div id="hj">共<a>0</a>件，合计：<a id="zje_a">￥0</a></div><div id="ze"></div></div>
+	<div id="jiesuan" tapmode="on" onclick="pay()">提交订单</div>
+	<div id="delete" tapmode="a" onclick="">删除</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+document.getElementById("footder").ontouchmove = function(e){ e.preventDefault(); };
+	apiready = function(){
+		api.parseTapmode();
+	};
+	function pay()
+	{
+		var going=$api.getStorage('going');
+		if(going=="2" || going==2)
+		{
+			var user_id=$api.getStorage('user_id');
+		    var time = Math.ceil(new Date().getTime()/1000);
+		    var sign = get_appkey(time);
+		    sign = md5(sign);
+		
+		    api.ajax({
+		        url: YAH_web+'/index.php?m=Api&c=User&a=get_community_byuser',
+		        method: 'post',
+		        cache: false,
+		        timeout: 30,
+		        dataType: 'json',
+		        returnAll:false,
+		        data:{
+		            values: {
+		            	userId:user_id,
+		            	time:time,
+		                sign:sign
+		            }
+		        }
+		    },function(ret,err){
+		
+		    	 if(ret['people_num'] == -2){
+		    	    var user_id=$api.getStorage('user_id');
+				    var time = Math.ceil(new Date().getTime()/1000);
+				    var sign = get_appkey(time);
+				    sign = md5(sign+user_id);
+				    api.ajax({
+			            url: YAH_web+'/index.php?m=Api&c=Orders&a=order_require_time',
+			            method: 'post',
+			            cache: false,
+			            timeout: 30,
+			            dataType: 'json',
+			            returnAll:false,
+			            data:{
+			                values: {
+				            	userId:user_id,
+				            	time:time,
+				                sign:sign
+				            }
+			            }
+			        },function(ret,err){
+			        	//alert(JSON.stringify(ret||err));
+			        	if(ret['status'] == -1){
+				        	api.confirm({
+							    title: '',
+							    msg: '您今天下单已截止，我们将为您预约到明天早上6点下单',
+							    buttons: ['预约', '取消']
+							},function( ret, err ){
+							    if( ret ){
+							    	if(ret.buttonIndex == 1)
+							    	{
+							    		 api.execScript({
+								           	frameName:'xiadan',
+								            script: 'fgo();'
+							             });
+							    	}
+							    }else{
+							         return;//alert( JSON.stringify( err ) );
+							    }
+							});
+			        	}
+			        	else{
+				        	 api.execScript({
+					           	frameName:'xiadan',
+					            script: 'fgo();'
+				             });
+			        	}
+			        });
+		    	     
+		    	 }
+		    	 else{
+		
+		    	     api.toast({
+						msg: '小区还未开通',
+						duration: 2000,
+						location: 'bottom'
+					 });
+					 return;
+		
+		    	 }
+		    });
+			
+			
+
+		}
+		else
+		{
+			api.openWin({
+	            name: 'address_user_header',
+	            url: 'address_user_header.html'
+            });
+		}
+	}
+	function fset_num(n,money)
+	{
+		document.getElementById("hj").innerHTML='共<a>'+n+'</a>件，合计：<a id="zje_a">￥'+money+'</a>';
+	}
+	function fyanzheng()
+	{
+		
+	}
+</script>
+</html>

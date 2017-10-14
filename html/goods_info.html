@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goods_info.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goods_shuxing.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    	#content_r{
+    		background-color:#fff;
+    		margin:10px 0;
+    	}
+    	.goodsDesc img, .goods-info-banner img{
+    		width:100%;
+    	}
+    	.swiper-slide{
+    		font-size: 0;
+    		position: relative;
+    	}
+    	.swiper-slide .img-num{
+    		position: absolute;
+    		right: 10px;
+    		bottom: 10px;
+    		background: rgba(100,100,100,0.5);
+    		width: 30px;
+    		height: 30px;
+    		text-align: center;
+    		line-height: 30px;
+    		color: #fff;
+    		border-radius: 50%;
+    	}
+    	.swiper-slide .img-num .img-now{
+    		font-size: 14px;
+    	}
+    	.swiper-slide .img-num .img-all{
+    		font-size: 12px;
+    	}
+    	.read_top{
+    		display: none;
+    		width: 35px;
+    		height: 35px;
+    		/*opacity: 0;*/
+    		background: url("../image/icon_up.png") no-repeat center center;
+    		-webkit-background-size: 35px;
+    		background-size: 35px;
+    		border-radius: 50%;
+    		position: fixed;
+    		bottom: 80px;
+    		right: 20px;
+    	}
+    </style>
+</head>
+<body style="padding-bottom: 57px;">
+<div id="main">
+	<div class="goods-info-banner">
+		<div class="swiper-container swiper-container4">
+			<div class="swiper-wrapper" id="imglist">
+			    <!-- <div class="swiper-slide">
+			    	<img src="../image/lunbo2.png" alt="" />
+			    					<div class="img-num">
+			    						<em class="img-now"></em>
+			    						<span class="img-all"></span>
+			    					</div>
+			    </div>
+			    <div class="swiper-slide">
+			    	<img src="../image/lunbo2.png" alt="" />
+			    					<div class="img-num">
+			    						<em class="img-now"></em>
+			    						<span class="img-all"></span>
+			    					</div>
+			    </div>
+			    <div class="swiper-slide">
+			    	<img src="../image/lunbo2.png" alt="" />
+			    					<div class="img-num">
+			    						<em class="img-now"></em>
+			    						<span class="img-all"></span>
+			    					</div>
+			    </div>	 -->
+			</div>
+		</div>
+	</div>
+	<div class="goodsName" id="goodsName">&nbsp;</div>
+	<!-- <div class="xiaoliang" id="yueshou">月售0</div> -->
+	<div class="money_list">
+		<div class="money"><span id="money">$120</span></div>
+		<div class="kong"><s id='money1'></s></div>
+		<!--<div class="s4" tapmode="" style="display:none;" onclick="fopen_kefu();">客服</div>-->
+		<!-- <img class="s5" tapmode="a" onclick="fopen_kefu();" src="../image/htlx.png" /> -->
+	</div>
+
+	<!-- bycao 增加 -->
+	<div class="content_title">
+		<h3 class="block-flex">图文详情</h3>
+	</div>
+	<!-- bycao end -->
+	<div class="content">
+
+	</div>
+	<div class="read_top" tapmode onclick="readTop(this);"></div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/jQueryRotate.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/swiper.min.js" ></script>
+<script type="text/javascript">
+//轮播bycao
+
+$(function(){
+var imgNum = $('.goods-info-banner .swiper-slide .img-num');
+var imgNum_l = imgNum.length-2;
+var imgNum_i = 0;
+imgNum.each(function(){
+	imgNum_i = parseInt($(this).parent().attr('data-swiper-slide-index'));
+	$(this).find('.img-all').html('/'+ imgNum_l);
+	$(this).find('.img-now').html(imgNum_i+1);
+});
+
+	var oReadTop = $('.read_top')
+    $(window).scroll(function () {
+        if ($(window).scrollTop() >= 100) {
+            oReadTop.fadeIn();
+        }
+        else{
+        	oReadTop.fadeOut();
+        }
+    });
+
+});
+function readTop(obj){
+	$('html, body').animate({
+		scrollTop:0
+	},"fast");
+}
+//bycao end
+	apiready = function() {
+		api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '努力加载中...',
+		    text: '先喝杯茶...',
+		    modal: true
+		});
+		get_goods_info(api.pageParam.gid);
+	};
+
+	function get_goods_info(gid){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+gid);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Goods&a=get_goods_info',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	gid:gid,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+            api.hideProgress();//隐藏加载进度框
+            if(ret){
+                var html = '';
+                html += '<div class="swiper-slide">';
+                html += '<img src="'+$api.getStorage("YAH_web")+'/'+ret.goodsImg+'" alt="" />';
+                html += '</div>';
+                $(ret.imglist).each(function(o,val){
+	                html += '<div class="swiper-slide">';
+	                html += '<img src="'+$api.getStorage("YAH_web")+'/'+val.goodsImg+'" alt="" />';
+	                html += '</div>';
+                })
+                $('#imglist').html(html);
+                var mySwiper4 = new Swiper('.swiper-container4',{
+					autoplay: 3000,
+					pagination : '.swiper-pagination1',
+					loop: true,
+					autoplayDisableOnInteraction: false,
+					observer:true,
+					observeParents:true
+				})
+                $('#goodsName').html(ret.goodsName);
+                if(ret.isOneyuan == 1 && ret.goodsStock > 0){
+                    $('#money').html('￥1');
+                    $('#money1').html('￥'+ret.shopPrice);
+                }
+                else{
+                   $('#money').html('￥'+ret.shopPrice);
+                   $('#money1').html('');
+                }
+
+                $('.content').html(ret.goodsDesc);
+                $('.content').children('img').each(function(){
+                     var src = $(this).attr('src');
+                     $(this).attr('src',$api.getStorage("YAH_web")+'/'+src);
+                     $(this).css('max-width','100%');
+                 })
+
+
+
+			}else{
+                fduanwang();
+            }
+        })
+	}
+
+
+	function fadd_buycar()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+
+
+		var goods_id=api.pageParam.goodsId;
+		var goods_num=$api.getStorage('goods_shuxing_xuan_num');
+		var shuxing_title=$api.getStorage('goods_shuxing_xuan_title2');
+		var shuxing_id=$api.getStorage('goods_shuxing_xuan_id_list');
+		var user_id=$api.getStorage('user_id');
+		var goods_title=$api.getStorage('goods_title');
+		var goods_shopPrice=$api.getStorage('goods_shopPrice');
+		var goods_img=$api.getStorage('goods_img');
+		var goods_goodsStock=$api.getStorage('goods_goodsStock');
+		var goods_shopId=$api.getStorage('goods_shopId');
+		var shuxing_money=$api.getStorage('shuxing_money');
+		var isSeckill=0;
+		var isGroup=0;
+		var brandId=$api.getStorage('brandId');
+		var goodsCatId1=$api.getStorage('goodsCatId1');
+		var goodsCatId2=$api.getStorage('goodsCatId2');
+		var goodsCatId3=$api.getStorage('goodsCatId3');
+		var shopCatId1=$api.getStorage('shopCatId1');
+		var shopCatId2=$api.getStorage('shopCatId2');
+		//alert(goods_id+" "+goods_num+" "+user_id+" "+shuxing_id+" "+shuxing_title+" "+isSeckill+" "+isGroup);
+		if(api.pageParam.tuangou==1 || api.pageParam.tuangou=='1') isGroup=1;
+		if(api.pageParam.miaosha==1 || api.pageParam.miaosha=='1') isSeckill=1;
+		//alert(goods_id+":"+user_id+":"+goods_num+":"+shuxing_id+":"+shuxing_title+":"+isSeckill+":"+isGroup);
+		var ret=$api.getStorage('buycar');
+		if(ret==undefined)
+		{
+			var add={
+				goods_id:goods_id,
+				goods_num:goods_num,
+				shuxing_title:shuxing_title,
+				shuxing_id:shuxing_id,
+				goods_title:goods_title,
+				goods_shopPrice:goods_shopPrice,
+				goods_img:goods_img,
+				goods_goodsStock:goods_goodsStock,
+				goods_shopId:goods_shopId,
+				shuxing_money:shuxing_money,
+				brandId:brandId,
+				goodsCatId1:goodsCatId1,
+				goodsCatId2:goodsCatId2,
+				goodsCatId3:goodsCatId3,
+				shopCatId1:shopCatId1,
+				shopCatId2:shopCatId2
+				};
+			ret=[];
+			ret.push(add);
+			$api.setStorage('buycar',ret);
+			api.toast({
+				msg: '已成功加入购物车!',
+				duration: 2000,
+				location: 'bottom'
+			});
+			api.execScript({
+	           	frameName:'goods_info_footer',
+	            script: 'fget_buycar();'
+            });
+            api.execScript({
+            	name:'dianpu',
+	           	frameName:'dianpu_footer',
+	            script: 'fget_buycar();'
+            });
+		}
+		else
+		{
+			var goods_pan=0;
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_id==goods_id && ret[i].shuxing_id==shuxing_id)
+				{
+					goods_pan=1;
+					api.toast({
+						    msg: '购物车已存在!',
+						    duration: 2000,
+						    location: 'bottom'
+					});
+					break;
+				}
+			}
+			if(goods_pan==0)
+			{
+				var add={
+						goods_id:goods_id,
+						goods_num:goods_num,
+						shuxing_title:shuxing_title,
+						shuxing_id:shuxing_id,
+						goods_title:goods_title,
+						goods_shopPrice:goods_shopPrice,
+						goods_img:goods_img,
+						goods_goodsStock:goods_goodsStock,
+						goods_shopId:goods_shopId,
+						shuxing_money:shuxing_money,
+						brandId:brandId,
+						goodsCatId1:goodsCatId1,
+						goodsCatId2:goodsCatId2,
+						goodsCatId3:goodsCatId3,
+						shopCatId1:shopCatId1,
+						shopCatId2:shopCatId2
+						};
+					ret.push(add);
+					$api.setStorage('buycar',ret);
+					api.toast({
+						msg: '已成功加入购物车!',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+			           	frameName:'goods_info_footer',
+			            script: 'fget_buycar();'
+		            });
+		            api.execScript({
+		            	name:'dianpu',
+			           	frameName:'dianpu_footer',
+			            script: 'fget_buycar();'
+		            });
+			}
+		}
+		return;
+
+		api.ajax({
+	            //url: YAH_ajax_name+'add_buycar.php',
+	            url: YAH_ajax_name+'add_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	goods_id:goods_id,
+	                	user_id:user_id,
+	                	goods_num:goods_num,
+	                	shuxing_id:shuxing_id,
+	                	shuxing_title:shuxing_title,
+	                	isSeckill:isSeckill,
+	                	isGroup:isGroup
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret=='true')
+	                 {
+	                 	api.toast({
+						    msg: '已成功加入购物车!',
+						    duration: 2000,
+						    location: 'bottom'
+						});
+	                 }
+	                 else if(ret=="2")
+	                 {
+	                 	jia(0);
+//	                 	api.toast({
+//						    msg: '购物车已存在!',
+//						    duration: 2000,
+//						    location: 'bottom'
+//						});
+	                 }
+	                 else
+	                 {
+//	                 	api.toast({
+//						    msg: '加入购物车失败!',
+//						    duration: 2000,
+//						    location: 'bottom'
+//						});
+						api.toast({
+						    msg: '已成功加入购物车!',
+						    duration: 2000,
+						    location: 'bottom'
+						});
+	                 }
+	                 //fget_buycar();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+
+</script>
+</html>

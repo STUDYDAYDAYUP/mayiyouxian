@@ -1,0 +1,115 @@
+/*html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}*/
+html{
+	background-color:#f2f2f2;
+}
+body {    
+	width: 100%;
+	margin:0;
+	padding:0;
+	background-color:#f2f2f2;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;height: 100%;
+}
+.a{
+            background-color:#eee !important;
+        }  
+.min-title3{
+    		height:50px;
+    		line-height: 50px;
+    		font-size: 0.9em;
+    		border-bottom:1px solid #eee;
+    		background-color: #fff;
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+    	}
+    	.min-title3 .t1{
+    		margin-left:10px;
+    		color:#666;
+    		
+            display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    	}
+    	.min-title3 .t2{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+    	}
+    	.min-title3 .t3{
+    		background-image:url('../image/youjiantou.png');
+    		background-repeat: no-repeat;
+    		background-size:10px 18px;
+    		background-position:0px 16px;
+    		height:50px;
+    		width:10px;
+    		margin:0 10px;
+    	}
+    	.min-title3 input{
+			line-height: 30px;
+			color:#000;
+			height: 30px;
+			margin: 10px 0;
+			width: 90%;
+    	}
+    	#from{
+    		height: 100%;
+    	}
+    	#kong{
+            width: 100%;
+    	}
+    	#hold{
+			height: 50px;
+			margin-bottom: 50px;
+    	}
+    	#but{
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			width: 60%;
+			margin-left: 20%;
+			background-color:#ff1b1b;
+			border-radius: 5px;
+			color:#fff;
+    	}
+    	.but_on{
+    		background-color:#b32323 !important;
+    	}
+    	#but2{
+			text-align: center;
+			height: 50px;
+			line-height: 50px;
+			width: 60%;
+			margin-left: 20%;
+			background-color:#999;
+			border-radius: 5px;
+			color:#fff;
+    	}
+        #go{
+            height: 50px;
+            line-height: 50px;
+            border-radius: 5px;
+            text-align: center;
+            background-color:#ff1b1b;
+            color:#fff;
+            margin:20px 10px;
+        }
+        .go_on{
+            background-color:#b51616 !important;
+        }
+        #tishi{
+            text-align: center;
+            color:#999;
+            line-height: 300px;
+            height: 300px;
+        }
+        #wjmm{
+        	color: #00b4ff;
+			text-align: right;
+			margin:10px 10px 0 0;
+			font-size: 12px;
+        }

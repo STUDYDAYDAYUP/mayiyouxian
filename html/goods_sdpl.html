@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goods.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="sd_huifu">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<!--<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_xingji x5"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+					<img src="../image/sp_5.png" />
+					<img src="../image/sp_5.png" />
+					<img src="../image/sp_5.png" />
+				</div>
+			</li>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_xingji x3"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+					<img src="../image/sp_5.png" />
+				</div>
+			</li>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_xingji x1"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄凡所有相皆是虚妄凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+				
+				</div>
+			</li>-->
+			<!--<div class="no_shaidan">暂无评论</div>-->
+		</ul>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_goods_shaidan();
+	};
+	function fget_goods_shaidan()
+	{
+		var goods_id=$api.getStorage('goods_id');
+		api.ajax({
+	            url: YAH_ajax_name+'get_goods_shaidan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	goods_id:goods_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	var html='<ul>';
+	            	var sum=0,i,max_num=3;
+					for(i=0;i<ret.length;i++)
+					{
+						sum+=Number(ret[i].star);
+					}
+//					if(ret.length>3) max_num=3;
+//					else if(ret.length<=3) max_num=ret.length;
+					for(i=0;i<ret.length;i++)
+					{
+						html+='<li tapmode="a">';
+						html+='	<div class="sd_info">';
+						html+='		<div class="sd_xingji x"'+ret[i].star+'></div>';
+						html+='		<div class="sd_xingji_di"></div>';
+						html+='		<div class="sd_time">'+ret[i].shareTime+'</div>';
+						html+='		<div class="sd_username">'+ret[i].userName+'</div>';
+						html+='	</div>';
+						html+='	<div class="sd_nr">'+ret[i].shareTitle+'</div>';
+						html+='	<div class="sd_img">';
+						if(ret[i].shareImg1!=null && ret[i].shareImg1!="") html+='		<img src="'+$api.getStorage("YAH_web")+ret[i].shareImg1+'" />';
+						if(ret[i].shareImg2!=null && ret[i].shareImg2!="") html+='		<img src="'+$api.getStorage("YAH_web")+ret[i].shareImg2+'" />';
+						if(ret[i].shareImg3!=null && ret[i].shareImg3!="") html+='		<img src="'+$api.getStorage("YAH_web")+ret[i].shareImg3+'" />';
+						if(ret[i].shareImg4!=null && ret[i].shareImg4!="") html+='		<img src="'+$api.getStorage("YAH_web")+ret[i].shareImg4+'" />';
+						html+='	</div>';
+						html+='</li>';
+					}
+					html+='</ul>';
+					$('.sd_huifu').eq(0).html(html);
+					api.parseTapmode();
+	            }else {
+	            	var html='<ul><div class="no_shaidan">暂无评论</div></ul>';
+	            	$('.sd_huifu').eq(0).html(html);
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+	}
+</script>
+</html>

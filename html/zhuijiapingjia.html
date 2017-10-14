@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goodspingjia.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#statement{
+    		position: absolute;
+    		bottom:50px;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+		<div class="goods_list">
+			<div class="goods_l"><img id="goods_img" src="../image/sp_3.png" /></div>
+			<div class="goods_r">
+				<div class="goods_title">评分：</div>
+				<div class="xuan">
+					<div class="sd_xingji x0" xing="0"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_xingji_xuan">
+						<div class="xing_xuan"></div>
+						<div class="xing_xuan"></div>
+						<div class="xing_xuan"></div>
+						<div class="xing_xuan"></div>
+						<div class="xing_xuan"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="content">
+			<div class="text"><textarea name="" id="cont" maxlength="500" placeholder="长度在1-500个字之间 写下购买体会或使用过程中带来的帮助 可以为其他小伙伴提供参考~~" disabled="disabled"></textarea></div>
+			<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+			<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+			<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+			<div class="xuan_tu"><div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">上传中...</div></div></div>
+			<div id="tianjia"><div class="del" tapmode="del_on" onclick="fxuan_tu();"><div class="tu"></div>添加晒单图片</div></div>
+		</div>
+		<div class="list" style="text-align: left;">
+			 <div class="dui dui_on"></div>匿名评价
+		</div>
+		<div class="list">
+			<span id="go" tapmode="go_on" onclick="fgo();">提交评价</span>
+		</div>
+		<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var niming=1;
+	var img_num=0;
+	var zhui_pan=0;
+	var src1='',src2='',src3='',src4='';
+	apiready = function(){
+		document.getElementById("goods_img").src=api.pageParam.goods_img;
+		fget_shaidan();
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fni()
+	{
+		if(niming==1)
+		{
+			$('.dui').eq(0).removeClass('dui_on');
+			niming=0;
+		}
+		else
+		{
+			$('.dui').eq(0).addClass('dui_on');
+			niming=1;
+		}
+	}
+	function fxuan(n,t)
+	{
+		$('.sd_xingji').eq(n).attr('xing',t);
+		$('.sd_xingji').eq(n).removeClass('x0');
+		$('.sd_xingji').eq(n).removeClass('x1');
+		$('.sd_xingji').eq(n).removeClass('x2');
+		$('.sd_xingji').eq(n).removeClass('x3');
+		$('.sd_xingji').eq(n).removeClass('x4');
+		$('.sd_xingji').eq(n).removeClass('x5');
+		$('.sd_xingji').eq(n).addClass('x'+t);
+	}
+	function fxuan_tu()
+	{
+		api.openFrame({
+	        name: 'zhuijiapingjia_tanc',
+	        url: 'zhuijiapingjia_tanc.html',
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fshangchuan(src)
+	{
+		api.execScript({
+	       	frameName:'zhuijiapingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		$('.xuan_tu').eq(img_num).css('display','block');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_goodspingjia.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		    	
+		         if(ret[0]['pan']==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0]['pan']==1)
+		         {
+//		         	api.toast({
+//						msg: '上传成功',
+//						duration: 2000,
+//						location: 'bottom'
+//				    });
+				    $('.xuan_tu').eq(img_num).html('<img src="'+$api.getStorage("YAH_web")+'/'+ret[0]['msg']+'" width="100%"/>');
+				    img_num++;
+				    if(img_num==1) src1=ret[0]['msg'];
+				    if(img_num==2) src2=ret[0]['msg'];
+				    if(img_num==3) src3=ret[0]['msg'];
+				    if(img_num==4) src4=ret[0]['msg'];
+				    if(img_num>=4) $('.del').css('display','none');
+		         }
+		    } else {
+		         fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fget_shaidan()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_goodspingjia.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	orderId:api.pageParam.orderId,
+                	goodsId:api.pageParam.goodsId,
+                	shopId:api.pageParam.shopId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret.length>0)
+                 {
+                 	zhui_pan=1;
+                 	fxuan(0,ret[0].star);
+                 	if(ret[0].anonymity==0)
+					{
+						$('.dui').eq(0).removeClass('dui_on');
+						niming=0;
+					}
+					else
+					{
+						$('.dui').eq(0).addClass('dui_on');
+						niming=1;
+					}
+					document.getElementById("cont").value=ret[0].shareContent;
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fgo()
+	{
+		if(zhui_pan==0)
+		{
+			api.toast({
+					msg: '网络不佳，请稍后再试',
+					duration: 2000,
+					location: 'bottom'
+			});
+			return;
+		} 
+		var xing=$('.sd_xingji').eq(0).attr('xing');
+		var text=document.getElementById("cont").value;
+//		if(Number(xing)<=0)
+//		{
+//			api.toast({
+//					msg: '请选择商品评分',
+//					duration: 2000,
+//					location: 'bottom'
+//			});
+//			return;
+//		}
+//		if(text=="")
+//		{
+//			api.toast({
+//					msg: '请填写商品评价',
+//					duration: 2000,
+//					location: 'bottom'
+//			});
+//			return;
+//		}
+		if(src1=="")
+		{
+			api.toast({
+					msg: '请添加晒单图片',
+					duration: 2000,
+					location: 'bottom'
+			});
+			return;
+		}
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'提交中...'});
+		api.ajax({
+            url: YAH_ajax_name+'set_goodspingjia.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	orderId:api.pageParam.orderId,
+                	goodsId:api.pageParam.goodsId,
+                	shopId:api.pageParam.shopId,
+                	niming:'0',
+                	goodsScore:'0',
+                	text:'0',
+                	src1:src1,
+                	src2:src2,
+                	src3:src3,
+                	src4:src4
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan==1)
+                 {
+                 	api.toast({
+						msg: '评价成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+	                   	name:'pingjiazhongxin_header',
+	                   	frameName:'pingjiazhongxin',
+	                    script: 'fcz();'
+                    });
+					window.setTimeout('fclose();',1000);
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: '提交失败，请稍后再试',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/my_xiaofeizhe.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dengji_huiyuan.css"/>
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            background: #efefef;
+        }
+    </style>
+</head>
+<body>
+<div id="main" style="">
+    <div class="content_title">
+        <div class="content_l" style="/*margin:100px auto; width:100%;margin-left: 45px;*/">
+            <span class="riqi">日期</span><input id="txtBeginDate" class="txtBeginDate" style=""/><span class="line"></span>
+            <input id="txtEndDate" class="txtEndDate" style="" /><span class="but" onclick="get_xiaofeizhe_money();">查询</span>
+        </div>
+
+        <div class="content_r"><em id="money">￥0</em></div>
+    </div>
+    <div class="content_th date_list">
+	    <ul>
+			<!-- <li tapmode="a" onclick="fopen_dingdan_list(0);">
+				<div class="left"><img src="../image/sp_5.png" height="80px" /></div>
+				<div class="con">
+					<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">13800138000</span></div>
+					<div class="s1"><span class="title">上级账号：</span><span class="mobile">13800138000</span></div>
+					<div class="s2"><span class="title">订单数量：</span><span class="order_num">133</span></div>
+					<div class="s3"><span class="title">提成金额：</span><span class="money">￥99.99</span></div>
+				</div>
+				<div class="right"></div>
+			</li>
+			<li tapmode="a" onclick="fopen_dingdan_list(0);">
+				<div class="left"><img src="../image/sp_5.png" height="80px" /></div>
+				<div class="con">
+					<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">13800138000</span></div>
+					<div class="s2"><span class="title">订单数量：</span><span class="order_num">133</span></div>
+					<div class="s3"><span class="title">提成金额：</span><span class="money">￥99.99</span></div>
+				</div>
+				<div class="right"></div>
+			</li>  -->
+		</ul>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/calendar.min.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $("#txtBeginDate").calendar({
+            controlId: "divDate",                                 // 弹出的日期控件ID，默认: $(this).attr("id") + "Calendar"
+            speed: 200,                                           // 三种预定速度之一的字符串("slow", "normal", or "fast")或表示动画时长的毫秒数值(如：1000),默认：200
+            complement: true,                                     // 是否显示日期或年空白处的前后月的补充,默认：true
+            readonly: true,                                       // 目标对象是否设为只读，默认：true
+            upperLimit: new Date(),                               // 日期上限，默认：NaN(不限制)
+            lowerLimit: new Date("2011/01/01"),                   // 日期下限，默认：NaN(不限制)
+            callback: function () {                               // 点击选择日期后的回调函数
+                // alert("您选择的日期是：" + $("#txtBeginDate").val());
+            }
+        });
+        $("#txtEndDate").calendar();
+    });
+
+    apiready = function(){
+        api.showProgress({
+		    style: 'default',
+		    animationType: 'fade',
+		    title: '努力加载中...',
+		    text: '先喝杯茶...',
+		    modal: true
+		});
+		get_xiaofeizhe_list();
+        get_xiaofeizhe_money();
+    }
+    function get_xiaofeizhe_money(){
+        var startime = $('#txtBeginDate').val();
+        var endtime = $('#txtEndDate').val();
+        var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_xiaofeizhe_money',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	type:api.pageParam.type,
+                	startime:startime,
+                	endtime:endtime,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            if (ret) {
+                //alert(ret['money'])
+                $('#money').html('￥'+ret['money']); 
+            }else {
+            	fduanwang();
+            };
+        });
+    }
+    
+    function fopen_dingdan_list(uid){
+        api.openWin({
+	        name: 'consumer_header',
+	        url: 'consumer_header.html',
+	        pageParam:{
+	            uid:uid
+	        }
+	    });
+    }
+    
+    function get_xiaofeizhe_list(){
+        var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_xiaofeizhe_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	type:api.pageParam.type,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html = '<ul>';
+                 $(ret).each(function(i,val){
+                     html += '<li tapmode="a" onclick="fopen_dingdan_list('+val['userId']+');">';
+                     if(val['userPhoto'])
+                     {
+                       
+                        if(val['userPhoto'].indexOf('http') >= 0){
+						    html += '<div class="left"><img src="'+val['userPhoto']+'" height="80px" /></div>';
+						}
+						else{
+						    html += '<div class="left"><img src="'+$api.getStorage("YAH_web")+'/'+val['userPhoto']+'" height="80px" /></div>';
+						}
+                     }else{
+                        html += '<div class="left"><img src="../image/member.jpg" height="80px" /></div>';
+                     }
+                     html += '<div class="con">';
+                     if(val['userName']){
+                        html += '<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">'+val['userName']+'</span></div>';
+                     }
+                     else if(val['userPhone']){
+                         html += '<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">'+val['userPhone']+'</span></div>';
+                     }
+                     else{
+                         html += '<div class="s1"><span class="title">会&nbsp;员&nbsp;名：</span><span class="mobile">'+val['loginName']+'</span></div>';
+                     }
+                     html += '<div class="s1"><span class="title">上级账号：</span><span class="mobile">'+val['parname']+'</span></div>';
+                     html += '<div class="s2"><span class="title">订单数量：</span><span class="order_num">'+val['ordernum']+'</span></div>';
+                     html += '<div class="s3"><span class="title">提成金额：</span><span class="money">￥'+val['rebateMoney']+'</span></div>';
+                     html += '</div>';
+                     //html += '<div class="right"></div>';
+                     html += '</li>';
+                     
+                     
+                 })
+                 html += '</ul>';
+                
+                 $('.date_list').html(html);
+            }else {
+            	//fduanwang();
+            };
+        });
+    }
+        
+</script>
+</html>

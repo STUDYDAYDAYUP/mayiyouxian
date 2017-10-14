@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fuwuzhongxin.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+<!--<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=645393536&site=qq&menu=yes"></a>-->
+	<div id="header">
+		<ul>
+			<li tapmode="a" onclick="fopen_zaixiankefu();"><img src="../image/zaixiankefu.png" /><span>在线客服</span></li>
+			<li tapmode="a"><a id="kefutel" href='#'><img src="../image/kefurexian.png" /><span>客服热线</span></a></li>
+			<li tapmode="a" onclick="fyijianfankui();"><img src="../image/yijianfankui.png" /><span>意见反馈</span></li>
+		</ul>
+	</div>
+	<!-- <div id="header2">
+		<ul>
+			<li class="left" onclick="fcall();">
+				<div class="kong"></div>
+				<div class="icon"></div>
+				<div class="title">客服热线</div>
+				<div class="kong"></div>
+			</li>
+			<li class="right" onclick="fyijianfankui();">
+				<div class="kong"></div>
+				<div class="icon"></div>
+				<div class="title">意见反馈</div>
+				<div class="kong"></div>
+			</li>
+		</ul>
+	</div> -->
+	<div id="content">
+		<!--<ul>
+			<li tapmode="a">热门问题</li>
+			<li tapmode="a">支付问题</li>
+			<li tapmode="a">余额问题</li>
+			<li tapmode="a">积分问题</li>
+			<li tapmode="a">其他问题</li>
+		</ul>-->
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var ret=$api.getStorage('sys');
+		$('#kefutel').attr('href','tel:'+ret[0].phoneNo);
+		fget_wenzhang_cat();
+	};
+	function fcall()
+	{
+		var ret=$api.getStorage('sys');
+		api.openFrame({
+	        name: 'fuwuzhongxin_tanc',
+	        url: 'fuwuzhongxin_tanc.html',
+	        pageParam:{
+	        	phone:ret[0].phoneNo
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fyijianfankui()
+	{
+		api.openWin({
+	        name: 'yijianfankui_header',
+	        url: 'yijianfankui_header.html'
+        });
+	}
+	function fopen_wenzhang_list(id,name)
+	{
+		api.openWin({
+	        name: 'wenzhang_list_header',
+	        url: 'wenzhang_list_header.html',
+	        pageParam:{
+	        	id:id,
+	        	name:name
+	        }
+        });
+	}
+	function fget_wenzhang_cat()
+	{
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_wenzhang_cat.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+                 for(var i=0;i<ret.length;i++)
+                 {
+                 	html+='<li tapmode="a" onclick="fopen_wenzhang_list(\''+ret[i].catId+'\',\''+ret[i].catName+'\')">'+ret[i].catName+'</li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById("content").innerHTML=html;
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_zaixiankefu()
+	{
+		api.openWin({
+	        name: 'zaixiankefu_header',
+	        url: 'zaixiankefu_header.html'
+        });
+	}
+</script>
+</html>

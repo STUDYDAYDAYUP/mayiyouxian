@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dingdan_list.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+		<div class="list"><span>订单号</span><span>总金额</span><span>比例</span><span>分成金额</span><span>状态</span></div>
+		<div class="content">
+			<div class="jiazai more"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+			<ul class="content_ul">
+				<!--<li><span class="s1">35577</span><span class="s2">￥13.9</span><span class="s3">10%</span><span class="s4">￥9</span><span class="s5_1">配送中</span></li>
+				<li><span class="s1">35577</span><span class="s2">￥137.7</span><span class="s3">10%</span><span class="s4">￥9</span><span class="s5_2">已完成</span></li>-->
+			</ul>
+		</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var limit=0;
+	apiready = function(){
+		var user_id=$api.getStorage('user_id');
+		//fget_list(user_id,limit);
+		fget_list2();
+	};
+	function fget_list(user_id,limit)
+	{
+		api.showProgress({title:'加载中...'});
+		$.getJSON(YAH_web+'/Wx/Agent/allFansOrder', {userId: user_id,limit:limit}, function(object, textStatus) {
+          /*optional stuff to do after success */
+          var html = '';
+         // console.log(object);
+         api.hideProgress();//隐藏加载进度框
+          for (var i in object) {
+            if (object.hasOwnProperty(i) && typeof object[i]==='object') {
+	          html+='<li><span class="s1">'+object[i].orderId+'</span><span class="s2">￥'+object[i].agentPrice+'</span><span class="s3">'+object[i].bili+'%</span><span class="s4">￥'+object[i].gain_price+'</span><span class="s5_2">已完成</span></li>';
+            }
+          }
+          user_id=$api.getStorage('user_id');
+        //  console.log(getData.count(object) );
+          if(getData.count(object)>2){
+              $('.more').remove();
+              limit=object['limit'];
+		      html+='<div class="more" style="text-align: center;line-height: 50px;" onclick="fget_list(\''+user_id+'\',\''+object['limit']+'\');">加载更多</div>';
+          }else{
+              $('.more').remove();
+              html+='<div class="more" style="text-align: center;line-height: 50px;">没有更多</div>';
+          }
+         $('.content_ul').append(html);
+         api.parseTapmode();
+      });
+	}
+	function fget_list2()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_dengji_dingdan_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	look_user_id:api.pageParam.look_user_id,
+                	dengji:api.pageParam.dengji
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 var html='<ul>';
+                 for(var i=0;i<ret.length;i++)
+                 {
+                 	html+='<li><span class="s1">'+ret[i].orderId+'</span><span class="s2">￥'+(Number(ret[i].agentPrice)*Number(ret[i].goodsNums))+'</span><span class="s3">'+ret[i].bili+'</span><span class="s4">￥'+ret[i].gain_price+'</span><span class="s5_2">已完成</span></li>';
+                 }
+                 html+='</ul>';
+                 $('.content').eq(0).html(html);
+                 api.parseTapmode();
+            }else {
+            	var html='<div style="text-align: center;line-height: 50px;">暂无订单</div>';
+            	$('.content').eq(0).html(html);
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

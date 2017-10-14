@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/collection.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	
+	<div class="goods_list">
+		<!--<div class="goods_l"><img src="../image/sp_3.png" /></div>
+		<div class="goods_r">
+			<div class="goods_title">加载中...</div>
+			<div class="goods_money">￥0</div>
+		</div>-->
+	<!--</div>-->
+	<div class="content" id="content">
+			<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+				<!--<ul>
+					<div class="tishi">
+						<div class="s1">当前区域商家<span></span></div>
+						<div class="s2">3家</div>
+					</div>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="s0"><div class="title ccyc">五谷香粥</div><div class="qx"></div></div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x2"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+					<div class="tishi">
+						<div class="s1">其他区域商家<span>(离当前区域远，可能无法配送)</span></div>
+						<div class="s2">2家</div>
+					</div>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x25"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+				</ul>-->
+			</div>
+	</div>
+	<script type="text/javascript" src="../script/api.js"></script>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_collection();
+	};
+	function fget_collection()
+	{
+		//api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		var lat=$api.getStorage('lat');
+		var lon=$api.getStorage('lon');
+		api.ajax({
+            url: YAH_ajax_name+'get_collection.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	lat:lat,
+                	lon:lon
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html1='<ul>';
+            	var html2='';
+            	var html3='';
+            	var num2=0,num3=0;
+                 for(var i=0;i<ret.length;i++)
+                 {
+					var html='';
+					html+='<li tapmode="a">';
+					html+='	<div class="nei">';
+					html+='		<div class="left" onclick="fopen_dianpu('+ret[i].shopId+');"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+					html+='		<div class="right">';
+//					html+='			<div class="title">'+ret[i].shopName+'</div>';
+					html+='		<div class="s0"><div class="title" onclick="fopen_dianpu('+ret[i].shopId+');">'+ret[i].shopName+'</div>';
+					var timestamp=new Date().getTime();
+					timestamp=timestamp/1000;
+					if(ret[i].isBondShow==1 && timestamp>=ret[i].bondStartTime && timestamp<=ret[i].bondEndTime) html+='<div class="right2"><span class="l1">保</span><span class="l2">'+ret[i].bond+'</span></div>';
+					html+='<div class="qx" onclick="event.cancelBubble = true;fqx_pan('+ret[i].shopId+');"></div>';
+					html+='		</div>';
+					html+='			<div class="s1" onclick="fopen_dianpu('+ret[i].shopId+');">';
+					html+='				<span class="s_l">';
+					html+='					<div class="sd_wxingji">';
+					html+='						<div class="sd_xingji x25"></div>';
+					html+='						<div class="sd_xingji_di"></div>';
+					html+='					</div>';
+					html+='					<span class="red">4.5</span> 月售'+ret[i].yue_xiaoliang+'份</span>';
+					html+='					<span class="s_r"><span class="red">'+ret[i].deliveryStartMoney+'</span>元起送';
+					html+='				</span>';
+					html+='			</div>';
+//					var juli='';
+//					if(Number(ret[i].juli)<1000) juli=ret[i].juli+"米";
+//					else{
+//						juli=Number(ret[i].juli)/1000;
+//						juli=juli.toFixed(1)+"KM";
+//					}
+					html+='			<div class="s2" onclick="fopen_dianpu('+ret[i].shopId+');"><span class="s_l">预计送达时间：'+ret[i].deliveryCostTime+'分钟/'+ret[i].juli2+'</span><span class="s_r">'+ret[i].deliveryMoney+'元配送费</span></div>';
+					html+='		</div>';
+					html+='	</div>';
+					html+='	<div class="di" onclick="fopen_dianpu('+ret[i].shopId+');"><div class="list"><div class="bao"></div>满'+ret[i].deliveryFreeMoney+'元包邮</div></div>';
+					html+='</li>';
+					if(ret[i].is_quyu==1 || ret[i].is_quyu=='1')
+					{
+						html2+=html;
+						num2++;
+					} 
+					else
+					{
+						html3+=html;
+						num3++;
+					} 
+                 }
+                 if(num2>0)
+                 {
+                 	html1+='<div class="tishi">';
+					html1+='	<div class="s1">当前区域商家<span></span></div>';
+					html1+='	<div class="s2">'+num2+'家</div>';
+					html1+='</div>';
+					html1+=html2;
+                 }
+                 if(num3>0)
+                 {
+                 	html1+='<div class="tishi">';
+					html1+='	<div class="s1">其他区域商家<span>(离当前区域远，可能无法配送)</span></div>';
+					html1+='	<div class="s2">'+num3+'家</div>';
+					html1+='</div>';
+					html1+=html3;
+                 }
+                 html1+='</ul>';
+                 if(num2==0 && num3==0)
+                 {
+                 	html1='<div style="text-align: center;line-height: 50px;">暂无收藏店铺</div>';
+                 }
+                 document.getElementById('content').innerHTML=html1;
+                 if(ret.length==0)
+                 {
+                 	html='<div style="text-align: center;line-height: 50px;">暂无收藏店铺</div>';
+            		document.getElementById('content').innerHTML=html;
+                 }
+                 api.parseTapmode();
+            }else {
+            	//fduanwang();
+            	var html='<div style="text-align: center;line-height: 50px;">暂无收藏店铺</div>';
+            	document.getElementById('content').innerHTML=html;
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html'
+		});
+	}
+	function fqx_pan(shopId)
+	{
+		api.confirm({
+		    title: '提示',
+		    msg: '确定要取消关注吗？',
+		    buttons: ['确定', '关闭']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		fqx(shopId);
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function fqx(shopId)
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+	            url: YAH_ajax_name+'guanzhu_shop.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	shopId:shopId,
+	                	user_id:user_id,
+	                	pan:'0'
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret[0].pan=='true')
+	                 {
+	                 	api.toast({
+							    msg: '已取消关注!',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+						fget_collection();
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							    msg: '取消关注失败!',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

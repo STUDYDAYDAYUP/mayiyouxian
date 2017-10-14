@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/home.css"/>
+</head>
+<body>
+	<div id="main">
+		<div class="slider" id="mySlider">
+              <div class="slide-group" id="branner_list">
+                
+                <!--<div class="slide slide1" id="divGoodsNav">
+                    <ul class="ul-list1">
+                        <li><a onclick="fopen_fenlei(81,'手机平板')"><img src="../image/meishi.png" /></a><a>美食</a></li>
+                        <li><a onclick="fopen_fenlei(99,'虚拟产品')"><img src="../image/bianlidian.png" /></a><a>便利店</a></li>
+                        <li><a onclick="fopen_fenlei(82,'数码影音')"><img src="../image/shuiguo.png" /></a><a>水果</a></li>
+                        <li><a onclick="fopen_fenlei(83,'旅游攻略')"><img src="../image/tianpin.png" /></a><a>甜点饮品</a></li>
+                    </ul>
+                    <ul class="ul-list1">
+                        <li><a onclick="fopen_fenlei(84,'电脑设备')"><img src="../image/xianhua.png" /></a><a>鲜花蛋糕</a></li>
+                        <li><a onclick="fopen_fenlei(85,'成人玩具')"><img src="../image/songyao.png" /></a><a>送药上门</a></li>
+                        <li><a onclick="fopen_fenlei(86,'日用彩妆')"><img src="../image/yule.png" /></a><a>休闲娱乐</a></li>
+                        <li><a onclick="fopen_fenlei(87,'穿着打扮')"><img src="../image/shenghuo.png" /></a><a>本地生活</a></li>
+                    </ul>
+                </div>
+                <div class="slide slide2">
+                    <ul class="ul-list1">
+                        <li><a onclick="fopen_fenlei(107,'奢侈品牌')"><img src="../image/meishi.png" /></a><a>美食</a></li>
+                        <li><a onclick="fopen_fenlei(108,'预前电影')"><img src="../image/bianlidian.png" /></a><a>便利店</a></li>
+                        <li><a onclick="fopen_fenlei(109,'户外工具')"><img src="../image/shuiguo.png" /></a><a>水果</a></li>
+                        <li><a onclick="fopen_fenlei(110,'其他')"><img src="../image/tianpin.png" /></a><a>甜点饮品</a></li>
+                    </ul>
+                    <ul class="ul-list1">
+                        <li><a><img src="../image/xianhua.png" /></a><a>鲜花蛋糕</a></li>
+                        <li><a><img src="../image/songyao.png" /></a><a>送药上门</a></li>
+                        <li><a><img src="../image/yule.png" /></a><a>休闲娱乐</a></li>
+                        <li><a><img src="../image/shenghuo.png" /></a><a>本地生活</a></li>
+                    </ul>
+                </div>-->
+                
+              </div>
+	    </div>
+	    <div id='mySwipe' style='width:100%;margin:0 auto;display: none;' class='swipe'>
+	      <div class='swipe-wrap'>
+	        <div></div>
+	        <div></div>
+	      </div>
+	    </div>
+	    <div style='text-align:center;display: none;'>
+	      <button onclick='mySwipe.prev()'>prev</button> 
+	      <button onclick='mySwipe.next()'>next</button>
+	    </div>
+		<!--<div id="banner">
+			<ul>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('美食');" class="ban1"><img src="../image/meishi.png" /><a>美食</a></li>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('便利店');" class="ban2"><img src="../image/bianlidian.png" /><a>便利店</a></li>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('水果');" class="ban3"><img src="../image/shuiguo.png" /><a>水果</a></li>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('甜点饮品');" class="ban4"><img src="../image/tianpin.png" /><a>甜点饮品</a></li>
+			</ul>
+			<ul>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('鲜花蛋糕');" class="ban1"><img src="../image/xianhua.png" /><a>鲜花蛋糕</a></li>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('送药上门');" class="ban2"><img src="../image/songyao.png" /><a>送药上门</a></li>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('休闲娱乐');" class="ban3"><img src="../image/yule.png" /><a>休闲娱乐</a></li>
+				<li tapmode="" onclick="fremove(this,'a');fopen_fenlei('本地生活');" class="ban4"><img src="../image/shenghuo.png" /><a>本地生活</a></li>
+			</ul>
+		</div>-->
+		<div id="tu-list">
+			<!--<div tapmode="a" class="t-l-1" style="background-image:url('../image/tu_1.png');background-size:100% 100%;"></div>-->
+			<div class="t-l-3">
+				<img tapmode="" onclick="fopen_toplist('weibang')" src="../image/quanchengweibang_logo2.png" height="120" />
+			</div>
+			<div class="t-l-2"></div>
+			<div class="t-l-3">
+				<div tapmode="a" onclick="fopen_toplist('youhuiquan_info')" class="t-l-31">
+					<img src="../image/youhuiquan_logo2.png" />
+				</div>
+				<div class="t-l-32"></div>
+				<div tapmode="a" onclick="fopen_toplist('xianshi_tuangou')" class="t-l-33">
+					<img src="../image/tuangou_logo2.png" />
+				</div>
+			</div>
+			<div class="t-l-2"></div>
+			<div class="t-l-3">
+				<div tapmode="a" onclick="fopen_toplist('miaosha')" class="t-l-31">
+					<img src="../image/miaosha_logo2.png" />
+				</div>
+				<div class="t-l-32"></div>
+				<div tapmode="a" onclick="fopen_toplist('xindian_laixi')" class="t-l-33">
+					<img src="../image/xindianlaixi_logo2.png" />
+				</div>
+			</div>
+			<!--<div class="t-l-3">
+				<div tapmode="a" onclick="fopen_toplist('youhuiquan_info')" class="t-l-31">
+					<div class="left">
+						<div class="title ccyc" style="color:#f21d1d;">优惠券</div>
+						<div class="min_title ccyc">立马获得优惠</div>
+					</div>
+					<div class="right"><img src="../image/youhuiquan_logo.png" width="50px" style="margin-top:15px;" /></div>
+				</div>
+				<div class="t-l-32"></div>
+				<div tapmode="a" onclick="fopen_toplist('xianshi_tuangou')" class="t-l-33">
+					<div class="left">
+						<div class="title ccyc" style="color:#ffb423;">团购</div>
+						<div class="min_title ccyc">拼团更优惠</div>
+					</div>
+					<div class="right"><img src="../image/tuangou_logo.png" height="40px" /></div>
+				</div>
+			</div>
+			<div class="t-l-2"></div>
+			<div class="t-l-3">
+				<div tapmode="a" onclick="fopen_toplist('miaosha')" class="t-l-31">
+					<div class="left">
+						<div class="title ccyc" style="color:#1895ff;">秒杀</div>
+						<div class="min_title ccyc">限时抢购特价商品</div>
+					</div>
+					<div class="right"><img src="../image/miaosha_logo.png" height="40px" /></div>
+				</div>
+				<div class="t-l-32"></div>
+				<div tapmode="a" onclick="fopen_toplist('xindian_laixi')" class="t-l-33">
+					<div class="left">
+						<div class="title ccyc" style="color:#06d3ff;">新店来袭</div>
+						<div class="min_title ccyc">来点新鲜的</div>
+					</div>
+					<div class="right"><img src="../image/xindian_logo.png" width="50px" style="margin-top:15px;" /></div>
+				</div>
+			</div>-->
+		</div>
+		<div class="goods_list">
+			<div class="min_header">
+				<div class="m_l" tapmode="" onclick="fxuan(0);" style="border-right:1px solid #eee;">分类<span class="sanjiao"></span></div>
+				<div class="m_l" tapmode="" onclick="fxuan(1);" style="border-right:1px solid #eee;">排序<span class="sanjiao"></span></div>
+				<div class="m_l" tapmode="" style="display:none;" onclick="fxuan(2);">筛选<span class="sanjiao"></span></div>
+			</div>
+			<div id="fenlei" style="display:none;">
+				<div class="content">
+					<div class="left">
+						<ul>
+							<li class="on" tapmode="" onclick="fxuan1(0);"><div class="s1 ccyc">美食</div><div class="s2">233</div><div class="s3 s3_on"></div></li>
+							<li tapmode="" onclick="fxuan1(1);"><div class="s1 ccyc">便利店</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(2);"><div class="s1 ccyc">水果</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(3);"><div class="s1 ccyc">甜品饮品</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(4);"><div class="s1 ccyc">鲜花蛋糕</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(5);"><div class="s1 ccyc">送药上门</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(6);"><div class="s1 ccyc">休闲娱乐</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(7);"><div class="s1 ccyc">本地生活</div><div class="s2">233</div><div class="s3"></div></li>
+							<li tapmode="" onclick="fxuan1(8);"><div class="s1 ccyc">其他</div><div class="s2">233</div><div class="s3"></div></li>
+						</ul>
+					</div>
+					<div class="right">
+						<ul>
+							<li class="on" tapmode="" onclick="fxuan2(0);"><div class="s1 ccyc">蒸羊羔</div><div class="s2">233</div></li>
+							<li tapmode="" onclick="fxuan2(1);"><div class="s1 ccyc">蒸熊掌</div><div class="s2">233</div></li>
+							<li tapmode="" onclick="fxuan2(2);"><div class="s1 ccyc">蒸鹿尾儿</div><div class="s2">233</div></li>
+							<li tapmode="" onclick="fxuan2(3);"><div class="s1 ccyc">烧花鸭</div><div class="s2">233</div></li>
+							<li tapmode="" onclick="fxuan2(4);"><div class="s1 ccyc">烧雏鸡儿</div><div class="s2">233</div></li>
+							<li tapmode="" onclick="fxuan2(5);"><div class="s1 ccyc">烧子鹅</div><div class="s2">233</div></li>
+						</ul>
+					</div>
+				</div>
+				<div class="footer" onclick="fenlei_pan=0;$('#fenlei').css('display','none');">
+					<div class="tu"></div>
+				</div>
+			</div>
+			<div id="paixu" style="display:none;">
+				<ul>
+					<li onclick="fqie(0);" paixu="zhineng"><div class="s1"><img src="../image/zhinengpaixu.png" /></div><div class="s2 s2_on">智能排序</div><div class="s3 s3_on"></div></li>
+					<li onclick="fqie(1);" paixu="juli"><div class="s1"><img src="../image/julizuijin.png" /></div><div class="s2">距离最近</div><div class="s3"></div></li>
+					<li onclick="fqie(2);" paixu="qisongjia"><div class="s1"><img src="../image/qisongjiapaixu.png" /></div><div class="s2">起送价最低</div><div class="s3"></div></li>
+					<li onclick="fqie(3);" paixu="xiaoliang"><div class="s1"><img src="../image/xiaoliangpaixu.png" /></div><div class="s2">销量最高</div><div class="s3"></div></li>
+				</ul>
+			</div>
+			<div id="shaixuan" style="display:none;">
+				<div class="content">
+					<ul>
+						<li>
+							<div class="min_title">优惠活动(单选)</div>
+							<div class="list ccyc" fu="0">首单立减</div><div class="list ccyc" fu="0">满减优惠</div><div class="list ccyc" fu="0">再减优惠</div>
+							<div class="list ccyc" fu="0">满返代金券</div><div class="list ccyc" fu="0">套餐惠赠</div><div class="list ccyc" fu="0">提前下单优惠</div>
+						</li>
+						<li>
+							<div class="min_title">商家特色</div>
+							<div class="list ccyc" fu="1">首单立减</div><div class="list ccyc" fu="1">满减优惠</div><div class="list ccyc" fu="1">再减优惠</div>
+							<div class="list ccyc" fu="1">满返代金券</div><div class="list ccyc" fu="1">套餐惠赠</div><div class="list ccyc" fu="1">提前下单优惠</div>
+						</li>
+					</ul>
+				</div>
+				<div class="footer">
+					<div class="s1" tapmode="a" onclick="fqingchu_shaixuan();">清除筛选</div><div class="s2"></div><div class="s3" tapmode="go_on" onclick="fshaixuan_go();">完成</div>
+				</div>
+			</div>
+			<div class="content" id="content">
+				<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+				<!--<ul>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="s0"><div class="title">五谷香粥</div><div class="right2"><span class="l1">保</span><span class="l2">1000</span></div></div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x2"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x25"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+				</ul>-->
+			</div>
+		</div>
+	</div>
+	<div id="statement" class="f"></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/sliders.js"></script>
+<script type="text/javascript" src="../script/swipe.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var elem = document.getElementById('mySwipe');
+//window.mySwipe = Swipe(elem, {
+//// startSlide: 4,
+//// auto: 3000,
+//// continuous: true,
+//// disableScroll: true,
+//// stopPropagation: true,
+//// callback: function(index, element) {},
+//// transitionEnd: function(index, element) {}
+//});
+//var stat_X=0;
+//var stat_Y=0;
+//window.addEventListener('touchstart', function(event) {
+//   // 如果这个元素的位置内只有一个手指的话
+//  if (event.targetTouches.length == 1) {
+//　　　　	event.preventDefault();// 阻止浏览器默认事件，重要 
+//      var touch = event.targetTouches[0];
+//      // 把元素放在手指所在的位置
+//      	stat_X=touch.pageX;
+//      	stat_Y=touch.pageY;
+//      }
+//}, false);
+//window.addEventListener('touchmove', function(event) {
+//   // 如果这个元素的位置内只有一个手指的话
+//  if (event.targetTouches.length == 1) {
+//　　　　	event.preventDefault();// 阻止浏览器默认事件，重要 
+//      var touch = event.targetTouches[0];
+//      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+//      // 把元素放在手指所在的位置
+////      	api.toast({
+////				    msg: scrollTop+" "+(scrollTop+(stat_Y-touch.pageY)),
+////				    duration: 2000,
+////				    location: 'bottom'
+////			});
+//			document.body.scrollTop=scrollTop+(stat_Y-touch.pageY);
+//			api.execScript({
+//	           	frameName:'ssk',
+//	            script: 'fset(\''+(scrollTop+(stat_Y-touch.pageY))+'\');'
+//          });
+//      	//$('body').scrollTop(scrollTop+(stat_Y-touch.pageY));
+//      }
+//}, false);
+	$api.setStorage("YAH_web",YAH_web);
+	window.apiready = function() {
+			var gao = api.winHeight;
+			var tugao = gao * 0.25;
+			var obj = api.require('UIScrollPicture');
+			var paths = ['widget://image/lunbo.jpg', 'widget://image/lunbo.jpg'];
+			document.getElementById("main").style.marginTop = tugao + "px";
+			obj.open({
+			    rect: {
+			        x: 0,
+			        y: 0,
+			        w: api.winWidth,
+			        h: tugao
+			    },
+			    styles : {
+					caption : {
+						height : 35,
+						color : '#E0FFFF',
+						size : 13,
+						bgColor : '#696969',
+						position : 'bottom'
+					},
+					indicator : {
+						align : 'center',
+						color : '#FFFFFF',
+						activeColor : '#DA70D6'
+					}
+				},
+			    data: {
+			        paths: paths
+			    },
+			    placeholderImg: 'widget://image/default.png',
+			    contentMode: 'scaleToFill',
+			    interval: 3,
+			    fixedOn: api.frameName,
+			    loop: true,
+			    fixed: false
+			}, function(ret, err){
+			    if (ret.status) {
+					if (ret.eventType == 'click') {
+						fonclick_lunbo(ret.index);
+					}
+				}
+			});
+			head_h=55;
+	        if(api.systemType=='ios'){
+	       		head_h=70;
+	    	}
+	    	else
+	    	{
+	    		var sVer = api.systemVersion;
+	    		var banben=parseFloat(sVer);
+	    		if(banben>=4.4)
+	    		{
+	    			head_h=70;
+	    		}
+	    	}
+//	    	api.openFrame({
+//		        name: 'ssk',
+//		        url: 'ssk.html',
+//		        rect: {
+//			        x:0,
+//			        y:head_h,
+//			        w:'auto',
+//			        h:50
+//		        }
+//	        });
+	    	//alert($('.ui-slider-item').length);
+//	    	$(".ui-slider-item").click(function(){
+//			  //alert($(this).index());
+//			  	//fopengoods($(this).index());
+//			});
+			//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    lei='0';
+			    fget_lunbo();
+			    fget_fenlei_list();
+				fget_address_list();
+				fget_address_list_communitys();
+				var lon=$api.getStorage('lon');
+				var lat=$api.getStorage('lat');
+				fget_dianpu(lat,lon);
+				api.execScript({
+	               name:'root',
+	               script: 'fget_fenlei_list();'
+                });
+				/*测试用户数据*/
+//				$api.setStorage('user_id','9');
+//				$api.setStorage('login','1');
+				/**/
+				
+			    //api.refreshHeaderLoadDone();
+			    api.parseTapmode();
+			});
+			api.setFrameAttr({
+			    name: 'home',
+			    bounces: true,
+			    vScrollBarEnabled: true,
+			    hScrollBarEnabled: true
+			});
+			api.execScript({
+	           	name:'root',
+	            script: 'fdingwei();'
+            });
+			fget_lunbo();
+			fget_fenlei_list();
+			fget_address_list();
+			fget_address_list_communitys();
+			$api.setStorage('isSeckill',0);
+			$api.setStorage('isGroup',0);
+			var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+			fget_dianpu(lat,lon);
+			fcz_fenlei_xuan();
+			/*测试用户数据*/
+//			$api.setStorage('user_id','9');
+//			$api.setStorage('login','1');
+			/**/
+		}
+function fopen_toplist(n)
+{
+				api.openWin({
+			        name: n+'_header',
+			        url: n+'_header.html',
+			        pageParam:{
+	            		header_h:head_h,
+	            		rect_h:api.winHeight-head_h
+            		},
+//			        animation:{
+//			        	type:"movein",                //动画类型（详见动画类型常量）
+//					    subType:"from_right",       //动画子类型（详见动画子类型常量）
+//					    duration:300 
+//			        }
+		        });
+}
+var lei='0';//分类
+var paixu='zhineng';//排序
+var shaixuan='0';//筛选
+function fget_dianpu(lat,lon)
+{
+		document.getElementById("content").innerHTML='<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>';
+		api.ajax({
+            url: YAH_ajax_name+'get_dianpu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	lat:lat,
+                	lon:lon,
+                	lei:lei,
+                	paixu:paixu,
+                	shaixuan:shaixuan
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+            		html+='<li tapmode="a" onclick="fopen_dianpu('+ret[i].shopId+');">';
+					html+='	<div class="nei">';
+					html+='		<div class="left"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+					html+='		<div class="right">';
+					//html+='			<div class="title">'+ret[i].shopName+'</div>';
+					html+='		<div class="s0"><div class="title">'+ret[i].shopName+'</div>';
+					var timestamp=new Date().getTime();
+					timestamp=timestamp/1000;
+					if(ret[i].isBondShow==1 && timestamp>=ret[i].bondStartTime && timestamp<=ret[i].bondEndTime) html+='<div class="right2"><span class="l1">保</span><span class="l2">'+ret[i].bond+'</span></div>';
+					function fzhuan(n)
+					{
+							n=n*10;
+							var shi=parseInt((Number(n)/10));
+							var ge=Number(n)%10;
+							if(ge>0 && ge<=9) return shi+''+5;
+							else return shi;
+					}
+					html+='		</div>';
+					html+='			<div class="s1">';
+					html+='				<span class="s_l">';
+					html+='					<div class="sd_wxingji">';
+					html+='						<div class="sd_xingji x'+fzhuan((ret[i].score).toFixed(1))+'"></div>';
+					html+='						<div class="sd_xingji_di"></div>';
+					html+='					</div>';
+					html+='					<span class="red">'+(ret[i].score).toFixed(1)+'</span> 月售'+ret[i].yue_xiaoliang+'份</span>';
+					html+='					<span class="s_r"><span class="red">'+ret[i].deliveryStartMoney+'</span>元起送';
+					html+='				</span>';
+					html+='			</div>';
+//					var juli='';
+//					if(Number(ret[i].juli)<1000) juli=ret[i].juli+"米";
+//					else{
+//						juli=Number(ret[i].juli)/1000;
+//						juli=juli.toFixed(1)+"KM";
+//					}
+					html+='			<div class="s2"><span class="s_l">预计送达时间：'+ret[i].deliveryCostTime+'分钟/'+ret[i].juli2+'</span><span class="s_r">'+ret[i].deliveryMoney+'元配送费</span></div>';
+					html+='		</div>';
+					html+='	</div>';
+					html+='	<div class="di"><div class="list"><div class="bao"></div>满'+ret[i].deliveryFreeMoney+'元包邮</div></div>';
+					html+='</li>';
+            	}
+            	html+='</ul>';
+            	document.getElementById("content").innerHTML=html;
+            }else {
+            	var html='<div style="text-align: center;line-height: 50px;">暂无店铺</div>';
+            	document.getElementById("content").innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fremove(obj,n)
+{
+	$api.removeCls(obj,n);
+}
+
+function fopengoods_ms(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html',
+		pageParam:{
+			miaosha:1,
+            num:1
+		}
+	});
+}
+function fhuanyizu_css3(n)
+{
+	$('.t6').eq(n).animate({rotate:'360deg'}, 1000, 'ease-out',function(){$('.t6').eq(n).animate({rotate:'0deg'}, 1, 'ease-out');});
+}
+function fget_lunbo()
+{
+	api.ajax({
+            url: YAH_ajax_name+'get_home_lunbo.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	type:1
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(JSON.stringify(ret));
+				var obj = api.require('UIScrollPicture');
+				var paths = '[';
+				for(var i=0;i<ret.length;i++)
+				{
+					if(i==0)
+					{
+						paths+='"'+YAH_web+'/'+ret[i].adFile+'"';
+					}
+					else
+					{
+						paths+=',"'+YAH_web+'/'+ret[i].adFile+'"';
+					}
+				}
+				paths+=']';
+				paths=$api.strToJson(paths);
+				obj.reloadData({
+				    data: {
+				        paths: paths
+				    }
+				});
+				$api.setStorage('home_lunbo',ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+        });
+}
+function fonclick_lunbo(n)
+{
+	var ret=$api.getStorage('home_lunbo');
+		var url=ret[n].adURL;
+		var adId=ret[n].adId;
+		var adURLApp=ret[n].adURLApp;
+		if(adURLApp=='0' || adURLApp=="" || adURLApp=="null" || adURLApp==null)
+		{
+			if(url=='0' || url=="" || url=="null" || url==null || url.length<10) return;
+			if(adId==0);
+			else fadd_ads(adId);
+			 api.openApp({
+	             androidPkg : 'android.intent.action.VIEW',
+	             mimeType : 'text/html',
+	             uri :url,
+	             iosUrl:url
+	         }, function(ret, err) {
+	//           var msg = JSON.stringify(ret);
+	//           api.alert({
+	//            title : 'openApp',
+	//            msg : msg,
+	//            buttons : ['确定']
+	//           });
+	        });
+        }
+        else
+        {
+        	if(adId==0);
+			else fadd_ads(adId);
+			adURLApp=adURLApp.split("|");
+			if(adURLApp[0]=='G'){
+				fopengoods(adURLApp[1]);
+			}
+			else if(adURLApp[0]=='S'){
+				fopen_dianpu(adURLApp[1]);
+			}
+        }
+}
+function fadd_ads(adId)
+	{
+		api.ajax({
+            url: YAH_ajax_name+'add_ads_count.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	adId:adId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 
+            }else {
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html'
+		});
+	}
+function fopen_fenlei(title)
+{
+	api.openWin({
+	    name: 'fenlei_header',
+	    url: 'fenlei_header.html',
+	    pageParam:{
+	    	title:title
+	    }
+    });
+}
+function fget_address_list()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_address_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 $api.setStorage("address_list",ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_address_list_communitys()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_address_list_communitys.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 $api.setStorage("address_list_communitys",ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	var paixu='zhineng';
+	function fqie(n)
+	{
+		var max=$('#paixu li').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('#paixu .s2').eq(i).addClass('s2_on');
+				$('#paixu .s3').eq(i).addClass('s3_on');
+				var paixu2=$('#paixu li').eq(i).attr('paixu');
+                paixu=paixu2;
+                paixu_pan=0;
+                $('#paixu').css('display','none');
+                $('.m_l').eq(1).removeClass('m_l_on');
+				$('.sanjiao').eq(1).removeClass('sanjiao_on');
+				var lon=$api.getStorage('lon');
+				var lat=$api.getStorage('lat');
+				fget_dianpu(lat,lon);
+			}
+			else
+			{
+				$('#paixu .s2').eq(i).removeClass('s2_on');
+				$('#paixu .s3').eq(i).removeClass('s3_on');
+			}
+		}
+	}
+	var fenlei_pan=0;
+	var paixu_pan=0;
+	var shaixuan_pan=0;
+	function fxuan(n)
+	{
+		var max=$('.m_l').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.m_l').eq(i).addClass('m_l_on');
+				$('.sanjiao').eq(i).addClass('sanjiao_on');
+			}
+			else
+			{
+				$('.m_l').eq(i).removeClass('m_l_on');
+				$('.sanjiao').eq(i).removeClass('sanjiao_on');
+			}
+		}
+		if(Number(fenlei_pan)==0 && n==0)
+		{
+			fenlei_pan=1;
+			$('#fenlei').css('display','block');
+            shaixuan_pan=0;
+			$('#shaixuan').css('display','none');
+            $('.m_l').eq(2).removeClass('m_l_on');
+			$('.sanjiao').eq(2).removeClass('sanjiao_on');
+			paixu_pan=0;
+			$('#paixu').css('display','none');
+            $('.m_l').eq(1).removeClass('m_l_on');
+			$('.sanjiao').eq(1).removeClass('sanjiao_on');
+		}
+		else if(Number(fenlei_pan)==1 && n==0)
+		{
+			fenlei_pan=0;
+			$('#fenlei').css('display','none');
+            $('.m_l').eq(n).removeClass('m_l_on');
+			$('.sanjiao').eq(n).removeClass('sanjiao_on');
+		}
+		if(Number(paixu_pan)==0 && n==1)
+		{
+			paixu_pan=1;
+			$('#paixu').css('display','block');
+            fenlei_pan=0;
+			$('#fenlei').css('display','none');
+            $('.m_l').eq(0).removeClass('m_l_on');
+			$('.sanjiao').eq(0).removeClass('sanjiao_on');
+			shaixuan_pan=0;
+			$('#shaixuan').css('display','none');
+            $('.m_l').eq(2).removeClass('m_l_on');
+			$('.sanjiao').eq(2).removeClass('sanjiao_on');
+		}
+		else if(Number(paixu_pan)==1 && n==1)
+		{
+			paixu_pan=0;
+			$('#paixu').css('display','none');
+            $('.m_l').eq(n).removeClass('m_l_on');
+			$('.sanjiao').eq(n).removeClass('sanjiao_on');
+		}
+		if(Number(shaixuan_pan)==0 && n==2)
+		{
+			shaixuan_pan=1;
+			$('#shaixuan').css('display','block');
+            fenlei_pan=0;
+			$('#fenlei').css('display','none');
+            $('.m_l').eq(0).removeClass('m_l_on');
+			$('.sanjiao').eq(0).removeClass('sanjiao_on');
+			paixu_pan=0;
+			$('#paixu').css('display','none');
+            $('.m_l').eq(1).removeClass('m_l_on');
+			$('.sanjiao').eq(1).removeClass('sanjiao_on');
+		}
+		else if(Number(shaixuan_pan)==1 && n==2)
+		{
+			shaixuan_pan=0;
+			$('#shaixuan').css('display','none');
+            $('.m_l').eq(n).removeClass('m_l_on');
+			$('.sanjiao').eq(n).removeClass('sanjiao_on');
+		}
+	}
+	$("#shaixuan .content li .list").click(function(){
+		var n=$(this).index();
+		var max=$('#shaixuan .content li').eq($(this).attr('fu')).find('.list').length;
+		for(var i=1;i<=max;i++)
+		{
+			if(i==n)
+			{
+				$('#shaixuan .content li').eq($(this).attr('fu')).find('.list').eq(i-1).addClass('list_on');
+			}
+			else
+			{
+				$('#shaixuan .content li').eq($(this).attr('fu')).find('.list').eq(i-1).removeClass('list_on');
+			}
+		}
+	});
+	function fxuan1(n,catId)
+	{
+		var max=$('#fenlei .left li').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('#fenlei .left li').eq(i).addClass('on');
+				$('#fenlei .left .s3').eq(i).addClass('s3_on');
+			}
+			else
+			{
+				$('#fenlei .left li').eq(i).removeClass('on');
+				$('#fenlei .left .s3').eq(i).removeClass('s3_on');
+			}
+		}
+		fset_fenlei_xuan_right(catId);
+	}
+	function fxuan2(n,catName)
+	{
+		fenlei_pan=0;
+			$('#fenlei').css('display','none');
+            $('.m_l').eq(0).removeClass('m_l_on');
+			$('.sanjiao').eq(0).removeClass('sanjiao_on');
+		lei=catName;
+		var lon=$api.getStorage('lon');
+		var lat=$api.getStorage('lat');
+		fget_dianpu(lat,lon);
+	}
+	function fget_fenlei_list()
+	{
+		var ret=$api.getStorage('fenlei_list');
+		var html='';
+		var t=0;
+		var list=new Array();
+		
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==0)
+			{
+                html='        <li><a onclick="fopen_fenlei(\''+ret[i].catName+'\')"><img src="'+YAH_web+'/'+ret[i].cateImg+'" /></a><a>'+ret[i].catName+'</a></li>';
+                list[t]=html;
+				t++;
+			}
+		}
+		html='';
+		html+='<div class="slide slide1" id="divGoodsNav">';
+        html+='    <ul class="ul-list1">';
+		for(i=0;i<list.length;i++)
+		{
+            html+=list[i];
+            if((i+1)%4==0 && i!=0) html+='    </ul>';
+            if((i+1)%8==0 && i!=0) html+='</div>';
+            if((i+1)%8==0 && i!=0 && i+1!=list.length) html+='<div class="slide slide1" id="divGoodsNav">';
+            if((i+1)%4==0 && i!=0 && i+1!=list.length) html+='    <ul class="ul-list1">';
+		}
+		if(list.length%8>0)
+		{
+			if(list.length%8==4)
+			{
+//				html+='    <ul class="ul-list1">';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+			}
+			else if(list.length%8>4)
+			{
+				for(i=0;i<8-list.length%8;i++)
+				{
+					html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+				}
+			}
+			else if(list.length%8<4)
+			{
+				for(i=0;i<4-list.length%8;i++)
+				{
+					html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+				}
+//				html+='    </ul>';
+//				html+='    <ul class="ul-list1">';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+//				html+='    <li><a><img src="../image/bai.png" /></a><a>&nbsp;</a></li>';
+			}
+		}
+		html+='    </ul>';
+        html+='</div>';
+        //alert(html);
+		$('#branner_list').html(html);
+		//document.getElementById("main").innerHTML=html;
+		api.parseTapmode();
+		var length = $('.slider .slide-group').find('div').length;
+		html = '<ul id="slider-ul">';
+		for(i = 0 ; i < length; i ++){
+			if(i == 0){
+				html += '<li item="'+ -i +'" class="selected">●</li>';
+			}else{
+				html += '<li item="'+ -i +'">●</li>';
+			}
+		}
+		html += '</ul>';
+		var obj = $('.slider');
+		var css = '<style type="text/css">';
+		css += '.slider ul#slider-ul {z-index:999999;position:absolute;bottom:-2px;line-height:20px;width:100%;margin:0 auto;text-align:center;font-size:20px;}';
+		css += '.slider ul#slider-ul li{display:inline-block;margin:0 3px;font-weight:bold;font-size:20px;color:#ccc;}';
+		css += '.slider ul#slider-ul li.selected{color:#db3752;}';
+		css += '</style>';
+		$('#slider-ul').remove();
+		obj.append(html+css);
+		window.mySwipe = Swipe(elem, {});
+	}
+	function fcz_fenlei_xuan()
+	{
+		var ret=$api.getStorage('fenlei_list_home');
+		var html='<ul>';
+		var t=0;
+		var o_t=0;
+		var o_catId=0;
+		var lin_num=0;
+		var oneId=0;
+//		for(var i=0;i<ret.length;i++)
+//		{
+//			if(ret[i].parentId==0)
+//			{
+//				if(t==0) oneId=ret[i].catId;
+//				lin_num=0;
+//				for(var j=0;j<ret.length;j++)
+//				{
+//					if(ret[i].catId==ret[j].parentId) lin_num++;
+//				}
+//				if(t==0)
+//				{
+//					html+='<li class="on" tapmode="" onclick="fxuan1(\''+t+'\',\''+ret[i].catId+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+lin_num+'</div><div class="s3 s3_on"></div></li>';
+//					o_t=t;
+//					o_catId=ret[i].catId;
+//				}
+//				else
+//				{
+//					html+='<li tapmode="" onclick="fxuan1(\''+t+'\',\''+ret[i].catId+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+lin_num+'</div><div class="s3"></div></li>';
+//				}
+//				t++;
+//			}
+//		}
+		for(var i=0;i<ret.length;i++)
+		{
+			if(i==0)
+			{
+				oneId=ret[i].catId;
+				html+='<li class="on" onclick="fxuan1(\''+i+'\',\''+ret[i].catId+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+ret[i].shop_num+'</div><div class="s3 s3_on"></div></li>';
+			}
+			else
+			{
+				html+='<li onclick="fxuan1(\''+i+'\',\''+ret[i].catId+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+ret[i].shop_num+'</div><div class="s3"></div></li>';
+			}
+		}
+		html+='</ul>';
+		$('#fenlei .content .left').html(html);
+		//document.getElementById("main").innerHTML=html;
+		api.parseTapmode();
+		fset_fenlei_xuan_right(oneId);
+	}
+	function fset_fenlei_xuan_right(id)
+	{
+		var ret=$api.getStorage('fenlei_list_home');
+		var html='<ul>';
+		var t=0;
+		var o_t=0;
+		var o_catId=0;
+		var lin_num=0;
+//		for(var i=0;i<ret.length;i++)
+//		{
+//			if(ret[i].parentId==id)
+//			{
+//				lin_num=0;
+//				for(var j=0;j<ret.length;j++)
+//				{
+//					if(ret[i].catId==ret[j].parentId) lin_num++;
+//				}
+//				if(t==0)
+//				{
+//					html+='<li class="on" tapmode="" onclick="fxuan2(\''+t+'\',\''+ret[i].catName+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+lin_num+'</div></li>';
+//					o_t=t;
+//					o_catId=ret[i].catId;
+//				}
+//				else
+//				{
+//					html+='<li tapmode="" onclick="fxuan2(\''+t+'\',\''+ret[i].catName+'\');"><div class="s1 ccyc">'+ret[i].catName+'</div><div class="s2">'+lin_num+'</div></li>';
+//				}
+//				t++;
+//			}
+//		}
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].catId==id)
+			{
+				for(var j=0;j<ret[i]['list'].length;j++)
+				{
+					if(j==0)
+					{
+						html+='<li class="on" tapmode="" onclick="fxuan2(\''+j+'\',\''+ret[i]['list'][j].catName+'\');"><div class="s1 ccyc">'+ret[i]['list'][j].catName+'</div><div class="s2">'+ret[i]['list'][j].shop_num+'</div></li>';
+					}
+					else
+					{
+						html+='<li tapmode="" onclick="fxuan2(\''+j+'\',\''+ret[i]['list'][j].catName+'\');"><div class="s1 ccyc">'+ret[i]['list'][j].catName+'</div><div class="s2">'+ret[i]['list'][j].shop_num+'</div></li>';
+					}
+					
+				}
+			}
+		}
+		html+='</ul>';
+		$('#fenlei .content .right').html(html);
+		//document.getElementById("main").innerHTML=html;
+		api.parseTapmode();
+	}
+	function fqingchu_shaixuan()
+	{
+		$('#shaixuan .content li').find('.list').removeClass('list_on');
+	}
+	function fshaixuan_go()
+	{
+		shaixuan_pan=0;
+		$('#shaixuan').css('display','none');
+        $('.m_l').eq(2).removeClass('m_l_on');
+		$('.sanjiao').eq(2).removeClass('sanjiao_on');
+		var lon=$api.getStorage('lon');
+		var lat=$api.getStorage('lat');
+		fget_dianpu(lat,lon);
+	}
+</script>
+</html>

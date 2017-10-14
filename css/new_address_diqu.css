@@ -1,0 +1,62 @@
+body {    width: 100%;
+			margin:0;
+			padding:0;
+			background-color:#fff;
+		}
+		input,button,select,textarea{outline:none;-webkit-appearance:none;}
+		#main{
+			width: 100%;height: 100%;
+		}
+		.title{
+			height:35px;
+			line-height: 35px;
+			color:#666;
+			text-align: center;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+		}
+		.s1{
+			width: 35px;
+		}
+		.s2{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+		}
+		.s3{
+			width: 35px;
+			background-image: url('../image/cha.png');
+			background-repeat: no-repeat;
+			background-size: 16px 16px;
+			background-position: 9px 9px;
+		}
+		.quyu{
+			height: 40px;
+			line-height: 40px;
+			border-bottom:1px solid #eee;
+		}
+		.quyu div{
+			height: 38px;
+		}
+		#sheng{
+			float: left;
+			border-bottom:2px solid #fff;
+			margin:0 10px;
+		}
+		#shi{
+			float: left;
+			border-bottom:2px solid #fff;
+			margin:0 10px;
+		}
+		#xian{
+			float: left;
+			border-bottom:2px solid #fff;
+			margin:0 10px;
+		}
+		#xuan{
+			float: left;
+			color:red;
+			border-bottom:2px solid red;
+			margin:0 10px;
+		}

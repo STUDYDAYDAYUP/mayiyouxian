@@ -1,0 +1,243 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 50px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+	text-align: center;
+}
+.a{
+    background-color:#ccc !important;
+}
+.header{
+	border-bottom:1px solid #e2e2e2;
+	background-color: #fff;
+}
+.header .title1{
+	height: 50px;
+	line-height: 50px;
+	text-align: left;
+	color:#777;
+	padding:0 10px;
+}
+.header .dd_status{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding-bottom: 10px;
+}
+.header .dd_status .d_list{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.header .dd_status .d_list img{
+	height: 60px;
+}
+.header .dd_status .d_list a{
+	display: block;
+	line-height: 30px;
+}
+
+.content{
+	margin-top:10px;
+	background-color: #fff;
+}
+.content .title1{
+	border-bottom:1px solid #e2e2e2;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.content .title1 .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:0 10px;
+    text-align: left;
+    padding:5px 0;
+}
+.content .title1 .left .bt{
+	line-height: 30px;
+	height: 30px;
+}
+.content .title1 .left .nr{
+	color:#999;
+	line-height: 30px;
+	height: 30px;
+}
+.content .title1 .left .nr img{
+	height:25px;
+}
+.content .title1 .right{
+	background-image: url('../image/youjiantou_hui.png');
+	background-repeat: no-repeat;
+	background-size: 10px 15px;
+	background-position: 10px 22px;
+	width: 30px;
+	height: 60px;
+}
+.content .title2{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding:0 10px;
+    height: 50px;
+    line-height: 50px;
+    border-bottom:1px solid #e2e2e2;
+}
+.content .title2 .left{
+	
+}
+.content .title2 .user_name{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: right;
+    color:#999;
+}
+.content .title2 .money{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    text-align: right;
+}
+
+.footer{
+	text-align: center;
+	height: 50px;
+	background-color: #fff;
+	border-top: 1px solid #e2e2e2;
+	position: fixed;
+	left:0;
+	bottom:0;
+	width: 100%;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.footer .no_over{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:5px 10px 0 10px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #ffcf3b;
+    color:#5e3804;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.footer .no_over2{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:5px 10px 0 10px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #ccc;
+    color:#666;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: none;
+}
+.footer .over{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: none;
+
+}
+.footer .over .tousu{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:5px 10px 0 10px;
+    color:#5e3804;
+    border:1px solid #5e3804;
+    height: 38px;
+    line-height: 38px;
+    border-radius: 5px;
+    display:none;
+}
+.footer .over .go{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    background-color: #ffcf3b;
+    color:#5e3804;
+    border-radius: 5px;
+    margin:5px 10px 0 10px;
+}
+.footer .over .go2{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    background-color: #ffcf3b;
+    color:#5e3804;
+    border-radius: 5px;
+    margin:5px 10px 0 10px;
+    display:none;
+}
+.footer .over .tousu_on{
+	background-color: #5e3804 !important;
+	color:#fff !important;
+}
+.footer .over .go_on{
+	background-color: #9e7a0b !important;
+}
+.footer .no_over_on{
+	background-color: #9e7a0b !important;
+}
+
+.footer2{
+    text-align: center;
+    height: 50px;
+    background-color: #fff;
+    border-top: 1px solid #e2e2e2;
+    position: fixed;
+    left:0;
+    bottom:0;
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    /*display: flex;*/
+    display: none;
+}
+.footer2 .left{
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    line-height: 50px;
+    color:#999;
+}
+.footer2 .left a{
+    color:#000;
+}
+.footer2 .right{
+
+    height: 50px;
+    line-height: 50px;
+    padding:0 20px;
+    background-color: #ffcf3b;
+    color:#5e3804;
+    font-size: 16px;
+    font-weight: bold;
+}

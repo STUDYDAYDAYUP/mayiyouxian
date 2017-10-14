@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    background-color: #f2f2f2;
+		}
+		body{
+			background-color: #f2f2f2;
+		    width: 100%;
+		}
+		input,button,select,textarea{outline:none;-webkit-appearance:none;}
+		.a{
+		    background-color:#eee !important;
+		}
+		#main{
+			width:100%;
+		}
+		.list{
+			height:49px;
+			line-height: 49px;
+			text-align: center;
+			background-color:#fff;
+			border-bottom:1px solid #eee;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="list" tapmode="a" onclick="fopen_tupian('library');">相册</div>
+	<div class="list" tapmode="a" onclick="fopen_tupian('camera');">拍摄</div>
+	<div class="list" tapmode="a" style="color:red;" onclick="fclose();">取消</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'zhuijiapingjia_tanc',
+	        script: 'fclose();'
+        });
+	}
+	function fopen_xiangji()
+	{
+		var cameraTool = api.require('cameraTool');
+		cameraTool.openCamera(function(ret, err){
+			api.execScript({
+	               	frameName:'zhuijiapingjia',
+	                script: 'fshangchuan(\''+ret.imgPath+'\');'
+            });
+			//api.prompt({title:"信息",msg:"图片路径："+ret.imgPath,buttons:["取消","确定"]});
+		});
+	}
+	function fopen_xiangce()
+	{
+		var UIMediaScanner = api.require('UIMediaScanner');
+		UIMediaScanner.open({
+		    type: 'picture',
+		    column: 4,
+		    classify: true,
+		    max: 1,
+		    sort: {
+		        key: 'time',
+		        order: 'desc'
+		    },
+		    texts: {
+		        stateText: '已选择*项',
+		        cancelText: '取消',
+		        finishText: '完成'
+		    },
+		    styles: {
+		        bg: '#fff',
+		        mark: {
+		            icon: '',
+		            position: 'bottom_left',
+		            size: 20
+		        },
+		        nav: {
+		            bg: '#eee',
+		            stateColor: '#000',
+		            stateSize: 18,
+		            cancelBg: 'rgba(0,0,0,0)',
+		            cancelColor: '#000',
+		            cancelSize: 18,
+		            finishBg: 'rgba(0,0,0,0)',
+		            finishColor: '#000',
+		            finishSize: 18
+		        }
+		    },
+		    scrollToBottom:{
+		       intervalTime: 3,
+		       anim: true
+		    },
+		    exchange: true
+		}, function( ret, err ){
+		    if( ret ){
+		        //alert( JSON.stringify( ret ) );
+		        //alert(ret['list'][0]['path']);
+		        api.execScript({
+	               	frameName:'zhuijiapingjia',
+	                script: 'fshangchuan(\''+ret['list'][0]['path']+'\');'
+                });
+		    }else{
+		        //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function fopen_tupian(n)
+	{
+		api.getPicture({
+		    sourceType: n,
+		    encodingType: 'jpg',
+		    mediaValue: 'pic',
+		    destinationType: 'url',
+		    allowEdit: true,
+		    quality: 50,
+		    saveToPhotoAlbum: false
+		}, function( ret, err ){ 
+		    if( ret ){
+		    	if(ret.data=="" || ret.data==null)
+		    	{
+		    	
+		    	}
+		    	else
+		    	{
+			    	api.execScript({
+		               	frameName:'zhuijiapingjia',
+		                script: 'fshangchuan(\''+ret.data+'\');'
+	           		 });
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+</script>
+</html>

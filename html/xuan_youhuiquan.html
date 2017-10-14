@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="../css/youhuiquan.css"/>-->
+    <link rel="stylesheet" type="text/css" href="../css/youhuiquan_info.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content">
+		<div id="wsy">
+			<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		</div>
+		<!--<div class="list">
+			<div class="bian"></div>
+			<div class="quan"></div>
+			<div class="neirong">
+				<div class="zhong">
+					<div class="q_money">
+						<div class="yang">￥</div>
+						<div class="money">30</div>
+					</div>
+					<div class="q_info">
+						<div class="shopName">全品类</div>
+						<div class="xian">—— ——</div>
+						<div class="info">满100可用</div>
+					</div>
+				</div>
+				<div class="di">2016.03.23-2016.04.03</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="bian bian_lan"></div>
+			<div class="quan"></div>
+			<div class="neirong">
+				<div class="zhong">
+					<div class="q_money q_money_lan">
+						<div class="yang">￥</div>
+						<div class="money">30</div>
+					</div>
+					<div class="q_info">
+						<div class="shopName">这是一个店铺</div>
+						<div class="xian">—— ——</div>
+						<div class="info">满100可用</div>
+					</div>
+				</div>
+				<div class="di">2016.03.23-2016.04.03</div>
+			</div>
+		</div>-->
+		<!--<div class="list">
+			<div class="left">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">青鸾水果专卖店</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="r1"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on" onclick="flingqu();">马上领取</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="left">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">青鸾水果专卖店</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="r1"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on">马上领取</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="left left_cheng">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">全场可用</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right right_cheng">
+				<div class="r1"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on" onclick="flingqu();">马上领取</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="left left_cheng">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">全场可用</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right right_cheng">
+				<div class="r1 r1_cheng"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on">马上领取</div>
+			</div>
+		</div>-->
+	</div>
+	<div class="list2" id="statement"></div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var ajax_num_pan=4;
+	apiready = function(){
+		fyhq_yz();
+		//alert(JSON.stringify(api.pageParam));
+	};
+	var yyh_money=0;
+	function fcz()
+	{
+		fget_yhq_wsy();
+	}
+	function fyhq_yz()
+	{
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'yhq_yz.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	fcz();
+	            }else {
+	            	fcz();
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+//	function fget_yhq_wsy()
+//	{
+//			var user_id=$api.getStorage('user_id');
+//			api.ajax({
+//	            url: YAH_ajax_name+'get_yhq_wsy.php',
+//	            method: 'post',
+//	            cache: false,
+//	            timeout: 30,
+//	            dataType: 'json',
+//	            returnAll:false,
+//	            data:{
+//	                values: {
+//	                	user_id:user_id
+//	                }
+//	            }
+//	        },function(ret,err){
+//	        	//api.hideProgress();//隐藏加载进度框
+//	            if (ret) {
+//	            	var html='';
+//	            	for(var i=0;i<ret.length;i++)
+//	            	{
+//	            		for(var j=0;j<Number(ret[i].surplus);j++)
+//	            		{
+//	            			var yh_title='';
+//	            			if(ret[i].youhui_type==0) yh_title='满'+ret[i].total_fee+'元 减'+ret[i].breaks_menoy;
+//	            			else yh_title='满'+ret[i].total_fee+'元 '+ret[i].breaks_menoy+'折';
+//	            			
+//	            			var is=fpan(ret[i].youhui_scope,ret[i].supplier_id,ret[i].good_id,ret[i].brand_id,ret[i].total_fee,ret[i].shop_cat_type,ret[i].shop_cat_id,ret[i].deal_cate_type,ret[i].deal_cate_id);
+//	            			//alert(is);
+//	            			if(is==0) html+='<div class="list">';
+//	            			else html+='<div class="list" tapmode="" onclick="fxuan_yhq(\''+ret[i].youhui_id+'\',\''+yh_title+'\',\''+ret[i].youhui_type+'\',\''+ret[i].breaks_menoy+'\',\''+is+'\')">';
+//	            			
+//	            			//if(ret[i].youhui_scope!=1 && ret[i].youhui_scope!='1' && ret[i].supplier_id!=api.pageParam.shop_id) html+='<div class="list">';
+//	            			//else if(Number(api.pageParam.money)<Number(ret[i].total_fee)) html+='<div class="list">';
+//		            		//else html+='<div class="list" tapmode="" onclick="fxuan_yhq(\''+ret[i].youhui_id+'\',\''+yh_title+'\',\''+ret[i].youhui_type+'\',\''+ret[i].breaks_menoy+'\')">';
+//							
+//							if(is==1)  html+='	<div class="bian"></div>';
+//							else if(is==0) html+='	<div class="bian bian_hui"></div>';
+//							else html+='	<div class="bian bian_lan"></div>';
+//							
+//							//if(ret[i].youhui_scope!=1 && ret[i].youhui_scope!='1' && ret[i].supplier_id!=api.pageParam.shop_id) html+='	<div class="bian bian_hui"></div>';
+//							//else if(Number(api.pageParam.money)<Number(ret[i].total_fee)) html+='	<div class="bian bian_hui"></div>';
+//							//else if(ret[i].youhui_scope==1) html+='	<div class="bian"></div>';
+//							//else html+='	<div class="bian bian_lan"></div>';
+//							
+//							html+='	<div class="quan"></div>';
+//							html+='	<div class="neirong">';
+//							html+='		<div class="zhong">';
+//							
+//							if(is==1) html+='			<div class="q_money">';
+//							else if(is==0) html+='			<div class="q_money q_money_hui">';
+//							else html+='			<div class="q_money q_money_lan">';
+//							
+//							//if(ret[i].youhui_scope!=1 && ret[i].youhui_scope!='1' && ret[i].supplier_id!=api.pageParam.shop_id) html+='			<div class="q_money q_money_hui">';
+//							//else if(Number(api.pageParam.money)<Number(ret[i].total_fee)) html+='			<div class="q_money q_money_hui">';
+//							//else if(ret[i].youhui_scope==1) html+='			<div class="q_money">';
+//							//else html+='			<div class="q_money q_money_lan">';
+//							
+//							if(ret[i].youhui_type==0)
+//							{
+//								html+='				<div class="yang">￥</div>';
+//								html+='				<div class="money">'+ret[i].breaks_menoy+'</div>';
+//							}
+//							else
+//							{
+//								html+='				<div class="money">'+ret[i].breaks_menoy+'折</div>';
+//							}
+//							//html+='				<div class="yang">￥</div>';
+//							//html+='				<div class="money">30</div>';
+//							html+='			</div>';
+//							html+='			<div class="q_info">';
+//							html+='				<div class="shopName">'+ret[i].name+'</div>';
+//							html+='				<div class="xian">—— ——</div>';
+//							html+='				<div class="info">满'+ret[i].total_fee+'可用</div>';
+//							html+='			</div>';
+//							html+='		</div>';
+//							html+='		<div class="di">'+getTime3(ret[i].begin_time)+'-'+getTime3(ret[i].end_time)+'</div>';
+//							html+='	</div>';
+//							html+='</div>';
+//						}
+//	            	}
+//	                $('#wsy').html(html);
+//	            }else {
+//	            	//fduanwang();
+//	            	var html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+//	            	$('#wsy').html(html);
+//	//				api.alert({
+//	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	//	            });
+//	            };
+//	        });
+//	}
+	function fget_yhq_wsy()
+	{
+			var user_id=$api.getStorage('user_id');
+			var login=$api.getStorage('login');
+			if(login==undefined || login=='0' || login==0) user_id=0;
+			api.ajax({
+	            url: YAH_ajax_name+'get_yhq_wsy2.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	var html='';
+	            	var t=0;
+	            	for(var i=0;i<ret.length;i++)
+	            	{
+	            		if(ret[i].supplier_id==api.pageParam.shop_id)
+	            		{
+	            			var yh_title='';
+	            			if(ret[i].youhui_type==0) yh_title='满'+ret[i].total_fee+'元 减'+ret[i].breaks_menoy;
+	            			else yh_title='满'+ret[i].total_fee+'元 '+ret[i].breaks_menoy+'折';
+		            		html+='<div class="list">';
+							if(ret[i].youhui_scope==1) html+='	<div class="left left_cheng">';
+							else html+='	<div class="left">';
+							html+='		<div class="ll"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+							html+='		<div class="lr">';
+							if(ret[i].youhui_type==0) html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">元</a>  ';
+							else  html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">折</a>  ';
+//							if(ret[i].youhui_scope==1) html+='全店铺可用</div>';
+//							else html+='满'+ret[i].total_fee+'元可用</div>';
+							html+='满'+ret[i].total_fee+'元可用</div>';
+							html+='			<div class="lr2 ccyc">'+ret[i].shopName+'</div>';
+							html+='			<div class="lr3 ccyc">'+getTime3(ret[i].begin_time)+'-'+getTime3(ret[i].end_time)+'</div>';
+							html+='		<div class="r1"></div>';
+							html+='		</div>';
+							html+='	</div>';
+							if(ret[i].youhui_scope==1) html+='	<div class="right right_cheng">';
+							else  html+='	<div class="right">';
+							html+='		<div class="r4">优惠范围：'+ret[i].msg+'</div>';
+							//html+='		<div class="r2" tapmode="r3_on" onclick="fgo_sy('+ret[i].supplier_id+');">去使用</div>';
+							var is=fpan(ret[i].youhui_scope,ret[i].supplier_id,ret[i].good_id,ret[i].brand_id,ret[i].total_fee,ret[i].shop_cat_type,ret[i].shop_cat_id,ret[i].deal_cate_type,ret[i].deal_cate_id);
+							if(is==0) html+='';
+	            			else
+	            			{
+	            				html+='		<div class="r2" tapmode="r3_on" onclick="fxuan_yhq(\''+ret[i].youhui_id+'\',\''+yh_title+'\',\''+ret[i].youhui_type+'\',\''+ret[i].breaks_menoy+'\',\''+is+'\')">去使用</div>';
+	            				//html+='<div class="list" tapmode="" onclick="fxuan_yhq(\''+ret[i].youhui_id+'\',\''+yh_title+'\',\''+ret[i].youhui_type+'\',\''+ret[i].breaks_menoy+'\',\''+is+'\')">';
+	            			} 
+							//html+='		<div class="r3" tapmode="r3_on" onclick="flingqu('+ret[i].id+');">马上领取</div>';
+							html+='	</div>';
+							html+='</div>';
+							t++;
+						}
+	            	}
+	            	if(t==0)
+	                {
+		            	html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+		            	$('.content').html(html);
+		            	return;
+	                }
+	                $('.content').html(html);
+	                api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+	            	$('.content').html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fxuan_yhq(id,yh_title,type,breaks_money,is)
+	{
+		api.execScript({
+	       	name:'miaosha_xiadan_header',
+	       	frameName:'miaosha_xiadan',
+	        script: 'fset_youhui(\''+api.pageParam.n+'\',\''+id+'\',\''+yh_title+'\',\''+type+'\',\''+breaks_money+'\',\''+is+'\',\''+yyh_money+'\');'
+        });
+        api.closeWin({
+        });
+	}
+	function fpan(youhui_scope,supplier_id,goods_id,brand_id,total_fee,shop_cat_type,shop_cat_id,deal_cate_type,deal_cate_id)
+	{
+		if(supplier_id!=api.pageParam.shop_id) return 0;
+		else if((youhui_scope==1 || youhui_scope=='1') && Number(api.pageParam.money)>=Number(total_fee)) return 1;
+		else if((youhui_scope==1 || youhui_scope=='1') && Number(api.pageParam.money)<Number(total_fee)) return 0;
+		else if(youhui_scope==2 || youhui_scope=='2')
+		{
+			var lin_pan=0;
+	        if(shop_cat_type==2) var z_SfenleiId_list=api.pageParam.z_SfenleiId1_list;
+	        if(shop_cat_type==3) var z_SfenleiId_list=api.pageParam.z_SfenleiId2_list;
+	        //if(z_SfenleiId_list.indexOf(',')>0)
+	        z_SfenleiId_list=z_SfenleiId_list.split(",");
+	        //else z_SfenleiId_list[0]=z_SfenleiId_list;
+	        var z_goodsMoney_list=api.pageParam.z_goodsMoney_list;
+	        z_goodsMoney_list=z_goodsMoney_list.split(",");
+	        var z_goodsNum_list=api.pageParam.z_goodsNum_list+"";
+	        z_goodsNum_list=z_goodsNum_list.split(",");
+	        var lin_money=0;
+	        for(var i=0;i<z_SfenleiId_list.length;i++)
+	        {
+	        	if(z_SfenleiId_list[i]==shop_cat_id)
+	        	{
+	        		lin_pan=1;
+	        		lin_money+=Number(z_goodsMoney_list[i])*Number(z_goodsNum_list[i]);
+	        		//break;
+	        	}
+	        }
+	        yyh_money=lin_money;
+	        if(lin_pan==0) return 0;
+	        else
+	        {
+	        	if(Number(lin_money)<Number(total_fee)) return 0;
+	       		else return 2;
+	        } 
+		}
+	    else if(youhui_scope==3 || youhui_scope=='3')
+	    {
+	    	var lin_pan=0;
+	        var z_goodsId_list=api.pageParam.z_goodsId_list;
+	        z_goodsId_list=z_goodsId_list.split(",");
+	        goods_id=goods_id.split(",");
+	        var z_goodsMoney_list=api.pageParam.z_goodsMoney_list;
+	        z_goodsMoney_list=z_goodsMoney_list.split(",");
+	        var z_goodsNum_list=api.pageParam.z_goodsNum_list+"";
+	        z_goodsNum_list=z_goodsNum_list.split(",");
+	        var lin_money=0;
+	        for(var i=0;i<z_goodsId_list.length;i++)
+	        {
+	        	for(var j=0;j<goods_id.length;j++)
+	        	{
+	        		if(z_goodsId_list[i]==goods_id[j] && z_goodsId_list[i]!='' && goods_id[j]!='')
+	        		{
+	        			lin_pan=1;
+	        			lin_money+=Number(z_goodsMoney_list[i])*Number(z_goodsNum_list[i]);
+	        			//break;
+	        		}
+	        	}
+	        	//if(lin_pan==1) break;
+	        }
+	        yyh_money=lin_money;
+	        if(lin_pan==0) return 0;
+	        else
+	        {
+	        	if(Number(lin_money)<Number(total_fee)) return 0;
+	       		else return 3;
+	        } 
+	    }
+	    else if(youhui_scope==4 || youhui_scope=='4')
+	    {
+	    	var lin_pan=0;
+	    	var z_goodsPinpai_list=api.pageParam.z_goodsPinpai_list;
+	    	z_goodsPinpai_list=z_goodsPinpai_list.split(",");
+	    	brand_id=brand_id.split(",");
+	    	var z_goodsMoney_list=api.pageParam.z_goodsMoney_list;
+	        z_goodsMoney_list=z_goodsMoney_list.split(",");
+	        var z_goodsNum_list=api.pageParam.z_goodsNum_list+"";
+	        z_goodsNum_list=z_goodsNum_list.split(",");
+	        var lin_money=0;
+	    	for(var i=0;i<z_goodsPinpai_list.length;i++)
+	        {
+	        	for(var j=0;j<brand_id.length;j++)
+	        	{
+	        		if(z_goodsPinpai_list[i]==brand_id[j] && z_goodsPinpai_list[i]!='' && brand_id[j]!='')
+	        		{
+	        			lin_pan=1;
+	        			lin_money+=Number(z_goodsMoney_list[i])*Number(z_goodsNum_list[i]);
+	        			//break;
+	        		}
+	        	}
+	        	//if(lin_pan==1) break;
+	        }
+	        yyh_money=lin_money;
+	        if(lin_pan==0) return 0;
+	        else
+	        {
+	        	if(Number(lin_money)<Number(total_fee)) return 0;
+	       		else return 4;
+	        } 
+	    }
+	    else if(youhui_scope==5 || youhui_scope=='5')
+	    {
+	    	var lin_pan=0;
+	        if(deal_cate_type==1) var z_fenleiId_list=api.pageParam.z_fenleiId1_list;
+	        if(deal_cate_type==2) var z_fenleiId_list=api.pageParam.z_fenleiId2_list;
+	        if(deal_cate_type==3) var z_fenleiId_list=api.pageParam.z_fenleiId3_list;
+	        z_fenleiId_list=z_fenleiId_list.split(",");
+	        var z_goodsMoney_list=api.pageParam.z_goodsMoney_list;
+	        z_goodsMoney_list=z_goodsMoney_list.split(",");
+	        var z_goodsNum_list=api.pageParam.z_goodsNum_list+"";
+	        z_goodsNum_list=z_goodsNum_list.split(",");
+	        var lin_money=0;
+	        for(var i=0;i<z_fenleiId_list.length;i++)
+	        {
+	        	if(z_fenleiId_list[i]==deal_cate_id)
+	        	{
+	        		lin_pan=1;
+	        		lin_money+=Number(z_goodsMoney_list[i])*Number(z_goodsNum_list[i]);
+	        		//break;
+	        	}
+	        }
+	        yyh_money=lin_money;
+	        if(lin_pan==0) return 0;
+	        else
+	        {
+	        	if(Number(lin_money)<Number(total_fee)) return 0;
+	       		else return 5;
+	        } 
+	    }
+	}
+</script>
+</html>

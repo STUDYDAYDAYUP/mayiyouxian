@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fenlei_right.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+	<img id="fenlei_img" src="../image/guanggao.png" width="100%" style="display: none;" />
+	</div>
+	<div id="content" style="width:80%;">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<div class="title"></div>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+		</ul>
+		<ul>
+			<div class="title"></div>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+			<li>
+				<img src="#" />
+				<a>&nbsp;</a>
+			</li>
+		</ul>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fset_fenlei(id)
+	{
+				var ret=$api.getStorage('fenlei_list');
+				 var yiji_z=new Array();
+            	 var i,j,t;
+            	 var yiji_i=0;
+                 var par=ret[0].catId;
+                 var html='';
+                 for(i=0;i<ret.length;i++)
+                 {
+                 	if(ret[i].parentId==id)
+                 	{
+                 		par=ret[i].catId;
+                 	}
+                 }
+                 for(i=0;i<ret.length;i++){
+                 	if(ret[i].parentId==par)
+                 	{
+                 		if(ret[i].catImg=="" || ret[i].catImg==null || ret[i].catImg.length<=0) document.getElementById("fenlei_img").style.display="none";
+                 		else document.getElementById("fenlei_img").src=$api.getStorage("YAH_web")+ret[i].catImg;
+                 		html+='<ul>';
+                 		html+='<div class="title">'+ret[i].catName+'</div>';
+                 		for(j=0;j<ret.length;j++)
+                 		{
+                 			if(ret[i].parentId==ret[j].parentId)
+                 			{
+                 				html+='<li tapmode="" onclick="fopen_fenlei(\''+ret[j].catId+'\',\''+ret[j].catName+'\')">';
+								//html+='	<img src="'+$api.getStorage("YAH_web")+ret[j].catImg+'" />';
+								if(ret[j].catImg=="" || ret[j].catImg==null || ret[j].catImg.length<=0) html+='	<img src="../image/sp_5.png" />';
+								else html+='	<img src="'+$api.getStorage("YAH_web")+ret[j].catImg+'" />';
+								html+='	<a>'+ret[j].catName+'</a>';
+								html+='</li>';
+                 			}
+                 		}
+                 		html+='</ul>';
+                 		yiji_i++;
+                 	}
+                 }
+                 document.getElementById("content").innerHTML=html;
+                 $('body').animate({scrollTop: 0}, 500);
+                 api.parseTapmode();
+	}
+	function fopen_fenlei(id,name)
+	{
+//		api.openWin({
+//	        name: 'fenlei_goods_header',
+//	        url: 'fenlei_goods_header.html',
+//	        pageParam:{
+//	        	catId:id,
+//	        	catName:name
+//	        }
+//      });
+		api.execScript({
+	       	frameName:'tuangou',
+	        script: 'fget_fenlei(\''+id+'\',\''+name+'\');'
+        });
+	}
+</script>
+</html>

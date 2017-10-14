@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/header.css"/>
+    <style>
+    	body{
+    		background-color:#f2f2f2;
+    	}
+    	.topyou{
+    		width:70px;
+    	}
+    </style>
+</head>
+<body>
+<div id="wrap">
+	<header id="headers">
+        <div id="goshop" class="topbar ">
+	        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+	      	<div class="topzhong ccyc" id="userName"></div>
+	      	<div tapmode="a" id="jiedan" class="topyou" onclick="fxuan_jiedan();">立即购买</div>
+	      	<!--<div tapmode="a" class="topyou_tu" onclick="fopen_goshop();"></div>-->
+        </div>
+	</header>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+function freturn()
+{
+	api.closeWin({
+    });
+}
+	apiready = function(){
+		api.parseTapmode();
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+    	document.getElementById("userName").innerHTML=api.pageParam.userName;
+    	if(api.pageParam.xuan_way==1 || api.pageParam.xuan_way==undefined) document.getElementById("jiedan").style.display="none";
+    	setTimeout("fopencontent()",200);
+	};
+	function fxuan_jiedan()
+	{
+		if(api.pageParam.xuan_way==0) fxq_jiedan();
+		else fw_jiedan();
+	}
+	function fw_jiedan()
+	{
+		
+	}
+	function fxq_jiedan()
+	{
+		api.showProgress({title:'订单生成中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'wb_xiadan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	wb_id:api.pageParam.wb_id,
+	                	to_user_id:api.pageParam.to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	if(ret[0].pan=="-1")
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan=="1")
+	            	{
+						fgo_zhifu(ret[0].order_id);	            	
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fgo_zhifu(wb_order_id)
+	{
+		api.openWin({
+	        name: 'zhifu_header',
+	        url: 'zhifu_header.html',
+	        pageParam:{
+	        	zhifupan:'wb_xq',
+	        	wb_order_id:wb_order_id
+	        }
+        });
+	}
+function fopencontent()
+{
+	var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+	    	api.openFrame({
+		        name: 'liaotian',
+		        url: 'liaotian.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:false,
+            	pageParam:{
+	            	to_user_id:api.pageParam.to_user_id,
+	            	to_img_src:api.pageParam.to_img_src,
+	            	wb_id:api.pageParam.wb_id
+	            },
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        },
+		        bgColor:"#f2f2f2",
+		        allowEdit:false
+	        });
+}
+function fopen_goshop()
+	{
+		api.closeWin({name:'bimaizhuanqu_header'});
+		api.closeWin({name:'chaoshi_header'});
+		api.closeWin({name:'dingdan_header'});
+		api.closeWin({name:'dingdan_xx_header'});
+		api.closeWin({name:'fenlei_header'});
+		api.closeWin({name:'fuzhuangcheng_header'});
+		api.closeWin({name:'miaosha_header'});
+		api.closeWin({name:'tuangou_header'});
+		api.closeWin({name:'wuliu_xx_header'});
+		api.execScript({
+			name:'root',
+	        script: 'randomSwitchBtn("","goshop",3);'
+        });
+        api.closeWin({name:'goods_header'});
+	}
+</script>
+</html>

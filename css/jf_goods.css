@@ -1,0 +1,247 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100%;
+    padding-bottom:50px;
+}
+#main{
+	width: 100%;
+	font-size: 14px;
+}
+.a{
+    background-color:#eee !important;
+}
+.tu{
+	text-align: center;
+	background-color: #fff;
+	border-bottom: 1px solid #eee;
+	height: 150px;
+}
+.tu img{
+	height: 150px;
+}
+.list{
+	background-color: #fff;
+	padding:10px;
+	position: relative;
+	/*border-bottom: 1px solid #eee;*/
+}
+.list .title{
+	line-height: 25px;
+}
+.list .score{
+	line-height: 25px;
+	color:red;
+}
+.list .tishi{
+	line-height: 25px;
+}
+.list2{
+	color: #999;
+	font-size: 12px;
+	text-align: center;
+	line-height: 30px;
+}
+.di2{
+	text-align: center;
+	margin-top:10px;
+}
+.di{
+	font-size: 12px;
+	text-align: center;
+	line-height: 25px;
+	color:red;
+	border:1px solid red;
+	border-radius: 2px;
+	margin:0 auto;
+	padding:0 10px;
+}
+.di_on{
+	color:#fff !important;
+	background-color:red !important;
+}
+.content{
+	color:#999;
+}
+
+.qie{
+	height:50px;
+	background-color:#fff;
+	border-bottom: 1px solid #eee;
+	line-height: 50px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    margin-top: 10px;
+    font-size: 16px;
+}
+.qie .title{
+	margin:0 10px;
+	color:#666;
+	border-bottom:1px solid #fff;
+}
+.qie .title_on{
+	color:red !important;
+	border-bottom:1px solid red !important;
+}
+.look_gd{
+	line-height: 50px;
+	border:1px solid #eee;
+	color:#00b4ff;
+	text-align: center;
+	width: 60%;
+	margin-left: 20%;
+}
+.zyts{
+	padding:10px;
+	border:1px dashed #eee;
+	color:#999;
+}
+.zyts_title{
+	position: absolute;
+	top:2px;
+	background-color:#fff;
+	z-index: 1;
+	width: 30%;
+	margin-left: 35%;
+	text-align: center;
+}
+.desc{
+	width:100%;
+	word-break:break-all;
+}
+.desc img{
+	max-width:100%;
+}
+
+
+.footer{
+	position: fixed;
+	bottom:0;
+	left:0;
+	height: 50px;
+	border-top: 1px solid #e2e2e2;
+	width:100%;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: none;
+}
+.footer .s1{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin-left: 10px;
+}
+.footer .s1 .fen{
+	line-height: 50px;
+}
+.footer .s1 .fen span{
+	color:#60b034;
+	font-size: 20px;
+}
+.footer .s1 .tishi{
+	font-size: 12px;
+	color:#999;
+}
+.footer .s2{
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	padding:0 20px;
+	margin-top: 10px;
+	background-color: #00b4ff;
+	color:#fff;
+	border-radius: 2px;
+	margin-right: 10px;
+}
+.footer .s2_on{
+	background-color: #0087bf !important;
+}
+.footer .s3{
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	padding:0 20px;
+	margin-top: 10px;
+	color:#00b4ff;
+	border:1px solid #00b4ff;
+	border-radius: 2px;
+	margin-right: 10px;
+	display: none;
+}
+.footer .s3_on{
+	background-color: #00b4ff !important;
+	color:#fff !important;
+}
+.footer .s4{
+	color:#523200;
+	background-color: #ffd014;
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+	margin:10px 10px 0 10px;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    border-radius: 5px;
+}
+.footer .s4_on{
+	background-color: #b5940e !important;
+}
+.footer .s5{
+	color:#999;
+	background-color: #eee;
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+	margin:10px 10px 0 10px;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    border-radius: 5px;
+}
+
+.footer2{
+	position: fixed;
+	bottom:0;
+	left:0;
+	height: 50px;
+	border-top: 1px solid #e2e2e2;
+	width:100%;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: none;
+    font-size: 14px;
+}
+.footer2 .on{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:10px;
+    border-radius: 5px;
+    background-color:#ffd014;
+    text-align: center;
+    line-height: 30px;
+    color:#523200;
+    display:none;
+}
+.footer2 .on_on{
+	background-color:#bd990b !important;
+}
+.footer2 .no{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:10px;
+    border-radius: 5px;
+    background-color:#f2f2f2;
+    text-align: center;
+    color:#999;
+    line-height: 30px;
+}

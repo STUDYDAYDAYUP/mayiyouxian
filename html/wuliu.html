@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wuliu_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.zhuangtai{color:#989898;width:100%;height:50px;background-color:#fff;line-height:50px;}
+    	#zhuangtai{color:#6bba50;}
+    	.peisong{width:100%;background-color: #fafafa;}
+    	.peisong li{ height:50px;line-height:50px;}
+    	.peisongimg img{height:20px;}
+    	.peisongtitile{margin:0 10px;color:#989898;}
+    	.peisongname{color:#656565;}
+    	.peisongtel{color:#77c2e7;}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="zhuangtai">&nbsp;&nbsp;&nbsp;&nbsp;配送状态：<span id="zhuangtai"></span></div>
+	
+	<div class="peisong">
+	    <ul>
+	       <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="peisongimg"><img src="../image/peisongman.png" /></span><span class="peisongtitile">配送员：</span><span class="peisongname peisongname1"></span></li>
+	       <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="peisongimg"><img src="../image/peisongtel.png" /></span><span class="peisongtitile">联系电话：</span><span class="peisongname"><a href='' class="peisongtel"></a></span></li>
+	    </ul>
+	</div>
+	
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var shuxing=0;
+	apiready = function(){
+		$('.peisongname1').html(api.pageParam.distribution);
+		$('.peisongtel').html(api.pageParam.distributionTel);
+		$('.peisongtel').attr('href','tel:'+api.pageParam.distributionTel);
+		
+		if(api.pageParam.orderStatus == 4){
+		    $('#zhuangtai').html('已完成');
+		}
+		else{
+		   $('#zhuangtai').html('配送中');
+		}
+		
+		
+	};
+	
+</script>
+</html>

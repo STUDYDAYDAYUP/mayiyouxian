@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.footer{
+    		height:50px;
+    		text-align: center;
+    		background-color:#fa5a5c;
+    		line-height: 50px;
+    		color:#fff;
+    	}
+    	.footer_on{
+    		background-color:#a63c3d !important;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="footer" tapmode="footer_on" onclick="fgo();">立即兑换</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fgo()
+	{
+		api.execScript({
+	       	frameName:'jf_goods',
+	        script: 'fgo();'
+        });
+	}
+</script>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fenlei_left.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<ul>
+		<li tapmode="" class="li_on"></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+		<li tapmode=""></li>
+	</ul>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_cart_list2();
+		//fget_cart_list();
+	};
+	var o_t=0;
+	var o_catId=0;
+	function fget_cart_list2()
+	{
+		var ret=$api.getStorage('fenlei_list');
+		var html='<ul>';
+		var t=0;
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==0)
+			{
+				if(t==0)
+				{
+					html+='<li tapmode="" onclick="fset_fenlei(\''+t+'\',\''+ret[i].catId+'\')" class="li_on">'+ret[i].catName+'</li>';
+					o_t=t;
+					o_catId=ret[i].catId;
+				}
+				else
+				{
+					html+='<li tapmode="" onclick="fset_fenlei(\''+t+'\',\''+ret[i].catId+'\')">'+ret[i].catName+'</li>';
+				}
+				t++;
+			}
+		}
+		html+='</ul>';
+		document.getElementById("main").innerHTML=html;
+		//$api.setStorage('fenlei_over',true);
+		api.parseTapmode();
+		fset_fenlei(o_t,o_catId);
+	}
+	function fget_cart_list()
+	{
+			//api.showProgress({title:'加载中...'});
+			api.ajax({
+	            url: YAH_ajax_name+'get_fenlei_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {}
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret.length>0) $api.setStorage('fenlei_list',ret);
+	            	var html='<ul>';
+					var t=0;
+					for(var i=0;i<ret.length;i++)
+					{
+						if(ret[i].parentId==0)
+						{
+							if(t==0)
+							{
+								html+='<li tapmode="" onclick="fset_fenlei(\''+t+'\',\''+ret[i].catId+'\')" class="li_on">'+ret[i].catName+'</li>';
+								fset_fenlei(0,ret[i].catId);
+							}
+							else
+							{
+								html+='<li tapmode="" onclick="fset_fenlei(\''+t+'\',\''+ret[i].catId+'\')">'+ret[i].catName+'</li>';
+							}
+							t++;
+						}
+					}
+					html+='</ul>';
+					if(ret.length>0)
+					{
+						document.getElementById("main").innerHTML=html;
+						$api.setStorage('fenlei_over',true);
+					} 
+					else fget_cart_list2();
+					api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            //api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fset_fenlei(n,id)
+	{
+		for(var i=0;i<$('#main li').length;i++)
+		{
+			if(i==Number(n))
+			{
+				//li.item(n).className='li_on';
+				$('#main li').eq(i).addClass('li_on');
+				api.execScript({
+	                frameName:'tuangou_fenlei_right',
+	                script: 'fset_fenlei(\''+id+'\');'
+                });
+			}
+			else
+			{
+				//li.item(n).className=' ';
+				$('#main li').eq(i).removeClass('li_on');
+			}
+		}
+	}
+</script>
+</html>

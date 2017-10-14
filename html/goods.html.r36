@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goods.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="top">
+	<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中服饰大毛领韩中服饰</div>
+	<div class="goods_title"><div class="s1">￥397</div><div class="s2">￥697</div><div class="s3">月销量：713件</div></div>
+	<div class="title_list" tapmode="a" onclick="fopen_goods_shuxing();" id="goods_shuxing"><div class="s1">已选</div><div class="s2">2015冬新款羽绒服 1件</div><div class="s3"></div></div>
+	<div class="title_list" id="tishi"><div class="s1">提示</div><div class="s2">支持7天无理由退货</div></div>
+	<div class="title_list" tapmode="a" id="address"><div class="s1">送至</div><div class="s2">广东省广州市天河北路降龙花园2007</div><div class="s3"></div></div>
+	<div class="min-title" tapmode="a">
+		<span class="t1">晒单评论</span><span class="t3"></span><span class="t2">3579人评论</span><span class="t4">好评:<a class="persen">95%</a></span>
+	</div>
+	<div class="sd_huifu">
+		<ul>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_xingji x5"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+					<img src="../image/sp_5.png" />
+					<img src="../image/sp_5.png" />
+					<img src="../image/sp_5.png" />
+				</div>
+			</li>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_xingji x3"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+					<img src="../image/sp_5.png" />
+				</div>
+			</li>
+			<li tapmode="a">
+				<div class="sd_info">
+					<div class="sd_xingji x1"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_time">2016-01-08</div>
+					<div class="sd_username">凡所有相皆是虚妄</div>
+				</div>
+				<div class="sd_nr">日出江花红胜火，春来江水绿如蓝。</div>
+				<div class="sd_img">
+				
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div tapmode="a" class="look_gengduo">查看更多评论 >></div>
+	<div class="dibu">
+		<div class="di_xian"></div>
+		<a class="di_title">继续拖动，查看图文详情</a>
+	</div>
+	<div id="top2"></div>
+	</div>
+	<div id="dierye" style="display: none;">
+	<div id="header">
+		<div id="h_l" tapmode="a" onclick="fon_left();" style="border-bottom:1px solid red;">
+			<div>图文详情</div>
+		</div>
+		<div id="h_r" tapmode="a" onclick="fon_right();" style="border-bottom:1px solid #fff;">
+			<div>产品参数</div>
+		</div>
+	</div>
+	<div id="content_l">
+		<img src="../image/tuwenxx.png" width="100%" />
+	</div>
+	<div id="content_r">
+		<ul>
+			<li>
+				<span class="title_l">商品名称</span>
+				<span class="title_r">魅族手机</span>
+			</li>
+			<li>
+				<span class="title_l">商品型号</span>
+				<span class="title_r">MX5 Pro</span>
+			</li>
+			<li>
+				<span class="title_l">商品颜色</span>
+				<span class="title_r">银色</span>
+			</li>
+			<li>
+				<span class="title_l">输入方式</span>
+				<span class="title_r">触控</span>
+			</li>
+			<li>
+				<span class="title_l">操作系统版本</span>
+				<span class="title_r">Flyme 5</span>
+			</li>
+			<li>
+				<span class="title_l">CPU频率</span>
+				<span class="title_r">A15 2.0GHz x 4 + A7 1.5Ghz x 4</span>
+			</li>
+			<li>
+				<span class="title_l">网络频率</span>
+				<span class="title_r">850/900/1800/1900/MHz(2G) 1800-1920/2010-2025MHz(3G)1900/2300/2600MHz(4G)</span>
+			</li>
+		</ul>
+	</div>
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/jquery.scrollTo.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+window.onscroll = function() {
+}
+var stat_X=0;
+var stat_Y=0;
+var dq_ye=1;
+window.addEventListener('touchstart', function(event) {
+     // 如果这个元素的位置内只有一个手指的话
+    if (event.targetTouches.length == 1) {
+　　　　	event.preventDefault();// 阻止浏览器默认事件，重要 
+        var touch = event.targetTouches[0];
+        // 把元素放在手指所在的位置
+        	stat_X=touch.pageX;
+        	stat_Y=touch.pageY;
+        }
+}, false);
+window.addEventListener('touchmove', function(event) {
+     // 如果这个元素的位置内只有一个手指的话
+    if (event.targetTouches.length == 1) {
+　　　　	event.preventDefault();// 阻止浏览器默认事件，重要 
+        var touch = event.targetTouches[0];
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        // 把元素放在手指所在的位置
+//      	api.toast({
+//				    msg: scrollTop,
+//				    duration: 2000,
+//				    location: 'bottom'
+//			});
+        	$('body').scrollTop(scrollTop+(stat_Y-touch.pageY));
+        }
+}, false);
+window.addEventListener('touchend', function(event) {
+	event.preventDefault();// 阻止浏览器默认事件，重要 
+	var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+			    var main=document.getElementById("main");
+				var main_h=$api.offset(main).h;
+			    var dierye=document.getElementById("dierye");
+				var dierye_h=$api.offset(dierye).h;
+				var gao = api.winHeight;
+				var tugao = gao * 0.25;
+				var frame_h=api.pageParam.header_h;
+				if(scrollTop<=(main_h-dierye_h-150+tugao) && dq_ye==2)
+				{
+					$('body').animate({scrollTop: (main_h-dierye_h-api.pageParam.rect_h+tugao-50)}, 500);
+					dq_ye=1;
+				}
+				else if(scrollTop>(main_h-dierye_h-150+tugao) && scrollTop<=(main_h-dierye_h+tugao) && dq_ye==2)
+				{
+					$.scrollTo("#dierye",500);
+					dq_ye=2;
+				}
+				else if(scrollTop<(main_h-dierye_h-api.pageParam.rect_h+tugao+100) && scrollTop>(main_h-dierye_h-api.pageParam.rect_h+tugao-50) && dq_ye==1)
+				{
+					$('body').animate({scrollTop: (main_h-dierye_h-api.pageParam.rect_h+tugao-50)}, 500);
+					dq_ye=1;
+				}
+				else if(scrollTop>=(main_h-dierye_h-api.pageParam.rect_h+tugao+100) && dq_ye==1)
+				{
+					$.scrollTo("#dierye",500);
+					dq_ye=2;
+				}
+}, false);
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		
+		var gao = api.winHeight;
+			var tugao = gao * 0.25;
+			var obj = api.require('UIScrollPicture');
+			var paths = ['widget://image/01.jpg'];
+			document.getElementById("main").style.marginTop = tugao + "px";
+			obj.open({
+				rect : {
+					x : 0,
+					y : 0,
+					w : 'auto',
+					h : tugao
+				},
+				data : {
+					paths : paths,
+				},
+				styles : {
+					caption : {
+						height : 35,
+						color : '#E0FFFF',
+						size : 13,
+						bgColor : '#696969',
+						position : 'bottom'
+					},
+					indicator : {
+						align : 'center',
+						color : '#FFFFFF',
+						activeColor : '#DA70D6'
+					}
+				},
+				placeholderImg : 'widget://image/01.jpg',
+				contentMode : 'scaleToFill',
+				interval : 3,
+				loop : true,
+				fixedOn : api.frameName,
+				fixed : false
+			}, function(ret, err) {
+				if (ret.status) {
+					if (ret.eventType == 'click') {
+						//点击图片的操作
+						//alert(ret.index);
+					}
+				}
+			});
+			document.getElementById("content_l").style.minHeight=api.pageParam.rect_h+"px";
+			document.getElementById("content_r").style.minHeight=api.pageParam.rect_h+"px";
+			var huadong_pan=0;
+			document.getElementById("dierye").style.display="block";
+			api.hideProgress();//隐藏加载进度框
+			api.addEventListener({
+			    name:'swipeup'
+			},function(ret,err){
+				var main=document.getElementById("main");
+				var main_h=$api.offset(main).h;
+			    var dierye=document.getElementById("dierye");
+				var dierye_h=$api.offset(dierye).h;
+				var gao = api.winHeight;
+				var tugao = gao * 0.25;
+			    if(dq_ye==1)
+			    {
+			    	$('body').animate({scrollTop: (main_h-dierye_h-api.pageParam.rect_h+tugao-50)}, 10);
+			    }
+			    else if(dq_ye==2)
+			    {
+			    	$('body').animate({scrollTop: (main_h+tugao-50-api.pageParam.rect_h)}, 10);
+			    }
+			});
+			api.addEventListener({
+			    name:'swipedown'
+			},function(ret,err){
+				var main=document.getElementById("main");
+				var main_h=$api.offset(main).h;
+			    var dierye=document.getElementById("dierye");
+				var dierye_h=$api.offset(dierye).h;
+				var gao = api.winHeight;
+				var tugao = gao * 0.25;
+				if(dq_ye==1)
+			    {
+			    	$('body').animate({scrollTop: 0}, 10);
+			    }
+			    else if(dq_ye==2)
+			    {
+			    	$('body').animate({scrollTop: (main_h-dierye_h+tugao-50)}, 10);
+			    }
+			});
+			fget_lunbo($api.getStorage('goods_id'));
+			fget_goods($api.getStorage('goods_id'));
+	};
+function fon_left()
+{
+	document.getElementById("h_l").style.borderColor="red";
+	document.getElementById("h_l").style.color="red";
+	document.getElementById("content_l").style.display="block";
+	document.getElementById("h_r").style.borderColor="#fff";
+	document.getElementById("h_r").style.color="#000";
+	document.getElementById("content_r").style.display="none";
+}
+function fon_right()
+{
+	document.getElementById("h_l").style.borderColor="#fff";
+	document.getElementById("h_l").style.color="#000";
+	document.getElementById("content_l").style.display="none";
+	document.getElementById("h_r").style.borderColor="red";
+	document.getElementById("h_r").style.color="red";
+	document.getElementById("content_r").style.display="block";
+}
+function fopen_goods_shuxing()
+{
+	api.openFrame({
+	    name: 'goods_tanc',
+	    url: 'goods_tanc.html',
+	    pageParam:{
+            		header_h:api.pageParam.header_h-50,
+            		rect_h:api.pageParam.rect_h+100
+        },
+	    rect: {
+		    x:0,
+		    y:api.pageParam.header_h-50,
+		    w:'auto',
+		    h:api.pageParam.rect_h+100
+	    }
+    });
+}
+function fget_lunbo(goods_id)
+{
+	api.ajax({
+            url: YAH_ajax_name+'get_goods_lunbo.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	goods_id:goods_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+				var obj = api.require('UIScrollPicture');
+				var paths = '[';
+				for(var i=0;i<ret.length;i++)
+				{
+					if(i==0)
+					{
+						paths+='"'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'"';
+					}
+					else
+					{
+						paths+=',"'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'"';
+					}
+				}
+				paths+=']';
+				paths=$api.strToJson(paths);
+				obj.reloadData({
+				    data: {
+				        paths: paths
+				    }
+				});
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fget_goods(goods_id)
+{
+	api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+	api.ajax({
+            url: YAH_ajax_name+'get_goods.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	goods_id:goods_id
+                }
+            }
+        },function(ret,err){
+            if (ret) {
+				document.getElementsByClassName("goods_title")[0].innerHTML=ret[0].goodsName;
+				document.getElementsByClassName("s1")[0].innerHTML="￥"+ret[0].shopPrice;
+				document.getElementsByClassName("s2")[0].innerHTML="￥"+ret[0].marketPrice;
+				document.getElementsByClassName("s3")[0].innerHTML="月销量："+ret[0].saleCount+"件";
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.hideProgress();//隐藏加载进度框
+        });
+}
+</script>
+</html>

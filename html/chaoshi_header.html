@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/header.css"/>
+    <style>
+    	body{
+    		background-color:#f2f2f2;
+    	}
+    </style>
+</head>
+<body>
+<div id="wrap">
+	<header id="headers">
+        <div id="goshop" class="topbar ">
+	        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+	      	<div class="topzhong">超市</div>
+	      	<!--<div tapmode="a" class="topyou">编辑</div>-->
+	      	<div tapmode="a" class="topyou_tu" onclick="fopen_goshop();"></div>
+        </div>
+	</header>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+function freturn()
+{
+	api.closeWin({
+    });
+}
+	apiready = function(){
+			api.parseTapmode();
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+    	setTimeout("fopencontent()",200);
+	};
+function fopencontent()
+{
+	var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+	    	api.openFrame({
+		        name: 'chaoshi',
+		        url: 'chaoshi.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:true,
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        },
+		        bgColor:"#f2f2f2"
+	        });
+}
+function fopen_goshop()
+	{
+		api.closeWin({name:'bimaizhuanqu_header'});
+		api.closeWin({name:'chaoshi_header'});
+		api.closeWin({name:'dingdan_header'});
+		api.closeWin({name:'dingdan_xx_header'});
+		api.closeWin({name:'fenlei_header'});
+		api.closeWin({name:'fuzhuangcheng_header'});
+		api.closeWin({name:'miaosha_header'});
+		api.closeWin({name:'tuangou_header'});
+		api.closeWin({name:'wuliu_xx_header'});
+		api.execScript({
+			name:'root',
+	        script: 'randomSwitchBtn("","goshop",3);'
+        });
+        api.closeWin({name:'goods_header'});
+	}
+</script>
+</html>

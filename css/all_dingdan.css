@@ -1,0 +1,298 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+}
+.a0{
+	
+}
+.a{
+            background-color:#eee !important;
+        }  
+.shangjia{
+	margin-bottom: 10px;
+	position: relative;
+}
+.yichengjiao{
+	background-image: url('../image/yichengjiao.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+	top:0px;
+	right: 30px;
+	height: 60px;
+	width:90px;
+}
+.min-title{
+    height:50px;
+    line-height: 50px;
+    font-size: 0.9em;
+    border-bottom:1px solid #eee;
+    background-color:#fff;
+}
+.neirong{
+	height:120px;
+}
+.t1{
+    		margin-left:10px;
+    		color:#555;
+    		float:left;
+    	}
+    	.t2{
+            background-image:url('../image/dianjia_logo.png');
+            background-repeat: no-repeat;
+            background-size:22px 22px;
+            background-position:0px 14px;
+            height:50px;
+            width:22px;
+            margin:0 0 0 10px;
+            float:left;
+        }
+    	.t3{
+    		background-image:url('../image/delete.png');
+    		background-repeat: no-repeat;
+    		background-size:15px 18px;
+    		background-position:10px 16px;
+    		height:50px;
+    		width:15px;
+    		padding:0 10px;
+    		float:right;
+    	}
+    	.t4{
+    		color:red;
+    		padding:0 10px;
+    		float:right;
+    		height:50px;
+    		line-height: 50px;
+    		font-size: 14px;
+    	}
+.goods{
+	width: 100%;
+	height:80px;
+	padding:10px 0;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    background-color:#f2f2f2;
+    border-bottom:1px solid #eee;
+}
+.goods2{
+	-webkit-box-orient: vertical;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+	height:60px !important;
+}
+.goods .title2{
+	margin:0 10px;
+}
+.goods .con{
+	overflow: hidden;
+	line-height: 20px;
+	margin:7px 10px 0 10px;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.goods_left{
+	width:80px;
+	height:80px;
+	text-align: center;
+	margin-left: 10px;
+}
+.goods_left img{
+	height:80px;
+	width: 80px;
+}
+.goods_cen{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:0 10px;
+    height: 32px;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 16px;
+}
+.goods_right{
+	width: 60px;
+    margin-right: 10px;
+    text-align: right;
+}
+.goods_right .goods_money{
+	color:red;
+	font-size: 16px;
+}
+.goods_right .goods_num{
+	color:#999;
+}
+.ps_info{
+	height: 30px;
+	background-color:#fff;
+	width: 100%;
+	line-height: 30px;
+	border-bottom:1px solid #eee;
+}
+.ps_zt{
+	float:left;
+	color:#58c2ff;
+	font-size: 13px;
+	margin-left: 10px;
+}
+.ps_xx{
+	float:right;
+	font-size: 12px;
+	color:#666;
+	margin-right: 10px;
+}
+.caozuo{
+	height: 50px;
+	background-color:#fff;
+	border-bottom: 1px solid #eee;
+}
+.caozuo .del{
+	height: 34px;
+	width: 50px;
+	text-align: center;
+	float:right;
+	line-height: 34px;
+	padding:0 10px;
+	margin:8px 0;
+	border-radius: 3px;
+	border:1px solid red;
+	margin-right: 5px;
+	/*background-color: #58c2ff;*/
+	color:red;
+	font-size: 12px;
+}
+.caozuo .look_wl{
+	height: 34px;
+	float:right;
+	text-align: center;
+	line-height: 34px;
+	padding:0 10px;
+	margin:8px 0;
+	border-radius: 3px;
+	border:1px solid #58c2ff;
+	margin-right: 5px;
+	/*background-color: #ffc23f;*/
+	color:#58c2ff;
+	font-size: 12px;
+}
+.caozuo .pinglun{
+	height: 50px;
+	float:left;
+	line-height: 50px;
+	padding:0 10px;
+}
+.look_wl_on{
+	background-color: #58c2ff !important;
+	color:#fff !important;
+}
+.del_on{
+	background-color: red !important;
+	color:#fff !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.list{
+	background-color: #fff;
+	margin-bottom:10px;
+	padding:5px 0;
+	border-bottom:1px solid #ccc;
+}
+.list .header{
+	height: 30px;
+	line-height: 30px;
+	color:#666;
+	padding:0 10px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+}
+.list .header .left{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.list .header .right{
+	background-image: url('../image/delete.png');
+	background-repeat: no-repeat;
+	background-size: 16px 20px;
+	background-position:10px 5px;
+	width: 16px;
+	height: 30px;
+	padding:0 10px;
+}
+.list .content{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.list .content .left{
+	width: 70px;
+	margin:10px;
+}
+.list .content .left img{
+	width: 70px;
+	height: 70px;
+	background-color: #f2f2f2;
+}
+.list .content .right{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.list .content .right .shopName{
+	line-height: 50px;
+	border-bottom:1px solid #eee;
+}
+.list .content .right .goods_list{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    color:#666;
+    font-size: 12px;
+    line-height: 25px;
+}
+.list .content .right .goods_list .goodsName{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+.list .content .right .goods_list .goodsNum{
+	margin-right: 10px;
+}
+.list .footer{
+	height: 30px;
+	line-height: 30px;
+	text-align: right;
+	padding:0 10px;
+	font-size: 12px;
+	color:#666;
+}
+.list .footer span{
+	color:#000;
+	font-size:16px; 
+}
+

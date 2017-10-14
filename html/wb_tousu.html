@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/yijianfankui.css"/>
+    <style>
+   		#content{
+   			border-bottom:1px solid #e2e2e2;
+   		}
+    	#content textarea{
+    		border:0px;
+    	}
+    	.userName{
+    		height: 50px;
+			background-color:#fff;
+			line-height: 50px;
+			padding:0 10px;
+			border-bottom:1px solid #f2f2f2;
+    	}
+    	.phone{
+			height: 50px;
+			background-color:#fff;
+			margin-top:0px;
+			line-height: 50px;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="content">
+		<textarea name="" id="cont" maxlength="100" placeholder="请输入您要投诉的内容"></textarea>
+	</div>
+	<div class="userName" id="userName"></div>
+	<div class="phone"><input id="phone" type="text" placeholder="请输入您的手机号" maxlength="11" /></div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		document.getElementById("userName").innerHTML=api.pageParam.to_userName;
+		if(api.pageParam.pan!='order') fget_tousu();
+	};
+	function fget_tousu()
+	{
+		var user_id=$api.getStorage('user_id');
+	    api.ajax({
+            url: YAH_ajax_name+'get_tousu_info.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	object:api.pageParam.to_user_id,
+                	wb_id:api.pageParam.wb_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan==1)
+                 {
+                 	document.getElementById("cont").style.disabled="disabled";
+                 	document.getElementById("phone").style.disabled="disabled";
+                 	document.getElementById("cont").innerHTML=ret[0].content;
+                 	document.getElementsByClassName("phone")[0].innerHTML=ret[0].phone;
+                 	document.getElementsByClassName("phone")[0].style.paddingLeft="10px";
+                 	api.execScript({
+	                     name:'wb_tousu_header',
+	                     script: 'fyin();'
+                     });
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fgo()
+	{
+		if(api.pageParam.pan=='order') order_tousu();
+		else if(api.pageParam.pan=='shop') shop_tousu();
+		else wb_tousu();
+	}
+	function wb_tousu()
+	{
+		var content=document.getElementById("cont").value;
+		var phone=document.getElementById("phone").value;
+		if(phone=="")
+		{
+			api.toast({
+				msg: '手机号不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(content=="")
+		{
+			api.toast({
+				msg: '内容不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(phone.length!=11 || phone[0]!='1')
+		{
+			api.toast({
+				msg: '手机号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+		}
+		if(!(phone[1]=='3' || phone[1]=='5' || phone[1]=='7' || phone[1]=='8'))
+	    {
+	        api.toast({
+				msg: '手机号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    api.showProgress({title:'提交中...'});
+	    var user_id=$api.getStorage('user_id');
+	    api.ajax({
+            url: YAH_ajax_name+'yijianfankui.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	phone:phone,
+                	content:content,
+                	type:1,
+                	object:api.pageParam.to_user_id,
+                	wb_id:api.pageParam.wb_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan=='1')
+                 {
+                 	api.toast({
+						msg: '投诉成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+	                   	name:'weibang_dingdan_header',
+	                   	frameName:'weibang_dingdan',
+	                    script: 'fget_wb_order_xx();'
+                    });
+					window.setTimeout('api.closeWin({});',1000);
+                 }
+                 else if(ret[0].pan=='-1')
+                 {
+                 	api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: '提交失败，请稍后再试！',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function order_tousu()
+	{
+		var content=document.getElementById("cont").value;
+		var phone=document.getElementById("phone").value;
+		if(phone=="")
+		{
+			api.toast({
+				msg: '手机号不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(content=="")
+		{
+			api.toast({
+				msg: '内容不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(phone.length!=11 || phone[0]!='1')
+		{
+			api.toast({
+				msg: '手机号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+		}
+		if(!(phone[1]=='3' || phone[1]=='5' || phone[1]=='7' || phone[1]=='8'))
+	    {
+	        api.toast({
+				msg: '手机号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    api.showProgress({title:'提交中...'});
+	    var user_id=$api.getStorage('user_id');
+	    api.ajax({
+            url: YAH_ajax_name+'dingdan_tousu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	phone:phone,
+                	content:content,
+                	orderId:api.pageParam.wb_id,
+                	shopId:api.pageParam.shopId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan=='1')
+                 {
+                 	api.toast({
+						msg: '投诉成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					window.setTimeout('api.closeWin({});',1000);
+                 }
+                 else if(ret[0].pan=='-1')
+                 {
+                 	api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: '提交失败，请稍后再试！',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function shop_tousu()
+	{
+		var content=document.getElementById("cont").value;
+		var phone=document.getElementById("phone").value;
+		if(phone=="")
+		{
+			api.toast({
+				msg: '手机号不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(content=="")
+		{
+			api.toast({
+				msg: '内容不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(phone.length!=11 || phone[0]!='1')
+		{
+			api.toast({
+				msg: '手机号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+		}
+		if(!(phone[1]=='3' || phone[1]=='5' || phone[1]=='7' || phone[1]=='8'))
+	    {
+	        api.toast({
+				msg: '手机号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    api.showProgress({title:'提交中...'});
+	    var user_id=$api.getStorage('user_id');
+	    api.ajax({
+            url: YAH_ajax_name+'yijianfankui.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	phone:phone,
+                	content:content,
+                	type:2,
+                	shopId:api.pageParam.shopId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].pan=='1')
+                 {
+                 	api.toast({
+						msg: '投诉成功！',
+						duration: 2000,
+						location: 'bottom'
+					});
+					window.setTimeout('api.closeWin({});',1000);
+                 }
+                 else if(ret[0].pan=='-1')
+                 {
+                 	api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: '提交失败，请稍后再试！',
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

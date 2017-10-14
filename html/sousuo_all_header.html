@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="../css/header.css"/>-->
+    <style>
+    	* { margin:0; padding:0;
+            outline: 0;
+        }
+		header {
+             background-color: #60b034;
+             border:0px;
+             height: 50px;
+        }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+		#wrap {-webkit-animation: fadeIn .5s ease both;animation: fadeIn .5s ease both;}
+    	input,button,select,textarea{outline:none;-webkit-appearance:none;}
+    	.topzhong input{
+    		background-color: #fff;
+    		font-size:14px;
+    		height:25px;
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            border-radius: 2px;
+    	}
+    	.ss{
+    		border:1px solid #ff9393;
+    		height:25px;
+    		line-height: 25px;
+    		margin: 10px 5px 0 0;
+    		border-radius: 2px;
+    		font-size:12px;
+    	}
+    	.di{
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+            width:100%;
+    		height:50px;
+    	}
+    	.di1{
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+            background-color: #fff;
+    		border-radius: 2px;
+    		height:25px;
+    		margin-top:12px;
+    		width:95%;
+    	}
+    	.sousuo_icon{
+    		width:20px;
+    		background-image:url('../image/sousuo.png');
+    		background-repeat: no-repeat;
+    		background-position: 2px 5px;
+    		background-size: 16px 16px;
+    		margin:0 3px;
+    	}
+    	.topbar {
+            background: #60b034;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            /*display: none;*/
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            position: relative;
+        }
+    	#goshop{
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+    	}
+    	.topzuo{
+    		width: 50px;
+            height:50px;
+    		background-image:url('../image/return.png');
+            background-size:11px 19px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+    	}
+    	.topzhong{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            width:100%;
+    	}
+    	.topyou{
+    		width: 50px;
+            height:50px;
+            font-size: 15px;
+    	}
+    </style>
+</head>
+<body>
+<div id="wrap">
+	<header id="headers">
+        <div id="goshop" class="topbar ">
+	        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+	      	<div class="topzhong"><div class="di"><div class="di1"><div class="sousuo_icon"></div><input type="text" id="input" maxlength="20" placeholder="请输入搜索内容" /></div></div></div>
+	      	<div tapmode="a" class="topyou"><div class="ss" tapmode="" onclick="fgo();">搜索</div></div>
+	      	<!--<div tapmode="a" class="topyou_tu" onclick="fopen_goshop();"></div>-->
+        </div>
+	</header>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+function freturn()
+{
+	api.closeWin({
+    });
+}
+	apiready = function(){
+			api.parseTapmode();
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+    	if(api.pageParam.text!=undefined) document.getElementById("input").value=api.pageParam.text;
+    	setTimeout("fopencontent()",200);
+    	//alert(JSON.stringify(api.pageParam));
+	};
+	$('#input').bind('keyup', function(event) {
+	        if (event.keyCode == "13") {
+	            //回车执行查询
+	            var value=document.getElementById("input").value;
+	            if(value=='') return;
+	            var num=Number($api.getStorage('sousuo_lishi_num'));
+	            if(num<10)
+	            {
+	            	var pan=0;
+	            	for(var i=0;i<num;i++)
+	            	{
+	            		var val=$api.getStorage('sousuo_lishi['+i+']');
+	            		if(val==value) {pan=1;break;}
+	            	}
+	            	if(pan==0)
+	            	{
+		            	$api.setStorage('sousuo_lishi['+num+']',value);
+		            	$api.setStorage('sousuo_lishi_num',Number(num)+1);
+	            	}
+	            	else
+	            	{
+	            		var t=-1;
+	            		for(var i=0;i<num;i++)
+	            		{
+	            			val=$api.getStorage('sousuo_lishi['+i+']');
+	            			if(val==value)
+							{
+								t=i;
+							}
+							if(i>=t && i!=(num-1) && t>=0)
+							{
+								val2=$api.getStorage('sousuo_lishi['+(i+1)+']');
+	            				$api.setStorage('sousuo_lishi['+i+']',val2);
+							}
+	            		}
+	            		$api.setStorage('sousuo_lishi['+(num-1)+']',value);
+	            	}
+	            	api.execScript({
+	                   	frameName:'ssy2',
+	                    script: 'fget_sousuo_lishi();'
+                    });
+	            }
+	            else
+	            {
+	            	var pan=0;
+	            	for(var i=0;i<num;i++)
+	            	{
+	            		var val=$api.getStorage('sousuo_lishi['+i+']');
+	            		if(val==value) {pan=1;break;}
+	            	}
+	            	if(pan==0)
+	            	{
+		            	for(i=0;i<10;i++)
+		            	{
+		            		if(i==9)
+		            		{
+		            			$api.setStorage('sousuo_lishi['+i+']',value);
+		            		}
+		            		else
+		            		{
+		            			var val=$api.getStorage('sousuo_lishi['+(i+1)+']');
+		            			$api.setStorage('sousuo_lishi['+i+']',val);
+		            		}
+		            	}
+	            	}
+	            	else
+	            	{
+	            		var t=-1;
+	            		for(var i=0;i<num;i++)
+	            		{
+	            			val=$api.getStorage('sousuo_lishi['+i+']');
+	            			if(val==value)
+							{
+								t=i;
+							}
+							if(i>=t && i!=(num-1) && t>=0)
+							{
+								val2=$api.getStorage('sousuo_lishi['+(i+1)+']');
+	            				$api.setStorage('sousuo_lishi['+i+']',val2);
+							}
+							else 
+							{
+								$api.setStorage('sousuo_lishi['+i+']',value);
+							}
+	            		}
+	            	}
+	            }
+	            api.execScript({
+	               name:'ssy2_header',
+	               script: 'fset_value(\''+value+'\');'
+                });
+	            api.openWin({
+			            name: 'sousuo_all_header',
+			            url: 'sousuo_all_header.html',
+			            pageParam:{
+			            	text:value,
+			            	sousuo_way:api.pageParam.sousuo_way
+			            },
+			            reload:true
+		        });
+	        }
+	    });
+	    function fopen_sousuo()
+	    {
+	    	var value=document.getElementById("input").value;
+	            if(value=='') return;
+	            var num=Number($api.getStorage('sousuo_lishi_num'));
+	            if(num<10)
+	            {
+	            	var pan=0;
+	            	for(var i=0;i<num;i++)
+	            	{
+	            		var val=$api.getStorage('sousuo_lishi['+i+']');
+	            		if(val==value) {pan=1;break;}
+	            	}
+	            	if(pan==0)
+	            	{
+		            	$api.setStorage('sousuo_lishi['+num+']',value);
+		            	$api.setStorage('sousuo_lishi_num',Number(num)+1);
+	            	}
+	            	else
+	            	{
+	            		var t=-1;
+	            		for(var i=0;i<num;i++)
+	            		{
+	            			val=$api.getStorage('sousuo_lishi['+i+']');
+	            			if(val==value)
+							{
+								t=i;
+							}
+							if(i>=t && i!=(num-1) && t>=0)
+							{
+								val2=$api.getStorage('sousuo_lishi['+(i+1)+']');
+	            				$api.setStorage('sousuo_lishi['+i+']',val2);
+							}
+	            		}
+	            		$api.setStorage('sousuo_lishi['+(num-1)+']',value);
+	            	}
+	            	api.execScript({
+	                   	name:'ssy2_header',
+	                   	frameName:'ssy2',
+	                    script: 'fget_sousuo_lishi();'
+                    });
+	            }
+	            else
+	            {
+	            	var pan=0;
+	            	for(var i=0;i<num;i++)
+	            	{
+	            		var val=$api.getStorage('sousuo_lishi['+i+']');
+	            		if(val==value) {pan=1;break;}
+	            	}
+	            	if(pan==0)
+	            	{
+		            	for(i=0;i<10;i++)
+		            	{
+		            		if(i==9)
+		            		{
+		            			$api.setStorage('sousuo_lishi['+i+']',value);
+		            		}
+		            		else
+		            		{
+		            			var val=$api.getStorage('sousuo_lishi['+(i+1)+']');
+		            			$api.setStorage('sousuo_lishi['+i+']',val);
+		            		}
+		            	}
+	            	}
+	            	else
+	            	{
+	            		var t=-1;
+	            		for(var i=0;i<num;i++)
+	            		{
+	            			val=$api.getStorage('sousuo_lishi['+i+']');
+	            			if(val==value)
+							{
+								t=i;
+							}
+							if(i>=t && i!=(num-1) && t>=0)
+							{
+								val2=$api.getStorage('sousuo_lishi['+(i+1)+']');
+	            				$api.setStorage('sousuo_lishi['+i+']',val2);
+							}
+							else 
+							{
+								$api.setStorage('sousuo_lishi['+i+']',value);
+							}
+	            		}
+	            	}
+	            }
+	            api.execScript({
+	               name:'ssy2_header',
+	               script: 'fset_value(\''+value+'\');'
+                });
+	            api.openWin({
+			            name: 'sousuo_all_header',
+			            url: 'sousuo_all_header.html',
+			            pageParam:{
+			            	text:value,
+			            	sousuo_way:api.pageParam.sousuo_way
+			            },
+			            reload:true
+		        });
+	    }
+	    function fgo()
+	    {
+	    	fopen_sousuo();
+	    }
+	    function fset(n)
+	    {
+	    	document.getElementById("input").value=n;
+	    	fopen_sousuo();
+	    }
+function fopencontent()
+{
+	var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+	    	api.openFrame({
+		        name: 'sousuo_all',
+		        url: 'sousuo_all.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:true,
+            	pageParam:{
+			        text:api.pageParam.text,
+			        sousuo_way:api.pageParam.sousuo_way
+			    },
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        },
+		        bgColor:"#f2f2f2",
+		        reload:true
+	        });
+}
+function fopen_goshop()
+	{
+		api.closeWin({name:'bimaizhuanqu_header'});
+		api.closeWin({name:'chaoshi_header'});
+		api.closeWin({name:'dingdan_header'});
+		api.closeWin({name:'dingdan_xx_header'});
+		api.closeWin({name:'fenlei_header'});
+		api.closeWin({name:'fuzhuangcheng_header'});
+		api.closeWin({name:'miaosha_header'});
+		api.closeWin({name:'tuangou_header'});
+		api.closeWin({name:'wuliu_xx_header'});
+		api.execScript({
+			name:'root',
+	        script: 'randomSwitchBtn("","goshop",3);'
+        });
+        api.closeWin({name:'goods_header'});
+	}
+</script>
+</html>

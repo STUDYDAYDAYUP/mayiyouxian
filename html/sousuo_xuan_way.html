@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.a{
+		    background-color:#eee !important;
+		}
+    	#main{
+    		border:1px solid #00BAFF;
+    	}
+    	#main div{
+    		line-height: 20px;
+			font-size: 12px;
+			font-weight: normal;
+			text-align: center;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="list" tapmode="a" onclick="fxuan(0);">微帮</div>
+	<div class="list" tapmode="a" onclick="fxuan(1);">帖子</div>
+	<div class="list" tapmode="a" onclick="fxuan(2);">店铺</div>
+	<div class="list" tapmode="a" onclick="fxuan(3);">商品</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		if(api.pageParam.index==0)
+		{
+			document.getElementsByClassName('list')[1].style.display="none";
+			document.getElementsByClassName('list')[2].style.display="none";
+			document.getElementsByClassName('list')[3].style.display="none";
+		}
+		else if(api.pageParam.index==1)
+		{
+			document.getElementsByClassName('list')[0].style.display="none";
+			document.getElementsByClassName('list')[1].style.display="none";
+		}
+	};
+	function fxuan(n)
+	{
+		api.execScript({
+	       	name:'sousuo_header',
+	        script: 'fset_way('+n+');'
+        });
+        api.execScript({
+	       	name:'ssy_header',
+	        script: 'fset_way('+n+');'
+        });
+        api.execScript({
+	       	name:'ssy2_header',
+	        script: 'fset_way('+n+');'
+        });
+        api.closeFrame({
+	        name: 'sousuo_xuan_way'
+        });
+	}
+</script>
+</html>

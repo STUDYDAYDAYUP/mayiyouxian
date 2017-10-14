@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goods2.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div id="h_l" tapmode="a" onclick="fon_left();" style="border-bottom:1px solid red;">
+			<div>图文详情</div>
+		</div>
+		<div id="h_r" tapmode="a" onclick="fon_right();" style="border-bottom:1px solid #fff;">
+			<div>产品参数</div>
+		</div>
+	</div>
+	<div id="content_l">
+		<img src="../image/tuwenxx.png" width="100%" />
+	</div>
+	<div id="content_r">
+		<ul>
+			<li>
+				<span class="title_l">商品名称</span>
+				<span class="title_r">魅族手机</span>
+			</li>
+			<li>
+				<span class="title_l">商品型号</span>
+				<span class="title_r">MX5 Pro</span>
+			</li>
+			<li>
+				<span class="title_l">商品颜色</span>
+				<span class="title_r">银色</span>
+			</li>
+			<li>
+				<span class="title_l">输入方式</span>
+				<span class="title_r">触控</span>
+			</li>
+			<li>
+				<span class="title_l">操作系统版本</span>
+				<span class="title_r">Flyme 5</span>
+			</li>
+			<li>
+				<span class="title_l">CPU频率</span>
+				<span class="title_r">A15 2.0GHz x 4 + A7 1.5Ghz x 4</span>
+			</li>
+			<li>
+				<span class="title_l">网络频率</span>
+				<span class="title_r">850/900/1800/1900/MHz(2G) 1800-1920/2010-2025MHz(3G)1900/2300/2600MHz(4G)</span>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		api.hideProgress();//隐藏加载进度框
+		api.setRefreshHeaderInfo({
+		    visible: true,
+		    loadingImg: 'widget://image/refresh.png',
+		    bgColor: '#ccc',
+		    textColor: '#fff',
+		    textDown: '下拉刷新...',
+		    textUp: '松开刷新...',
+		    showTime: true
+		}, function( ret, err ){
+		    //在这里从服务器加载数据，加载完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			api.refreshHeaderLoadDone();
+			api.closeFrame({
+	            name: 'goods2'
+            });
+            
+		});
+	};
+function fon_left()
+{
+	document.getElementById("h_l").style.borderColor="red";
+	document.getElementById("h_l").style.color="red";
+	document.getElementById("content_l").style.display="block";
+	document.getElementById("h_r").style.borderColor="#fff";
+	document.getElementById("h_r").style.color="#000";
+	document.getElementById("content_r").style.display="none";
+}
+function fon_right()
+{
+	document.getElementById("h_l").style.borderColor="#fff";
+	document.getElementById("h_l").style.color="#000";
+	document.getElementById("content_l").style.display="none";
+	document.getElementById("h_r").style.borderColor="red";
+	document.getElementById("h_r").style.color="red";
+	document.getElementById("content_r").style.display="block";
+}
+</script>
+</html>

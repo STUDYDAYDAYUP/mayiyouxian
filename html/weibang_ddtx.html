@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang_ddtx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content" id="content">
+			<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right" style="display:block;">加载中...</div></div>
+			<!--<div class="list" tapmode="a" onclick="fopen_weibang_dd(0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">(发)我提供服务-选择对方接单</div>
+						<div class="info">2016-7-5 18:17:56</div>
+					</div>
+					<div class="s3"><span>订单已生成</span></div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_dd(0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">(发)我找服务-选择对方接单</div>
+						<div class="info">2016-7-5 18:17:56</div>
+					</div>
+					<div class="s3">
+						<span>对方愿意接单</span>
+						<div class="go_pay" taomode="go_pay_on">去付款</div>
+					</div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_dd(0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">(接)我提供服务-对方选择我</div>
+						<div class="info">2016-7-5 18:17:56</div>
+					</div>
+					<div class="s3"><span>订单已生成</span></div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_weibang_dd(0)">
+					<div class="s1"></div>
+					<div class="s2">
+						<div class="title ccyc">(接)我去找服务-对方选择我</div>
+						<div class="info">2016-7-5 18:17:56</div>
+					</div>
+					<div class="s3">
+						<span>对方愿意接单</span>
+						<div class="go_pay" taomode="go_pay_on">去付款</div>
+					</div>
+			</div>-->
+		
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_wb_order();
+		$api.setStorage('notice_bool['+2+']',0);
+	};
+	function fopen_weibang_dd(zt,order_id,isPay)
+	{
+		api.openWin({
+	        name: 'weibang_dingdan_header',
+	        url: 'weibang_dingdan_header.html',
+	        pageParam:{
+	        	order_id:order_id,
+	        	zt:zt,
+	        	isPay:isPay
+	        }
+        });
+	}
+	function fget_wb_order()
+	{
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_wb_order_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	var html='';
+	            	for(var i=0;i<ret.length;i++)
+	            	{
+	            		if(ret[i].type==-1) ;
+	            		else
+	            		{
+		            		html+='<div class="list" onclick="fopen_weibang_dd(\''+ret[i].zt+'\',\''+ret[i].id+'\',\''+ret[i].isPay+'\')">';
+							html+='		<div class="s1" style="background-image:url(\''+YAH_web+'/'+ret[i].userPhoto+'\')"></div>';
+							html+='		<div class="s2">';
+							html+='			<div class="title ccyc">'+ret[i].title+'</div>';
+							html+='			<div class="info">'+ret[i].createTime+'</div>';
+							html+='		</div>';
+							html+='		<div class="s3">';
+//							if(ret[i].orderStatus==-3 || ret[i].orderStatus==-4 || ret[i].orderStatus==-7 || ret[i].orderStatus==-8)
+//							{
+//								
+//								if(ret[i].zt==1 || ret[i].zt==4) html+='			<span>退款申请中</span>';
+//								if(ret[i].zt==2 || ret[i].zt==3) html+='			<span>对方申请退款</span>';
+//							}
+//							else
+//							{
+//								if(ret[i].zt==2)
+//								{
+//									html+='			<span>订单已生成</span>';
+//								}
+//								if(ret[i].zt==3 && ret[i].isPay==0)
+//								{
+//									html+='			<span>等待对方付款</span>';
+//								}
+//								if(ret[i].zt==3 && ret[i].isPay==1)
+//								{
+//									html+='			<span>订单已生成</span>';
+//								}
+//								if((ret[i].zt==1 && ret[i].isPay==0) || (ret[i].zt==4 && ret[i].isPay==0))
+//								{
+//									html+='			<span>'+ret[i].msg+'</span>';
+//									html+='			<div class="go_pay" onclick="event.cancelBubble = true;fgo_pay('+ret[i].id+');">去付款</div>';
+//								}
+//								if((ret[i].zt==1 && ret[i].isPay==1) || (ret[i].zt==4 && ret[i].isPay==1))
+//								{
+//									html+='			<span>订单已生成</span>';
+//								}
+//							}
+							//else html+='<span>'+ret[i].msg+'</span>';
+							html+='<span>'+ret[i].msg+'</span>';
+							html+='		</div>';
+							html+='</div>';
+						}
+	            	}
+	            	document.getElementById("content").innerHTML=html;
+	            	if(ret.length==0) document.getElementById("content").innerHTML='<div style="text-align: center;line-height: 50px;">暂无订单</div>';
+	            	api.parseTapmode();
+	            }else {
+	            	document.getElementById("content").innerHTML='<div style="text-align: center;line-height: 50px;">暂无订单</div>';
+	            	//fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fgo_pay(wb_order_id)
+	{
+		api.openWin({
+	        name: 'zhifu_header',
+	        url: 'zhifu_header.html',
+	        pageParam:{
+	        	zhifupan:'wb_xq',
+	        	wb_order_id:wb_order_id
+	        }
+        });
+	}
+</script>
+</html>

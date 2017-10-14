@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/pingjia.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div class="title"><div class="shopName">&nbsp;</div><div class="tishi">满意请给5星哦</div></div>
+		<div class="list">
+			<div class="nei">
+				<div class="tishi">商家服务评价</div>
+				<div class="sd_wxingji">
+					<div class="sd_xingji x0" xing="0"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_xingji_xuan">
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,1);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,2);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,3);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,4);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(0,5);"></div>
+					</div>
+				</div>
+			</div>
+			<div class="nei">
+				<div class="tishi">商家配送评价</div>
+				<div class="sd_wxingji">
+					<div class="sd_xingji x0" xing="0"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_xingji_xuan">
+						<div class="xing_xuan" tapmode="" onclick="fxuan(1,1);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(1,2);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(1,3);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(1,4);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(1,5);"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list"><textarea placeholder="请输入评价内容" maxlength="100" id="shopContent"></textarea></div>
+	</div>
+	<div class="goods_list">
+		<!--<div class="goods">
+			<div class="left"><img src="../image/sp_5.png" /></div>
+			<div class="con">
+				<div class="goodsName ccyc">商品名</div>
+				<div class="sd_wxingji">
+					<div class="sd_xingji x0"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_xingji_xuan">
+						<div class="xing_xuan" tapmode="" onclick="fxuan(2,1);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(2,2);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(2,3);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(2,4);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(2,5);"></div>
+					</div>
+				</div>
+			</div>
+			<div class="right pingjia_on" pan="0" tapmode="" onclick="fshow_pj(0);">评价</div>
+		</div>
+		<div class="pj_nr"><textarea class="goods_pj"  placeholder="请输入评价内容" maxlength="100"></textarea></div>
+		<div class="goods">
+			<div class="left"><img src="../image/sp_5.png" /></div>
+			<div class="con">
+				<div class="goodsName ccyc">商品名</div>
+				<div class="sd_wxingji">
+					<div class="sd_xingji x0"></div>
+					<div class="sd_xingji_di"></div>
+					<div class="sd_xingji_xuan">
+						<div class="xing_xuan" tapmode="" onclick="fxuan(3,1);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(3,2);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(3,3);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(3,4);"></div>
+						<div class="xing_xuan" tapmode="" onclick="fxuan(3,5);"></div>
+					</div>
+				</div>
+			</div>
+			<div class="right pingjia_on" pan="0" tapmode="" onclick="fshow_pj(1);">评价</div>
+		</div>
+		<div class="pj_nr"><textarea class="goods_pj"  placeholder="请输入评价内容" maxlength="100"></textarea></div>-->
+	</div>
+	<div class="niming" tapmode="" onclick="fni();">匿名评价</div>
+	
+	<div class="footer">
+		<div class="go" tapmode="go_on" onclick="fgo();">提交评价</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var ni=0;
+	apiready = function(){
+		fget_pingjia_info();
+	};
+	function fxuan(n,t)
+	{
+		$('.sd_xingji').eq(n).attr('xing',t);
+		$('.sd_xingji').eq(n).removeClass('x0');
+		$('.sd_xingji').eq(n).removeClass('x1');
+		$('.sd_xingji').eq(n).removeClass('x2');
+		$('.sd_xingji').eq(n).removeClass('x3');
+		$('.sd_xingji').eq(n).removeClass('x4');
+		$('.sd_xingji').eq(n).removeClass('x5');
+		$('.sd_xingji').eq(n).addClass('x'+t);
+	}
+	function fshow_pj(n)
+	{
+		var pan=$('.pingjia_on').eq(n).attr('pan');
+		if(Number(pan)==0)
+		{
+			$('.pingjia_on').eq(n).attr('pan','1');
+			$('.pj_nr').eq(n).css('display','block');
+			$('.pingjia_on').eq(n).addClass('right_on');
+		}
+		else
+		{
+			$('.pingjia_on').eq(n).attr('pan','0');
+			$('.pj_nr').eq(n).css('display','none');
+			$('.pingjia_on').eq(n).removeClass('right_on');
+		}
+	}
+	function fni()
+	{
+		if(ni==0)
+		{
+			ni=1;
+			$('.niming').eq(0).addClass('niming_on');
+		}
+		else
+		{
+			ni=0;
+			$('.niming').eq(0).removeClass('niming_on');
+		}
+	}
+	function fget_pingjia_info()
+	{
+		api.showProgress({title:'加载中...'});
+		//var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_pingjia_info.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	orderId:api.pageParam.orderId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 //alert(JSON.stringify(ret));
+                 var html='';
+                 for(var i=0;i<ret.length;i++)
+                 {
+                 	html+='<div class="goods" id="'+ret[i].goodsId+'">';
+					html+='	<div class="left"><img src="'+YAH_web+'/'+ret[i].goodsThums+'" /></div>';
+					html+='	<div class="con">';
+					html+='		<div class="goodsName ccyc">'+ret[i].goodsName+'</div>';
+					html+='		<div class="sd_wxingji">';
+					html+='			<div class="sd_xingji x0" xing="0"></div>';
+					html+='			<div class="sd_xingji_di"></div>';
+					html+='			<div class="sd_xingji_xuan">';
+					html+='				<div class="xing_xuan" tapmode="" onclick="fxuan('+(i+2)+',1);"></div>';
+					html+='				<div class="xing_xuan" tapmode="" onclick="fxuan('+(i+2)+',2);"></div>';
+					html+='				<div class="xing_xuan" tapmode="" onclick="fxuan('+(i+2)+',3);"></div>';
+					html+='				<div class="xing_xuan" tapmode="" onclick="fxuan('+(i+2)+',4);"></div>';
+					html+='				<div class="xing_xuan" tapmode="" onclick="fxuan('+(i+2)+',5);"></div>';
+					html+='			</div>';
+					html+='		</div>';
+					html+='	</div>';
+					html+='	<div class="right pingjia_on" pan="0" tapmode="" onclick="fshow_pj('+i+');">评价</div>';
+					html+='</div>';
+					html+='<div class="pj_nr"><textarea class="goods_pj"  placeholder="请输入评价内容" maxlength="100"></textarea></div>';
+                 }
+                 $('.goods_list').html(html);
+                 $('.shopName').html(ret[0].shopName);
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fgo()
+	{
+		var sever=$('.sd_xingji').eq(0).attr('xing');
+		var diver=$('.sd_xingji').eq(1).attr('xing');
+		var shopContent=$('#shopContent').val();
+		if(sever==0 || sever=='0')
+		{
+				api.toast({
+					msg: '请选择服务星级',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+		}
+		if(diver==0 || diver=='0')
+		{
+				api.toast({
+					msg: '请选择服务星级',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+		}
+		if(shopContent=="")
+		{
+			api.toast({
+					msg: '请输入店铺评价内容',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+		}
+		//alert("商家服务："+sever+" diver:"+diver+" 是否匿名："+ni);
+		//alert("店铺评论："+shopContent);
+		var max=$('.goods_list .goods').length;
+		var json='[';
+		for(var i=0;i<max;i++)
+		{
+			var lin_xing=$('.goods_list .goods .sd_xingji').eq(i).attr('xing');
+			var lin_content=$('.goods_pj').eq(i).val();
+			var goods_id=$('.goods').eq(i).attr('id');
+			if(lin_xing==0 || lin_xing=='0')
+			{
+				api.toast({
+					msg: '请选择商品星级',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			if(i==0)
+			{
+				json+='{id:"'+goods_id+'",xing:"'+lin_xing+'",content:"'+lin_content+'"}';
+			}
+			else
+			{
+				json+=',{id:"'+goods_id+'",xing:"'+lin_xing+'",content:"'+lin_content+'"}';
+			}
+			//alert("第"+i+"个商品："+lin_xing);
+			//alert("第"+i+"个商品评价："+lin_content);
+		}
+		json+=']';
+		var json2=eval('('+json+')');
+		//alert(JSON.stringify(json2));
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'set_pingjia_info.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	orderId:api.pageParam.orderId,
+                	sever:sever,
+                	diver:diver,
+                	shopContent:shopContent,
+                	json:json2,
+                	user_id:user_id,
+                	ni:ni
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 //alert(JSON.stringify(ret));
+                 if(ret[0].pan=="-1")
+                 {
+                 	api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 else if(ret[0].pan=='1')
+                 {
+                 	api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+					api.execScript({
+	                   	name:'root',
+	                   	frameName:'all_dingdan',
+	                    script: 'fget_all_dingdan();fxuan(0,"全部");'
+                    });
+                    api.execScript({
+	                   	name:'dingdan_xx2_header',
+	                   	frameName:'dingdan_xx2',
+	                    script: 'fget_dingdan_xx();'
+                    });
+                    window.setTimeout('api.closeWin({});',1500);
+					
+                 }
+                 else
+                 {
+                 	api.toast({
+						msg: "评价失败",
+						duration: 2000,
+						location: 'bottom'
+					});
+                 }
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

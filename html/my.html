@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/my.css"/>
+</head>
+<body>
+	<div id="main">
+		<div id="tou">
+			<div id='tou-list-1'>
+				<div id="tou-list-11"></div>
+				<div id="tou-list-12">
+					<div id="yq-w">
+						<div id="yq-z" tapmode="userimg" onclick="fopen_login();">
+							<div id="yq-n"></div>
+						</div>
+					</div>
+					<div id="user_img" tapmode="" onclick="fopen_user_info();"><img id="user_img_src" /></div>
+				</div>
+			</div>
+			<div id='tou-list-2'>用户名登陆</div>
+			<div tapmode="shezhi2" id="shezhi" onclick="fopen_shezhi();"></div>
+		</div>
+		<div class="min-title" tapmode="a" onclick="fopen_list('all_dingdan');">
+			<span class="t1">我的订单</span><span class="t3"></span><span class="t2">查看全部订单</span>
+		</div>
+		<div id="lists">
+			<ul>
+				<li tapmode="a" onclick="fopen_list('daifukuan');"><div style="border-right:1px solid #eee"><img src="../image/daifukuan.png" /><a>待付款</a></div><span id="daifu_n">99</span></li>
+				<li tapmode="a" onclick="fopen_list('daifahuo');"><div style="border-right:1px solid #eee"><img src="../image/daifahuo.png" /><a>待发货</a></div><span id="daifa_n">7</span></li>
+				<li tapmode="a" onclick="fopen_list('daishouhuo');"><div style="border-right:1px solid #eee"><img src="../image/daishouhuo.png" /><a>待收货</a></div><span id="daishou_n">8</span></li>
+				<li tapmode="a" onclick="fopen_list('pingjiazhongxin');"><div style="border-right:1px solid #eee"><img src="../image/daipingjia.png" /><a>待评价</a></div><span id="daipingjia_n">9</span></li>
+				<li tapmode="a" onclick="fopen_list('tuikuan_shouhou');"><img src="../image/tuikuan.png" /><a>退款/售后</a><span  id="tuikuan_n">10</span></li>
+			</ul>
+		</div>
+		<div id="max_lists">
+			<ul>
+				<li tapmode="a" onclick="fopen_list('wallet')"><img src="../image/wodeqianbao.png" /><a>我的钱包</a></li>
+				<li tapmode="a" onclick="fopen_list('fenxiaozhongxin')"><img src="../image/fenxiaozhognxin.png" /><a>分销中心</a></li>
+				<li tapmode="a" onclick="fopen_jifen();"><img src="../image/wodejifen.png" /><a>积分换礼</a></li>
+				<li tapmode="a" onclick="fopen_woshishangjia();"><img src="../image/woshishagnjia.png" /><a>我是商家</a></li>
+			</ul>
+			<ul>
+				<li tapmode="a" onclick="fopen_list('0yuangou')"><img src="../image/0yuangou.png" /><a>0元购</a></li>
+				<li tapmode="a" onclick="fopen_list('collection')"><img src="../image/shoucangjia.png" /><a>收藏夹</a></li>
+				<li tapmode="a" onclick="fopen_list('youhuiquan')"><img src="../image/youhuiquan.png" /><a>优惠券</a></li>
+				<li tapmode="a" onclick="fopen_list('fuwuzhongxin')"><img src="../image/bangzhufankui.png" /><a>帮助与反馈</a></li>
+			</ul>
+			<ul>
+				<li tapmode="a" onclick="fopen_list('1yuangou')"><img src="../image/1yuangou.png" /><a>1元购</a></li>
+				<li tapmode="a" onclick="fopen_list('tuangou')"><img src="../image/tuangoujie.png" /><a>团购节</a></li>
+				<li tapmode="a" onclick="fopen_list('miaosha')"><img src="../image/miaoshahuodong.png" /><a>秒杀活动</a></li>
+				<li tapmode="a" onclick="fopen_list('bimaizhuanqu')"><img src="../image/bimaizhuanqu.png" /><a>必买专区</a></li>
+			</ul>
+		</div>
+		<div class="title-list">
+			<div class="min-title">
+				<span class="t7"></span><span class="t4">猜你喜欢</span><span tapmode="a" class="ty" onclick="fhuanyizu('rexiao');"><span class="t5">换一组</span><span class="t6"></span></span>
+			</div>
+			<div class="neirong2" id="rexiao">
+				<ul>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban1"><img src="../image/default.png" /><a class="a1"></a><a class="a2"></a></li>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban2"><img src="../image/default.png" /><a class="a1"></a><a class="a2"></a></li>
+					<li tapmode="a" onclick="fremove(this,'a');fopengoods(0);" class="ban3"><img src="../image/default.png" /><a class="a1"></a><a class="a2"></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/jQueryRotate.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var gao = api.winHeight;
+		fhuanyizu('rexiao');
+		fget_dingdan_number();
+		fyslogin();
+		fget_sj_status();
+		//fcz();
+	};
+	function fremove(obj,n)
+	{
+		$api.removeCls(obj,n);
+	}
+	function fopen_list(n)
+	{
+//		if(n=='fenxiaozhongxin')
+//		{
+//			var wxPay = api.require('wxPay');
+//			wxPay.config({
+//			     apiKey: '',
+//			     mchId: '',
+//			     partnerKey: '',
+//			     notifyUrl: ''
+//			}, function(ret, err){
+//			     if(ret.status){
+//			        alert('配置商户支付参数成功');
+//			     }else{
+//			         alert(err.code);
+//			     }
+//			});
+//			wxPay.pay({
+//			     description: 'iPad mini 16G 白色',
+//			     totalFee: '888',
+//			     tradeNo: '1217752501201407033233368018',
+//			     spbillCreateIP: '196.168.1.1',
+//			     deviceInfo: '013467007045764',
+//			     detail: 'iPad mini 16G 白色',
+//			     attach: '说明',
+//			     feeType: 'CNY',
+//			     timeStart: '20091225091010',
+//			     timeExpire: '20091227091010',
+//			     goodsTag: 'WXG',
+//			     productId: '12235413214070356458058',
+//			     openId: 'oUpF8uMuAJO_M2pxb1Q9zNjWeS6o'
+//			},function(ret, err){
+//			     if(ret.status){
+//			         alert(ret.result);
+//			     }else{
+//			         alert(err.code);
+//			     }
+//			});
+//		}
+		if(n=='0yuangou' || n=='1yuangou')
+		{
+			api.toast({
+				msg: '功能开发中！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(n=='all_dingdan' || n=='daifukuan' || n=='daifahuo' || n=='daishouhuo' || n=='wallet' || n=='collection' || n=='fenxiaozhongxin' || n=='woshishangjia')
+		{
+			var login=$api.getStorage('login');
+			if(login=='0' || login==0)
+			{
+				api.toast({
+					msg: '请先登录！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+		}
+				api.openWin({
+			        name: n+'_header',
+			        url: n+'_header.html',
+//			        animation:{
+//			        	type:"movein",                //动画类型（详见动画类型常量）
+//					    subType:"from_right",       //动画子类型（详见动画子类型常量）
+//					    duration:300 
+//			        }
+		        });
+	}
+	function fopen_woshishangjia()
+	{
+		var login=$api.getStorage('login');
+			if(login=='0' || login==0)
+			{
+				api.toast({
+					msg: '请先登录！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+		var isShop=$api.getStorage('isShop');
+		if(isShop==1 || isShop=='1')
+		{
+			api.openWin({
+			        name: 'woshishangjia_header',
+			        url: 'woshishangjia_header.html'
+		   });
+		}
+		else if(isShop==0 || isShop=='0')
+		{
+			api.openWin({
+			        name: 'xitongtishi_header',
+			        url: 'xitongtishi_header.html',
+			        pageParam:{
+			        	text:'资料已提交，请等待审核!'
+			        }
+		   });
+		}
+		else
+		{
+			api.openWin({
+			        name: 'ruzhuxieyi_header',
+			        url: 'ruzhuxieyi_header.html'
+		   });
+		}
+	}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+function fhuanyizu(name)
+{
+	$('.t6').eq(0).rotate({duration:2000,animateTo:360,angle:0});
+	api.ajax({
+            url: YAH_ajax_name+'huanyizu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	huan_name:name
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	html+='<li tapmode="" onclick="fopengoods('+ret[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /><a class="a1">'+ret[i].goodsName+'</a><a class="a2">￥'+ret[i].shopPrice+'</a></li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById(name).innerHTML=html;
+                 api.parseTapmode();
+                 $api.setStorage(name,ret);
+            }else {
+            	//fduanwang();
+            	var ret2=$api.getStorage(name);
+            	var html='<ul>';
+                 for(var i=0;i<ret2.length;i++){
+                 	html+='<li tapmode="" onclick="fopengoods('+ret2[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret2[i].goodsImg+'" /><a class="a1">'+ret2[i].goodsName+'</a><a class="a2">￥'+ret2[i].shopPrice+'</a></li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById(name).innerHTML=html;
+                 api.parseTapmode();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fget_dingdan_number()
+{
+		var pan=$api.getStorage('login');
+		if(pan=='0' || pan==0) return;
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_dingdan_number.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(JSON.stringify(ret));
+            	document.getElementById("daifu_n").innerHTML=ret[0]['daifu'];
+            	document.getElementById("daifa_n").innerHTML=ret[0]['daifa'];
+            	document.getElementById("daishou_n").innerHTML=ret[0]['daishou'];
+            	document.getElementById("daipingjia_n").innerHTML=ret[0]['daipingjia'];
+            	document.getElementById("tuikuan_n").innerHTML=ret[0]['tuikuan'];
+            	if(ret[0]['daifu']==0) document.getElementById("daifu_n").style.display="none";
+            	else document.getElementById("daifu_n").style.display="block";
+            	
+            	if(ret[0]['daifa']==0) document.getElementById("daifa_n").style.display="none";
+            	else document.getElementById("daifa_n").style.display="block";
+            	
+            	if(ret[0]['daishou']==0) document.getElementById("daishou_n").style.display="none";
+            	else document.getElementById("daishou_n").style.display="block";
+            	
+            	if(ret[0]['daipingjia']==0) document.getElementById("daipingjia_n").style.display="none";
+            	else document.getElementById("daipingjia_n").style.display="block";
+            	
+            	if(ret[0]['tuikuan']==0) document.getElementById("tuikuan_n").style.display="none";
+            	else document.getElementById("tuikuan_n").style.display="block";
+                api.parseTapmode();
+            }else {
+            	document.getElementById("daifu_n").style.display="none";
+            	document.getElementById("daifa_n").style.display="none";
+            	document.getElementById("daishou_n").style.display="none";
+            	document.getElementById("daipingjia_n").style.display="none";
+            	document.getElementById("tuikuan_n").style.display="none";
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fopen_login()
+{
+	api.openWin({
+	    name: 'login_header',
+	    url: 'login_header.html'
+    });
+}
+function fopen_user_info()
+{
+	api.openWin({
+	    name: 'user_info_header',
+	    url: 'user_info_header.html'
+    });
+}
+function fset_user_name(name)
+{
+	document.getElementById("tou-list-2").innerHTML=name;
+}
+function fset_user_img(img)
+{
+	document.getElementById("yq-w").style.display="none";
+	document.getElementById("user_img").style.display="block";
+	if(img!=null && img!='null') document.getElementById("user_img_src").src=$api.getStorage("YAH_web")+'/'+img;
+}
+function fcz()
+{
+	var login=$api.getStorage('login');
+	if(login=='1')
+	{
+		document.getElementById("yq-w").style.display="none";
+		document.getElementById("user_img").style.display="block";
+	}
+	var img=$api.getStorage('user_img');
+	if(img!=null && img!='null') document.getElementById("user_img_src").src=$api.getStorage("YAH_web")+'/'+img;
+}
+function fyslogin()
+{
+		var login=$api.getStorage('login');
+		if(login=='0') return;
+		var zh=$api.getStorage('user_zh');
+	    var pwd=$api.getStorage('user_pwd');
+	    api.ajax({
+	            url: YAH_ajax_name+'login.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	zh:zh,
+	                	pwd:pwd
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0]['chenggong']=='false')
+	            	{
+//	            		api.toast({
+//							msg: '账号不存在！',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+	            	}
+	            	else if(ret[0]['chenggong']=='-1')
+	            	{
+//	            		api.toast({
+//							msg: '密码错误！',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+	            	}
+	            	else if(ret[0]['chenggong']=='true')
+	            	{
+//		            	api.toast({
+//							msg: '登陆成功！',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+	            		$api.setStorage('login','1');
+	            		$api.setStorage('user_id',ret[0]['userId']);
+	            		$api.setStorage('user_phone',ret[0]['userPhone']);
+	            		$api.setStorage('user_name',ret[0]['userName']);
+	            		$api.setStorage('user_img',ret[0]['userPhoto']);
+	                    fset_user_name($api.getStorage('user_name'));
+	                    fset_user_img($api.getStorage('user_img'));
+	            	}
+	            	else
+	            	{
+	            		fduanwang();
+	            	}
+	            }else {
+	            	//fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+}
+function fopen_jifen()
+{
+	api.execScript({
+	   	name:'root',
+	    script: 'randomSwitchBtn("1","jifen",2);'
+    });
+}
+function fget_sj_status()
+{
+	var login=$api.getStorage('login');
+	if(login=='0' || login==0)
+	{
+		return;
+	}
+	var user_id=$api.getStorage('user_id');
+	api.ajax({
+            url: YAH_ajax_name+'get_sj_status.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                $api.setStorage('isShop',ret[0].status);
+            }else {
+            	$api.setStorage('isShop','-1');
+            	//fduanwang();
+				//    msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	            //});
+            };
+        });
+}
+function fopen_shezhi()
+{
+	//fclose_user();
+}
+function fclose_user()
+{
+	$api.setStorage('login','0');
+	$api.setStorage('app_token_value','');
+	document.getElementById("yq-w").style.display="block";
+	document.getElementById("user_img").style.display="none";
+	document.getElementById("daifu_n").style.display="none";
+	document.getElementById("daifa_n").style.display="none";
+	document.getElementById("daishou_n").style.display="none";
+	document.getElementById("daipingjia_n").style.display="none";
+	document.getElementById("tou-list-2").innerHTML='用户名登陆';
+	api.toast({
+		msg: '退出成功！',
+		duration: 2000,
+		location: 'bottom'
+	});
+}
+</script>
+</html>

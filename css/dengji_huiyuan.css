@@ -1,0 +1,75 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #fff;
+    padding-bottom: 1px;
+}
+body{
+	background-color: #fff;
+    width: 100%;
+    padding-bottom:50px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+}
+.a{
+    background-color:#ccc !important;
+}
+#main ul{
+
+}
+#main ul li{
+	border-bottom:1px solid #eee;
+	height: 80px;
+	padding:10px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+#main ul li .left{
+	width: 80px;
+	height: 80px;
+	margin-right: 10px;
+}
+
+#main ul li .con{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+}
+#main ul li .con .s1{
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+	line-height: 20px;
+}
+#main ul li .con .s2{
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+	
+}
+#main ul li .con .s3{
+	display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+	line-height: 20px;
+}
+#main ul li .con .title{
+	color:#999;
+}
+#main ul li .con .mobile{
+
+}
+#main ul li .con .order_num{
+	color:red;
+}
+#main ul li .con .money{
+	color:#00c0ff;
+}
+
+#main ul li .right{
+	width: 10px;
+	height: 80px;
+	background-image:url('../image/youjiantou.png');
+    		background-repeat: no-repeat;
+    		background-size:10px 15px;
+    		background-position:0px 32px;
+    		margin:0 10px;
+}

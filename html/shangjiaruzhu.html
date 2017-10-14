@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/shangjiaruzhu.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div class="s1">以下所需要上传的电子版资质文件支持JPG/GIF/PNG格式图片，大小请控制在256K以内</div>
+		<div class="s2">备注：带星号必填项，请确保图片清晰，文字可辨</div>
+	</div>
+	<div class="content">
+		<div class="list"><span>*</span><input type="text" placeholder="店铺名称" maxlength="20" id="shopName"/></div>
+		<div class="list4">
+			<div class="min_list min_list1">
+				<span>*</span>
+				<select id="guo" onchange="fxuan_guo();">
+					<option selected="true" disabled="true">请选择(中国)</option>
+					<option id="1" value="中国">中国</option>
+				</select>
+			</div>
+			<div class="min_list min_list2">
+				<span>*</span>
+				<select id="sheng" onchange="fxuan_sheng();">
+					<option selected="true" disabled="true">请选择(省、市)</option>
+				</select>
+			</div>
+		</div>
+		<div class="list4">
+			<div class="min_list min_list3">
+				<span>*</span>
+				<select id="shi" onchange="fxuan_shi();">
+					<option selected="true" disabled="true">请选择(市)</option>
+				</select>
+			</div>
+			<div class="min_list min_list4">
+				<span>*</span>
+				<select id="qu" onchange="fxuan_qu();">
+					<option selected="true" disabled="true">请选择(区)</option>
+				</select>
+			</div>
+		</div>
+		<div class="list4">
+			<div class="min_list min_list3">
+				<span>*</span>
+				<select id="yiji" onchange="fxuan_yiji();">
+					<option selected="true" disabled="true">请选择(一级分类)</option>
+				</select>
+			</div>
+			<div class="min_list min_list4">
+				<span>*</span>
+				<select id="erji" onchange="fxuan_erji();">
+					<option selected="true" disabled="true">请选择(二级分类)</option>
+				</select>
+			</div>
+		</div>
+		<div class="list"><span>*</span><input type="text" placeholder="店铺详细地址" maxlength="100" id="shopAddress"/></div>
+		<div class="list"><span>*</span><input type="text" placeholder="联系人姓名" maxlength="10" id="name"/></div>
+		<div class="list"><span>*</span><input type="text" placeholder="联系人电话" maxlength="11" id="phone" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></div>
+		<div class="list"><input type="text" placeholder="电子邮件" maxlength="20" id="email"/></div>
+		<div class="list"><input type="text" placeholder="营业执照编号" maxlength="50" id="yyzz"/></div>
+		<div class="list"><span>*</span><input type="text" placeholder="身份证号码" maxlength="18" id="id_number"/></div>
+		<div class="list2">营业执照副本电子照</div>
+		<div class="list3">
+			<div class="s1 xuan_tu"></div><div class="s2" tapmode="l_on" onclick="fxuan_tu(0);">上传图片</div>
+		</div>
+		<div class="list2"><span>*</span>身份证正面电子版</div>
+		<div class="list3">
+			<div class="s1 xuan_tu"></div><div class="s2" tapmode="l_on" onclick="fxuan_tu(1);">上传图片</div>
+		</div>
+		<div class="list2"><span>*</span>身份证反面电子版</div>
+		<div class="list3">
+			<div class="s1 xuan_tu"></div><div class="s2" tapmode="l_on" onclick="fxuan_tu(2);">上传图片</div>
+		</div>
+	</div>
+	<div class="niming" tapmode="" onclick="fni();">我已阅读并同意此协议<a tapmode="" onclick="fopen_xieyi();">《o2o商城入驻协议》</a></div>
+	<div id="statement"></div>
+	<div class="bot"><span class="go" tapmode="go_on" onclick="fgo();">提交</span></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.closeWin({
+        	name:'ruzhu_zhinan_header'
+        });
+        api.execScript({
+	       	name:'ruzhu_zhinan_header',
+	       	frameName:'ruzhuxieyi',
+	        script: 'fclose();'
+        });
+        api.execScript({
+	       	name:'ruzhu_zhinan_header',
+	        script: 'freturn();'
+        });
+        fset_yiji();
+	};
+	var guo='',guo_id='';
+	var sheng='',sheng_id='';
+	var shi='',shi_id='';
+	var qu='',qu_id='';
+	var yiji='',yiji_id='';
+	var erji='',erji_id='';
+	var sc_num=0,img_src='';
+	var src1='',src2='',src3='';
+	var bd_num=0;
+	var ni=0;
+	function fxuan_guo()
+	{
+        var objS = document.getElementById("guo");
+        var id=$('#guo option').eq(objS.selectedIndex).attr('id');
+        var value=$('#guo option').eq(objS.selectedIndex).attr('value');
+        guo=value;
+        guo_id=id;
+        if(guo_id==1 || guo_id=='1') fset_sheng(0);
+    }
+    function fset_sheng(id)
+    {
+    	var ret=$api.getStorage("address_list");
+		var html='<option selected="true" disabled="true">请选择(省、市)</option>';
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==id)
+			{
+				html+='<option id="'+ret[i].areaId+'" value="'+ret[i].areaName+'">'+ret[i].areaName+'</option>';
+			}
+		}
+		document.getElementById("sheng").innerHTML=html;
+		api.parseTapmode();
+    }
+    function fxuan_sheng()
+    {
+    	var objS = document.getElementById("sheng");
+        var id=$('#sheng option').eq(objS.selectedIndex).attr('id');
+        var value=$('#sheng option').eq(objS.selectedIndex).attr('value');
+        sheng=value;
+        sheng_id=id;
+        fset_shi(sheng_id);
+        shi='';
+		qu='';
+		fset_qu(-1);
+    }
+    function fset_shi(id)
+    {
+    	var ret=$api.getStorage("address_list");
+		var html='<option selected="true" disabled="true">请选择(市)</option>';
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==id)
+			{
+				html+='<option id="'+ret[i].areaId+'" value="'+ret[i].areaName+'">'+ret[i].areaName+'</option>';
+			}
+		}
+		document.getElementById("shi").innerHTML=html;
+		api.parseTapmode();
+    }
+    function fxuan_shi()
+    {
+    	var objS = document.getElementById("shi");
+        var id=$('#shi option').eq(objS.selectedIndex).attr('id');
+        var value=$('#shi option').eq(objS.selectedIndex).attr('value');
+        shi=value;
+        shi_id=id;
+        fset_qu(shi_id);
+        qu='';
+    }
+    function fset_qu(id)
+    {
+    	var ret=$api.getStorage("address_list");
+		var html='<option selected="true" disabled="true">请选择(区)</option>';
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==id)
+			{
+				html+='<option id="'+ret[i].areaId+'" value="'+ret[i].areaName+'">'+ret[i].areaName+'</option>';
+			}
+		}
+		document.getElementById("qu").innerHTML=html;
+		api.parseTapmode();
+    }
+    function fxuan_qu()
+    {
+    	var objS = document.getElementById("qu");
+        var id=$('#qu option').eq(objS.selectedIndex).attr('id');
+        var value=$('#qu option').eq(objS.selectedIndex).attr('value');
+        qu=value;
+        qu_id=id;
+    }
+    function fset_yiji()
+    {
+    	var ret=$api.getStorage("fenlei_list");
+		var html='<option selected="true" disabled="true">请选择(一级分类)</option>';
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==0)
+			{
+				html+='<option id="'+ret[i].catId+'" value="'+ret[i].catName+'">'+ret[i].catName+'</option>';
+			}
+		}
+		document.getElementById("yiji").innerHTML=html;
+		api.parseTapmode();
+    }
+    function fxuan_yiji()
+    {
+    	var objS = document.getElementById("yiji");
+        var id=$('#yiji option').eq(objS.selectedIndex).attr('id');
+        var value=$('#yiji option').eq(objS.selectedIndex).attr('value');
+        yiji=value;
+        yiji_id=id;
+        fset_erji(yiji_id);
+    }
+    function fset_erji(id)
+    {
+    	var ret=$api.getStorage("fenlei_list");
+		var html='<option selected="true" disabled="true">请选择(二级分类)</option>';
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==id)
+			{
+				html+='<option id="'+ret[i].catId+'" value="'+ret[i].catName+'">'+ret[i].catName+'</option>';
+			}
+		}
+		document.getElementById("erji").innerHTML=html;
+		api.parseTapmode();
+    }
+    function fxuan_erji()
+    {
+    	var objS = document.getElementById("erji");
+        var id=$('#erji option').eq(objS.selectedIndex).attr('id');
+        var value=$('#erji option').eq(objS.selectedIndex).attr('value');
+        erji=value;
+        erji_id=id;
+    }
+//  function fset_shequ(id)
+//  {
+//  	var ret=$api.getStorage("address_list_communitys");
+//  	//alert(JSON.stringify(ret));
+//		var html='<option selected="true" disabled="true">请选择(区)</option>';
+//		for(var i=0;i<ret.length;i++)
+//		{
+//			if(ret[i].areaId2==id)
+//			{
+//				html+='<option id="'+ret[i].communityId+'" value="'+ret[i].communityName+'">'+ret[i].communityName+'</option>';
+//			}
+//		}
+//		document.getElementById("qu").innerHTML=html;
+//		api.parseTapmode();
+//  }
+    function fxuan_tu(n)
+	{
+		sc_num=n;
+		api.openFrame({
+	        name: 'goodspingjia_tanc',
+	        url: 'goodspingjia_tanc.html',
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        },
+	        pageParam:{
+	        	num:n
+	        }
+        });
+	}
+	function fni()
+	{
+		if(ni==0)
+		{
+			ni=1;
+			$('.niming').eq(0).addClass('niming_on');
+		}
+		else
+		{
+			ni=0;
+			$('.niming').eq(0).removeClass('niming_on');
+		}
+	}
+	function fshangchuan0(src)
+	{
+		img_src=src;
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		$('.xuan_tu').eq(sc_num).html('加载中...');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_sjrz.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		    	
+		         if(ret[0]['pan']==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0]['pan']==1)
+		         {
+				    //$('.xuan_tu').eq(img_num).html('<img src="'+$api.getStorage("YAH_web")+'/'+ret[0]['msg']+'" width="100%"/>');
+				    $('.xuan_tu').eq(0).html(img_src);
+				    src1=ret[0]['msg'];
+		         }
+		    } else {
+		        fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fshangchuan1(src)
+	{
+		img_src=src;
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		$('.xuan_tu').eq(sc_num).html('加载中...');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_sjrz.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		    	
+		         if(ret[0]['pan']==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0]['pan']==1)
+		         {
+				    //$('.xuan_tu').eq(img_num).html('<img src="'+$api.getStorage("YAH_web")+'/'+ret[0]['msg']+'" width="100%"/>');
+				    $('.xuan_tu').eq(1).html(img_src);
+				    src2=ret[0]['msg'];
+		         }
+		    } else {
+		        fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fshangchuan2(src)
+	{
+		img_src=src;
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		$('.xuan_tu').eq(sc_num).html('加载中...');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_sjrz.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		    	
+		         if(ret[0]['pan']==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0]['pan']==1)
+		         {
+				    //$('.xuan_tu').eq(img_num).html('<img src="'+$api.getStorage("YAH_web")+'/'+ret[0]['msg']+'" width="100%"/>');
+				    $('.xuan_tu').eq(2).html(img_src);
+				    src3=ret[0]['msg'];
+		         }
+		    } else {
+		        fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fgo()
+	{
+		var shopName=$('#shopName').val();
+		var shopAddress=$('#shopAddress').val();
+		var name=$('#name').val();
+		var phone=$('#phone').val();
+		var email=$('#email').val();
+		var yyzz=$('#yyzz').val();
+		var id_number=$('#id_number').val();
+//		alert(guo+sheng+shi+qu);
+//		alert(shopName+","+shopAddress+","+name+","+phone+","+email+","+yyzz+","+id_number);
+//		alert("src1:"+src1);
+//		alert("src2:"+src2);
+//		alert("src3:"+src3);
+		if(shopName=='')
+		{
+			api.toast({
+				msg: '店铺名称不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(guo=='' || sheng=='' || shi=='' || qu=='')
+		{
+			api.toast({
+				msg: '请选择地区！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(yiji_id=='' || erji_id=='')
+		{
+			api.toast({
+				msg: '请选择分类！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(shopAddress=='' || shopAddress==" ")
+		{
+			api.toast({
+				msg: '详细地址不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(name=='' || name==" ")
+		{
+			api.toast({
+				msg: '联系人姓名不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(phone=='' || phone==" ")
+		{
+			api.toast({
+				msg: '联系人电话不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(id_number=='' || id_number==" ")
+		{
+			api.toast({
+				msg: '身份证号码不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(src2=='' || src2==" ")
+		{
+			api.toast({
+				msg: '请上传身份证正面电子版！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(src3=='' || src3==" ")
+		{
+			api.toast({
+				msg: '请上传身份证反面电子版！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(ni==0)
+		{
+			api.toast({
+				msg: '请勾选入驻协议！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var lon=$api.getStorage('lon');
+		var lat=$api.getStorage('lat');
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'提交中...'});
+		api.ajax({
+            url: YAH_ajax_name+'shangjiaruzhu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	shopName:shopName,
+                	sheng:sheng_id,
+                	shi:shi_id,
+                	qu:qu_id,
+                	yiji_id:yiji_id,
+                	erji_id:erji_id,
+                	shopAddress:shopAddress,
+                	xxAddress:sheng+shi+qu+shopAddress,
+                	name:name,
+                	phone:phone,
+                	email:email,
+                	yyzz:yyzz,
+                	id_number:id_number,
+                	src1:src1,
+                	src2:src2,
+                	src3:src3,
+                	lon:lon,
+                	lat:lat
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	api.execScript({
+	                   	name:'root',
+	                   	frmaeName:'my',
+	                    script: 'fget_sj_status();'
+                    });
+                if(ret[0].pan==-1)
+                {
+                	api.alert({
+					    msg:ret[0].msg,
+					    bottoms:['返回']
+					}, function(ret, err){
+					    if( ret ){
+					        if(ret.buttonIndex==1)
+				        	{
+//				        		api.closeWin({
+//				                });
+				        	}
+					    }else{
+					        // alert( JSON.stringify( err ) );
+					    }
+					});
+                }
+                else if(ret[0].pan==1)
+                {
+                	api.execScript({
+	                   	name:'root',
+	                   	frameName:'my',
+	                    script: 'fget_sj_status();'
+                    });
+                	api.alert({
+					    msg:ret[0].msg,
+					    bottoms:['返回']
+					}, function(ret, err){
+					    if( ret ){
+					        if(ret.buttonIndex==1)
+				        	{
+				        		api.closeWin({
+				                });
+				        	}
+					    }else{
+					        // alert( JSON.stringify( err ) );
+					    }
+					});
+                }
+                else fduanwang();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_xieyi()
+	{
+		api.openWin({
+	        name: 'ruzhuxieyi_header',
+	        url: 'ruzhuxieyi_header.html'
+        });
+	}
+</script>
+</html>

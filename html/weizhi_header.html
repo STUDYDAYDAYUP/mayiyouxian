@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/header.css"/>
+    <style>
+    	body{
+    		background-color:#f2f2f2;
+    	}
+    </style>
+</head>
+<body>
+<div id="wrap">
+	<header id="headers">
+        <div id="goshop" class="topbar ">
+	        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+	      	<div class="topzhong" id="title"></div>
+	      	<!--<div tapmode="a" class="topyou">编辑</div>-->
+	      	<div tapmode="a" class="topyou_tu" onclick="fopen_goshop();"></div>
+        </div>
+	</header>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+function freturn()
+{
+	api.closeWin({
+    });
+}
+	apiready = function(){
+			api.parseTapmode();
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    		}
+    	}
+    	document.getElementById("title").innerHTML=$api.getStorage('dq_address');
+    	fopen_bMap();
+    	fdingwei();
+    	fget_address_for_lon();
+    	fset_bz_info();
+    	//setTimeout("fopencontent()",200);
+	};
+	var to_lon=0;
+	var to_lat=0;
+	function fset_xianlu()//设置线路
+	{
+		var map = api.require('bMap');
+		map.searchRoute({
+		    id: 1,
+		    type: 'walk',
+		    policy: 'ecar_fee_first',
+		    start: {
+		        lon: $api.getStorage('lon'),
+		        lat: $api.getStorage('lat')
+		    },
+		    end: {
+		        lon: to_lon,
+		        lat: to_lat
+		    }
+		}, function(ret, err) {
+		    if (ret.status) {
+		        //api.alert({ msg: JSON.stringify(ret) });
+		         map.drawRoute({
+		            id: 1,
+		            autoresizing: true,
+		            index: 0,
+		            styles: {
+		                start: {
+		                    icon: 'widget://image/bmap_start.png'
+		                },
+		                end: {
+		                    icon: 'widget://image/bmap_end.png'
+		                }
+		            }
+		        }, function(ret) {
+		            //api.alert({ msg: JSON.stringify(ret) });
+		        });
+		    }
+		});
+	}
+	function fset_bz_info()//设置标注信息
+	{
+		var map = api.require('bMap');
+		map.setBubble({
+		    id: 0,
+		    bgImg: 'widget://res/bubble_bg.png',
+		    content: {
+		        title: $api.getStorage('dq_ditu_title'),
+		        subTitle: $api.getStorage('dq_address'),
+		        illus: $api.getStorage('dq_ditu_img')
+		    },
+		    styles: {
+		        titleColor: '#000',
+		        titleSize: 16,
+		        subTitleColor: '#999',
+		        subTitleSize: 12,
+		        illusAlign: 'left'
+		    }
+		}, function(ret) {
+		    if (ret) {
+		        //alert(JSON.stringify(ret));
+		    }
+		});
+	}
+	function fset_bz(lon,lat)//设置标注信息
+	{
+		var map = api.require('bMap');
+		map.addAnnotations({
+		    annotations: [{
+		        id: 0,
+		        lon: lon,
+		        lat: lat
+		    }],
+		    icon: 'widget://',
+		    draggable: false
+		}, function(ret) {
+		    if (ret) {
+		        //alert(JSON.stringify(ret));
+		    }
+		});
+	}
+	function fget_address_for_lon()//中文地址转经纬度
+	{
+		var map = api.require('bMap');
+		map.getCoordsFromName({
+		    city: '中国',
+		    address: $api.getStorage('dq_address')
+		}, function(ret, err) {
+		    if (ret.status) {
+		        fset_bz(ret.lon,ret.lat);
+		        to_lon=ret.lon;
+		        to_lat=ret.lat;
+		        fset_xianlu();
+		    }
+		    else
+		    {
+		    	api.toast({
+					msg: '找不到该位置',
+					duration: 2000,
+					location: 'bottom'
+				});
+		    }
+		});
+	}
+	function fdingwei()//定位当前位置
+	{
+	    	api.toast({
+				msg: '正在获取位置',
+				duration: 2000,
+				location: 'bottom'
+			});
+	    	var bMap = api.require('bMap');
+			bMap.getLocation({
+			    accuracy: '10m',
+			    autoStop: true,
+			    filter: 1
+			}, function(ret, err){
+			    if(ret.status){
+			        //alert(JSON.stringify(ret));
+			        if(ret.status==true)
+			        {
+			        	$api.setStorage('lon',ret.lon);
+			        	$api.setStorage('lat',ret.lat);
+			        	fopen_bMap();
+			        }
+			    }else{
+			        //alert(err.code);
+			    }
+			});
+	}
+	function fopen_bMap()//打开百度地图界面
+	{
+		var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+		var map = api.require('bMap');
+		map.open({
+		    rect: {
+		        x : 0,
+					y : header_h,
+					w : api.winWidth,
+					h : rect_h
+		    },
+		    center: {
+		        lon: $api.getStorage('lon'),
+		        lat: $api.getStorage('lat')
+		    },
+		    zoomLevel: 15,
+		    showUserLocation: true,
+		    fixedOn: api.frameName,
+		    fixed: true
+		}, function(ret) {
+		    if (ret.status) {
+		        //alert('地图打开成功');
+		    }
+		});
+	}
+function fopencontent()
+{
+	var $header = $api.dom('header');
+			$api.fixIos7Bar($header);
+			var $body = $api.dom('body');
+			var header_h = $api.offset($header).h;
+			var body_h = $api.offset($body).h;
+			var rect_h = api.winHeight - header_h;
+			
+	    	api.openFrame({
+		        name: 'chaoshi',
+		        url: 'chaoshi.html',
+		        vScrollBarEnabled:false,
+            	hScrollBarEnabled:false,
+            	bounces:true,
+		        rect: {
+			        x : 0,
+					y : header_h,
+					w : 'auto',
+					h : rect_h
+		        },
+		        bgColor:"#f2f2f2"
+	        });
+}
+function fopen_goshop()
+	{
+		api.closeWin({name:'bimaizhuanqu_header'});
+		api.closeWin({name:'chaoshi_header'});
+		api.closeWin({name:'dingdan_header'});
+		api.closeWin({name:'dingdan_xx_header'});
+		api.closeWin({name:'fenlei_header'});
+		api.closeWin({name:'fuzhuangcheng_header'});
+		api.closeWin({name:'miaosha_header'});
+		api.closeWin({name:'tuangou_header'});
+		api.closeWin({name:'wuliu_xx_header'});
+		api.execScript({
+			name:'root',
+	        script: 'randomSwitchBtn("","goshop",3);'
+        });
+        api.closeWin({name:'goods_header'});
+	}
+</script>
+</html>

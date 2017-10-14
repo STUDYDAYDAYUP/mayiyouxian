@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/daifahuo.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.goods-explain{
+            width: 100%;
+            font-size: 11px;
+            color: #656565;
+            height: 16px;
+            line-height: 16px;
+            padding: 4px 0 2px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+        }
+        .goods-spec{
+            width: 150%;
+            padding: 10px 0 30px 0;
+        }
+        .goods-spec span{
+            display: inline-block;
+            float: left;
+            min-width: 44px;
+            height: 10px;
+            padding: 3px;
+            font-size: 9px;
+            color: #656565;
+            line-height: 12px;
+            text-align: center;
+            border: 1px solid #656565;
+            border-radius: 10px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+	<div id="main">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!-- <div class="shangjia">
+			<div class="min-title">
+				<span class="t1">订单号：大吉祥天</span><span class="t4">买家已付款</span>
+			</div>
+			<div class="goods" tapmode="a0" onclick="fopen_dingdan_xx();">
+				<div class="goods_left"><img src="../image/sp_5.png" /></div>
+				<div class="goods_cen">
+					<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+				</div>
+				<div class="goods_right"><div class="goods_money">￥13</div><div class="goods_num">X2</div></div>
+			</div>
+			<div class="goods" tapmode="a0" onclick="fopen_dingdan_xx();">
+				<div class="goods_left"><img src="../image/sp_5.png" /></div>
+				<div class="goods_cen">
+					<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+				</div>
+				<div class="goods_right"><div class="goods_money">￥13</div><div class="goods_num">X2</div></div>
+			</div>
+			
+			<div class="ps_info">
+				<span class="zhifu">去支付</span>
+				<span class="ps_xx">实付款:<a style="color:#df5354;">￥26</a> (含运费：￥0)</span>
+			</div>
+			<div class="caozuo">
+				<div tapmode="del_on" class="del">付款</div>
+				<div tapmode="look_wl_on" class="look_wl" onclick="">取消订单</div>
+			</div>
+		</div> -->
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		get_order_list();
+		//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    get_order_list();
+				api.parseTapmode();
+				api.refreshHeaderLoadDone();
+			});
+	};
+	
+	function fgo_pay(orderId)
+	{
+		var ret='[{"orderId":'+orderId+'}]';
+		ret=eval('('+ret+')');
+		api.openWin({
+			name: 'zhifu_header',
+			url: 'zhifu_header.html',
+			pageParam:{
+			       json:ret
+			}
+		});
+	}
+	
+	function fquxiao_pan(orderId)
+	{
+		api.confirm({
+		    title: '提示',
+		    msg: '确定取消该订单吗？',
+		    buttons: ['确定', '取消']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		fquxiao(orderId);
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function fquxiao(orderId)
+	{
+			api.showProgress({title:'取消中...'});
+			alert(orderId);
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_orderStatus.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	orderId:orderId,
+	                	user_id:user_id,
+	                	status:'-1'
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 api.toast({
+							    msg: '已取消',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+						
+						get_order_list();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	
+	function get_order_list(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=get_order_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	type:2,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	if (ret) {
+                 var html = '';
+                 $(ret).each(function(i,val){
+                     html += '<div class="shangjia"><div class="min-title">';
+                     html += '<span class="t1">订单号：'+val['orderNo']+'</span>';
+                     if(val['effective'] == -1){
+                         html += '<span class="t4">订单无效</span>';
+                     }
+                     else if(val['orderStatus'] == 3){
+                         html += '<span class="t4">配送中</span>';
+                     }
+                     else{
+                         html += '<span class="t4">已完成</span>';
+                     }
+                     
+                     html += '</div>';
+                     $(val['goodslist']).each(function(n,val1){
+                         html += '<div class="goods" tapmode="a0" onclick="fopen_dingdan_xx('+val['orderId']+','+val['effective']+');">';
+                         html += '<div class="goods_left"><img src="'+$api.getStorage("YAH_web")+'/'+val1['goodsThums']+'" /></div>';
+                         html += '<div class="goods_cen">';
+                         html += '<div class="goods_title">'+val1['goodsName']+'</div>';
+                         html += '<div class="goods-explain">'+val1.goodsSpec+'</div>'
+                         if(val1.keywordlist.length > 0 && val1['keywordlist'][0] != ''){
+			                 var abc = 0;
+			                 html += '<div class="goods-spec">';
+			                 $(val1.keywordlist).each(function(m,val2){
+			                      if(abc < 3 ){
+				                      if(val2 != ''){
+				                         html += '<span>'+val2+'</span>';
+				                         abc++
+				                      }
+			                      }
+			                 })
+			                 html += '</div>';
+		                 }
+                         html += '</div>';
+                         html += '<div class="goods_right"><div class="goods_money">￥'+val1['goodsPrice']+'</div><div class="goods_num">X'+val1['goodsNums']+'</div></div>';
+                         html += '</div>';
+                     })
+                     
+                     html += '<div class="ps_info">';
+                     html += '<span class="ps_xx">实付款:<a style="color:#df5354;">￥'+val['needPay']+'</a> (含运费：￥'+val['deliverMoney']+')</span>';
+                     html += '</div>';
+                 })
+                 
+             
+                 $('#main').html(html);
+            }else {
+            	var html='<div style="text-align:center;">暂无订单</div>';
+            	$('#main').html(html);
+            };
+        });
+     
+	}
+
+	function fopen_dingdan_xx(orderId,type)
+	{
+		if(type == 1){
+			api.openWin({
+		        name: 'dingdan_xx_header',
+		        url: 'dingdan_xx_header.html',
+		        pageParam:{
+		        	id:orderId
+		        }
+	        });
+		}
+		
+	}
+</script>
+</html>

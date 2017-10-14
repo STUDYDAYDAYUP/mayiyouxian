@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wallet.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div class="s1">
+			<div class="left">账户余额<div class="money" id="money">0.00<a>元</a></div></div>
+			<div class="right" tapmode="chongzhi_on" onclick="fopen_chongzhi();">充值</div>
+		</div>
+		<!--<div class="s2">
+			<div class="money" id="money">0.00<a>元</a></div>
+		</div>
+		<div class="s3">
+			<div class="left" tapmode="tixian_on" onclick="fopen_tixian();">提现</div>
+			<div class="con"></div>
+			<div class="right" tapmode="chongzhi_on" onclick="fopen_chongzhi();">充值</div>
+		</div>
+		<div class="left">
+			<div>账户余额</div>
+			<div id="money">0.00</div>
+		</div>
+		<div class="right">
+			<div class="chongzhi" tapmode="chongzhi_on" onclick="fopen_chongzhi();">充值</div>
+		</div>-->
+	</div>
+	<div class="list_header">最近30天收支明细</div>
+	<div id="content">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<!--<li>
+				<div class="s1">
+					<div class="left">消费</div>
+					<div class="right">2015-10-30</div>
+				</div>
+				<div class="s2">
+					<div class="left">余额：0.00</div>
+					<div class="z_money">-99.00</div>
+				</div>
+			</li>
+			<li>
+				<div class="s1">
+					<div class="left">消费</div>
+					<div class="right">2015-10-30</div>
+				</div>
+				<div class="s2">
+					<div class="left">余额：0.00</div>
+					<div class="z_money lv">+99.00</div>
+				</div>
+			</li>-->
+			
+			<!--<li>
+				<div class="s1">2016-01-23 07:23</div>
+				<div class="s2"><img src="../image/shanghu_logo.png" /></div>
+				<div class="s3">
+					<div class="t_money">-2922.00</div>
+					<div class="msg">羽绒服2015冬装打流放阿勒快递费挨打</div>
+				</div>
+			</li>
+			<li>
+				<div class="s1">2016-01-23 07:23</div>
+				<div class="s2"><img src="../image/shanghu_logo.png" /></div>
+				<div class="s3">
+					<div class="t_money t_money_lv">2922.00</div>
+					<div class="msg">充值</div>
+				</div>
+			</li>
+			<li>
+				<div class="s1">2016-01-23 07:23</div>
+				<div class="s2"><img src="../image/shanghu_logo.png" /></div>
+				<div class="s3">
+					<div class="t_money">-2922.00</div>
+					<div class="msg">退款</div>
+				</div>
+			</li>-->
+		</ul>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_user();
+		fget_zhangdan();
+	};
+	function fopen_chongzhi()
+	{
+		api.openWin({
+	        name: 'chongzhi_list_header',
+	        url: 'chongzhi_list_header.html'
+        });
+	}
+	function fget_user()
+	{
+		//api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("money").innerHTML=ret[0].userMoney;
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_zhangdan()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_zhangdan.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+//          		html+='<li>';
+//					html+='	<div class="s1">'+getTime(ret[i].time)+'</div>';
+//					if(ret[i].pan==0) html+='	<div class="s2"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].logo+'" /></div>';
+//					else if(ret[i].pan==1) html+='	<div class="s2"><img src="'+ret[i].logo+'" /></div>';
+//					html+='	<div class="s3">';
+					var IncDec='';
+					var lv='';
+					if(ret[i].IncDec==0)
+					{
+						IncDec='-';
+					} 
+					else IncDec='+';
+					if(ret[i].IncDec==1) lv='t_money_lv';
+//					html+='		<div class="t_money '+lv+'">'+IncDec+ret[i].money+'</div>';
+//					html+='		<div class="msg">'+ret[i].remark+'</div>';
+//					html+='	</div>';
+//					html+='</li>';
+					
+					html+='<li>';
+					html+='	<div class="s1">';
+					html+='		<div class="left">'+ret[i].remark+'</div>';
+					html+='		<div class="right">'+getTime2(ret[i].time)+'</div>';
+					html+='	</div>';
+					html+='	<div class="s2">';
+					html+='		<div class="left">余额：'+ret[i].balance+'</div>';
+					html+='		<div class="z_money '+lv+'">'+IncDec+ret[i].money+'</div>';
+					html+='	</div>';
+					html+='</li>';
+            	}
+            	html+='</ul>';
+                document.getElementById("content").innerHTML=html;
+                if(ret.length==0)
+                {
+                	html='<div style="text-align: center;line-height: 50px;">暂无账单</div>';
+            		document.getElementById("content").innerHTML=html;
+                }
+            }else {
+            	//fduanwang();
+            	var html='<div style="text-align: center;line-height: 50px;">暂无账单</div>';
+            	document.getElementById("content").innerHTML=html;
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_tixian()
+	{
+		api.openWin({
+	        name: 'tixian_header',
+	        url: 'tixian_header.html'
+        });
+	}
+	function fopen_ye_shuoming()
+	{
+		api.openWin({
+	        name: 'ye_shuoming_header',
+	        url: 'ye_shuoming_header.html'
+        });
+	}
+</script>
+</html>

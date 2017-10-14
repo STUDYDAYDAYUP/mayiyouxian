@@ -1,0 +1,104 @@
+html{
+    height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+    		margin:0;
+    		width:100%;
+    		height:100%;
+    		background-color:#f2f2f2
+
+    	}
+        .a{
+            background-color:#eee !important;
+        }
+        input,button,select,textarea{outline:none;-webkit-appearance:none;}
+.header{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 70px;
+    padding:60px 0 10px 0;
+    background-color: #fff; 
+    background-image:url('../image/dianpu_bg.png');
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+}
+.header .left{
+	width: 70px;
+	height: 70px;
+	margin:0 10px;
+}
+.header .left img{
+	width: 70px;
+	height: 70px;
+}
+.header .right{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    color:#fff;
+    height:70px;
+}
+.header .right .s1{
+	line-height: 30px;
+}
+.header .right .s2{
+	font-size:12px;
+	line-height: 20px;
+}
+.header .right .s3{
+	font-size:12px;
+	line-height: 20px;
+}
+#main{
+			width:100%;
+			height: 100%;
+			background-color:#fff;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+}
+#main .min_header{
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    border-bottom:1px solid #eee;
+}
+#main .min_header .title{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    height: 50px;
+    line-height: 50px;
+    background-color: #fff;
+    color:#666;
+    border-bottom:2px solid #fff;
+    text-align: center;
+}
+#main .min_header .title_on{
+	border-bottom:2px solid red !important;
+	color:red !important;
+}
+#content{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+		}
+		#left{
+			width:100px;
+			background-color:#f2f2f2;
+		}
+		#right{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            background-color:#fff;
+		}

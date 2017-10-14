@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jifen.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="user_info">
+		<div class="left">
+			<div class="u1" tapmode="" onclick="fopen_my_jf();">我的积分：<span id="my_score">0</span></div>
+			<div class="u2" tapmode="" onclick="fopen_jf_shuoming();">如何获得更多积分？</div>
+		</div>
+		<div class="right" tapmode="duihuan_on" onclick="fopen_jf_duihuanjilu();">兑换记录</div>
+	</div>
+	<!--<div id="header">
+		<div tapmode="" onclick="fopen_list('今日新品');"><img src="../image/jinrixinpin.png"/><span>今日新品</span></div>
+		<div tapmode="" onclick="fopen_list('个护美妆');"><img src="../image/gehumeizhuang.png"/><span>个护美妆</span></div>
+		<div tapmode="" onclick="fopen_list('日常家居');"><img src="../image/richangjiaju.png"/><span>日常家居</span></div>
+		<div tapmode="" onclick="fopen_list('数码家电');"><img src="../image/shumajiadian.png"/><span>数码家电</span></div>
+	</div>-->
+	<!--<div id="tishi_t"><div class="di"></div><div class="ding"><span>兑换商品</span></div></div>
+	<div id="content">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<img src="../image/sp_5.png" />
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="footer"><div class="money">10000积分</div><div class="on" tapmode="on_on">兑换</div></div>
+			</li>
+		</ul>
+	</div>-->
+	
+	<div class="min-title" tapmode="a" onclick="fopen_jf_shangcheng(0);">
+		<span class="t1">积分商城</span><span class="t3"></span><span class="t2">更多好礼</span>
+	</div>
+	<div id="content2" class="content">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+		</ul>-->
+	</div>
+	<div class="min-title" tapmode="a" onclick="fopen_jf_shangcheng(1);">
+		<span class="t1">积分抽奖</span><span class="t3"></span><span class="t2">更多抽奖</span>
+	</div>
+	<div class="kuaibao ccyc">
+		<div class="s1">中奖快报:</div>
+		<div class="da_dong">
+					<div class="min_list ccyc">暂无最新消息</div>
+					<!--<div class="min_list ccyc">恭喜<div class="s2">138****8000</div>获得&nbsp;&nbsp;<div class="s3">炼丹炉</div></div>-->
+					<!--<div class="min_list ccyc">通知1通知1通知1通知1通知1通知1通知1</div>
+					<div class="min_list ccyc">通知2通知2通知2通知2通知2通知2通知2</div>
+					<div class="min_list ccyc">通知3通知3通知3通知3通知3通知3通知3</div>
+					<div class="min_list ccyc">通知4通知4通知4通知4通知4通知4通知4</div>
+					<div class="min_list ccyc">通知5通知5通知5通知5通知5通知5通知5</div>
+					<div class="min_list ccyc">通知6通知6通知6通知6通知6通知6通知6</div>-->
+		</div>
+			<!--恭喜<div class="s2">138****8000</div>获得&nbsp;&nbsp;<div class="s3">炼丹炉</div>-->
+	</div>
+	<div id="content3" class="content">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);" style="margin-left:0;">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+			<li tapmode="" onclick="fopen_jf_goods(0);">
+				<div class="title">iphone6S充电器 颜色随机</div>
+				<div class="title2">iphone6S充电器 颜色随机</div>
+				<img src="../image/sp_5.png" />
+			</li>
+		</ul>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var gao = api.winHeight;
+			var tugao = gao * 0.25;
+			var obj = api.require('UIScrollPicture');
+			var paths = ['widget://image/01.jpg', 'widget://image/02.jpg', 'widget://image/03.jpg', 'widget://image/04.jpg', 'widget://image/05.jpg'];
+			document.getElementById("main").style.marginTop = tugao + "px";
+			obj.open({
+			    rect: {
+			        x: 0,
+			        y: 0,
+			        w: api.winWidth,
+			        h: tugao
+			    },
+			    styles : {
+					caption : {
+						height : 35,
+						color : '#E0FFFF',
+						size : 13,
+						bgColor : '#696969',
+						position : 'bottom'
+					},
+					indicator : {
+						align : 'center',
+						color : '#FFFFFF',
+						activeColor : '#DA70D6'
+					}
+				},
+			    data: {
+			        paths: paths
+			    },
+			    placeholderImg: 'widget://image/default.png',
+			    contentMode: 'scaleToFill',
+			    interval: 3,
+			    fixedOn: api.frameName,
+			    loop: true,
+			    fixed: false
+			}, function(ret, err){
+			    if (ret.status) {
+					if (ret.eventType == 'click') {
+						fonclick_lunbo(ret.index);
+					}
+				}
+			});
+			//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    fget_lunbo();
+			    fget_gonggao();
+				fget_jf_goods(0);
+				fget_jf_goods(1);
+				/*测试用户数据*/
+//				$api.setStorage('user_id','9');
+//				$api.setStorage('login','1');
+				/**/
+				
+			    //api.refreshHeaderLoadDone();
+			    api.parseTapmode();
+			});
+			fget_lunbo();
+			fget_gonggao();
+			fget_jf_goods(0);
+			fget_jf_goods(1);
+	};
+	function fcz()
+	{
+		fget_user();
+		fget_jf_goods(0);
+		fget_jf_goods(1);
+	}
+	function fget_lunbo()
+	{
+		api.ajax({
+	            url: YAH_ajax_name+'get_home_lunbo.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	type:2
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+					var obj = api.require('UIScrollPicture');
+					var paths = '[';
+					for(var i=0;i<ret.length;i++)
+					{
+						if(i==0)
+						{
+							paths+='"'+YAH_web+'/'+ret[i].adFile+'"';
+						}
+						else
+						{
+							paths+=',"'+YAH_web+'/'+ret[i].adFile+'"';
+						}
+					}
+					paths+=']';
+					paths=$api.strToJson(paths);
+					obj.reloadData({
+					    data: {
+					        paths: paths
+					    }
+					});
+					$api.setStorage('jifen_lunbo',ret);
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        });
+	}
+	function fonclick_lunbo(n)
+	{
+		var ret=$api.getStorage('jifen_lunbo');
+			var url=ret[n].adURL;
+			var adId=ret[n].adId;
+			var adURLApp=ret[n].adURLApp;
+			if(adURLApp=='0' || adURLApp=="" || adURLApp=="null" || adURLApp==null)
+			{
+				if(url=='0' || url=="" || url=="null" || url==null || url.length<10) return;
+				if(adId==0);
+				else fadd_ads(adId);
+				 api.openApp({
+		             androidPkg : 'android.intent.action.VIEW',
+		             mimeType : 'text/html',
+		             uri :url,
+		             iosUrl:url
+		         }, function(ret, err) {
+		//           var msg = JSON.stringify(ret);
+		//           api.alert({
+		//            title : 'openApp',
+		//            msg : msg,
+		//            buttons : ['确定']
+		//           });
+		        });
+	        }
+	        else
+	        {
+	        	if(adId==0);
+				else fadd_ads(adId);
+				adURLApp=adURLApp.split("|");
+				if(adURLApp[0]=='G'){
+					fopengoods(adURLApp[1]);
+				}
+				else if(adURLApp[0]=='S'){
+					fopen_dianpu(adURLApp[1]);
+				}
+	        }
+	}
+	function fadd_ads(adId)
+	{
+		api.ajax({
+            url: YAH_ajax_name+'add_ads_count.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	adId:adId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 
+            }else {
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html'
+		});
+	}
+	function fget_user()
+	{
+		var user_id=$api.getStorage('user_id');
+		var login=$api.getStorage('login');
+		if(login==0 || login=='0' || login==undefined)
+		{
+			document.getElementById("my_score").innerHTML=0;
+			return;
+		}
+		api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("my_score").innerHTML=ret[0].userScore;
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_jf_goods(type)
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_jf_goods_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	start:0,
+                	num:4,
+                	type:type
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	var lin='';
+                 	if(i%2==0) lin='margin-left:0;';
+//					html+='<li tapmode="" onclick="fopen_jf_goods('+ret[i].goodsId+');" style="'+lin+'">';
+//					html+='	<img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" />';
+//					html+='	<div class="title">'+ret[i].goodsName+'</div>';
+//					html+='	<div class="footer"><div class="money">'+ret[i].shopPrice+'积分</div><div class="on" tapmode="on_on" onclick="event.cancelBubble = true;fgo('+ret[i].goodsId+');">兑换</div></div>';
+//					html+='</li>';
+					if(type==1) html+='<li tapmode="" onclick="fopen_jfcj_goods('+ret[i].goodsId+');" style="'+lin+'">';
+					else html+='<li tapmode="" onclick="fopen_jf_goods('+ret[i].goodsId+');" style="'+lin+'">';
+					html+='	<div class="title">'+ret[i].goodsName+'</div>';
+					html+='	<div class="title2">'+ret[i].goodsDesc+'</div>';
+					html+='	<img src="'+YAH_web+'/'+ret[i].goodsImg+'" />';
+					html+='</li>';
+                 }
+                 html+='</ul>';
+                 if(ret.length==0) html='<div class="no_data">暂无商品</div>';
+				 if(type==0) document.getElementById("content2").innerHTML=html;
+				 else if(type==1) document.getElementById("content3").innerHTML=html;
+                 api.parseTapmode();
+            }else {
+            	var html='';
+				html+='<div class="no_data">暂无商品</div>';
+				if(type==0) document.getElementById("content2").innerHTML=html;
+				else if(type==1) document.getElementById("content3").innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.hideProgress();//隐藏加载进度框
+        });
+	}
+	function fopen_jf_shuoming()
+	{
+		api.openWin({
+	        name: 'jf_shuoming_header',
+	        url: 'jf_shuoming_header.html'
+        });
+	}
+	function fopen_my_jf()
+	{
+		var login=$api.getStorage('login');
+		if(login==0 || login=='0' || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'my_jf_header',
+	        url: 'my_jf_header.html'
+        });
+	}
+	function fopen_jf_duihuanjilu()
+	{
+		var login=$api.getStorage('login');
+		if(login==0 || login=='0' || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'jf_duihuanjilu_header',
+	        url: 'jf_duihuanjilu_header.html'
+        });
+	}
+	function fopen_jf_goods(goods_id)
+	{
+		api.openWin({
+	        name: 'jf_goods_header',
+	        url: 'jf_goods_header.html',
+	        pageParam:{
+	        	goods_id:goods_id,
+	        	type:0
+	        }
+        });
+	}
+	function fopen_jfcj_goods(goods_id)
+	{
+		api.openWin({
+	        name: 'jf_goods_header',
+	        url: 'jf_goods_header.html',
+	        pageParam:{
+	        	goods_id:goods_id,
+	        	type:1
+	        }
+        });
+	}
+	function fopen_jf_shangcheng(n)
+	{
+		api.openWin({
+	        name: 'jifen_shangcheng_header',
+	        url: 'jifen_shangcheng_header.html',
+	        pageParam:{
+	        	type:n
+	        }
+        });
+	}
+	function fgo(id)
+	{
+		var login=$api.getStorage('login');
+		if(login==0 || login=='0')
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'jf_zhifu_header',
+	        url: 'jf_zhifu_header.html',
+	        pageParam:{
+	        	goods_id:id
+	        }
+        });
+	}
+	function fopen_list(n)
+	{
+		api.openWin({
+	        name: n+'_header',
+	        url: n+'_header.html'
+        });
+	}
+	/*******中奖快报********/
+	var dong_jsq=window.setInterval("fgonggao_gun();",2000);
+	var ge=0;
+	var dq_dong=0;
+	var stat_dong=0;
+	var end_dong=0;
+	var dong_list_jsq;
+	window.setInterval("fget_gonggao()",60000);
+	function fgonggao_gun()
+	{
+		var dong=document.getElementsByClassName('da_dong')[0];
+		var dong_list=dong.getElementsByClassName("min_list");
+		ge++;
+//		var lin="当前第:"+ge+"条,一共:"+dong_list.length+"条";
+//		api.execScript({
+//	       	namr:'root',
+//	        script: 'document.getElementById("home").innerHTML=\''+lin+'\';'
+//      });
+		//alert("当前第:"+ge+"条,一共:"+dong_list.length+"条");
+		if(ge>=dong_list.length)
+		{
+			ge=0;
+			end_dong=30*ge*-1;
+			dq_dong=30;
+			dong_list_jsq=window.setInterval("fgonggao_gun_list()",10);
+			//ong.style.top=dq_dong+"px";
+		}
+		else
+		{
+			end_dong=30*ge*-1;
+			dong_list_jsq=window.setInterval("fgonggao_gun_list()",10);
+		}
+	}
+	function fgonggao_gun_list()
+	{
+		var dong=document.getElementsByClassName('da_dong')[0];
+		dq_dong--;
+		if(dq_dong<=end_dong)
+		{
+			clearInterval(dong_list_jsq);
+			return;
+		}
+		dong.style.top=dq_dong+"px";
+	}
+	function fget_gonggao()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_luck_gonggao.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	start:0,
+                	num:10
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(JSON.stringify(ret));
+				var html='';
+				for(var i=0;i<ret.length;i++)
+				{
+					html+='<div class="min_list ccyc">';
+					html+='恭喜<div class="s2">'+ret[i].userPhone+'</div>获得&nbsp;&nbsp;<div class="s3">'+ret[i].goodsName+'</div>';
+					html+='</div>';
+					//html+='<div class="min_list ccyc">'+ret[i].adName+'</div>';
+				}
+				if(ret.length==0) html='<div class="min_list ccyc">暂无最新消息</div>';
+				document.getElementsByClassName('da_dong')[0].innerHTML=html;
+				api.parseTapmode();
+				//$api.setStorage('gonggao_lunbo',ret);
+				clearInterval(dong_jsq);
+				dong_jsq=window.setInterval("fgonggao_gun()",2000);
+//				ge=0;
+//				dq_dong=50;
+//				stat_dong=0;
+//				end_dong=0;
+//				clearInterval(dong_list_jsq);
+//				dong_list_jsq=window.setInterval("fgonggao_gun_list()",10);
+//				dong_jsq=window.setInterval("fgonggao_gun()",2000);
+            }else {
+            	var html='<div class="min_list ccyc">暂无最新消息</div>';
+            	document.getElementsByClassName('da_dong')[0].innerHTML=html;
+            	api.parseTapmode();
+            	clearInterval(dong_jsq);
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	/********************/
+</script>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<title>title</title>
+<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+<link rel="stylesheet" type="text/css" href="../css/fenlei_xin.css"/>
+<style>
+    html, body{
+        width: 100%;
+        height: 100%;
+        background: #f2f2f2;
+    }
+    #main{
+        width: 100%;
+        /*height: 100%;*/
+        position: relative;
+    }
+    #mainLeft{
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 26.66%;
+        height: 100%;
+        background-color: #fff;
+        border-right: 1px solid #e0e0e0;
+        box-sizing: border-box;
+        overflow-y: auto;
+        -webkit-overflow-scrolling:touch;
+    }
+    #mainLeft::-webkit-scrollbar {
+    	display: none;
+    }
+    #mainRight{
+        /*position: absolute;
+        top: 0;
+        right: 0;*/
+        width: 73.33%;
+        padding-left: 26.66%;
+        background-color: #fff;
+    }
+</style>
+</head>
+<body>
+<div id="main">
+    <div id="mainLeft">
+        <div class="cont c_left">
+            <ul class="l_list_box">
+                <!-- <li class="l_list active">时蔬素食</li>
+                <li class="l_list">新鲜水果</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div id="mainRight">
+        <div class="cont c_right">
+            <!-- <div class="header_img"><img src="../image/02.jpg" alt=""></div>
+            
+            <div class="goods">
+            
+                <div class="item"> 用不上可以删了
+                    <div class="title"><span class="name">新鲜蔬菜</span><span class="all">全部</span></div>
+                    <ul class="r_list_box clearfix">
+                        <li class="r_list"><div class="pic"><img src="../image/pic_thumbnail.png" alt=""></div><p class="name">青菜</p></li>
+                        <li class="r_list"><div class="pic"><img src="../image/pic_thumbnail.png" alt=""></div><p class="name">萝卜</p></li>
+                        <li class="r_list"><div class="pic"><img src="../image/pic_thumbnail.png" alt=""></div><p class="name">各有</p></li>
+                        <li class="r_list"><div class="pic"><img src="../image/pic_thumbnail.png" alt=""></div><p class="name">所爱</p></li>
+                        <li class="r_list"><div class="pic"><img src="../image/pic_thumbnail.png" alt=""></div><p class="name">各有所爱</p></li>
+                    </ul>
+                </div>
+            
+                
+            
+            </div> -->
+        </div>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+
+apiready = function() {
+    get_fenlei_list();
+    api.setRefreshHeaderInfo({
+        visible: true,
+        loadingImg: '',
+        bgColor: '#f2f2f2',
+        textColor: '#fff',
+        textDown: '下拉刷新...',
+        textUp: '松开刷新...',
+        showTime: true
+    }, function(ret, err){
+        api.refreshHeaderLoading();
+        get_fenlei_list();
+        api.refreshHeaderLoadDone();
+    });
+}
+$(function(){
+    $("#mainLeft").on('touchstart',function(){
+        var d_h = $(document).outerHeight(true);
+        var b_h = $('body').outerHeight(true);
+        var m_h = $(".c_left").outerHeight(true);
+        var oldscroll = $('body').scrollTop();
+        if (oldscroll == 0) {
+            $('body').scrollTop(1);
+            $('body').css('padding-top',1);
+        }
+        if (oldscroll == (d_h - b_h)) {
+            $('body').scrollTop(oldscroll-1);
+            $('body').css('padding-bottom',1);
+        }
+        // console.log(oldscroll);
+        $("#mainLeft").on('touchmove',function(){
+            if ($('body').scrollTop() <= 1 && $("#mainLeft").scrollTop() != 0) {
+                $('body').scrollTop(1);
+                $('body').css('padding-top',1);
+
+                $("#mainLeft").one('touchend',function(){
+                    $('body').scrollTop(0);
+                    $('body').css('padding',0);
+                })
+            }
+            if ($('body').scrollTop() >= (d_h - b_h) && $("#mainLeft").scrollTop() <= (m_h - b_h)) {
+                $('body').scrollTop(d_h - b_h - 1);
+                $('body').css('padding-bottom',1);
+
+                $("#mainLeft").one('touchend',function(){
+                    $('body').scrollTop(d_h - b_h);
+                    $('body').css('padding',0);
+                })
+            }
+        })
+        $("#mainLeft").one('touchend',function(){
+            $('body').css('padding',0);
+        })
+    })
+
+})
+function goods_list(catId,cid,catName){
+    api.openWin({
+        name: 'fenlei_shaixuan_header',
+        url: 'fenlei_shaixuan_header.html',
+        pageParam:{
+            catId:catId,
+            cid:cid,
+            catName:catName
+        }
+    });
+}
+
+
+function fnLoadImage(ele_) {
+    var dataUrl = $api.attr(ele_, 'data-url');
+//            alert(fnLoadImage)
+    if (dataUrl) {
+        api.imageCache({
+            url : dataUrl
+        }, function(ret, err) {
+            if (ret) {                        
+                ele_.src = ret.url;
+                $api.attr(ele_, 'data-url', '');
+            } else {
+            }
+        });
+    }
+}
+function get_cate_list(cid){
+    api.showProgress({
+	    title: '努力加载中...',
+	    text: '先喝杯茶...',
+	    modal: false
+	});
+    var user_id=$api.getStorage('user_id');
+    var time = Math.ceil(new Date().getTime()/1000);
+    var sign = get_appkey(time);
+    sign = md5(sign+cid);
+    api.ajax({
+        url: YAH_web+'/index.php?m=Api&c=Goods&a=get_catlist_bycid',
+        method: 'post',
+        cache: false,
+        timeout: 30,
+        dataType: 'json',
+        returnAll:false,
+        data:{
+            values: {
+            	userId:user_id,
+            	cid:cid,
+            	time:time,
+                sign:sign
+            }
+        }
+    },function(ret,err){
+    	//alert(JSON.stringify(ret||err));
+    	api.hideProgress();
+    	if (ret) {
+             var html = '';
+             if(ret['cateImg']){
+                 html += '<div class="header_img"><img src="'+$api.getStorage("YAH_web")+'/'+ret['cateImg']+'" alt=""></div>';
+             }
+             html += '<div class="goods">';
+                 $(ret['list']).each(function(i,val){
+                     html += '<div class="item">';
+                     html += '<div class="title"><span class="name">'+val['catName']+'</span><span class="all" onclick="goods_list('+val['catId']+',0,\''+val['catName']+'\')">全部</span></div>';
+                     html += '<ul class="r_list_box clearfix">';
+                     $(val['list1']).each(function(i1,val1){
+                         html += '<li class="r_list" onclick="goods_list('+val['catId']+','+val1['catId']+',\''+val['catName']+'\')"><div class="pic">';
+                         if(val1['cateImg']){
+                             html += '<img data-url="'+$api.getStorage("YAH_web")+'/'+val1['cateImg']+'" onload="fnLoadImage(this)" src="../image/default_goods.png" alt="">';
+                         }
+                         else{
+                             html += '<img src="../image/default_goods.png" alt="">';
+                         }
+                         html += '</div><p class="name">'+val1['catName']+'</p></li>';
+                     })
+                     html += '</ul></div>';
+                 })
+             
+             
+             html += '</div>';
+             $('.c_right').html(html);
+        }else {
+        	$('.c_right').html('');
+        };
+    });
+}
+function change_cat(cid,obj){
+    $('.l_list').removeClass('active');
+    $(obj).addClass('active');
+    get_cate_list(cid);   
+}
+function get_fenlei_list(){
+    var user_id=$api.getStorage('user_id');
+    var time = Math.ceil(new Date().getTime()/1000);
+    var sign = get_appkey(time);
+    sign = md5(sign);
+    api.ajax({
+        url: YAH_web+'/index.php?m=Api&c=Goods&a=get_fenlei_list',
+        method: 'post',
+        cache: false,
+        timeout: 30,
+        dataType: 'json',
+        returnAll:false,
+        data:{
+            values: {
+            	userId:user_id,
+            	time:time,
+                sign:sign
+            }
+        }
+    },function(ret,err){
+    	//alert(JSON.stringify(ret||err));
+    	if (ret) {
+             var html = '';
+             $(ret).each(function(i){
+                 if(i>0){
+                     html += '<li class="l_list " onclick="change_cat('+ret[i]['catId']+',this)">'+ret[i]['catName']+'</li>';
+                 }
+                 else{
+                     html += '<li class="l_list active" onclick="change_cat('+ret[i]['catId']+',this)">'+ret[i]['catName']+'</li>';
+                     get_cate_list(ret[i]['catId']);
+                 }
+             })
+
+             $('.l_list_box').html(html);
+        }else {
+        	$('.l_list_box').html('');
+        	$('.c_right').html('');
+        };
+    });
+}
+</script>
+</html>

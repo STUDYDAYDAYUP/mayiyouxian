@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fenxiaozhongxin.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="h1">
+		<div class="list" style="border-right:1px solid #eee"><div class="s1">累计销售</div><div class="s2" id="ljxs">￥0.00</div></div>
+		<div class="list"><div class="s1">累计佣金</div><div class="s2" id="ljyj">￥0.00</div></div>
+	</div>
+	<div class="h2">
+		<div class="min-title font_big" tapmode="a" onclick="fmy_dianpu();">
+			<span class="t0" style="background-image:url('../image/my_dianpu_logo.png');"></span><span class="t1">我的店铺</span><span class="t3"></span>
+		</div>
+		<div class="min-title font_big" tapmode="a" onclick="fopen_my_erweima();">
+			<span class="t0" style="background-image:url('../image/xiazai_erweima.png');"></span><span class="t1">下载店铺推广二维码</span><span class="t3"></span>
+		</div>
+	</div>
+	<div class="h3">
+		<div class="min-title font_big" tapmode="" onclick="">
+			<span class="t0" style="background-image:url('../image/my_mengyou.png');"></span><span class="t1">我的盟友</span><span class="t2" id="my_my">0人</span>
+		</div>
+		<div class="min-title" tapmode="a" onclick="fopen_huiyuan(1);">
+			<span class="t0" style="background-image:url('../image/yiji_logo.png');"></span><span class="t1">一级会员</span><span class="t2" id="one">0人</span><span class="t3"></span>
+		</div>
+		<div class="min-title" tapmode="a" onclick="fopen_huiyuan(2);">
+			<span class="t0" style="background-image:url('../image/erji_logo.png');"></span><span class="t1">二级会员</span><span class="t2" id="two">0人</span><span class="t3"></span>
+		</div>
+		<div class="min-title" tapmode="a" onclick="fopen_huiyuan(3);">
+			<span class="t0" style="background-image:url('../image/sanji_logo.png');"></span><span class="t1">三级会员</span><span class="t2" id="three">0人</span><span class="t3"></span>
+		</div>
+	</div>
+	<div class="h4">
+		<div class="min-title font_big" tapmode="" onclick="">
+			<span class="t0" style="background-image:url('../image/my_yongjin_logo.png');"></span><span class="t1">我的佣金</span><span class="t2" id="my_yj">￥0.00</span>
+		</div>
+		<div class="min-title" tapmode="" onclick="">
+			<span class="t1">待清算订单佣金</span><span class="t2" id="dqs_yj">￥0.00</span>
+		</div>
+		<div class="min-title" tapmode="" onclick="">
+			<span class="t1">可提现订单佣金</span><span class="t2" id="ktx_yj">￥0.00</span>
+		</div>
+		<div class="min-title" tapmode="" onclick="">
+			<span class="t1">已提现订单佣金</span><span class="t2" id="ytx_yj">￥0.00</span>
+		</div>
+		<!--<div class="min-title" tapmode="" onclick="">
+			<span class="t1">可提现余额</span><span class="t2" id="ktx_yj">￥0.00</span>
+		</div>-->
+	</div>
+	<div class="h5">
+		<div class="min-title" tapmode="a" onclick="fopen_tixian();">
+			<span class="t1">申请提现</span><span class="t3"></span>
+		</div>
+	</div>
+	<!--<div class="h6">
+		<div class="shuoming" tapmode="a">分销模式及佣金说明</div>
+	</div>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_fens2();
+	};
+	function fopen_huiyuan(n)
+	{
+		api.openWin({
+	        name: 'dengji_huiyuan_header',
+	        url: 'dengji_huiyuan_header.html',
+	        pageParam:{
+	        	dengji:n
+	        }
+        });
+	}
+	function fopen_tixian()
+	{
+		api.openWin({
+	        name: 'shenqing_tixian_header',
+	        url: 'shenqing_tixian_header.html'
+        });
+	}
+	function fget_fens()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_web+'/Wx/Agent/Index',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 alert(ret);
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+				//api.alert({
+	            //    msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	            //});
+            };
+        });
+	}
+	function fget_fens2()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_fenxiao_zhongxin.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("ljxs").innerHTML="￥"+ret[0].ljxs;
+                 document.getElementById("ljyj").innerHTML="￥"+ret[0].ljyj;
+                 document.getElementById("my_my").innerHTML=ret[0].all+"人";
+                 document.getElementById("one").innerHTML=ret[0].one+"人";
+                 document.getElementById("two").innerHTML=ret[0].two+"人";
+                 document.getElementById("three").innerHTML=ret[0].three+"人";
+                 document.getElementById("my_yj").innerHTML="￥"+ret[0].my_yj;
+                 document.getElementById("ktx_yj").innerHTML="￥"+ret[0].ktx_yj;
+                 document.getElementById("dqs_yj").innerHTML="￥"+ret[0].dqs_yj;
+                 document.getElementById("ytx_yj").innerHTML="￥"+ret[0].ytx_yj;
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_my_erweima()
+	{
+		api.openWin({
+	        name: 'my_erweima_header',
+	        url: 'my_erweima_header.html'
+        });
+	}
+	function fmy_dianpu()
+	{
+		api.execScript({
+			name:'root',
+	        script: 'randomSwitchBtn("","home",0);'
+        });
+        api.closeWin({
+        });
+	}
+</script>
+</html>

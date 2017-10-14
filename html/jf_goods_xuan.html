@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#main{
+    		background-color:#fff;
+    		font-size:14px;
+    		height:80px;
+    	}
+    	#main .list{
+    		color:#999;
+    		text-align: center;
+    		line-height: 30px;
+    	}
+    	#main .max_list{
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+    	}
+    	#main .max_list .kong{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+    	}
+    	.s_r{
+            color:#666;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            margin-top: 3px;
+            /*position: relative;
+            top:-7px;  */
+            /*position: absolute;
+            right:0px;
+            bottom:0px;*/
+        }
+        .jian{
+            background-image: url('../image/jian_lan.png');
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            width:22px;
+            height: 22px;
+            z-index: 0;
+            rotate:180;
+            padding:10px 0 10px 10px;
+            background-position: 10px 10px;
+        }
+        .num{
+            min-width:22px;
+            width:100px;
+            border:1px solid #eee;
+            border-radius:5px;
+            margin:0 10px;
+            font-size:18px;
+            height: 22px;
+            text-align: center;
+            line-height: 22px;
+            z-index: 1;
+            padding:10px 0;
+        }
+        .jia{
+            background-image: url('../image/jia_lan.png');
+            background-repeat: no-repeat;
+            background-size: 22px 22px;
+            width:22px;
+            height: 22px;
+            z-index: 2;
+            padding:10px 10px 10px 0;
+            background-position: 0 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="list">购买数量</div>
+	<div class="max_list">
+		<div class="kong"></div>
+		<span class="s_r"><div class="jian" tapmode="" onclick="fjian(0);"></div><div class="num">1</div><div class="jia" tapmode="" onclick="fjia(0);"></div></span>
+		<div class="kong"></div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fjia(n)
+	{
+		var obj=$('.jia').eq(n);
+		var left=$('.jia').eq(n).offset().left;
+		var top=$('.jia').eq(n).offset().top;
+		var num=Number($('.num').eq(n).html());
+		if(num==0)
+		{
+			$(".num").eq(n).css('display','block');
+			$(".jian").eq(n).css('display','block');
+			
+			$(".num").eq(n).animate({left:'-=22px'},200);
+			$(".jian").eq(n).animate({left:'-=44px'},200);
+		}
+		$('.num').eq(n).html(num+1);
+		api.execScript({
+	       	frameName:'jf_goods',
+	        script: 'fset_num(\''+(num+1)+'\');'
+        });
+		
+	}
+	function fjian(n)
+	{
+		var num=Number($('.num').eq(n).html());
+		if(num==1) return;
+		if(num>1)
+		{
+			$('.num').eq(n).html(num-1);
+			api.execScript({
+		       	frameName:'jf_goods',
+		        script: 'fset_num(\''+(num-1)+'\');'
+	        });
+		} 
+		//if(num==1) setTimeout("$('.num').eq("+n+").html("+(num-1)+")",200);
+	}
+</script>
+</html>

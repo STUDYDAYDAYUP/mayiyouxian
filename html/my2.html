@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/my2.css"/>
+</head>
+<body>
+	<div id="main">
+		<div id="tou">
+			<div id='tou-list-1'>
+				<div id="tou-list-11"></div>
+				<div id="tou-list-12">
+					<div id="yq-w">
+						<!--<div id="yq-z" tapmode="userimg" onclick="fopen_login();">-->
+						<div id="yq-z" tapmode="" onclick="fopen_login();">
+							<div id="yq-n"></div>
+						</div>
+					</div>
+					<div id="user_img" tapmode="" onclick="fopen_user_info();"><img id="user_img_src" /></div>
+				</div>
+			</div>
+			<div id='tou-list-2'>用户名登录</div>
+			<div id='user_communityName' onclick="open_xuan_xiaoqu();">小区名字</div>
+			<!--<div tapmode="shezhi2" id="shezhi" onclick="fopen_shezhi();"></div>-->
+		</div>
+		<div id="lists">
+			<ul>
+				<li tapmode="a" onclick="fopen_list('daifahuo')"><div style="border-right:1px solid #eee"><img src="../image/daishouhuo.png" /><a>待配送/配送中订单<span id="money" style="display: none;">0</span></a></div></li>
+				<li tapmode="a" onclick="fopen_list('daishouhuo');"><div style="border-right:1px solid #eee"><img src="../image/yiwancheng.png" /><a>已完成订单<span id="yhq" style="display: none;">0</span></a></div></li>
+				<li tapmode="a" onclick="fopen_list('tuikuan_shouhou');"><div style="border-right:1px solid #eee"><img src="../image/tuikuan.png" /><a>退款<span id="user_score" style="display: none;">0</span></a></div></li>
+			</ul>
+		</div>
+		<div class="content">
+			<div class="list" tapmode="a" onclick="fopen_list('wallet');">
+				<div class="s4" style="background-image:url('../image/qianbao.png');"></div>
+				<div class="s2">我的钱包</div>
+				<div class="s3"></div>
+			</div>
+			<div class="list" id="hehuoren" tapmode="a" onclick="hehuoren1()" style="display: none;">
+				<div class="s4" style="background-image:url('../image/hehuoren.png');"></div>
+				<div class="s2">社区合伙人</div>
+				<div class="s3"></div>
+			</div>
+			<div class="list" id="hehuoren1" tapmode="a" onclick="erweima()" style="display: none;">
+				<div class="s4" style="background-image:url('../image/hehuoren.png');"></div>
+				<div class="s2">我的二维码</div>
+				<div class="s3"></div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_list('yiyuantequan');">
+				<div class="s4" style="background-image:url('../image/yiyuantequan.png');"></div>
+				<div class="s2">优惠特权</div>
+				<div class="s5" id="user_yiyuan">剩余0次</div>
+				<div class="s3"></div>
+			</div>
+			<div class="list" tapmode="a" onclick="fopen_list('fuwuzhongxin')">
+				<div class="s4" style="background-image:url('../image/my_kf.png');"></div>
+				<div class="s2">帮助与反馈</div>
+				<div class="s3"></div>
+			</div>
+
+			<div id="statement" class="f">Copyright © 2015-2017<br/>广东车房爱易购科技有限公司</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/jQueryRotate.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var gao = api.winHeight;
+		//fhuanyizu('rexiao');
+		//fget_dingdan_number();
+		fyslogin();
+		fget_sj_status();
+		var lin_ret=$api.getStorage('sys');
+		$('#mallName').html("关于"+lin_ret[0].mallName);
+		//fcz();
+	};
+	function fremove(obj,n)
+	{
+		$api.removeCls(obj,n);
+	}
+
+	function fopen_list(n)
+	{
+
+		if(n=='0yuangou' || n=='1yuangou')
+		{
+			api.toast({
+				msg: '功能开发中！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(n=='all_dingdan' || n=='pingjiazhongxin' || n=='daifukuan' || n=='daifahuo' || n=='daishouhuo' || n=='wallet' || n=='collection' || n=='fenxiaozhongxin' || n=='woshishangjia' || n=='my_jf2' || n=='youhuiquan_info' || n=='address' || n=='my_guanzhu' || n=='yiyuantequan' || n == 'hehuoren' || n == 'tuikuan_shouhou')
+		{
+			var login=$api.getStorage('login');
+			if(login=='0' || login==0 || login==undefined)
+			{
+				api.toast({
+					msg: '请先登录！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+		}
+		$api.setStorage('going','0');
+				api.openWin({
+			        name: n+'_header',
+			        url: n+'_header.html',
+//			        animation:{
+//			        	type:"movein",                //动画类型（详见动画类型常量）
+//					    subType:"from_right",       //动画子类型（详见动画子类型常量）
+//					    duration:300
+//			        }
+		        });
+	}
+	function fopen_woshishangjia()
+	{
+		var login=$api.getStorage('login');
+			if(login=='0' || login==0 || login==undefined)
+			{
+				api.toast({
+					msg: '请先登录！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+		var isShop=$api.getStorage('isShop');
+		if(isShop==1 || isShop=='1')
+		{
+			api.openWin({
+			        name: 'woshishangjia_header',
+			        url: 'woshishangjia_header.html'
+		   });
+		}
+		else if(isShop==0 || isShop=='0')
+		{
+			api.openWin({
+			        name: 'xitongtishi_header',
+			        url: 'xitongtishi_header.html',
+			        pageParam:{
+			        	text:'资料已提交，请等待审核!'
+			        }
+		   });
+		}
+		else
+		{
+			api.openWin({
+			        name: 'ruzhu_zhinan_header',
+			        url: 'ruzhu_zhinan_header.html'
+		   });
+		}
+	}
+
+	function hehuoren1(){
+	  
+	   api.openWin({
+	        name: 'hehuoren_header',
+	        url: 'hehuoren_header.html'
+	   });
+	}
+	function erweima(){
+    
+	    api.openFrame({
+	        name: 'erweima',
+	        url: 'erweima.html',
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+	    });
+	}
+
+	function hehuoren(){
+	    var login=$api.getStorage('login');
+		if(login=='0' || login==0 || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+	    var user_id=$api.getStorage('user_id');
+		
+		api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 if(ret[0]['userType'] ==2){
+            	      $('#hehuoren').show();
+            	      $('#hehuoren1').hide();
+            	 }
+            	 else{
+	            	  $('#hehuoren1').show();
+	            	  $('#hehuoren').hide();
+            	 }
+            }else {
+            	$('#hehuoren1').show();
+            	$('#hehuoren').hide();
+
+            };
+        });
+	}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+function fhuanyizu(name)
+{
+	$('.t6').eq(0).rotate({duration:2000,animateTo:360,angle:0});
+	api.ajax({
+            url: YAH_ajax_name+'huanyizu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	huan_name:name
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	html+='<li tapmode="" onclick="fopengoods('+ret[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /><a class="a1">'+ret[i].goodsName+'</a><a class="a2">￥'+ret[i].shopPrice+'</a></li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById(name).innerHTML=html;
+                 api.parseTapmode();
+                 $api.setStorage(name,ret);
+            }else {
+            	//fduanwang();
+            	var ret2=$api.getStorage(name);
+            	var html='<ul>';
+                 for(var i=0;i<ret2.length;i++){
+                 	html+='<li tapmode="" onclick="fopengoods('+ret2[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret2[i].goodsImg+'" /><a class="a1">'+ret2[i].goodsName+'</a><a class="a2">￥'+ret2[i].shopPrice+'</a></li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById(name).innerHTML=html;
+                 api.parseTapmode();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fget_dingdan_number()
+{
+//		var pan=$api.getStorage('login');
+//		if(pan=='0' || pan==0) return;
+//		var user_id=$api.getStorage('user_id');
+//		api.ajax({
+//          url: YAH_ajax_name+'get_dingdan_number.php',
+//          method: 'post',
+//          cache: false,
+//          timeout: 30,
+//          dataType: 'json',
+//          returnAll:false,
+//          data:{
+//              values: {
+//              	user_id:user_id
+//              }
+//          }
+//      },function(ret,err){
+//      	//api.hideProgress();//隐藏加载进度框
+//          if (ret) {
+//          	//alert(JSON.stringify(ret));
+//          	document.getElementById("daifu_n").innerHTML=ret[0]['daifu'];
+//          	document.getElementById("daifa_n").innerHTML=ret[0]['daifa'];
+//          	document.getElementById("daishou_n").innerHTML=ret[0]['daishou'];
+//          	document.getElementById("daipingjia_n").innerHTML=ret[0]['daipingjia'];
+//          	document.getElementById("tuikuan_n").innerHTML=ret[0]['tuikuan'];
+//          	if(ret[0]['daifu']==0) document.getElementById("daifu_n").style.display="none";
+//          	else document.getElementById("daifu_n").style.display="block";
+//
+//          	if(ret[0]['daifa']==0) document.getElementById("daifa_n").style.display="none";
+//          	else document.getElementById("daifa_n").style.display="block";
+//
+//          	if(ret[0]['daishou']==0) document.getElementById("daishou_n").style.display="none";
+//          	else document.getElementById("daishou_n").style.display="block";
+//
+//          	if(ret[0]['daipingjia']==0) document.getElementById("daipingjia_n").style.display="none";
+//          	else document.getElementById("daipingjia_n").style.display="block";
+//
+//          	if(ret[0]['tuikuan']==0) document.getElementById("tuikuan_n").style.display="none";
+//          	else document.getElementById("tuikuan_n").style.display="block";
+//              api.parseTapmode();
+//          }else {
+//          	document.getElementById("daifu_n").style.display="none";
+//          	document.getElementById("daifa_n").style.display="none";
+//          	document.getElementById("daishou_n").style.display="none";
+//          	document.getElementById("daipingjia_n").style.display="none";
+//          	document.getElementById("tuikuan_n").style.display="none";
+//          	//fduanwang();
+////				api.alert({
+////	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+////	            });
+//          };
+//      });
+}
+function fopen_login()
+{
+	api.openWin({
+	    name: 'denglu',
+	    url: 'denglu.html'
+    });
+}
+function fopen_user_info()
+{
+	api.openWin({
+	    name: 'user_info_header',
+	    url: 'user_info_header.html'
+    });
+}
+function fset_user_name(name)
+{
+	document.getElementById("tou-list-2").innerHTML=name;
+}
+function fset_com_name(name)
+{
+	document.getElementById("user_communityName").innerHTML=name;
+}
+function fset_user_img(img)
+{
+	document.getElementById("yq-w").style.display="none";
+	document.getElementById("user_img").style.display="block";
+	if(img.indexOf('http') >= 0){
+	    if(img!=null && img!='null') document.getElementById("user_img_src").src=img;
+	}
+	else{
+	    if(img!=null && img!='null') document.getElementById("user_img_src").src=$api.getStorage("YAH_web")+'/'+img;
+	}
+
+
+}
+function fcz()
+{
+	var login=$api.getStorage('login');
+	if(login=='1')
+	{
+		document.getElementById("yq-w").style.display="none";
+		document.getElementById("user_img").style.display="block";
+	}
+	var img=$api.getStorage('user_img');
+	if(img!=null && img!='null'){
+		if(img.indexOf('http') >= 0){
+		    if(img!=null && img!='null') document.getElementById("user_img_src").src=img;
+		}
+		else{
+		    if(img!=null && img!='null') document.getElementById("user_img_src").src=$api.getStorage("YAH_web")+'/'+img;
+		}
+	}
+}
+function fyslogin()
+{
+		var login=$api.getStorage('login');
+		if(login=='0' || login==0 || login==undefined) return;
+		//$api.setStorage('login','0');
+		var zh=$api.getStorage('user_zh');
+	    var pwd=$api.getStorage('user_pwd');
+	    if(zh=='0') return;
+	    api.ajax({
+	            url: YAH_ajax_name+'login.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	zh:zh,
+	                	pwd:pwd
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0]['chenggong']=='false')
+	            	{
+//	            		api.toast({
+//							msg: '账号不存在！',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+						//$api.setStorage('login','0');
+	            	}
+	            	else if(ret[0]['chenggong']=='-1')
+	            	{
+//	            		api.toast({
+//							msg: '密码错误！',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+						//$api.setStorage('login','0');
+	            	}
+	            	else if(ret[0]['chenggong']=='true')
+	            	{
+//		            	api.toast({
+//							msg: '登陆成功！',
+//							duration: 2000,
+//							location: 'bottom'
+//						});
+						document.getElementById("money").innerHTML=ret[0].userMoney;
+						document.getElementById("user_yiyuan").innerHTML='剩下'+ret[0].yiyuanNum+'次';
+						var youhui_num=0;
+						if(ret[0].youhui_num!=undefined) document.getElementById("yhq").innerHTML=ret[0].youhui_num;
+                 		document.getElementById("user_score").innerHTML=ret[0].userScore;
+	            		$api.setStorage('login','1');
+	            		$api.setStorage('user_id',ret[0]['userId']);
+	            		$api.setStorage('user_phone',ret[0]['userPhone']);
+	            		$api.setStorage('user_name',ret[0]['userName']);
+	            		$api.setStorage('user_img',ret[0]['userPhoto']);
+	                    fset_user_name($api.getStorage('user_name'));
+	                    fset_user_img($api.getStorage('user_img'));
+	            	}
+	            	else
+	            	{
+	            		fduanwang();
+	            		//$api.setStorage('login','0');
+	            	}
+	            }else {
+	            	//$api.setStorage('login','0');
+	            	//fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+}
+
+function fopen_jifen()
+{
+	api.execScript({
+	   	name:'root',
+	    script: 'randomSwitchBtn("1","jifen",2);'
+    });
+}
+function fget_sj_status()
+{
+	var login=$api.getStorage('login');
+	if(login=='0' || login==0 || login==undefined)
+	{
+		return;
+	}
+	var user_id=$api.getStorage('user_id');
+	api.ajax({
+            url: YAH_ajax_name+'get_sj_status.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                $api.setStorage('isShop',ret[0].status);
+            }else {
+            	$api.setStorage('isShop','-1');
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fopen_shezhi()
+{
+	var login=$api.getStorage('login');
+	if(login=='0' || login==0 || login==undefined)
+	{
+		fopen_login();
+	}
+	else
+	{
+		fopen_user_info();
+	}
+}
+function fget_user()
+	{
+		var user_id=$api.getStorage('user_id');
+		var login=$api.getStorage('login');
+		if(login=='0' || login==0 || login==undefined)
+		{
+			//document.getElementById("user_score").innerHTML=0;
+			return;
+		}
+		api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 if(ret[0]['userPhoto']=="" || ret[0]['userPhoto']==null || ret[0]['userPhoto'].length<=4) ret[0]['userPhoto']='Cjson/upload/member.jpg';
+            	 $api.setStorage('user_img',ret[0]['userPhoto']);
+            	 if(ret[0]['communityId'] > 0){
+	            	 $api.setStorage('user_communityId',ret[0]['communityId']);
+	            	 document.getElementById("user_communityName").innerHTML=$api.getStorage('user_communityName');
+            	 }
+            	 else{
+            	     open_xuan_xiaoqu();
+            	 }
+
+
+            	 document.getElementById("tou-list-2").innerHTML=$api.getStorage('user_name');
+            	 document.getElementById("money").innerHTML=ret[0].userMoney;
+            	 document.getElementById("user_yiyuan").innerHTML='剩余'+ret[0].yiyuanNum+'次';
+            	 document.getElementById("yhq").innerHTML=ret[0].youhui_num;
+                 document.getElementById("user_score").innerHTML=ret[0].userScore;
+                 fset_user_img($api.getStorage('user_img'));
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+
+
+function open_xuan_xiaoqu(){
+     var login=$api.getStorage('login');
+	if(login=='0' || login==0 || login==undefined)
+	{
+		api.toast({
+			msg: '请先登录！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+     api.execScript({
+    	name:'root',
+       	frameName:'home',
+        script: 'open_xuan_xiaoqu(-1);'
+     });
+}
+
+
+function fclose_user()
+{
+	$api.setStorage('login','0');
+	$api.setStorage('app_token_value','');
+	$api.setStorage('user_communityId','0');
+	$api.setStorage('user_communityName','');
+	document.getElementById("yq-w").style.display="block";
+	document.getElementById("user_img").style.display="none";
+//	document.getElementById("daifu_n").style.display="none";
+//	document.getElementById("daifa_n").style.display="none";
+//	document.getElementById("daishou_n").style.display="none";
+//	document.getElementById("daipingjia_n").style.display="none";
+    document.getElementById("user_yiyuan").innerHTML='剩下0次';
+	document.getElementById("tou-list-2").innerHTML='用户名登录';
+	document.getElementById("user_communityName").innerHTML='小区名字';
+	$('#hehuoren1').hide();
+	$('#hehuoren').hide();
+	$('#money').html(0);
+	$('#yhq').html(0);
+	$('#user_score').html(0);
+	var weiXin = api.require('weiXin');
+	weiXin.cancelAuth(function(ret, err) {
+	    if (ret.status) {
+	        //api.alert({ msg: '退出成功' });
+	    } else {
+	        //api.alert({ msg: err.msg });
+	    }
+	});
+	api.execScript({
+       	name:'root',
+       	frameName:'goshop',
+        script: 'fget_buycar();'
+    });
+	api.toast({
+		msg: '退出成功！',
+		duration: 2000,
+		location: 'bottom'
+	});
+}
+</script>
+</html>

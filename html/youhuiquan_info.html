@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--组件依赖css begin-->
+	<link rel="stylesheet" type="text/css" href="../css/navigator/navigator.css" />
+	<link rel="stylesheet" type="text/css" href="../css/navigator/navigator.iscroll.css" />
+	<!--组件依赖css end-->
+    <link rel="stylesheet" type="text/css" href="../css/youhuiquan_info.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div class="left">精选</div>
+		<div id="nav-smartSetup">
+				<ul>
+			        <!--<li tapmode="a"><span class="header_on">军事</span></li>-->
+			        <!--<li tapmode="a"><span>加载中...</span><span class="sanjiao"></span></li>-->
+			        <!--<li tapmode="a"><span>国际</span></li>
+			        <li tapmode="a"><span>军事</span></li>
+			        <li tapmode="a"><span>社会</span></li>
+			        <li tapmode="a"><span>娱乐</span></li>
+			        <li tapmode="a"><span>女人</span></li>
+			        <li tapmode="a"><span>体育</span></li>-->
+			    </ul>
+		</div>
+		<div class="right" tapmode="" onclick="fshow();"><img src="../image/xiajiantou.png" /></div>
+	</div>
+	<div class="header2">
+		<!--<div>精选</div><div>军事</div><div>社会</div>-->
+	</div>
+	<div class="content">
+		<!--<div class="list">
+			<div class="left">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">青鸾水果专卖店</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+					<div class="r1"></div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="r4">优惠范围：</div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on" onclick="flingqu();">马上领取</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="left">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">青鸾水果专卖店</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right">
+				<div class="r1"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on">马上领取</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="left left_cheng">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">全场可用</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right right_cheng">
+				<div class="r1"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on" onclick="flingqu();">马上领取</div>
+			</div>
+		</div>
+		<div class="list">
+			<div class="left left_cheng">
+				<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+				<div class="lr">
+					<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+					<div class="lr2 ccyc">全场可用</div>
+					<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+				</div>
+			</div>
+			<div class="right right_cheng">
+				<div class="r1 r1_cheng"></div>
+				<div class="r2" tapmode="r3_on">去使用</div>
+				<div class="r3" tapmode="r3_on">马上领取</div>
+			</div>
+		</div>-->
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<!--组件依赖js begin-->
+	<script type="text/javascript" src="../script/js/zepto.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.extend.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.ui.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.iscroll.js"></script>
+	<script type="text/javascript" src="../script/js/widget/navigator.js"></script>
+	<script type="text/javascript" src="../script/js/widget/navigator.iscroll.js"></script>
+<!--组件依赖js end-->
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_fenlei_list();
+	};
+	var look1=0,look2=0;
+//	(function () {
+//      /*组件初始化js begin*/
+//      $('#nav-smartSetup').navigator();    //smart setup方式创建 推荐方式
+//  })();
+	function fcz()
+	{
+		fget_yhq_wsy();
+		fget_yhq_dlq();
+	}
+	var h2_pan=0;
+	var one_id=0;
+	var h2_h=0;
+	var cr_pan=0;
+	var sb_pan=0;
+	var dq_n=-1;
+	function flingqu(yhq_id)
+	{
+		var login=$api.getStorage('login');
+		if(login==undefined || login=='0' || login==0)
+		{
+			api.toast({
+				msg: '请先登录',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'youhuiquan_lingqu_header',
+	        url: 'youhuiquan_lingqu_header.html',
+	        pageParam:{
+	        	yhq_id:yhq_id
+	        }
+        });
+	}
+	function fgo_sy(shopId)
+	{
+		fopen_dianpu(shopId);
+	}
+	function fget_fenlei_list()
+	{
+		var ret=$api.getStorage('fenlei_list');
+		var html='<ul>';
+		var html2='';
+		var t=0;
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].parentId==0)
+			{
+				if(t==0) one_id=ret[i].catId;
+				html+='<li tapmode="a" onclick="fxuan(\''+t+'\',\''+ret[i].catId+'\')"><span>'+ret[i].catName+'</span></li>';
+				html2+='<div onclick="fxuan(\''+t+'\',\''+ret[i].catId+'\');fclose_show();">'+ret[i].catName+'</div>';
+				t++;
+			}
+		}
+		html+='</ul>';
+		$('.header2').html(html2);
+		$('#nav-smartSetup').html(html);
+		//document.getElementById("main").innerHTML=html;
+		api.parseTapmode();
+		(function () {
+	        /*组件初始化js begin*/
+	        $('#nav-smartSetup').navigator();    //smart setup方式创建 推荐方式
+	    })();
+	    api.parseTapmode();
+	    fxuan(0,one_id);
+	    h2_h=$('.header2').eq(0).height();
+	    $('.header2').eq(0).css('top','-'+h2_h+'px');
+	    $('.header2').eq(0).css('display','none');
+	}
+	function fxuan(n,catId)
+	{
+		if(dq_n==n) return;
+		dq_n=n;
+		var max=$('#nav-smartSetup ul span').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('#nav-smartSetup ul span').eq(i).addClass('header_on');
+				$('.header2 div').eq(i).addClass('on');
+			}
+			else
+			{
+				$('#nav-smartSetup ul span').eq(i).removeClass('header_on');
+				$('.header2 div').eq(i).removeClass('on');
+			}
+		}
+		fget_fenlei_yhq(catId);
+	}
+	function fshuaxin()
+	{
+		fget_fenlei_yhq(one_id);
+	}
+	function fget_fenlei_yhq(catId)
+	{
+		one_id=catId;
+		cr_pan=0;
+		sb_pan=0;
+		$('.content').html('<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+		fyhq_yz();
+	}
+	function fclose_show()
+	{
+		fshow();
+	}
+	function fshow()
+	{
+		if(h2_pan==0)
+		{
+			h2_pan=1;
+			$('.header2').eq(0).css('display','block');
+			$('.header .right img').eq(0).animate({rotate:'180deg'}, 300, 'ease-out');
+			$('.header2').eq(0).animate({top:'0px',opacity:1}, 300, 'ease-out',function(){$('.header2').eq(0).animate({}, 1, 'ease-out');});
+		}
+		else
+		{
+			h2_pan=0;
+			$('.header .right img').eq(0).animate({rotate:'0deg'}, 300, 'ease-out');
+			$('.header2').eq(0).animate({top:'-'+h2_h+'px',opacity:0.4}, 300, 'ease-out',function(){$('.header2').eq(0).css('display','none');$('.header2').eq(0).animate({}, 1, 'ease-out');});
+		}
+	}
+	function fyhq_yz()
+	{
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'yhq_yz.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	fcz();
+	            }else {
+	            	//fduanwang();
+	            	fcz();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	        });
+	}
+	function fget_yhq_wsy()
+	{
+		
+			if(look1==1) return;
+			look1=1;
+			var user_id=$api.getStorage('user_id');
+			var login=$api.getStorage('login');
+			if(login==undefined || login=='0' || login==0) user_id=0;
+			api.ajax({
+	            url: YAH_ajax_name+'get_yhq_wsy2.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	look1=0;
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	var html='';
+	            	var t=0;
+	            	for(var i=0;i<ret.length;i++)
+	            	{
+	            		if(ret[i].goodsCatId==one_id)
+	            		{
+		            		html+='<div class="list">';
+							if(ret[i].youhui_scope==1) html+='	<div class="left left_cheng">';
+							else html+='	<div class="left">';
+							html+='		<div class="ll"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+							html+='		<div class="lr">';
+							if(ret[i].youhui_type==0) html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">元</a>  ';
+							else  html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">折</a>  ';
+//							if(ret[i].youhui_scope==1) html+='全店铺可用</div>';
+//							else html+='满'+ret[i].total_fee+'元可用</div>';
+							html+='满'+ret[i].total_fee+'元可用</div>';
+							html+='			<div class="lr2 ccyc">'+ret[i].shopName+'</div>';
+							html+='			<div class="lr3 ccyc">'+getTime3(ret[i].begin_time)+'-'+getTime3(ret[i].end_time)+'</div>';
+							html+='		<div class="r1"></div>';
+							html+='		</div>';
+							html+='	</div>';
+							if(ret[i].youhui_scope==1) html+='	<div class="right right_cheng">';
+							else  html+='	<div class="right">';
+							html+='		<div class="r4">优惠范围：'+ret[i].msg+'</div>';
+							html+='		<div class="r2" tapmode="r3_on" onclick="fgo_sy('+ret[i].supplier_id+');">去使用</div>';
+							//html+='		<div class="r3" tapmode="r3_on" onclick="flingqu('+ret[i].id+');">马上领取</div>';
+							html+='	</div>';
+							html+='</div>';
+							t++;
+						}
+	            	}
+	            	if(t==0)
+	                {
+	                	sb_pan++;
+		            	html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+		            	if(cr_pan==0 && sb_pan==2) $('.content').html(html);
+		            	return;
+	                }
+	                if(cr_pan==0)
+	                {
+	                	$('.content').html(html);
+	                	cr_pan=1;
+	                } 
+	                else
+	                {
+	                	$('.content').append(html);
+	                }
+	                api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	sb_pan++;
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+	            	if(cr_pan==0 && sb_pan==2) $('.content').html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fget_yhq_dlq()
+	{
+		if(look2==1) return;
+		look2=1;
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_yhq_dlq_list2.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	look2=0;
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	var html='';
+	            	var t=0;
+	            	for(var i=0;i<ret.length;i++)
+	            	{
+	            		if(ret[i].goodsCatId==one_id)
+	            		{
+		            		html+='<div class="list">';
+							if(ret[i].youhui_scope==1) html+='	<div class="left left_cheng">';
+							else html+='	<div class="left">';
+							html+='		<div class="ll"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+							html+='		<div class="lr">';
+							if(ret[i].youhui_type==0) html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">元</a>  ';
+							else  html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">折</a>  ';
+							if(ret[i].youhui_scope==1) html+='全店铺可用</div>';
+							else html+='满'+ret[i].total_fee+'元可用</div>';
+							html+='			<div class="lr2 ccyc">'+ret[i].shopName+'</div>';
+							html+='			<div class="lr3 ccyc">'+getTime3(ret[i].begin_time)+'-'+getTime3(ret[i].end_time)+'</div>';
+							html+='		</div>';
+							html+='	</div>';
+							if(ret[i].youhui_scope==1) html+='	<div class="right right_cheng">';
+							else  html+='	<div class="right">';
+							//html+='		<!--<div class="r1"></div>';
+							//html+='		<div class="r2" tapmode="r3_on">去使用</div>-->';
+							html+='		<div class="r3" tapmode="r3_on" onclick="flingqu('+ret[i].id+');">马上领取</div>';
+							html+='	</div>';
+							html+='</div>';
+							t++;
+						}
+	            	}
+	            	if(t==0)
+	                {
+	                	sb_pan++;
+		            	html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+		            	if(cr_pan==0 && sb_pan==2) $('.content').html(html);
+		            	return;
+	                }
+	                if(cr_pan==0)
+	                {
+	                	cr_pan=1;
+	                	$('.content').html(html);
+	                } 
+	                else 
+	                {
+	                	$('.content').append(html);
+	                }
+	                api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	sb_pan++;
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无优惠券</div>';
+	            	if(cr_pan==0 && sb_pan==2) $('.content').html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

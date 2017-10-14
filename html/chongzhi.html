@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/chongzhi.css"/>
+    <style>
+    	body{
+
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		充值金额：<input type="text" id="num" maxlength="6" placeholder="请输入充值金额" readonly />
+	</div>
+	<div class="disanfang">
+		<div class="t2">使用第三方平台支付</div>
+		<div class="pay_way" onclick="fxuan(1)">
+			<div class="weixin"></div>
+			<div class="title"><div class="big_title">微信支付</div><div class="smo_title">推荐已安装微信客户端的用户使用</div></div>
+			<div class="xuan xuan_on"></div>
+		</div>
+		<div class="pay_way" onclick="fxuan(2)">
+			<div class="zhifubao"></div>
+			<div class="title"><div class="big_title">支付宝支付</div><div class="smo_title">推荐已安装支付宝客户端的用户使用</div></div>
+			<div class="xuan"></div>
+		</div>
+	</div>
+	<div tapmode="go_on" class="go" onclick="fgo()">确认充值</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/chongzhi.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var pay_way=1;
+
+	apiready = function(){
+		$('#num').val(api.pageParam.money);
+	};
+	var money = 0;
+	var orderNo_lin=0;
+	function fxuan(n)
+	{
+		pay_way=n;
+		var xuan=document.getElementsByClassName("xuan");
+		for(var i=0;i<xuan.length;i++)
+		{
+			if(i+1==n)
+			{
+				$api.addCls(xuan.item(i), "xuan_on");
+			}
+			else
+			{
+				$api.removeCls(xuan.item(i), "xuan_on");
+			}
+		}
+	}
+	function fgo()
+	{
+		var num = document.getElementById('num').value;
+			if (num == "" || num==" ") {
+				api.toast({
+					msg : '充值金额不能为空',
+					duration : 2000,
+					location : 'bottom'
+				});
+				return;
+			}
+			if (Number(num)>0 && Number(num)<1000000) {
+			}
+			else{
+				api.toast({
+					msg : '请输入正确的充值金额',
+					duration : 2000,
+					location : 'bottom'
+				});
+				return;
+			}
+			money = num;
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+				url : YAH_ajax_name + "chongzhi_add.php",
+				method : 'POST',
+				timeout : '30',
+				dataType : 'json',
+				returnAll : false,
+				cache : true,
+				data : {
+					values : {
+						user_id:user_id,
+						money:money,
+						pay_way:pay_way,
+						rid:api.pageParam.rid
+					}
+				}
+			}, function(ret, err) {
+				if (ret['status']) {
+					var orderid = ret['orderid'];
+					if (pay_way == 1) {
+                        wx_pay(orderid);
+						return;
+					}
+					if (pay_way == 2) {
+                        fzhifubao(orderid);
+						return;
+					}
+				} else {
+					fduanwang();
+				}
+			});
+
+	}
+	function wx_pay(orderid) {
+			api.showProgress({title:'提交中...'});
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+				url : YAH_ajax_name + "weixin/example/app.php",
+				method : 'POST',
+				timeout : '30',
+				dataType : 'json',
+				returnAll : false,
+				cache : true,
+				data : {
+					values : {
+						type : "chongzhi_new",
+						money : money ,
+						title : '蚂蚁优鲜充值',
+						attach:user_id,
+						orderNo:orderid
+					}
+				}
+			}, function(ret, err) {
+				//alert(JSON.stringify(ret||err));
+				if (ret) {
+					var back_info = ret;
+					var wxPay = api.require('wxPay');
+					wxPay.payOrder({
+					    apiKey: 'wx8fbe09646d9da4c5',
+					    orderId: back_info.prepayid,
+					    mchId: '1484360602',
+					    nonceStr: back_info.noncestr,
+					    timeStamp: back_info.timestamp,
+					    sign: back_info.sign
+					}, function(ret, err) {
+					    api.hideProgress();//隐藏加载进度框
+					    if (ret.status) {
+					        api.toast({
+								    msg: '充值成功',
+								    duration: 2000,
+								    location: 'bottom'
+							});
+							api.execScript({
+		                       	name:'wallet_header',
+		                       	frameName:'wallet',
+		                        script: 'fget_user();fget_zhangdan();'
+	                        });
+	                        api.execScript({
+		                       	name:'zhifu_header',
+		                       	frameName:'zhifu',
+		                        script: 'fcsh();'
+	                        });
+	                        api.execScript({
+		                       	name:'root',
+		                       	frameName:'my',
+		                        script: 'fget_user();'
+	                        });
+					        //fchongzhi_alipay('weixin');
+					    } else {
+					        api.hideProgress();//隐藏加载进度框
+							if(err.code==2)
+							{
+								//alert("用户已取消");
+							}
+					    }
+					});
+					
+				} else {
+					api.hideProgress();//隐藏加载进度框
+					fduanwang();
+					//alert(JSON.stringify(err));
+				}
+			});
+		}
+	function fchongzhi(orderNo)
+	{
+		api.showProgress({title:'充值中...'});
+			var user_id=$api.getStorage('user_id');
+			var time = Math.ceil(new Date().getTime()/1000);
+            var sign = get_appkey(time);
+            sign = md5(sign+user_id+'_'+money+'_weixin');
+			api.ajax({
+	            url: YAH_web+'/index.php?m=Api&c=User&a=recharge',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	userId:user_id,
+	                	money:money,
+	                	type:'weixin',
+	                	rid:api.pageParam.rid,
+	                	sign:sign,
+	                	time:time,
+	                	orderNo:orderNo
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	api.toast({
+							    msg: '充值成功',
+							    duration: 2000,
+							    location: 'bottom'
+					});
+//	                 if(ret[0].pan=='true')
+//	                 {
+//	                 	api.toast({
+//							    msg: '充值成功',
+//							    duration: 2000,
+//							    location: 'bottom'
+//						});
+//						api.execScript({
+//	                       	name:'wallet_header',
+//	                       	frameName:'wallet',
+//	                        script: 'fget_user();fget_zhangdan();'
+//                      });
+//                      api.execScript({
+//	                       	name:'root',
+//	                       	frameName:'my',
+//	                        script: 'fget_user();'
+//                      });
+//	                 }
+//	                 else
+//	                 {
+//	                 	api.toast({
+//							    msg: '充值失败',
+//							    duration: 2000,
+//							    location: 'bottom'
+//						});
+//	                 }
+	            }else {
+	            	fduanwang();
+	            	//fchongzhi(orderNo_lin);
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	        });
+	}
+	function fzhifubao(orderid)
+	{
+		var aliPay = api.require('aliPay');
+		var jsonobj=api.pageParam.json; 
+		var orderNo = new Date().getTime();
+		orderNo = orderNo+'_chongzhi_'+orderid;
+		aliPay.config({
+		     partner: '2088621916520334',
+		     seller: 'aa13539982313@qq.com',
+		     rsaPriKey: 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKIv4j04sSemBWOxJci5BdiBflLqK/VYx8LaHdMYHq4JSOo176n6WZAt7OXadIXpve0+vHmIFd0jSRv3F7ymUseYlXowlF32wqPqIQ7F1K9GpY84eZFqiulUG/J56r2ardcpmQihS7Y6z6P0iiP748IfEuuJhD2HFeiUKqqM7gr/AgMBAAECgYEAmFo4wN/Pcno/V82hu7MqrZ2/B65YCsoSJJT2LUTcFQo9x11RPDAjEBBEGAslKGJQ+lrTe6p9N1UdKTrsvlbTLJK3zO7sQIWDzBE1ScQdyQX03qP4Gi+kNtCyAa/6CxAPZ0AFVfc6LsyU/pYNRdy3cpjldIWMPF2KJQVMKhmUgSECQQDS++hGrfFsRLwY4+W+Gog5nQeaEBlM1ecAbMslduG8ykLpOiiREXrACC6kqpLEOi995qiKPo5vpgtJPiOCs7HPAkEAxMqm/2O/Cg9jCYy40M4+vOcLV+AG7EIw81pQRNKOffdxNRQJocoj1QQZQSMA4aVTZ5vXO9TF2eEAlBoGw7VP0QJAfwY9LTiSbq3fVVj4PAE7XPyG1CG3KcRqxJ27nP27IO/hYwup2tVcQvtqIae0n0Gs0C8r77eECAI/L0SjGpDXjwJAM3nrGw0FcOU7e8kCoyQABzvMnMzuIqjh0xZBvu7w9QRf6Yl3R4nvu43Z6U71sRCk84oxT+ZFZsvTceoo8NKhsQJBAIE302aKs0cv1B5Ak3Dts+5eqGkSnzYf9aXsrfQTO1KjsKp9IN6GIgNzM1BkD5V6S48VSxAK3jmEuuwzObNwRUo=',
+		     rsaPubKey: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB',
+		     notifyURL: YAH_ajax_name+'alipay_return.php'
+		}, function(ret, err) {
+			aliPay.pay({
+				subject: '蚂蚁优鲜充值',
+				body: 'orderId,' + orderid,
+				amount: money,
+				tradeNO: orderNo
+			}, function(ret, err) {
+				api.hideProgress(); //隐藏加载进度框
+				//alert(JSON.stringify(ret));
+				if(ret.code==9000 || ret.code=="9000")
+				{
+					api.toast({
+						    msg: '充值成功',
+						    duration: 2000,
+						    location: 'bottom'
+					});
+					api.execScript({
+	                   	name:'wallet_header',
+	                   	frameName:'wallet',
+	                    script: 'fget_user();fget_zhangdan();'
+	                });
+	                api.execScript({
+	                   	name:'zhifu_header',
+	                   	frameName:'zhifu',
+	                    script: 'fcsh();'
+	                });
+	                api.execScript({
+	                   	name:'root',
+	                   	frameName:'my',
+	                    script: 'fget_user();'
+	                });
+				}
+			});
+		})
+	}
+	function fchongzhi_alipay(type)
+	{
+		api.showProgress({title:'充值中...'});
+			var user_id=$api.getStorage('user_id');
+			var time = Math.ceil(new Date().getTime()/1000);
+            var sign = get_appkey(time);
+            sign = md5(sign+user_id+'_'+money+'_'+type);
+			api.ajax({
+	            url: YAH_web+'/index.php?m=Api&c=User&a=recharge',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	userId:user_id,
+	                	money:money,
+	                	type:type,
+	                	sign:sign,
+	                	time:time,
+	                	rid:api.pageParam.rid,
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+//	        	/alert(JSON.stringify(ret||err));
+	            if (ret) {
+	                 if(ret[0].pan)
+	                 {
+	                 	api.toast({
+							    msg: '充值成功',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+						api.execScript({
+	                       	name:'wallet_header',
+	                       	frameName:'wallet',
+	                        script: 'fget_user();fget_zhangdan();'
+                        });
+                        api.execScript({
+	                       	name:'zhifu_header',
+	                       	frameName:'zhifu',
+	                        script: 'fcsh();'
+                        });
+                        api.execScript({
+	                       	name:'root',
+	                       	frameName:'my',
+	                        script: 'fget_user();'
+                        });
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							    msg: '充值失败',
+							    duration: 2000,
+							    location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	            	//fchongzhi(orderNo_lin);
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	        });
+	}
+</script>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/youhuiquan_lingqu.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="tishi"><span>友情提示：</span>此优惠券很抢手，有可能存在抢不到的情况哦！</div>
+	<div class="list">
+		<div class="left" id="info">
+			<div class="ll"><img src="../image/shanghu_logo.png" /></div>
+			<div class="lr">
+				<div class="lr1 ccyc"><a class="a1">10</a><a class="a2">元</a>  满30元可用</div>
+				<div class="lr2 ccyc">青鸾水果专卖店</div>
+				<div class="lr3 ccyc">2016.04.27-2016.05.27</div>
+			</div>
+		</div>
+		<div class="right">
+			<div class="r4"></div>
+			<div class="r1"></div>
+			<div class="r2"></div>
+			<div class="r3"></div>
+		</div>
+	</div>
+	<div class="shuru">
+		<input type="text" placeholder="请输入验证码" maxlength="4" id="yzm" />
+		<div class="yzm">
+			<div class="yzm_min" id="yzm1" style="line-height:26px;rotate:180;"></div>
+			<div class="yzm_min" id="yzm2" style="line-height:72px;"></div>
+			<div class="yzm_min" id="yzm3" style="line-height:37px;"></div>
+			<div class="yzm_min" id="yzm4" style="line-height:66px;"></div>
+			<div class="yzm_grx" tapmode="" onclick="fhuan_yzm();"></div>
+		</div>
+	</div>
+	<div class="go" tapmode="go_on" onclick="fgo();">立即领取</div>
+	<div class="shibai" style="display:none;">抱歉，领券失败了，非常感谢您的参与！</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var jtyzm='';
+	apiready = function(){
+		fhuan_yzm();
+		fget_yhq();
+	};
+	fhuan_yzm();
+	function fhuan_yzm()
+	{
+		var yzm1=Math.floor(Math.random()*10);//随机验证码数
+		var yzm2=Math.floor(Math.random()*10);//随机验证码数
+		var yzm3=Math.floor(Math.random()*10);//随机验证码数
+		var yzm4=Math.floor(Math.random()*10);//随机验证码数
+		jtyzm=''+yzm1+''+yzm2+''+yzm3+''+yzm4;
+		document.getElementById("yzm1").innerHTML=yzm1;
+		document.getElementById("yzm2").innerHTML=yzm2;
+		document.getElementById("yzm3").innerHTML=yzm3;
+		document.getElementById("yzm4").innerHTML=yzm4;
+		var h1=Math.floor(Math.random()*60)+20;//随机高度
+		var h2=Math.floor(Math.random()*60)+20;//随机高度
+		var h3=Math.floor(Math.random()*60)+20;//随机高度
+		var h4=Math.floor(Math.random()*60)+20;//随机高度
+		document.getElementById("yzm1").style.lineHeight=h1+'px';
+		document.getElementById("yzm2").style.lineHeight=h2+'px';
+		document.getElementById("yzm3").style.lineHeight=h3+'px';
+		document.getElementById("yzm4").style.lineHeight=h4+'px';
+		var j1=Math.floor(Math.random()*60)-30;//随机倾斜角度
+		var j2=Math.floor(Math.random()*60)-30;//随机倾斜角度
+		var j3=Math.floor(Math.random()*60)-30;//随机倾斜角度
+		var j4=Math.floor(Math.random()*60)-30;//随机倾斜角度
+		$('#yzm1').css('transform','rotate('+j1+'deg)');
+		$('#yzm1').css('-ms-transform','rotate('+j1+'deg)');
+		$('#yzm1').css('-moz-transform','rotate('+j1+'deg)');
+		$('#yzm1').css('-webkit-transform','rotate('+j1+'deg)');
+		$('#yzm1').css('-o-transform','rotate('+j1+'deg)');
+		$('#yzm2').css('transform','rotate('+j2+'deg)');
+		$('#yzm2').css('-ms-transform','rotate('+j2+'deg)');
+		$('#yzm2').css('-moz-transform','rotate('+j2+'deg)');
+		$('#yzm2').css('-webkit-transform','rotate('+j2+'deg)');
+		$('#yzm2').css('-o-transform','rotate('+j2+'deg)');
+		$('#yzm3').css('transform','rotate('+j3+'deg)');
+		$('#yzm3').css('-ms-transform','rotate('+j3+'deg)');
+		$('#yzm3').css('-moz-transform','rotate('+j3+'deg)');
+		$('#yzm3').css('-webkit-transform','rotate('+j3+'deg)');
+		$('#yzm3').css('-o-transform','rotate('+j3+'deg)');
+		$('#yzm4').css('transform','rotate('+j4+'deg)');
+		$('#yzm4').css('-ms-transform','rotate('+j4+'deg)');
+		$('#yzm4').css('-moz-transform','rotate('+j4+'deg)');
+		$('#yzm4').css('-webkit-transform','rotate('+j4+'deg)');
+		$('#yzm4').css('-o-transform','rotate('+j4+'deg)');
+	}
+	function fgo()
+	{
+		var yzm=document.getElementById("yzm").value;
+		if(yzm=="" || yzm==" ")
+		{
+			api.toast({
+				msg: '请输入验证码！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(yzm==jtyzm)
+		{
+			fling_yhq();
+		}
+		else
+		{
+			api.toast({
+				msg: '验证码错误',
+				duration: 2000,
+				location: 'bottom'
+			});
+		}
+	}
+	function fling_yhq()
+	{
+		api.showProgress({title:'领取中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'lingqu_youhuiquan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+                		youhui_id:api.pageParam.yhq_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0].pan==1)
+	            	{
+	            		api.execScript({
+	                       	name:'youhuiquan_info_header',
+	                       	frameName:'youhuiquan_info',
+	                        script: 'fshuaxin();'
+                        });
+	            		api.openFrame({
+				            name: 'youhuiquan_lingqu_chenggong',
+				            url: 'youhuiquan_lingqu_chenggong.html',
+				            rect: {
+					            x:0,
+					            y:api.pageParam.header_h,
+					            w:'auto',
+					            h:api.pageParam.rect_h
+				            }
+			            });
+	            	}
+	            	else
+	            	{
+	            		$('#shibai').css('display','block');
+	            	}
+	            }else {
+	            	//fduanwang();
+	            	$('#shibai').css('display','block');
+	            };
+	        });
+	}
+	function fget_yhq()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_yhq_info.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+                		youhui_id:api.pageParam.yhq_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	var html='';
+	            	for(var i=0;i<1;i++)
+	            	{
+	            		html+='<div class="ll"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+						html+='<div class="lr">';
+						if(ret[i].youhui_type==0) html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">元</a>  ';
+						else  html+='			<div class="lr1 ccyc"><a class="a1">'+ret[i].breaks_menoy+'</a><a class="a2">折</a>  ';
+//						if(ret[i].youhui_scope==1) html+='全店铺可用</div>';
+//						else html+='满'+ret[i].total_fee+'元可用</div>';
+						html+='满'+ret[i].total_fee+'元可用</div>';
+						html+='	<div class="lr2 ccyc">'+ret[i].shopName+'</div>';
+						html+='	<div class="lr3 ccyc">'+getTime3(ret[i].begin_time)+'-'+getTime3(ret[i].end_time)+'</div>';
+						html+='</div>';
+	            	}
+	            	$('#info').html(html);
+	            	$('.right .r4').html('优惠范围：'+ret[0].msg);
+	            	api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	            	alert("该优惠券不存在");
+	            	api.closeWin({
+                    });
+	            };
+	        });
+	}
+</script>
+</html>

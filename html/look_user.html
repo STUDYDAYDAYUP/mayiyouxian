@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/look_user.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="headers">
+			<div id='tou-list-1'>
+				<div id="tou-list-11"></div>
+				<div id="tou-list-12">
+					<div id="yq-w">
+						<!--<div id="yq-z" tapmode="userimg" onclick="fopen_login();">-->
+						<div id="yq-z" onclick="fopen_user_img();">
+							<div id="yq-n"></div>
+						</div>
+					</div>
+					<div id="user_img" tapmode="" onclick="fopen_user_info();"><img id="user_img_src" /></div>
+				</div>
+			</div>
+			<div id='tou-list-2' style="display: none;">用户名登陆</div>
+			<div id="tou-list-3" style="display: block;"><span id="user_name">&nbsp;</span></div>
+			<div id="tou-list-4">&nbsp;</div>
+	</div>
+	<div class="content neirong3">
+				<!--<div class="list" tapmode="a">
+					<div class="left"><span>微帮</span>&nbsp;:</div>
+					<div class="right">
+						<div class="title">我需要家政服务</div>
+						<div class="content">今天不想干活，谁来帮我扫个地，做个饭。啤酒饮料矿泉水，花生瓜子八宝粥，这这这这这这这</div>
+						<div class="min_di">
+							<span class="s1">已有7人报名</span><span class="s2">￥23</span><span class="s3">价格：</span>
+						</div>
+					</div>
+				</div>
+				<div class="list2" tapmode="a">
+					<div class="left"><span>论坛</span>&nbsp;:</div>
+					<div class="right">
+						<div class="title">隔壁老王不在家</div>
+						<div class="content">隔壁老王不在家，咋们来报个菜名，蒸羊羔，蒸熊掌，蒸鹿尾儿，烧花鸭，烧雏鸡儿儿儿儿儿</div>
+						<div class="min_di">
+							<span class="s1">0</span>
+							<span class="s2">0</span>
+						</div>
+					</div>
+				</div>-->
+	</div>
+	<div style="height:50px;width:100%;"></div>
+	<div class="footer">
+		<div class="go" tapmode="go_on" onclick="fguanzhu();">关注</div>
+		<div class="no_go">已关注</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var mar_header=20;
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="20px";
+       		mar_header=20;
+       		$('#tou-list-11').css('margin-top','20px');
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="25px";
+    			mar_header=25;
+    			$('#tou-list-11').css('margin-top','25px');
+    		}
+    	}
+    	api.openFrame({
+	        name: 'look_user_header',
+	        url: 'look_user_header.html',
+	        rect: {
+		        x:0,
+		        y:mar_header,
+		        w:'auto',
+		        h:50
+	        }
+        });
+        fget_user();
+        fget_wb_or_tz();
+        fget_guanzhu();
+	};
+	var user_img='';
+	var pan_guanzhu=0;
+	function fget_user()
+	{
+		api.ajax({
+	            url: YAH_ajax_name+'get_user_info.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:api.pageParam.look_user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	                //alert(JSON.stringify(ret));
+	                var html='<span id="user_name">'+ret[0].userName+'</span>';
+	                html+='<span id="dengji">lv'+ret[0].grage+'</span>';
+	                $('#tou-list-3').html(html);
+	                if(ret[0].isBondShow==1 || ret[0].isBondShow=='1') html='<span class="left"><span class="l1">保</span><span class="l2">'+ret[0].userBond+'</span></span><span class="right">保障认证金'+ret[0].userBond+'元，保证服务质量</span>';
+	                if(ret[0].isBondShow==1 || ret[0].isBondShow=='1') $('#tou-list-4').html(html);
+	                $('#yq-z').css('background-image','url("'+YAH_web+'/'+ret[0].userPhoto+'")');
+	               	user_img=YAH_web+'/'+ret[0].userPhoto;
+	                api.execScript({
+	                   	frameName:'look_user_header',
+	                    script: 'fset_userName(\''+ret[0].userName+'\');'
+                    });
+	                api.parseTapmode();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fget_wb_or_tz()
+	{
+			var html='<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>';
+			$('.neirong3').html(html);
+			var lat=$api.getStorage('lat');
+			var lon=$api.getStorage('lon');
+			api.ajax({
+	            url: YAH_ajax_name+'get_wb_or_tz.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:api.pageParam.look_user_id,
+	                	lat:lat,
+	                	lon:lon
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	                //alert(JSON.stringify(ret));
+	                var html='';
+	                for(var i=0;i<ret.length;i++)
+	                {
+	                	if(ret[i].pan_type==0)
+	                	{
+		                	html+='<div class="list" tapmode="a" onclick="fopen_weibang_xx('+ret[i].id+');">';
+							html+='	<div class="left"><span>微帮</span>&nbsp;:</div>';
+							html+='	<div class="right">';
+							html+='		<div class="title">'+ret[i].title+'</div>';
+							html+='		<div class="content">'+ret[i].content+'</div>';
+							html+='		<div class="min_di">';
+							html+='			<span class="s1">已有'+ret[i].jiedan_num+'人报名</span><span class="s2">￥'+ret[i].money+'</span><span class="s3">价格：</span>';
+							html+='		</div>';
+							html+='	</div>';
+							html+='</div>';
+	                	}
+	                	else if(ret[i].pan_type==1)
+	                	{
+		                	html+='<div class="list2" tapmode="a" onclick="fopen_tiezi_xx('+ret[i].id+');">';
+							html+='	<div class="left"><span>论坛</span>&nbsp;:</div>';
+							html+='	<div class="right">';
+							html+='		<div class="title">'+ret[i].title+'</div>';
+							html+='		<div class="content">'+ret[i].content+'</div>';
+							html+='		<div class="min_di">';
+							html+='			<span class="s1">'+ret[i].comNum+'</span>';
+							html+='			<span class="s2">'+ret[i].dianNum+'</span>';
+							html+='		</div>';
+							html+='	</div>';
+							html+='</div>';
+	                	}
+	                }
+                    $('.neirong3').html(html);
+	                api.parseTapmode();
+	            }else {
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无信息</div>';
+	            	$('.neirong3').html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fopen_tiezi_xx(n)
+	{
+		api.openWin({
+	        name: 'tiezi_xx_header',
+	        url: 'tiezi_xx_header.html',
+	        pageParam:{
+	        	tiezi_id:n
+	        }
+        });
+	}
+	function fopen_weibang_xx(wb_id)
+	{
+		api.openWin({
+	        name: 'weibang_xx_header',
+	        url: 'weibang_xx_header.html',
+	        pageParam:{
+	        	wb_id:wb_id
+	        }
+        });
+	}
+	function fget_guanzhu()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0' || pan==0 || pan==undefined)
+		{
+			return;
+		}
+		//var goods_id=$api.getStorage('goods_id');
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'guanzhu_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	to_user_id:api.pageParam.look_user_id,
+                	user_id:user_id,
+                	pan:'2'
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 pan_guanzhu=1;
+                 if(ret=='true')
+                 {
+                 	//fset_guanzhu(1);
+                 	$('.go').css('display','none');
+                 	$('.no_go').css('display','block');
+                 }
+                 else
+                 {
+                 	//fset_guanzhu(0);
+                 }
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fguanzhu()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0' || pan==0 || pan==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var user_id=$api.getStorage('user_id');
+		if(user_id==api.pageParam.look_user_id)
+		{
+			api.toast({
+				msg: '您不能关注自己！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(pan_guanzhu==0) return;
+		api.showProgress({title:'关注中...'});
+		api.ajax({
+            url: YAH_ajax_name+'guanzhu_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	to_user_id:api.pageParam.look_user_id,
+                	user_id:user_id,
+                	pan:'1'
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret=='true')
+                 {
+                 	api.toast({
+						    msg: '关注成功!',
+						    duration: 2000,
+						    location: 'bottom'
+					});
+					$('.go').css('display','none');
+                 	$('.no_go').css('display','block');
+					//fset_guanzhu(1);
+                 }
+                 else
+                 {
+                 	api.toast({
+						    msg: '关注失败!',
+						    duration: 2000,
+						    location: 'bottom'
+					});
+                 }
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_user_img()
+	{
+		flook_img(user_img);
+	}
+</script>
+</html>

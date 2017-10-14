@@ -1,0 +1,11 @@
+var YAH_web='http://192.168.1.201:8820';/*网址m.kepindb.com*/
+var YAH_ajax_name=YAH_web+'/Cjson/';/*数据交互ajax链接地址*/
+
+function fduanwang()//网络获取数据失败时提示的数据
+{
+	api.toast({
+		msg: '网络不给力呀！',
+		duration: 2000,
+		location: 'bottom'
+	});
+}

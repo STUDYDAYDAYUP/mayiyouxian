@@ -1,0 +1,178 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+    padding-bottom: 1px;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100%;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	border-bottom: 1px solid #e2e2e2;
+	display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+}
+.a{
+    background-color:#ccc !important;
+}
+#content{
+	height: 100px;
+	background-color:#fff;
+	padding:10px;
+	font-size: 16px;
+}
+#content textarea{
+	width: 100%;
+	height:100%;
+	line-height: 20px;
+}
+.biaoti{
+	height: 50px;
+	background-color:#fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+.biaoti input{
+	height: 49px;
+	margin:0 10px;
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+	border-bottom:1px solid #eee;
+}
+#go{
+	background-color:#00b4ff;
+	color:#fff;
+	height: 50px;
+	line-height: 50px;
+	border-radius: 5px;
+	text-align: center;
+	width: 40%;
+	margin:20px 30% 0 30%;
+	float:left;
+}
+.go_on{
+	background-color: #0089c2 !important;
+}
+
+.tu_hui{
+	background-color: #fff;
+	padding:0px 10px 10px 10px;
+}
+.tu_hui img{
+	width: 20px;
+	height: 20px;
+	margin-right: 20px;
+}
+
+.img_list{
+	padding:10px 10px 0px 10px;
+	background-color: #fff;
+	float:left;
+}
+.img_list .img{
+	
+	width: 60px;
+	height: 60px;
+	/*overflow: hidden;*/
+	margin:0 20px 10px 0;
+	float:left;
+	position: relative;
+}
+.img_list .img .logoing{
+	position: absolute;
+	top:0;
+	left:0;
+	height: 60px;
+	width: 60px;
+	border-radius: 5px;
+	background-color: #000;
+	filter:alpha(opacity=40);  
+    -moz-opacity:0.4;  
+    -khtml-opacity: 0.4;  
+    opacity: 0.4;
+    text-align: center;
+}
+.img_list .img .logoing img{
+	width: 30px;
+	height: 30px;
+	margin-top: 15px;
+}
+.img_list .img .cha{
+	position: absolute;
+	top:-10px;
+	right:-10px;
+	z-index: 3;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-image: url('../image/cha_hei.png');
+	width: 20px;
+	height: 20px;
+}
+.img_list .img img{
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+}
+.img_list .jia{
+	border-radius: 5px;
+	width: 60px;
+	height: 60px;
+	float:left;
+	border:1px solid #ccc;
+	line-height: 60px;
+	text-align: center;
+	color:#999;
+}
+.img_list .jia img{
+	height: 20px;
+	margin-top: 20px;
+}
+
+
+.tishi{
+	height:50px;
+	line-height: 50px;
+	padding:0 10px;
+	color:#666;
+}
+.list{
+	height: 50px;
+	line-height: 50px;
+	background-color: #fff;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding:0 10px;
+}
+.list .s1{
+	
+}
+.list .s2{
+	-webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    margin:0 10px;
+    text-align: right;
+}
+.list .s3{
+
+}
+#say{
+	border:1px solid blue ;
+	height:50px;
+	min-height:50px;
+	max-height: 50px;
+	overflow: hidden;
+}
+#say img{
+	height: 20px;
+}

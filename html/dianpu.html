@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dianpu.css"/>
+    <style>
+    	
+    </style>
+</head>
+<body>
+
+<div id="main">
+	<div class="header" id="headers">
+		<div class="left"><img id="shopImg" src="../image/shanghu_logo.png" /></div>
+		<div class="right ccyc">
+			<div class="s1" id="shopName"></div>
+			<div class="s2" id="ps_info"></div>
+			<div class="s3" id="by"></div>
+		</div>
+	</div>
+	<div class="min_header" id="min_header">
+		<div class="title title_on" tapmode="" onclick="fset_title(0);">商品</div>
+		<div class="title" tapmode="" onclick="fset_title(1);">评价</div>
+		<div class="title" tapmode="" onclick="fset_title(2);">商家</div>
+	</div>
+	<div id="content">
+		<div id="left"></div>
+		<div id="right"></div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var headers_h=0;
+var min_header_h=0;
+	apiready = function(){
+		if(api.systemType=='ios'){
+       		document.getElementById("headers").style.paddingTop="80px";
+    	}
+    	else
+    	{
+    		var sVer = api.systemVersion;
+    		var banben=parseFloat(sVer);
+    		if(banben>=4.4)
+    		{
+    			document.getElementById("headers").style.paddingTop="85px";
+    		}
+    	}
+    	fget_shops();
+    	var headers=document.getElementById("headers");
+		headers_h = $api.offset(headers).h;
+		var min_header=document.getElementById("min_header");
+		min_header_h = $api.offset(min_header).h;
+		api.openFrame({
+	        name: 'dianpu_header',
+	        url: 'dianpu_header.html',
+	        pageParam:{
+               shopId:api.pageParam.shopId
+            },
+	        rect: {
+		        x:0,
+		        y:headers_h-140,
+		        w:'auto',
+		        h:50
+	        }
+        });
+        
+    	api.openFrame({
+	        name: 'dianpu_left',
+	        url: 'dianpu_left.html',
+	        pageParam:{
+               shopId:api.pageParam.shopId
+            },
+	        rect: {
+		        x:0,
+		        y:headers_h+min_header_h,
+		        w:100,
+		        h:api.winHeight-(headers_h+min_header_h)
+	        },
+	        bounces:true,
+	        vScrollBarEnabled: false,
+    		hScrollBarEnabled: false
+        });
+        api.openFrame({
+	        name: 'dianpu_right',
+	        url: 'dianpu_right.html',
+	        pageParam:{
+               shopId:api.pageParam.shopId
+            },
+	        rect: {
+		        x:100,
+		        y:headers_h+min_header_h,
+		        w:api.winWidth-100,
+		        h:api.winHeight-(headers_h+min_header_h)
+	        },
+	        bounces:true,
+	        vScrollBarEnabled: false,
+    		hScrollBarEnabled: false
+        });
+        api.openFrame({
+	        name: 'dianpu_footer',
+	        url: 'dianpu_footer.html',
+	        pageParam:{
+               shopId:api.pageParam.shopId
+            },
+	        rect: {
+		        x:0,
+		        y:api.winHeight-50,
+		        w:'auto',
+		        h:50
+	        }
+        });
+        if(api.pageParam.type=='open_goods')
+        {
+        	window.setTimeout(function(){
+        		fopen_goods(api.pageParam.goodsId);
+        	},400);
+        }
+	};
+	function fopen_goods(goodsId)
+	{
+		api.openWin({
+	        name: 'goods_info_header',
+	        url: 'goods_info_header.html',
+	        pageParam:{
+	        	goodsId:goodsId,
+	        	shopId:api.pageParam.shopId
+	        }
+        });
+	}
+	function fget_shops()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_shops.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	shopId:api.pageParam.shopId
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("shopImg").src=YAH_web+"/"+ret[0].shopImg;
+                 document.getElementById("shopName").innerHTML=ret[0].shopName;
+                 document.getElementById("ps_info").innerHTML=ret[0].deliveryStartMoney+'元起送|'+ret[0].deliveryMoney+'元配送费|'+ret[0].deliveryCostTime+'分钟';
+                 document.getElementById("by").innerHTML='满'+ret[0].deliveryFreeMoney+'元包邮';
+                 $api.setStorage('shopName',ret[0].shopName);
+                 $api.setStorage('deliveryFreeMoney',ret[0].deliveryFreeMoney);
+                 $api.setStorage('deliveryMoney',ret[0].deliveryMoney);
+                 window.setTimeout(function(){
+	                 api.execScript({
+	                 	 name:'dianpu',
+		                 frameName:'dianpu_footer',
+		                 script: 'fset_ps_money(\''+ret[0].deliveryStartMoney+'\');fset_ps_time(\''+ret[0].deliveryCostTime+'\',\''+ret[0].serviceEndTime+'\');'
+	                 });
+                 },500);
+                 
+                 if(ret[0].shopAtive==0)
+                 {
+                 	api.execScript({
+	                     frameName:'dianpu_footer',
+	                     script: 'fset_xiuxi();'
+                     });
+                 }
+                 $api.setStorage('dq_shopName',ret[0].shopName);
+                 $api.setStorage('dq_ditu_img',YAH_web+"/"+ret[0].shopImg);
+                 $api.setStorage('dq_shopImg2',ret[0].shopImg);
+	             $api.setStorage('dq_ditu_title',ret[0].shopName);
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fset_title(n)
+	{
+		var max=$('#min_header .title').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('#min_header .title').eq(i).addClass('title_on');
+			}
+			else
+			{
+				$('#min_header .title').eq(i).removeClass('title_on');
+			}
+		}
+		if(n==0)
+		{
+			api.openFrame({
+		        name: 'dianpu_left',
+		        url: 'dianpu_left.html',
+		        pageParam:{
+	               shopId:api.pageParam.shopId
+	            },
+		        rect: {
+			        x:0,
+			        y:headers_h+min_header_h,
+			        w:100,
+			        h:api.winHeight-(headers_h+min_header_h)
+		        },
+		        bounces:true,
+		        vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });
+	        api.openFrame({
+		        name: 'dianpu_right',
+		        url: 'dianpu_right.html',
+		        pageParam:{
+	               shopId:api.pageParam.shopId
+	            },
+		        rect: {
+			        x:100,
+			        y:headers_h+min_header_h,
+			        w:api.winWidth-100,
+			        h:api.winHeight-(headers_h+min_header_h)
+		        },
+		        bounces:true,
+		        vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });
+	        api.openFrame({
+		        name: 'dianpu_footer',
+		        url: 'dianpu_footer.html',
+		        pageParam:{
+	               shopId:api.pageParam.shopId
+	            },
+		        rect: {
+			        x:0,
+			        y:api.winHeight-50,
+			        w:'auto',
+			        h:50
+		        }
+	        });
+	        api.setFrameAttr({
+	            name: 'dianpu_pingjia',
+	            hidden:true
+            });
+            api.setFrameAttr({
+	            name: 'dianpu_shangjia',
+	            hidden:true
+            });
+		}
+		else if(n==1)
+		{
+			api.openFrame({
+		        name: 'dianpu_pingjia',
+		        url: 'dianpu_pingjia.html',
+		        pageParam:{
+	               shopId:api.pageParam.shopId
+	            },
+		        rect: {
+			        x:0,
+			        y:headers_h+min_header_h,
+			        w:'auto',
+			        h:api.winHeight-(headers_h+min_header_h)
+		        },
+		        /*bounces:true,*/
+		        vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });
+	        api.setFrameAttr({
+	            name: 'dianpu_pingjia',
+	            hidden:false
+            });
+		}
+		else if(n==2)
+		{
+			api.openFrame({
+		        name: 'dianpu_shangjia',
+		        url: 'dianpu_shangjia.html',
+		        pageParam:{
+	               shopId:api.pageParam.shopId
+	            },
+		        rect: {
+			        x:0,
+			        y:headers_h+min_header_h,
+			        w:'auto',
+			        h:api.winHeight-(headers_h+min_header_h)
+		        },
+		        /*bounces:true,*/
+		        vScrollBarEnabled: false,
+	    		hScrollBarEnabled: false
+	        });
+            api.setFrameAttr({
+	            name: 'dianpu_shangjia',
+	            hidden:false
+            });
+		}
+	}
+</script>
+</html>

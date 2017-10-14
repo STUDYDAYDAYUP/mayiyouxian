@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jiedan_xiaoxi_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<ul id="wb_info">
+		<li>
+			<div class="header">
+				<div class="left"><img tapmode="" onclick="" src="../image/default.png" /></div>
+				<div class="con">
+					<!--<div class="user_name ccyc">&nb<span class="dengji">lv1</span></div>-->
+					<div class="time">&nbsp;</div>
+				</div>
+			</div>
+			<div class="dian" tapmode="" onclick="">
+			<div class="title">&nbsp;</div>
+			<div class="content">&nbsp;</div>
+			<div class="tu_list">
+				<!--<img src="../image/05.jpg" />
+				<img src="../image/05.jpg" />
+				<img src="../image/05.jpg" />-->
+			</div>
+			</div>
+		</li>
+	</ul>
+	<div class="tishi">已有0人接单</div>
+	<div class="jd_user_list">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<div class="user_list">
+			<div class="xuan" xuan="0" tapmode="" onclick="fxuan(0);"></div>
+			<div class="user_img" tapmode="" onclick="fopen_liaotian(0);"><img src="../image/sp_5.png" /></div>
+			<div class="right" tapmode="" onclick="fopen_liaotian(0);">
+				<div class="user_name">用户名</div>
+				<div class="con">聊天内容</div>
+			</div>
+		</div>
+		<div class="user_list">
+			<div class="xuan" xuan="0" tapmode="" onclick="fxuan(1);"></div>
+			<div class="user_img" tapmode="" onclick="fopen_liaotian(0);"><img src="../image/sp_5.png" /></div>
+			<div class="right" tapmode="" onclick="fopen_liaotian(0);">
+				<div class="user_name ccyc">用户名</div>
+				<div class="con ccyc">聊天内容</div>
+			</div>
+		</div>-->
+	</div>
+	<div class="footer">
+		<div class="go" tapmode="go_on" onclick="fxuan_jiedan();">选择接单</div>
+		<div class="no_go">已选择</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		xuan_way=api.pageParam.xuan_way;
+		fget_weibang();
+		fget_jiedan_user();
+	};
+	var xuan_way=0;
+	function fxuan(n)
+	{
+		var max=$('.xuan').length;
+		if(xuan_way==0)
+		{
+			for(var i=0;i<max;i++)
+			{
+				if(i==n)
+				{
+					$('.xuan').eq(i).attr('xuan','1');
+					$('.xuan').eq(i).addClass('xuan_on');
+				}
+				else
+				{
+					$('.xuan').eq(i).attr('xuan','0');
+					$('.xuan').eq(i).removeClass('xuan_on');
+				}
+			}
+		}
+		else if(xuan_way==1)
+		{
+			for(var i=0;i<max;i++)
+			{
+				if(i==n)
+				{
+					var lin_xuan_pan=$('.xuan').eq(i).attr('xuan');
+					if(lin_xuan_pan==0 || lin_xuan_pan=="0")
+					{
+						$('.xuan').eq(i).attr('xuan','1');
+						$('.xuan').eq(i).addClass('xuan_on');
+					}
+					else
+					{
+						$('.xuan').eq(i).attr('xuan','0');
+						$('.xuan').eq(i).removeClass('xuan_on');
+					}
+				}
+			}
+		}
+	}
+	function fget_weibang()
+	{
+			var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+		 	api.ajax({
+	            url: YAH_ajax_name+'get_weibang_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	wb_id:api.pageParam.wb_id,
+	                	lat:lat,
+	                	lon:lon
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	            	var html='';
+	            	for(var i=0;i<1;i++)
+	            	{
+	            		html+='<li>';
+						html+='	<div class="header">';
+						html+='		<div class="left"><img tapmode="" onclick="fopen_look_user('+ret[i].userId+');" src="'+YAH_web+'/'+ret[i].userPhoto+'" /></div>';
+						html+='		<div class="con">';
+						html+='			<div class="user_name ccyc">'+ret[i].userName+'<span class="dengji">lv'+ret[i].grage+'</span>';
+						if(ret[i].isBondShow==1 || ret[i].isBondShow=='1') html+='				<span class="right"><span class="l1">保</span><span class="l2">'+ret[i].userBond+'</span></span>';
+						html+='			</div>';
+						html+='			<div class="time">'+ret[i].createTime+'</div>';
+						html+='		</div>';
+						html+='	</div>';
+						html+='	<div class="dian" tapmode="" onclick="fopen_weibang_xx('+api.pageParam.wb_id+');">';
+						html+='	<div class="title">'+ret[i].title+'</div>';
+						html+='	<div class="content">'+ret[i].content+'</div>';
+						html+='	<div class="tu_list">';
+						var max=ret[i]['img_list'].length;
+						if(max>3) max=3;
+						if(max<=1 && (ret[i]['img_list']==" " || ret[i]['img_list']=="")) max=0;
+						for(var j=0;j<max;j++)
+						{
+							html+='		<img src="'+YAH_web+'/'+ret[i]['img_list'][j]+'" />';
+						}
+						html+='	</div>';
+						html+='	</div>';
+						html+='</li>';
+	            	}
+	            	$('#wb_info').html(html);
+	            	$('.tishi').html("已有"+ret[0].jiedan_num+"人接单");
+	            	api.parseTapmode();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fget_jiedan_user()
+	{
+		api.ajax({
+	            url: YAH_ajax_name+'get_jiedan_user.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	wb_id:api.pageParam.wb_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	            	var html='';
+	            	if(ret.length>0)
+	            	{
+	            	if(ret[0].isGo==1)
+	            	{
+		            	for(var i=0;i<ret.length;i++)
+		            	{
+		            		html+='<div class="user_list">';
+							html+='	<div class="xuan" xuan="0" id="'+ret[i].user_id+'" tapmode="" onclick="fxuan('+i+');"></div>';
+							html+='	<div class="user_img" tapmode="" onclick="fopen_liaotian(\''+ret[i].user_id+'\',\''+ret[i].userPhoto+'\',\''+ret[i].help_id+'\',\''+ret[i].userName+'\');"><img src="'+YAH_web+'/'+ret[i].userPhoto+'" /></div>';
+							html+='	<div class="right" tapmode="" onclick="fopen_liaotian(\''+ret[i].user_id+'\',\''+ret[i].userPhoto+'\',\''+ret[i].help_id+'\',\''+ret[i].userName+'\');">';
+							html+='		<div class="user_name">'+ret[i].userName+'</div>';
+							html+='		<div class="con">'+ret[i].chat+'</div>';
+							html+='	</div>';
+							html+='</div>';
+		            	}
+	            	}
+	            	else if(ret[0].isGo==0)
+	            	{
+	            		for(var i=0;i<ret.length;i++)
+		            	{
+		            		html+='<div class="user_list">';
+							if(ret[i].isXuan==1) html+='	<div class="xuan xuan_on" xuan="0" id="'+ret[i].user_id+'"></div>';
+							else if(ret[i].isXuan==0) html+='	<div class="xuan" xuan="0" id="'+ret[i].user_id+'"></div>';
+							html+='	<div class="user_img" tapmode="" onclick="fopen_liaotian(\''+ret[i].user_id+'\',\''+ret[i].userPhoto+'\',\''+ret[i].help_id+'\',\''+ret[i].userName+'\');"><img src="'+YAH_web+'/'+ret[i].userPhoto+'" /></div>';
+							html+='	<div class="right" tapmode="" onclick="fopen_liaotian(\''+ret[i].user_id+'\',\''+ret[i].userPhoto+'\',\''+ret[i].help_id+'\',\''+ret[i].userName+'\');">';
+							html+='		<div class="user_name">'+ret[i].userName+'</div>';
+							html+='		<div class="con">'+ret[i].chat+'</div>';
+							html+='	</div>';
+							html+='</div>';
+		            	}
+		            	$('.go').css('display','none');
+		            	$('.no_go').css('display','block');
+	            	}
+	            	$('.jd_user_list').html(html);
+	            	}
+	            	else
+	            	{
+	            		html='<div style="text-align: center;line-height: 50px;">暂无人接单</div>';
+	            		$('.jd_user_list').html(html);
+	            	}
+	            	api.parseTapmode();
+	            }else {
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无人接单</div>';
+	            	$('.jd_user_list').html(html);
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fopen_liaotian(to_user_id,to_img_src,wb_id,userName)
+	{
+		api.openWin({
+	        name: 'liaotian_header',
+	        url: 'liaotian_header.html',
+	        pageParam:{
+            	to_user_id:to_user_id,
+            	to_img_src:to_img_src,
+            	wb_id:wb_id,
+            	userName:userName,
+            	xuan_way:api.pageParam.xuan_way
+            }
+        });
+	}
+	function fopen_weibang_xx()
+	{
+		api.openWin({
+	        name: 'weibang_xx_header',
+	        url: 'weibang_xx_header.html',
+	        pageParam:{
+	        	wb_id:api.pageParam.wb_id
+	        }
+        });
+	}
+	function fxuan_jiedan()
+	{
+		if(api.pageParam.xuan_way==0) fxq_jiedan();
+		else fw_jiedan();
+	}
+	function fw_jiedan()
+	{
+		var user_id=$api.getStorage('user_id');
+		var max=$('.xuan').length;
+		var to_user_id='[';
+		var to_user_id_num=0;
+		var lin_to_user_id=0;
+			for(var i=0;i<max;i++)
+			{
+					var lin_xuan_pan=$('.xuan').eq(i).attr('xuan');
+					if(lin_xuan_pan==1 || lin_xuan_pan=="1")
+					{
+						lin_to_user_id=$('.xuan').eq(i).attr('id');
+						if(to_user_id_num==0)
+						{
+							to_user_id+='{to_user_id:"'+lin_to_user_id+'"}';
+						}
+						else
+						{
+							to_user_id+=',{to_user_id:"'+lin_to_user_id+'"}';
+						}
+						to_user_id_num++;
+					}
+			}
+			to_user_id+=']';
+			if(to_user_id_num==0)
+			{
+				api.toast({
+					msg: '请选择要接单的用户',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			to_user_id=eval('('+to_user_id+')');
+		api.showProgress({title:'订单生成中...'});
+			api.ajax({
+	            url: YAH_ajax_name+'wb_pl_xiadan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	wb_id:api.pageParam.wb_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            //alert(ret);
+	            //ret=eval('('+ret+')');
+	            //alert(JSON.stringify(ret));
+	            	if(ret[0].pan=="-1")
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan=="1")
+	            	{
+						api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+						fget_weibang();
+						fget_jiedan_user();
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fxq_jiedan()
+	{
+		var user_id=$api.getStorage('user_id');
+		var max=$('.xuan').length;
+		var to_user_id=0;
+			for(var i=0;i<max;i++)
+			{
+					var lin_xuan_pan=$('.xuan').eq(i).attr('xuan');
+					if(lin_xuan_pan==1 || lin_xuan_pan=="1")
+					{
+						to_user_id=$('.xuan').eq(i).attr('id');
+						break;
+					}
+			}
+			if(to_user_id==0)
+			{
+				api.toast({
+					msg: '请选择要接单的用户',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			api.showProgress({title:'订单生成中...'});
+			api.ajax({
+	            url: YAH_ajax_name+'wb_xiadan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	wb_id:api.pageParam.wb_id,
+	                	to_user_id:to_user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	if(ret[0].pan=="-1")
+	            	{
+	            		api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            	else if(ret[0].pan=="1")
+	            	{
+						fgo_zhifu(ret[0].order_id);	            	
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fgo_zhifu(wb_order_id)
+	{
+		api.openWin({
+	        name: 'zhifu_header',
+	        url: 'zhifu_header.html',
+	        pageParam:{
+	        	zhifupan:'wb_xq',
+	        	wb_order_id:wb_order_id
+	        }
+        });
+	}
+</script>
+</html>

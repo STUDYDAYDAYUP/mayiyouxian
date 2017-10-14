@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/fuwuzhongxin.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="content" style="margin:0;">
+		<!--<ul>
+			<li tapmode="a">热门问题</li>
+			<li tapmode="a">支付问题</li>
+			<li tapmode="a">余额问题</li>
+			<li tapmode="a">积分问题</li>
+			<li tapmode="a">其他问题</li>
+		</ul>-->
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_wenzhang_list();
+	};
+	function fopen_wenzhang(id,name)
+	{
+		api.openWin({
+	        name: 'wenzhang_header',
+	        url: 'wenzhang_header.html',
+	        pageParam:{
+	        	id:id,
+	        	name:name
+	        }
+        });
+	}
+	function fget_wenzhang_list()
+	{
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_wenzhang_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	catId:api.pageParam.id
+                	
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+                 for(var i=0;i<ret.length;i++)
+                 {
+                 	html+='<li tapmode="a" onclick="fopen_wenzhang(\''+ret[i].articleId+'\',\''+ret[i].articleTitle+'\')">'+ret[i].articleTitle+'</li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById("content").innerHTML=html;
+            }else {
+            	//fduanwang();
+            	html='<div style="text-align: center;line-height: 50px;">暂无文章</div>';
+            	document.getElementById("content").innerHTML=html;
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

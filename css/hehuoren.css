@@ -1,0 +1,117 @@
+html, body{
+	width: 100%;
+	height: 100%;
+    background: #efefef;
+}
+#main{
+    width: 100%;
+    height: 100%;
+}
+.content_list{
+    width: 100%;
+    height: 45px;
+    padding: 0 15px;
+    box-sizing: border-box;
+    line-height: 45px;
+    background: #ffffff;
+    border-bottom: 1px solid #efefef;
+    color: #282828;
+    font-size: 14px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.my_partner .content_list_l{
+    background-image: url(../image/icon_two_people.png);
+}
+.optimum .content_list_l{
+    background-image: url(../image/icon_best_optimum.png);
+}
+.excellent .content_list_l{
+    background-image: url(../image/icon_great_optimum.png);
+}
+.consumer .content_list_l{
+    background-image: url(../image/icon_more-people.png);
+}
+.reward .content_list_l{
+    background-image: url(../image/icon_reward_optimum.png);
+}
+.all_reward .content_list_l{
+    background-image: url(../image/icon_goldbrick_optimum.png);
+}
+.withdrawals .content_list_l{
+    background-image: url(../image/icon_withdrawals_optimum.png);
+}
+.content_list_l{
+    width: 36px;
+    height: 44px;
+    line-height: 44px;
+    
+    background-repeat: no-repeat;
+    background-position: left center;
+    -webkit-background-size: 22px;
+    background-size: 22px;
+}
+.content_list_c{
+    -webkit-box-flex:1;
+        -webkit-flex:1;
+                flex:1;
+
+}
+.content_list_r{
+    float: right;
+    width: 80px;
+    height: 44px;
+    padding-right: 14px;
+    line-height: 44px;
+    text-align: right;
+    box-sizing: border-box;
+}
+.content_code{
+    margin-bottom: 10px;
+}
+.content_code .content_list_r, .optimum .content_list_r, .excellent .content_list_r, .consumer .content_list_r, .withdrawals .content_list_r{
+    color: #989898;
+    background: url(../image/btn_into.png) no-repeat center right;
+    -webkit-background-size: 7px;
+    background-size: 7px;
+}
+.reward .content_list_r, .all_reward .content_list_r{
+    padding: 0;
+}
+.content_list_r em{
+    color: #df5354;
+}
+.content_code .content_list_r span{
+    display: inline-block;
+    width: 22px;
+    height: 44px;
+    background: url(../image/icon_code_optimum.png) no-repeat center center;
+    -webkit-background-size: 22px;
+    background-size: 22px;
+}
+.content_list_additional{
+    width: 100%;
+    height: 30px;
+    padding: 0 15px;
+    box-sizing: border-box;
+    line-height: 30px;
+    background: #efefef;
+    font-size: 0;
+    color: #656565;
+    text-align: right;
+}
+.content_list_additional span{
+    display: inline-block;
+    width: 60px;
+    font-size: 13px;
+    text-align: right;
+}
+.content_list_additional .icon{
+    width: 70px;
+    padding-left: 28px;
+    background: url(../image/icon_gold_optimum.png) no-repeat left center;
+    -webkit-background-size: 22px;
+    background-size: 22px;
+}

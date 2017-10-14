@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="api.css"/>
+    <style>
+    	*{ margin: 0; padding: 0;}
+    	.on{ background-color: #b96f19 !important;}
+    	.a{}
+    	
+    	#footder{ width: 100%;height:50px;background-color:#fafafa; float:left; z-index: 10;position: relative;}
+    	#zje{float:right;height: 50px; margin-right: 115px;}
+    	#hj{ font-size: 16px; line-height: 50px;color:#282828;}
+    	#ze{ font-size: 12px;color:#666;}
+    	#zje_a{color: #df5354;}
+    	#jiesuan,#delete{display: block;color:#fff; text-align: center; line-height:50px; height: 50px; width:100px; font-size: 16px; background-color: #60b034; border-radius: 0px; float:right; margin-right: 0px; margin-top: 0px;
+    		position: absolute;top: 0;right: 0;}
+    	#delete{ display: none;}
+    	#quanxuan{ display: block;color:#000; height: 40px; width:80px; font-size: 12px;float:left;padding:10px 0 0 0px}
+
+   		.footerimg{float:left; background-image: url(../image/xuan_hui.png); background-size: 20px 20px; margin-left:5px; margin-right:10px; margin-top:4px; margin-bottom:5px; width: 20px; height: 20px;position: relative;top:3px;left:3px;}
+    	.qx{ line-height: 20px;margin-top:7px; margin-bottom:5px; height: 20px; font-size: 14px;color:#656565;}
+    	.qx_on{background-image:url(../image/xuan_huang.png) !important;}
+    </style>
+</head>
+<body>
+<div id="footder">
+	<div id="quanxuan" tapmode="a" onclick="fall()"><div class="footerimg"></div><div class="qx">全选</div></div>
+	<div id="zje"><div id="hj">合计：<a id="zje_a">￥0</a></div><div id="ze"></div></div>
+	<div id="jiesuan" tapmode="on" onclick="pay()">去结算(0)</div>
+	<div id="delete" tapmode="on" onclick="del()">删除</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+document.getElementById("footder").ontouchmove = function(e){ e.preventDefault(); };
+var qx=0;
+var sum=0,sum2=0;
+	apiready = function(){
+		api.setFrameAttr({name: "goshop_footder", hidden:true});
+		api.parseTapmode();
+	};
+	function pay()
+	{
+		if(sum>0 && sum2>0)
+		{
+			api.execScript({
+		        frameName:'goshop',
+		        script: 'pay();'
+	        });
+		}
+	}
+	function fset_js(n)
+	{
+		if(n==1 || n=='1')
+		{
+			document.getElementById("delete").style.display="none";
+			document.getElementById("jiesuan").style.display="block";
+		}
+		if(n==0 || n=='0')
+		{
+			document.getElementById("jiesuan").style.display="none";
+			document.getElementById("delete").style.display="block";
+		}
+	}
+	function fset_num(n)
+	{
+		sum=n;
+		document.getElementById("jiesuan").innerHTML="去结算("+n+")";
+	}
+	function fset_num2(n)
+	{
+		sum2=n;
+	}
+	function fset_money(n)
+	{
+		document.getElementById("zje_a").innerHTML="￥"+n;
+	}
+	function fset_quanxian(n)
+	{
+		if(n==1)
+		{
+			$('.footerimg').eq(0).addClass("qx_on");
+			qx=1;
+		}
+		else if(n==0)
+		{
+			$('.footerimg').eq(0).removeClass("qx_on");
+			qx=0;
+		}
+	}
+	function fall()
+	{
+		if(qx==1)
+		{
+			api.execScript({
+		        frameName:'goshop',
+		        script: 'fall(0);'
+	        });
+		}
+		else if(qx==0)
+		{
+			api.execScript({
+		        frameName:'goshop',
+		        script: 'fall(1);'
+	        });
+		}
+	}
+	function del()
+	{
+		if(sum>0)
+		{
+			api.confirm({
+			    title: '提示',
+			    msg: '确定要删除所选中的吗？',
+			    buttons: ['确定', '取消']
+			},function( ret, err ){
+			    if( ret ){
+			    	if(ret.buttonIndex == 1)
+			    	{
+			    		fdel();
+			    	}
+			    }else{
+			         //alert( JSON.stringify( err ) );
+			    }
+			});
+		}
+	}
+	function fdel()
+	{
+			api.showProgress({title:'删除中...'});
+			var user_id=$api.getStorage('user_id');
+			var time = Math.ceil(new Date().getTime()/1000);
+	        var sign = get_appkey(time);
+	        sign = md5(sign+user_id);
+			api.ajax({
+	            url: YAH_web+'/index.php?m=Api&c=Orders&a=del_car_goods_array',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	userId:user_id,
+	                	time:time,
+	                    sign:sign
+	                }
+	            }
+	        },function(ret,err){
+	        	//alert(JSON.stringify(ret||err));
+	        	api.hideProgress();//隐藏加载进度框
+	        	if (ret) {
+	                if(ret[0].pan==1)
+	                {
+	                	api.toast({
+							msg: '删除成功',
+							duration: 2000,
+							location: 'bottom'
+						});
+						api.execScript({
+	                       	frameName:'goshop',
+	                        script: 'fget_buycar();'
+                        });
+                        api.execScript({
+	                       	name:'root',
+	                        script: 'fset_bj1();'
+                        });
+	                }
+	            }else {
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

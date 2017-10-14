@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/faweibang.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	*{
+    		user-select: text;
+    		-webkit-user-select: text;
+    	}
+    </style>
+</head>
+<body onclick="fclose_emotion();">
+<div id="main">
+	<div class="biaoti">
+		<div class="lin_k"><input id="biaoti" style="width:100%;" type="text" placeholder="请输入内容标题，1~16个字" /></div>
+	</div>
+	<div id="content">
+		<div id="o" contenteditable="true" onblur="blur(this);foshi_jd();" onfocus="fohuo_jd();">请输入帖子内容</div>
+		<!--<textarea name="" id="cont" maxlength="2048" placeholder="请输入帖子内容"></textarea>-->
+	</div>
+	<div class="tu_hui"><img src="../image/tu_hui.png" id="add_tu" tapmode="" onclick="fadd_tu();" /><img src="../image/tu_bq.png" onclick="event.cancelBubble = true;fopen_emotion();" /></div>
+	<div class="img_list" style="display: none;">
+		<!--<div class="img"><div class="cha"></div><div class="logoing"><img src="../image/login1.gif" /></div><img src="../image/sp_5.png" /></div>-->
+		<div class="jia" tapmode="" onclick="fadd_tu();"><img src="../image/jia_hui2.png" /></div>
+	</div>
+</div>
+<div class="footer" style="margin-top:10px;">
+	<div class="list2" tapmode="a" onclick="fopen_xuan('leixing');">
+		<div class="s1">选择类型</div>
+		<div class="s2 ccyc" id="leixing">闲置商品</div>
+		<div class="s3"></div>
+	</div>
+	<div class="list2">
+		<div class="s1">地址</div>
+		<!--<div class="s2 ccyc">广州市白云区天河北路175号2007</div>-->
+		<div class="s2"><input style="width:100%;" maxlength="100" id="address" type="text" placeholder="" value="正在获取" disabled="disabled" /></div>
+		<div class="s3"></div>
+	</div>
+	<div class="list2" tapmode="a" onclick="fopen_xuan('fanwei');">
+		<div class="s1">范围</div>
+		<div class="s2 ccyc" id="fanwei">不限范围</div>
+		<div class="s3"></div>
+	</div>
+	<div class="list2">
+		<div class="s1">价格</div>
+		<div class="s2"><input maxlength="10" id="money" type="text" placeholder="请输入报酬金额" onkeyup='checkDecimal(this)' /></div>
+		<div class="s4">元</div>
+	</div>
+	<div class="list2" tapmode="a" onclick="fopen_xuan('ps_way');">
+		<div class="s1">配送方式</div>
+		<div class="s2 ccyc" id="ps_way">无</div>
+		<div class="s3"></div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/emotion.json.js"></script>
+<script type="text/javascript" src="../script/emotion.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		if(api.pageParam.pan=='bj') fget_weibang();
+		fdingwei();
+	};
+	var img_num=0;
+	var xuan_num=0;
+	var leixing='闲置商品';
+	var fanwei='0';
+	var ps_way='无';
+	var lat=0;
+	var lon=0;
+	var record={
+                num:""
+    }
+    var checkDecimal=function(n){
+                var decimalReg=/^\d{0,8}\.{0,1}(\d{1,2})?$/;//var decimalReg=/^[-\+]?\d{0,8}\.{0,1}(\d{1,2})?$/;
+                if(n.value!=""&&decimalReg.test(n.value)){
+                    record.num=n.value;
+                }else{
+                    if(n.value!=""){
+                        n.value=record.num;
+                    }
+                }
+    }
+	function fadd_tu()
+	{
+		api.openFrame({
+	        name: 'goodspingjia_tanc',
+	        url: 'goodspingjia_tanc.html',
+	        pageParam:{
+	        	num:3
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fdel(obj)
+	{
+		obj.parentNode.parentNode.removeChild(obj.parentNode);
+		xuan_num--;
+		if(xuan_num<=0) 
+		{
+			$('.tu_hui').css('display','block');
+			$('#add_tu').css('display','inline');
+			$('.img_list').css('display','none');
+		}
+	}
+	function fadd_sc_img(src)
+	{
+//		var json=[{id:0,name:'商品0'},{id:1,name:'商品1'}];
+//		alert( JSON.stringify( json ) );
+//		json.splice(1,1);//开始位置,删除个数
+//		alert( JSON.stringify( json ) );
+//		alert(json.length);
+//		var add={id:3,name:'商品3'};
+//		json.push(add);
+//		alert( JSON.stringify( json ) );
+//		alert(json.length);
+		$('.jia').remove();
+		$('.img_list').append('<div class="img"><div class="cha" tapmode="" onclick="fdel(this);"></div><div class="logoing"><img src="../image/login1.gif" /></div><img class="sc_img" src="'+src+'" sev_src="0" /></div>');
+		$('.img_list').append('<div class="jia" tapmode="" onclick="fadd_tu();"><img src="../image/jia_hui2.png" /></div>');
+	}
+	function fshangchuan(src)
+	{
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		if(img_num==0)
+		{
+			//$('.tu_hui').css('display','none');
+			$('#add_tu').css('display','none');
+			$('.img_list').css('display','block');
+		}
+		fadd_sc_img(src);
+		xuan_num++;
+		if(xuan_num>=9)
+		{
+			$('.jia').remove();
+		}
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_help.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id,
+		            ysrc:src
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		         if(ret[0].pan==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0].pan==1)
+		         {
+					var max=$('.sc_img').length;
+					for(var i=0;i<max;i++)
+					{
+						var lin_src=$('.sc_img').eq(i).attr('src');
+						if(lin_src==ret[0].ysrc)
+						{
+							$('.logoing').eq(i).css('display','none');
+							$('.sc_img').eq(i).attr('sev_src',ret[0].msg);
+						}
+					}
+		         }
+		    } else {
+		         fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fgo()
+	{
+		var login=$api.getStorage('login');
+		if(login=='0' || login==0 || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(api.pageParam.pan=='bj') {fset_weibang();return;}
+		var bt=$('#biaoti').val();
+		var content=$('#o').html();
+		var user_id=$api.getStorage('user_id');
+		var max=$('.img').length;
+		var img_list='';
+		var img_lin_num=0;
+		var money=$('#money').val();
+		var address=$('#address').val();
+		for(var i=0;i<max;i++)
+		{
+			var lin_src=$('.sc_img').eq(i).attr('sev_src');
+			if(lin_src!=0 && lin_src!="0")
+			{
+				if(img_lin_num==0) img_list+=lin_src;
+				else img_list+='|'+lin_src;
+				img_lin_num++;
+			}
+		}
+		if(Trim(bt,'g').length==0)
+		{
+			api.toast({
+				msg: '请输入标题！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(content=="请输入内容" || content=="请输入帖子内容")
+		{
+			api.toast({
+				msg: '请输入内容！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(Trim(content,'g').length==0 && content!="请输入帖子内容")
+		{
+			api.toast({
+				msg: '请输入内容！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(money=="" || money.length==0)
+		{
+			api.toast({
+				msg: '请输入价格！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(address=="" || address.length==0 || address=="正在获取")
+		{
+			api.toast({
+				msg: '请输入地址！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var lon2=$api.getStorage('lon');
+		var lat2=$api.getStorage('lat');
+//		alert("标题："+bt);
+//		alert("内容："+content);
+//		alert("user_id:"+user_id);
+//		alert("图片地址："+img_list);
+//		alert("范围："+fanwei);
+//		alert("类型："+leixing);
+//		alert("配送方式："+ps_way);
+//		alert("价格："+money);
+//		alert("地址："+address);
+//		alert("lat:"+lat2);
+//		alert("lon:"+lon2);
+//		alert(YAH_ajax_name+'faweibang.php');
+		//return;
+		api.showProgress({title:'提交中...'});
+		api.ajax({
+	            url: YAH_ajax_name+'faweibang.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	leixing:leixing,
+	                	bt:bt,
+	                	content:content,
+	                	img_list:img_list,
+	                	fanwei:fanwei,
+	                	ps_way:ps_way,
+	                	money:money,
+	                	address:address,
+	                	lat:lat2,
+	                	lon:lon2,
+	                	type:api.pageParam.type
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret[0].pan=="true")
+	                 {
+	                 	api.toast({
+							msg: '提交成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						window.setTimeout("api.closeWin({});",1500);
+//						api.execScript({
+//	                       	name:'weibang_shequ_header',
+//	                       	frameName:'weibang_shequ',
+//	                        script: 'fcz();'
+//                      });
+	                 }
+	                 else if(ret[0].pan=="-1")
+	                 {
+	                 	api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							msg: '提交失败，请稍后再试',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fopen_xuan(type)
+	{
+		//if(api.pageParam.pan=='bj') return;
+		if(type=="leixing")
+		{
+			api.openFrame({
+	            name: 'faweibang_tanc',
+	            url: 'faweibang_tanc.html',
+	            rect: {
+		            x:0,
+		            y:0,
+		            w:'auto',
+		            h:'auto'
+	            }
+            });
+            api.openFrame({
+	            name: 'faweibang_xuan_leixing',
+	            url: 'faweibang_xuan_leixing.html',
+	            rect: {
+		            x:0,
+		            y:api.winHeight-250,
+		            w:'auto',
+		            h:250
+	            }
+            });
+		}
+		else if(type=="fanwei")
+		{
+			api.openFrame({
+	            name: 'faweibang_tanc',
+	            url: 'faweibang_tanc.html',
+	            rect: {
+		            x:0,
+		            y:0,
+		            w:'auto',
+		            h:'auto'
+	            }
+            });
+            api.openFrame({
+	            name: 'faweibang_xuan_fanwei',
+	            url: 'faweibang_xuan_fanwei.html',
+	            rect: {
+		            x:0,
+		            y:api.winHeight-250,
+		            w:'auto',
+		            h:250
+	            }
+            });
+		}
+		else if(type=="ps_way")
+		{
+			api.openFrame({
+	            name: 'faweibang_tanc',
+	            url: 'faweibang_tanc.html',
+	            rect: {
+		            x:0,
+		            y:0,
+		            w:'auto',
+		            h:'auto'
+	            }
+            });
+            api.openFrame({
+	            name: 'faweibang_xuan_ps_way',
+	            url: 'faweibang_xuan_ps_way.html',
+	            rect: {
+		            x:0,
+		            y:api.winHeight-200,
+		            w:'auto',
+		            h:200
+	            }
+            });
+		}
+	}
+	function fset_leixing(n)
+	{
+		leixing=n;
+		$('#leixing').html(n);
+	}
+	function fset_fanwei(n)
+	{
+		fanwei=n;
+		var title=n+"KM";
+		if(n==0 || n=='0') title='不限范围';
+		$('#fanwei').html(title);
+	}
+	function fset_ps_way(n)
+	{
+		ps_way=n;
+		$('#ps_way').html(n);
+	}
+	function fdingwei()
+	    {
+	    	api.toast({
+				msg: '正在获取位置',
+				duration: 2000,
+				location: 'bottom'
+			});
+	    	var bMap = api.require('bMap');
+			bMap.getLocation({
+			    accuracy: '10m',
+			    autoStop: true,
+			    filter: 1
+			}, function(ret, err){
+			    if(ret.status){
+			        //alert(JSON.stringify(ret));
+			        if(ret.status==true)
+			        {
+			        	$api.setStorage('lon',ret.lon);
+			        	$api.setStorage('lat',ret.lat);
+			        	fzhuan(ret.lon,ret.lat);
+			        	lat=ret.lat;
+			        	lon=ret.lon;
+			        }
+			    }else{
+			        //alert(err.code);
+			    }
+			});
+	    }
+	    function fzhuan(lon,lat)
+	    {
+	    				var map = api.require('bMap');
+						map.getNameFromCoords({
+						    lon: lon,
+						    lat: lat
+						},function(ret,err){
+						    if(ret.status){
+						        //alert(JSON.stringify(ret));
+						        if(ret.address!=undefined)
+						        {
+							        $('#address').val(ret.address);
+							        $('#address').removeAttr('disabled');
+						        }
+						        else
+						        {
+						        	$('#address').val("");
+							        $('#address').removeAttr('disabled');
+							        $('#address').attr('placeholder','获取失败');
+						        }
+						        
+						    }
+						});
+	    }
+	    function fget_weibang()
+	    {
+	    	api.showProgress({title:'加载中...'});
+			var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+		 	api.ajax({
+	            url: YAH_ajax_name+'get_weibang_xx.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	wb_id:api.pageParam.wb_id,
+	                	lat:lat,
+	                	lon:lon
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	            	var html='';
+	            	$('.s3').css('display','none');
+	            	$('#biaoti').val(ret[0].title);
+	            	$('#o').html(ret[0].content);
+	            	$('#o').css('color','#000');
+	            	
+	            	$('#leixing').html(ret[0].leixing);
+	            	$('#leixing').css('color','#666');
+	            	
+	            	$('#address').val(ret[0].address);
+	            	$('#address').css('color','#000 !important');
+	            	
+	            	var fanwei2=ret[0].range!=0?ret[0].range+"KM":"不限范围";
+	            	$('#fanwei').html(fanwei2);
+	            	$('#fanwei').css('color','#666');
+	            	
+	            	$('#money').val(ret[0].money);
+//	            	$('#money').attr('disabled','disabled');
+//	            	$('#money').css('color','#000  !important');
+//	            	$('.s4').css('display','none');
+//	            	$('.s4').css('color','#999');
+	            	
+	            	var ps_way2='';
+	            	//=ret[0].delivery==0?"送货上门":"自取";
+	            	if(ret[0].delivery==0) ps_way2="送货上门";
+	            	if(ret[0].delivery==1) ps_way2="自取";
+	            	if(ret[0].delivery==2) ps_way2="无";
+	            	$('#ps_way').html(ps_way2);
+	            	$('#ps_way').css('color','#999');
+	            	
+	            	$('.list2').removeAttr('tapmode');
+	            	
+	            	leixing=ret[0].leixing;
+	            	fanwei=ret[0].range;
+	            	ps_way=ret[0].delivery;
+	            	address=ret[0].address;
+	            	money=ret[0].money;
+	            	for(var i=0;i<1;i++)
+	            	{
+	            		var max=ret[i]['img_list'].length;
+						if(max<=1 && (ret[i]['img_list']==" " || ret[i]['img_list']=="")) max=0;
+						for(var j=0;j<max;j++)
+						{
+							fadd_tu_lin(ret[i]['img_list'][j]);
+						}
+	            	}
+					api.parseTapmode();
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	    }
+	    function fadd_tu_lin(src)
+	    {
+	    	if(img_num==0)
+			{
+				//$('.tu_hui').css('display','none');
+				$('#add_tu').css('display','none');
+				$('.img_list').css('display','block');
+			}
+			$('.jia').remove();
+			$('.img_list').append('<div class="img"><div class="cha" tapmode="" onclick="fdel(this);"></div><div class="logoing"><img src="../image/login1.gif" /></div><img class="sc_img" src="'+YAH_web+'/'+src+'" sev_src="'+src+'" /></div>');
+			$('.img_list').append('<div class="jia" tapmode="" onclick="fadd_tu();"><img src="../image/jia_hui2.png" /></div>');
+			xuan_num++;
+			if(xuan_num==9)
+			{
+				$('.jia').remove();
+			}
+			$('.logoing').css('display','none');
+	    }
+	    function fset_weibang()
+	    {
+	    	var bt=$('#biaoti').val();
+			var content=$('#o').html();
+			var user_id=$api.getStorage('user_id');
+			var max=$('.img').length;
+			var img_list='';
+			var img_lin_num=0;
+			var money=$('#money').val();
+			var address=$('#address').val();
+			for(var i=0;i<max;i++)
+			{
+				var lin_src=$('.sc_img').eq(i).attr('sev_src');
+				if(lin_src!=0 && lin_src!="0")
+				{
+					if(img_lin_num==0) img_list+=lin_src;
+					else img_list+='|'+lin_src;
+					img_lin_num++;
+				}
+			}
+			if(Trim(bt,'g').length==0)
+			{
+				api.toast({
+					msg: '请输入标题！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			if(content=="请输入内容" || content=="请输入帖子内容")
+			{
+				api.toast({
+					msg: '请输入内容！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			if(Trim(content,'g').length==0 && content!="请输入帖子内容")
+			{
+				api.toast({
+					msg: '请输入内容！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+			}
+			var lon2=$api.getStorage('lon');
+			var lat2=$api.getStorage('lat');
+	//		alert("标题："+bt);
+	//		alert("内容："+content);
+	//		alert("user_id:"+user_id);
+	//		alert("图片地址："+img_list);
+	//		alert("范围："+fanwei);
+	//		alert("类型："+leixing);
+	//		alert("配送方式："+ps_way);
+	//		alert("价格："+money);
+	//		alert("地址："+address);
+	//		alert("lat:"+lat2);
+	//		alert("lon:"+lon2);
+	//		alert(YAH_ajax_name+'faweibang.php');
+			//return;
+			var lin_ps_way='';
+			api.showProgress({title:'提交中...'});
+			api.ajax({
+	            url: YAH_ajax_name+'set_weibang.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+//	                	user_id:user_id,
+//	                	bt:bt,
+//	                	content:content,
+//	                	img_list:img_list,
+//	                	wb_id:api.pageParam.wb_id
+	                	
+	                	user_id:user_id,
+	                	leixing:leixing,
+	                	bt:bt,
+	                	content:content,
+	                	img_list:img_list,
+	                	fanwei:fanwei,
+	                	ps_way:ps_way,
+	                	money:money,
+	                	address:address,
+	                	lat:lat2,
+	                	lon:lon2,
+	                	wb_id:api.pageParam.wb_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret[0].pan=="true")
+	                 {
+	                 	api.toast({
+							msg: '提交成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						api.execScript({
+	                       	name:'my_weibang_header',
+	                       	frameName:'my_weibang',
+	                        script: 'fget_my_weibang();'
+                        });
+						window.setTimeout("api.closeWin({});",1500);
+//						api.execScript({
+//	                       	name:'weibang_shequ_header',
+//	                       	frameName:'weibang_shequ',
+//	                        script: 'fcz();'
+//                      });
+	                 }
+	                 else if(ret[0].pan=="-1")
+	                 {
+	                 	api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							msg: '提交失败，请稍后再试',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	    }
+</script>
+</html>

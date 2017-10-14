@@ -1,0 +1,193 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+}
+.a{
+            background-color:#eee !important;
+        }  
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	float:left;
+	width: 100%;
+    font-size: 14px;
+    background-color: #f2f2f2;
+}
+#content{
+	background-color:#fff;
+	border-bottom:1px solid #eee;
+}
+.goods_list{
+	height: 100px;
+	padding:0 10px;
+	background-color: #fff;
+	display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            border-bottom:1px solid #eee;  
+}
+.goods_l{
+	width: 80px;
+	height: 80px;
+	margin:10px 10px 10px 0;
+}
+.goods_l img{
+	height: 80px;
+	width: 80px;
+}
+.goods_r{
+	-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            position: relative;
+}
+.goods_title{
+	margin:10px 0px 0px 0;
+	line-height: 36px;
+	font-size: 14px;
+	height: 36px;
+	color:#000;
+	overflow: hidden;
+}
+.goods_money{
+	margin-bottom: 10px;
+	position: absolute;
+	width: 100%;
+	bottom:0px;
+	color:red;
+	font-size: 16px;
+}
+#tianjia{
+	padding-bottom: 10px;
+}
+.del{
+	height: 33px;
+	min-width: 50px;
+	text-align: center;
+	line-height: 34px;
+	padding:0 10px;
+	margin:18px auto;
+	border-radius: 3px;
+	border:1px solid red;
+	background-color: #fff;
+	color:red;
+	font-size: 12px;
+	width: 100px;
+}
+.del_on{
+	background-color: red !important;
+	color:#fff !important;
+}
+.tu{
+	background-image: url('../image/tu_hong.png');
+	background-repeat: no-repeat;
+	background-size:16px 16px;
+	background-position:0 10px;
+	width: 20px;
+	height: 30px;
+	float:left;
+	margin:0 8px 0 0;
+}
+.xuan{
+	width: 100px;
+	position: relative;
+}
+		.x0{
+			width: 0px !important;
+		}
+		.x1{
+			width: 20px !important;
+		}
+		.x2{
+			width: 40px !important;
+		}
+		.x3{
+			width: 60px !important;
+		}
+		.x4{
+			width: 80px !important;
+		}
+		.x5{
+			width: 100px !important;
+		}
+		.sd_xingji{
+			position: absolute;
+			z-index: 1;
+			height: 40px;
+			width: 100px;
+			background-image: url('../image/xing_huang.png');
+			background-repeat: no-repeat;
+			background-size: 100px 18px;
+			background-position: 0 0px;
+		}
+		.sd_xingji_di{
+			position: absolute;
+			z-index: 0;
+			height: 40px;
+			width: 100px;
+			background-image: url('../image/xing_hui.png');
+			background-repeat: no-repeat;
+			background-size: 100px 18px;
+			background-position: 0 0px;
+		}
+		.sd_xingji_xuan{
+			position: absolute;
+			z-index: 2;
+			height: 40px;
+			width: 100px;
+			display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		}
+		.sd_xingji_xuan .xing_xuan{
+			-webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		}
+		.text{
+			padding: 10px;
+			height: 80px;
+		}
+		.text textarea{
+			width: 100%;
+			height:100%;
+			line-height: 20px;
+		}
+		.list{
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+		}
+		#go{
+			height: 50px;
+			text-align: center;
+			margin:0 auto;
+			background-color:#ff1b1b;
+			color:#fff;
+			padding:0 30px;
+			border-radius: 5px;
+		}
+		.go_on{
+			background-color:#ac1212 !important;
+		}
+		.dui{
+			background-image: url('../image/xuan_hui.png');
+			background-repeat: no-repeat;
+			background-size:16px 16px;
+			background-position:10px 17px;
+			width: 20px;
+			height: 50px;
+			float:left;
+			padding:0 8px 0 10px;
+		}
+		.dui_on{
+			background-image: url('../image/xuan_hong.png');
+		}
+		.xuan_tu{
+			display: none;
+		}

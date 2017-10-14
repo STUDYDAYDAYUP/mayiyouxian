@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_pingtai.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.dingwei_box{
+    		box-sizing: border-box;
+    		width: 100%;
+    		height: 50px;
+    		padding-right: 15px;
+    		display: -webkit-box;
+    		display: -webkit-flex;
+    		display: flex;
+    		position: relative;
+    	}
+    	.topzuo{
+    		box-sizing: border-box;
+    		width: 90px;
+			height: 50px;
+			padding: 0 26px 0 12px;
+			line-height: 50px;
+			font-size: 14px;
+			color: #60b034;
+			text-align: center;
+			background: url(../image/xiaoqu_btn_down.png) no-repeat 65px center;
+			-webkit-background-size: 14px;
+			background-size: 14px;
+    	}
+    	.topyou_sousuo{
+    		-webkit-box-flex:1;
+    			-webkit-flex:1;
+    					flex:1;
+    		height: 35px;
+    		line-height: 36px;
+    		text-align: center;
+    		font-size: 14px;
+			border-radius: 35px;
+			background: #f2f2f2;
+			position: relative;
+			margin-top: 7px;
+    	}
+    	.topyou_sousuo input{
+    		display: block;
+    		width: 60%;
+    		height: 34px;
+    		line-height: 36px;
+    		margin: 0 auto;
+    		text-align: center;
+    	}
+    	.topyou_sousuo .zuo{
+    		position: absolute;
+    		left: 15px;
+    		top: 5px;
+    		width: 24px;
+    		height: 24px;
+    	}
+    	.topyou_sousuo .you{
+    		position: absolute;
+    		display: block;
+    		right: 0;
+    		top: 0;
+    		/*width: 22px;*/
+    		height: 35px;
+    		line-height: 35px;
+    		padding: 0 10px;
+    		background: #60b034;
+    		border-radius: 0 35px 35px 0;
+    		color: #ffffff;
+    	}
+    	.content_title{
+    		width: 100%;
+    		height: 50px;
+    		padding-left: 55px;
+    		line-height: 50px;
+    		font-size: 16px;
+    		color: #989898;
+    		background-color: #f5f5f5;
+			background-image: url(../image/icon_location.png);
+			background-repeat: no-repeat;
+			background-position: 20px center;
+			-webkit-background-size: 30px;
+			background-size: 30px;
+    	}
+    	.xiaoqu_list ul{
+    		padding: 0 15px;
+    	}
+    	.xiaoqu_list li{
+    		width: 100%;
+    		height: 60px;
+    		line-height: 60px;
+    		border-bottom: 1px solid #f2f2f2;
+    		font-size: 16px;
+    		color: #282828;
+    		text-indent: 5px;
+    	}
+    	#city_list{position:absolute;width:90px;text-align:center;top:50px;background-color:#fff;border:1px solid #f2f2f2;overflow-x: hidden;display:none;}
+    	#city_list li{line-height:30px;border-bottom:1px solid #f2f2f2;}
+    </style>
+</head>
+<body>
+<div id="main" style="">
+	<div class="dingwei_box">
+		<div class="topzuo ccyc" id="weizhi" tapmode="" onclick="weizhi_xiala();">广州市</div>
+		<div tapmode="a" class="topyou_sousuo">
+			<img class="zuo" src="../image/xiaoqu_btn_search.png"></img>
+			<input id="shuru" type="text" placeholder="输入小区名称" >
+			<div id="but" class="you" onclick="search();" style="display: none;">确定</div>
+		</div>
+		<div id="city_list">
+		    <ul>
+		        <!-- <li>广州</li>
+		        <li>广州</li>
+		        <li>广州asdfasfsadfasfdsafasfas</li>
+		        <li>广州</li>
+		        <li>广州</li>
+		        <li>广州</li>
+		        <li>广州</li>
+		        <li>广州</li>
+		        <li>广州</li>
+		        <li>广州</li>
+		        <li>广州</li> -->
+		    </ul>
+		</div>
+	</div>
+	<div class="content">
+		<!-- <div class="content_title">附近小区</div> -->
+		<div class="xiaoqu_list">
+			<ul>
+				<!-- <li>东山一品</li>
+				<li>东山一品</li>
+				<li>东山一品</li>
+				<li>东山一品</li>
+				<li>东山一品</li>
+				<li>东山一品</li>
+				<li>东山一品</li> -->
+			</ul>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	var xiala = 2;
+	apiready = function(){
+	    
+	    get_city_list();
+	    
+	    $('#shuru').keyup(function(){
+	         setBut(this);
+	    })
+	};
+	
+	function search(){
+	    var key = $('#shuru').val();
+	    xiala = 2;
+	    xuan_shi(key,'请选择',2);
+	 }
+	
+	function weizhi_xiala(){
+	    if(xiala == 1){
+		    $("#city_list").show();
+		    xiala = 2;
+	    }
+	    else{
+	        $("#city_list").hide();
+		    xiala = 1;
+	    }
+	}
+	
+	function get_city_list(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=get_city_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	
+        	if (ret) {
+                 $('#weizhi').html(ret[0]['areaName']);
+                 xuan_shi(ret[0]['areaId'],ret[0]['areaName'],1);
+                 var html = '<ul>';
+                 $(ret).each(function(i){
+                     html += '<li onclick="xuan_shi('+ret[i]['areaId']+',\''+ret[i]['areaName']+'\',1)">'+ret[i]['areaName']+'</li>';
+                 })
+                 html += '</ul>';
+                 
+                 $('#city_list').html(html);
+            }else {
+            	var html='';
+            	$('#city_list').html(html);
+            };
+        });
+	}
+	function xuan_shi(key,name,type){
+	    $('#weizhi').html(name);
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+key);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=get_xiaoqu_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	key:key,
+                	type:type,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	weizhi_xiala();
+            if (ret) {
+                 var html = '<ul>';
+                 $(ret).each(function(i){
+                     html += '<li onclick="set_xiaoqu('+ret[i]['communityId']+',\''+ret[i]['communityName']+'\')">'+ret[i]['communityName']+'</li>';
+                 })
+                 html += '</ul>';
+                 
+                 $('.xiaoqu_list').html(html);
+            }else {
+            	var html='<ul><li>暂没有小区</li></ul>';
+            	$('.xiaoqu_list').html(html);
+            };
+        });
+	}
+	
+	
+	function set_xiaoqu(id,name){
+	    var login=$api.getStorage('login');
+		if(login=='0' || login==0 || login==undefined)
+		{
+			api.toast({
+				msg: '请先登录！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id+'_'+id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=set_user_xiaoqu',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	cid:id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	if (ret) {
+                 api.toast({
+					msg: '选择成功！',
+					duration: 2000,
+					location: 'bottom'
+				 });
+                 $api.setStorage('user_communityId',id);
+                 $api.setStorage('user_communityName',name);
+                 $api.setStorage('user_communityNum',ret['people_num']);
+                 if(ret['people_num'] > 0){
+	                 api.execScript({
+	                	name:'root',
+	                   	frameName:'home',
+	                    script: 'show_top_notify('+ret['people_num']+');'
+	                 });
+                 }
+                 else{
+                     api.execScript({
+	                	name:'root',
+	                   	frameName:'home',
+	                    script: 'show_top_notify1();'
+	                 });
+                 }
+                 api.execScript({
+			        name: 'root',
+			        frameName:'my',
+			       	 script: 'fset_com_name("'+name+'");'
+		         });
+		         
+		         api.execScript({
+			        name: 'goods_list_header',
+			        frameName:'goods_list',
+			       	 script: 'fclose_xuan_xiaoqu();'
+		         });
+		         api.execScript({
+			        name: 'fenlei_shaixuan_header',
+			        frameName:'fenlei_shaixuan',
+			       	 script: 'fclose_xuan_xiaoqu();'
+		         });
+		         
+		         api.execScript({
+			        name: 'address_header',
+			        frameName:'address',
+			       	 script: 'get_user_info();'
+		         });
+                 
+                 api.execScript({
+			        name: 'root',
+			        frameName:'go_xuan_xiaoqu',
+			       	 script: 'fclose();'
+		         });
+                 window.setTimeout("fclose()",1000);
+            }else {
+                 fduanwang();
+            };
+        });
+	}
+	function fclose()
+	{
+		api.closeWin({
+			name:'xuan_xiaoqu_header'
+        });
+	}
+	
+	
+	
+	//bycao input输入显示隐藏确定按钮
+	
+	// shuru.oninput=function(){
+	// 	setBut(this);
+	// }
+	function setBut(obj){
+		if(obj.value !=""){
+			$('#but').show();
+		}else{
+			$('#but').hide();
+		}
+	}
+	// bycao 从index.html拷贝
+	
+    
+</script>
+</html>

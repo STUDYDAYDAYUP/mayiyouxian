@@ -1,0 +1,95 @@
+body{
+	background-color: #fff;
+    width: 100%;
+}
+*{
+	margin:0;
+	padding: 0;
+}
+.a{
+            background-color:#eee !important;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+    font-size: 14px;
+    background-color: #fff;
+}
+#header{
+	height: 50px;
+	border-bottom:1px solid #eee;
+	line-height: 50px;
+	display: -webkit-box;
+    display: -webkit-flex;
+    display: flex; 
+}
+#header div{
+	display:inline;
+}
+#header input{
+	height: 30px;
+	width: 100%;
+	position: absolute;
+	text-align: center;
+}
+#header #h1{
+	padding:0 0 0 10px;
+}
+#header #h2{
+	background-color:#eee;
+	width: 80px;
+	height: 30px;
+	margin:10px;
+	border-radius: 2px;
+	position: relative;
+}
+#header #h3{
+	overflow: hidden;
+	width: 15px;
+}
+#header #h4{
+	background-color:#eee;
+	width: 80px;
+	height: 30px;
+	margin:10px;
+	border-radius: 2px;
+	position: relative;
+}
+.list{
+	padding:0 10px;
+	height: 50px;
+	line-height: 50px;
+}
+#content{
+	float:left;
+	width: 100%;
+}
+#pinpai{
+    width: 100%;
+    float:left;
+}
+#pinpai .pinpai_list{
+	width: 30%;
+	float:left;
+	height: 80px;
+	position: relative;
+	text-align: center;
+	margin-bottom: 10px;
+	margin-left: 2%;
+}
+#pinpai .pinpai_list img{
+	height: 50px;
+	border:1px solid #fff;
+}
+#go{
+	padding:0 40px;
+	border-radius: 5px;
+	color:#fff;
+	background-color: #ff1b1b;
+	margin:10px auto;
+	height: 50px;
+	line-height: 50px;
+}
+.go_on{
+	background-color: #ab1111 !important;
+}

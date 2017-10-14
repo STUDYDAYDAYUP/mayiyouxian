@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/login.css"/>
+    <style>
+    	html{background-color:#f9f9f9;}
+    	body{}
+    	header {height: 50px;padding-top:20px;}
+    	.topbar {height: 50px;line-height: 50px;text-align: center;color: #282828;font-size: 20px;font-weight: bold;position: relative;}
+    	.topzuo { width: 50px;height: 50px;left: 0px;top: 0px;position: absolute;background-image: url('../image/return1.png');background-size: 11px 19px;background-repeat: no-repeat;background-position: 13px 15px;}
+    	.login_list{height:50px;line-height:50px;border-bottom:1px solid #e8e8e8;width:80%;margin:5px auto;position:relative;}
+    	.login_list .login_icon1{width:30px;height:50px;background-image: url('../image/login_tel.png');background-size: 30%;background-position:10px 27px;background-repeat:no-repeat;}
+    	.login_list .login_icon2{width:30px;height:50px;background-image: url('../image/login_pass.png');background-size: 40%;background-position:10px 30px;background-repeat:no-repeat;}
+    	.login_list input{height:20px;position:absolute;bottom:3px;}
+    	.login_list .login_s2{position:absolute;font-size:12px;color:#fff;background-color:#60b034;line-height:12px;padding:5px 8px;border-radius:5px;right:10px;bottom:5px}
+    	.sub_login{height:50px;line-height:50px;width:80%;margin:50px auto 0;text-align:center;background-color:#e25151;color:#fff;font-weight:bold;border-radius:10px;}
+    	.zhuce{width:80%;margin:0 auto ; text-align:right;color:#60b034;line-height:50px;}
+		#djs{background-color: #ccc;}
+		.weixin_l{display: none;}
+    </style>
+</head>
+<body>
+<div id="body_bg">
+	<div id="wrap">
+		<header id="headers">
+	        <div id="goshop" class="topbar ">
+		        <div tapmode="a" onclick="freturn();" class="topzuo"></div>
+		      	<div class="topzhong">登录</div>
+		      	<!-- <div tapmode="a" class="topyou" onclick="fopen_reg();">注册</div> -->
+		      	<!--<div tapmode="a" class="topyou_tu" onclick="fopen_goshop();"></div>-->
+	        </div>
+		</header>
+	</div>
+	<div id="main">
+	   <ul>
+	       <li class="login_list" style="margin-top:0px;"><span class="login_icon1" style=""></span><input type="tel" id="zh" maxlength="11" placeholder="请输入手机号码" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')" /></li>
+	       <li class="login_list"><span class="login_icon2" style=""></span><input type="number" id="pwd" maxlength="16" placeholder="请输入验证码" style="width:130px;" onkeyup="fshu(this.value);" onafterpaste="fshu(this.value);" /><span  class="login_s2" id="fs" onclick="fs();">获取验证码</span><span style="display:none;" class="login_s2"  id="djs">重新获取60s</span></li>
+	
+	       <li class="sub_login" onclick="fgo();">登&nbsp;&nbsp;录</li>
+	       <li class="zhuce"  onclick="fopen_reg();">注册</li>
+	   </ul>
+	   <div class="dsf">
+			<ul>
+				<li id="weixinL" class="weixin_l" tapmode="" onclick="weixin();"><img src="../image/weixin_login.png" style="height:50px;" /><a>微信账号</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		$('#body_bg').css('min-height',$(window).height());
+
+		fcheckWechaLogin();
+	};
+	var openid='';
+	var nickname='';
+	var headimgurl='';
+	function freturn()
+	{
+		api.closeWin({
+	    });
+	}
+	function fcheckWechaLogin(){
+		api.ajax({
+	            url: YAH_ajax_name+'get_weChatLogin_open.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0]['fieldValue']==1)
+	            	{
+	            		document.getElementById('weixinL').style.display = 'block';
+	            	}
+	            	else if(ret[0]['fieldValue']==0)
+	            	{
+		            	document.getElementById('weixinL').style.display = 'none';
+	            	}
+	            	else
+	            	{
+	            		// fduanwang();
+	            	}
+	            }else {
+	            	// fduanwang();
+
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fs()
+	{
+		var mobile=document.getElementById("zh").value;
+	    if(mobile.length==11 && mobile[0]=='1' && (mobile[1]=='3' || mobile[1]=='5' || mobile[1]=='7' || mobile[1]=='8'))
+	    {
+	    	var lin_pan=0;
+	         for(var i=0;i<11;i++)
+	         {
+	         	if(Number(mobile[i])>=0 && Number(mobile[i])<=9);
+	         	else {lin_pan=1;break;}
+	         }
+	         if(lin_pan==1)
+	         {
+	         	api.toast({
+					msg: '请输入正确的手机号码！',
+					duration: 2000,
+					location: 'bottom'
+				});
+		       return;
+	         }
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	       return;
+	    }
+	    var timestamp=new Date().getTime();
+	    localStorage.yzm_time=Number(timestamp/1000);
+	    document.getElementById("fs").style.display="none";
+	    document.getElementById("djs").style.display="block";
+	    localStorage.yzm=Math.floor(Math.random()*899999)+100000;
+	    localStorage.yzm_sj=mobile;
+	    time=60;
+	    document.getElementById("djs").innerHTML='重新获取'+time+"S";
+	    jishi=window.setInterval("ftime()","1000");
+	    //alert("验证码是："+localStorage.yzm);
+	    api.toast({
+				msg: '发送成功！',
+				duration: 2000,
+				location: 'bottom'
+		});
+		api.ajax({
+            url: YAH_ajax_name+'fssms_yzm.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	mobile:mobile,
+                	yzm:localStorage.yzm
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function ftime()
+	{
+	    if(time!=0)
+	    {
+	        time--;
+	        document.getElementById("djs").innerHTML="重新获取"+time+"S";
+	    }
+	    else
+	    {
+	        window.clearInterval(jishi);
+	        document.getElementById("fs").style.display="block";
+	        document.getElementById("djs").style.display="none";
+	    }
+	}
+	function fopen_reg()
+	{
+		api.openWin({
+	        name: 'zhuce',
+	        url: 'zhuce.html'
+        });
+	}
+	function weixin()
+	{
+		api.showProgress({title:'加载中...'});
+		var wx = api.require('wx');
+		wx.auth({
+		    apiKey: 'wx8fbe09646d9da4c5'
+		}, function(ret, err) {
+		    api.hideProgress();//隐藏加载进度框
+		    if (ret.status) {
+		        wx.getToken({
+				    apiKey: 'wx8fbe09646d9da4c5',
+				    apiSecret: '7a425d1e4aa6f6690fee1a53eb5c27fc',
+				    code: ret.code
+				}, function(ret1, err1) {
+				    if (ret.status) {
+				        wx.getUserInfo({
+						    accessToken: ret1.accessToken,
+						    openId: ret1.openId
+						}, function(ret2, err2) {
+						    if (ret.status) {
+						        openid=ret2.openid;
+						        nickname=ret2.nickname;
+						        headimgurl=ret2.headimgurl;
+						        fget_user_info();
+						    } else {
+						        alert(err2.code);
+						    }
+						});
+				        
+				        
+				    } else {
+				        alert(err1.code);
+				    }
+				});
+		    } else {
+		        alert(err.code);
+		    }
+		});
+	}
+	function fget_user_info()
+	{
+		api.showProgress({title:'登录中...'});
+		api.ajax({
+	            url: YAH_ajax_name+'weixin_login.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	openid:openid
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0]['chenggong']=='false')
+	            	{
+	            		api.openWin({
+					        name: 'zhuce',
+					        url: 'zhuce.html',
+					        pageParam:{
+					        	type:'weixin',
+					        	openid:openid,
+					        	nickname:nickname,
+					        	headimgurl:headimgurl
+					        }
+				        });
+	            	}
+	            	else if(ret[0]['chenggong']=='true')
+	            	{
+		            	api.toast({
+							msg: '登录成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						$api.setStorage('user_zh','0');
+	            		$api.setStorage('login','1');
+	            		$api.setStorage('user_id',ret[0]['userId']);
+	            		$api.setStorage('user_phone',ret[0]['userPhone']);
+	            		$api.setStorage('user_name',ret[0]['userName']);
+	            		$api.setStorage('user_communityId',ret[0]['user_communityId']);
+	            		$api.setStorage('user_communityName',ret[0]['user_communityName']);
+	            		if(ret[0]['userPhoto']=="" || ret[0]['userPhoto']==null || ret[0]['userPhoto'].length<=4) ret[0]['userPhoto']='Cjson/upload/member.jpg';
+	            		$api.setStorage('user_img',ret[0]['userPhoto']);
+	            		api.execScript({
+	            			name:'root',
+	                       	frameName:'my',
+	                        script: 'fset_user_name(\''+ret[0]['userName']+'\');fset_com_name(\''+ret[0]['user_communityName']+'\');'
+                        });
+                        api.execScript({
+                        	name:'root',
+	                       	frameName:'my',
+	                        script: 'fset_user_img(\''+ret[0]['userPhoto']+'\');fget_dingdan_number();fyslogin();fget_user();hehuoren();'
+                        });
+	            		window.setTimeout("fclose()",1000);
+//	            		api.openWin({
+//						    name: 'user_info_header',
+//						    url: 'user_info_header.html'
+//					    });
+//					    fclose();
+	            	}
+	            	else
+	            	{
+	            		fduanwang();
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fclose()
+	{
+		api.closeWin({
+			name:'denglu'
+        });
+	}
+	var look=0;
+	function flook()
+	{
+		if(look==0)
+		{
+			look=1;
+			document.getElementById("pwd").type="text";
+			$('#look_pwd').addClass("look_pwd_on");
+		}
+		else
+		{
+			look=0;
+			document.getElementById("pwd").type="password";
+			$('#look_pwd').removeClass("look_pwd_on");
+		}
+	}
+	function fgo()
+	{
+		var zh=document.getElementById("zh").value;
+		var pwd=document.getElementById("pwd").value;
+		if(zh=="" || pwd=="")
+		{
+			api.toast({
+				msg: '账号验证码不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(zh.length!=11 || zh[0]!='1')
+		{
+			api.toast({
+				msg: '账号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+		}
+		if(!(zh[1]=='3' || zh[1]=='5' || zh[1]=='7' || zh[1]=='8'))
+	    {
+	        api.toast({
+				msg: '账号格式错误！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    if(zh != localStorage.yzm_sj)
+	    {
+	    	api.toast({
+				msg: '不是验证手机！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    if(pwd != localStorage.yzm)
+	    {
+	    	api.toast({
+				msg: '验证码不正确！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	        return;
+	    }
+	    api.showProgress({title:'登录中...'});
+	    $api.setStorage('user_zh',zh);
+	    $api.setStorage('user_pwd',pwd);
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+zh);
+        var user_id=$api.getStorage('user_id');
+	    if($api.getStorage('app_token_value')){
+	        var user_id = $api.getStorage('user_id');
+	    }
+	    else{ var user_id = 0;}
+	    api.ajax({
+	            url: YAH_web+'/index.php?m=Api&c=User&a=login',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	zh:zh,
+	                	userId:user_id,
+                        time:time,
+                        sign:sign
+	                }
+	            }
+	        },function(ret,err){
+	        	//alert(JSON.stringify(ret||err));
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret['chenggong']=='-1')
+	            	{
+	            		api.toast({
+							msg: '账号不存在！',
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+
+	            	else if(ret['chenggong']=='1')
+	            	{
+		            	api.toast({
+							msg: '登录成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+	            		$api.setStorage('login','1');
+	            		$api.setStorage('user_id',ret['userId']);
+	            		if(ret['userPhoto']=="" || ret['userPhoto']==null || ret['userPhoto'].length<=4) ret['userPhoto']='member.jpg';
+	            		$api.setStorage('user_img',ret['userPhoto']);
+	            		$api.setStorage('user_phone',ret['userPhone']);
+	            		$api.setStorage('user_name',ret['userName']);
+	            		$api.setStorage('user_communityId',ret['user_communityId']);
+	            		$api.setStorage('user_communityName',ret['user_communityName']);
+	            		api.execScript({
+	            			name:'root',
+	                       	frameName:'my',
+	                        script: 'fset_user_name(\''+ret['userName']+'\');fset_com_name(\''+ret['user_communityName']+'\');'
+                        });
+                        api.execScript({
+                        	name:'root',
+	                       	frameName:'my',
+	                        script: 'fset_user_img(\''+ret['userPhoto']+'\');fget_dingdan_number();fyslogin();fget_user();hehuoren();'
+                        });
+	            		window.setTimeout("fclose()",1000);
+//	            		api.openWin({
+//						    name: 'user_info_header',
+//						    url: 'user_info_header.html'
+//					    });
+//					    fclose();
+	            	}
+	            	else
+	            	{
+	            		fduanwang();
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.hideProgress();//隐藏加载进度框
+	        });
+	}
+	function fshu(val)
+	{
+		//if(val=="" || val==null || val==undefined || val=='undefined') document.getElementById("guan").style.display="none";
+		//else document.getElementById("guan").style.display="block";
+	}
+	function del()
+	{
+		document.getElementById("pwd").value="";
+	}
+
+	function fopen_cz_pwd()
+	{
+		api.openWin({
+	        name: 'cz_pwd2_header',
+	        url: 'cz_pwd2_header.html'
+        });
+	}
+	function fset_val(mobile,pwd)
+	{
+		document.getElementById("zh").value=mobile;
+		document.getElementById("pwd").value=pwd;
+	}
+</script>
+</html>

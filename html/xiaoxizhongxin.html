@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+		    width: 100%;
+		    height: 100%;
+		}
+		body {
+		    width: 100%;
+		    height: 100%;
+			margin:0;
+			padding-bottom:1px;
+			background-color:#f2f2f2;
+		}
+		#main{
+			width: 100%;
+		}
+		.a{
+		    background-color:#eee !important;
+		}
+    	.content .list{
+		    display: -webkit-box;
+		    display: -webkit-flex;
+		    display: flex;
+		    height: 60px;
+		    padding:10px 0;
+		    background-color: #fff;
+		    border-bottom:1px solid #e2e2e2;
+		}
+		.content .list .s1{
+		    margin:0 10px;
+		    /*background-image:url('../image/my_gy.png');*/
+		    background-repeat: no-repeat;
+		    background-size:60px 60px;
+		    background-position:0px 0px;
+		    height: 60px;
+		    width: 60px;
+		    position: relative;
+		}
+		.content .list .s4{
+		    margin:0 10px;
+		    /*background-image:url('../image/my_gy.png');*/
+		    background-repeat: no-repeat;
+		    background-size:15px 20px;
+		    background-position:3px 15px;
+		    height: 50px;
+		    width: 20px;
+		}
+		.content .list .s2{
+		    -webkit-box-flex: 1;
+		    -webkit-flex: 1;
+		    flex: 1;
+		    line-height: 60px;
+		    color:#000;
+		    font-size: 16px;
+		}
+		.content .list .s3{
+		    background-image:url('../image/youjiantou.png');
+		    background-repeat: no-repeat;
+		    background-size:10px 18px;
+		    background-position:0px 11px;
+		    height:60px;
+		    width:10px;
+		    margin:0 10px;
+		}
+		.num{
+			background-color:#fd0000;
+			text-align: center;
+			color:#fff;
+			min-width:20px;
+			min-height:20px;
+			border-radius: 10px;
+			line-height: 20px;
+			font-size: 14px;
+			position: absolute;
+			right: -6px;
+			display:none;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content">
+		<div class="list" tapmode="a" onclick="fopen_list('jiedan_xiaoxi')">
+				<div class="s1" style="background-image:url('../image/xxzx_jdxx.png');fset_none(0);"><div class="num">0</div></div>
+				<div class="s2" style="margin-left:10px;">新的接单消息</div>
+				<div class="s3"></div>
+		</div>
+		<div class="list" tapmode="a" onclick="fopen_list('xitong_tongzhi')">
+				<div class="s1" style="background-image:url('../image/xxzx_xttz.png');fset_none(1);"><div class="num">0</div></div>
+				<div class="s2" style="margin-left:10px;">系统通知</div>
+				<div class="s3"></div>
+		</div>
+		<div class="list" tapmode="a" onclick="fopen_list('weibang_ddtx')">
+				<div class="s1" style="background-image:url('../image/xxzx_ddtx.png');fset_none(2);"><div class="num">0</div></div>
+				<div class="s2" style="margin-left:10px;">订单提醒</div>
+				<div class="s3"></div>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_num();
+		$api.setStorage('all_notice_bool',0);
+	};
+	function fopen_list(n)
+	{
+		api.openWin({
+	        name: n+'_header',
+	        url: n+'_header.html'
+        });
+	}
+	function fget_num()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_tz_num.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                for(var i=0;i<ret.length;i++)
+                {
+                	if(Number(ret[i])>0)
+                	{
+                		var t=1;
+                		var lin_sum=Number(ret[i]);
+                		var notice_num=$api.getStorage('notice_num['+i+']');
+		                var notice_bool=$api.getStorage('notice_bool['+i+']');
+		                if(notice_num==undefined) notice_num=0;
+		                else notice_num=Number(notice_num);
+		                if(notice_bool==undefined) notice_bool=1;
+		                else notice_bool=Number(notice_bool);
+		                
+		                if(lin_sum==notice_num)
+		                {
+		                	if(notice_bool==0) t=0;
+		                }
+		                else if(lin_sum<notice_num)
+		                {
+		                	$api.setStorage('notice_num['+i+']',lin_sum);
+		                	if(notice_bool==0) t=0;
+		                }
+		                else
+		                {
+		                	$api.setStorage('notice_num['+i+']',lin_sum);
+		                }
+		                if(t==1)
+		                {
+			                $('.num').eq(i).html(ret[i]);
+	                		$('.num').eq(i).css('display','block');
+		                }
+                		
+                	} 
+                }
+            }else {
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fset_none(n)
+	{
+		$('.num').eq(n).html(0);
+	    $('.num').eq(n).css('display','none');
+	}
+</script>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/weibang_fenlei_xuan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="content">
+		<div class="list" tapmode="" onclick="fxuan(0,'时间');">
+			<div class="left ccyc">时间</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(1,'点击量');">
+			<div class="left ccyc">点击量</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(2,'距离');">
+			<div class="left ccyc">距离</div>
+			<div class="right"></div>
+		</div>
+		<div class="list" onclick="fxuan(3,'等级');">
+			<div class="left ccyc">等级</div>
+			<div class="right"></div>
+		</div>
+		
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fcsh();
+	};
+	function fxuan(n,name)
+	{
+		var max=$('.list').length;
+		xuan=n;
+		xuan_name=name;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.left').eq(i).addClass('color_zi');
+				$('.right').eq(i).css('display','block');
+				api.execScript({
+	               	frameName:'weibang_fenlei',
+	                script: 'fset_shaixuan(\''+name+'\');'
+                });
+				api.execScript({
+	               	name:'weibang_fenlei_header',
+	                script: 'fset_shaixuan(\''+name+'\');fclose_tanc();'
+                });
+			}
+			else
+			{
+				$('.left').eq(i).removeClass('color_zi');
+				$('.right').eq(i).css('display','none');
+			}
+		}
+	}
+	function fcsh()
+	{
+		var max=$('.list').length;
+		for(var i=0;i<max;i++)
+		{
+			var val=$('.left').eq(i).html();
+			if(val==api.pageParam.shaixuan)
+			{
+				$('.left').eq(i).addClass('color_zi');
+				$('.right').eq(i).css('display','block');
+				break;
+			}
+		}
+	}
+</script>
+</html>

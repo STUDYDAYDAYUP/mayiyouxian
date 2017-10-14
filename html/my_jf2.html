@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/wallet.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	#main #header .s3 .left{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="header">
+		<div class="s1">
+			<div class="left">当前积分</div>
+			<div class="right" tapmode="" onclick="fopen_jf_shuoming();">积分说明</div>
+		</div>
+		<div class="s2">
+			<div class="money" id="user_score">0</div>
+		</div>
+		<div class="s3">
+			<div class="left" tapmode="tixian_on" onclick="fopen_list('jifen_shangcheng')">积分兑换商品</div>
+		</div>
+		<!--<div class="left">
+			<div>账户余额</div>
+			<div id="money">0.00</div>
+		</div>
+		<div class="right">
+			<div class="chongzhi" tapmode="chongzhi_on" onclick="fopen_chongzhi();">充值</div>
+		</div>-->
+	</div>
+	<div class="list_header">最近30天积分记录</div>
+	<div id="content">
+		<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<ul>
+			<!--<li>
+				<div class="s1">
+					<div class="left">兑换商品</div>
+					<div class="right">2015-10-30</div>
+				</div>
+				<div class="s2">
+					<div class="left">剩余积分：0.00</div>
+					<div class="z_money">-99.00</div>
+				</div>
+			</li>
+			<li>
+				<div class="s1">
+					<div class="left">获得积分</div>
+					<div class="right">2015-10-30</div>
+				</div>
+				<div class="s2">
+					<div class="left">剩余积分：0.00</div>
+					<div class="z_money lv">+99.00</div>
+				</div>
+			</li>-->
+			<!--<li>
+				<div class="s1">2016-01-23 07:23</div>
+				<div class="s2"><img src="../image/shanghu_logo.png" /></div>
+				<div class="s3">
+					<div class="t_money">-2922.00</div>
+					<div class="msg">羽绒服2015冬装打流放阿勒快递费挨打</div>
+				</div>
+			</li>
+			<li>
+				<div class="s1">2016-01-23 07:23</div>
+				<div class="s2"><img src="../image/shanghu_logo.png" /></div>
+				<div class="s3">
+					<div class="t_money t_money_lv">2922.00</div>
+					<div class="msg">充值</div>
+				</div>
+			</li>
+			<li>
+				<div class="s1">2016-01-23 07:23</div>
+				<div class="s2"><img src="../image/shanghu_logo.png" /></div>
+				<div class="s3">
+					<div class="t_money">-2922.00</div>
+					<div class="msg">退款</div>
+				</div>
+			</li>-->
+		</ul>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_user();
+		fget_jf_jilu();
+	};
+	function fopen_chongzhi()
+	{
+		api.openWin({
+	        name: 'chongzhi_header',
+	        url: 'chongzhi_header.html'
+        });
+	}
+	function fopen_list(n)
+	{
+		api.openWin({
+			        name: n+'_header',
+			        url: n+'_header.html',
+//			        animation:{
+//			        	type:"movein",                //动画类型（详见动画类型常量）
+//					    subType:"from_right",       //动画子类型（详见动画子类型常量）
+//					    duration:300 
+//			        }
+		        });
+	}
+	function fget_user()
+	{
+		//api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_user.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 document.getElementById("user_score").innerHTML=ret[0].userScore;
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_jf_jilu()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_user_jf_jilu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+//          		html+='<li>';
+//					html+='	<div class="title">'+ret[i].msg+'</div>';
+//					html+='	<div class="min_con">';
+//					html+='		<div class="time">'+getTime2(ret[i].time)+'</div>';
+					var fu='';
+					var se='';
+					if(ret[i].IncDec==0) {fu='-';se='hong';}
+					else fu='+';
+//					html+='		<div class="num '+se+'">'+fu+ret[i].score+'</div>';
+//					html+='	</div>';
+//					html+='</li>';
+					
+					html+='<li>';
+					html+='	<div class="s1">';
+					html+='		<div class="left">'+ret[i].msg+'</div>';
+					html+='		<div class="right">'+getTime2(ret[i].time)+'</div>';
+					html+='	</div>';
+					html+='	<div class="s2">';
+					html+='		<div class="left">剩余积分：'+ret[i].totalscore+'</div>';
+					html+='		<div class="z_money '+se+'">'+fu+ret[i].score+'</div>';
+					html+='	</div>';
+					html+='</li>';
+            	}
+            	html+='</ul>';
+                document.getElementById("content").innerHTML=html;
+            }else {
+            	//fduanwang();
+            	var html='<div style="text-align: center;line-height: 50px;">暂无记录</div>';
+            	document.getElementById("content").innerHTML=html;
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fopen_jf_shuoming()
+	{
+		api.openWin({
+	        name: 'jf_shuoming_header',
+	        url: 'jf_shuoming_header.html'
+        });
+	}
+</script>
+</html>

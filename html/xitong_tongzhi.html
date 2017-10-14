@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/xitong_tongzhi.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+	<!--<div class="list" tapmode="a" onclick="fopen_gonggao(0);">
+		<div class="content">这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！</div>
+		<div class="time">2016-7-5 16:59:23</div>
+		<div class="name">微帮生活</div>
+	</div>
+	<div class="list" tapmode="a" onclick="fopen_gonggao(0);">
+		<div class="content">这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！这是一条很长很长的公告，无限不停地重复着！！</div>
+		<div class="time">2016-7-5 16:59:23</div>
+		<div class="name">微帮生活</div>
+	</div>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_gonggao_list();
+		$api.setStorage('notice_bool['+1+']',0);
+	};
+	function fopen_gonggao(gonggao_id)
+	{
+		api.openWin({
+	        name: 'gonggao_header',
+	        url: 'gonggao_header.html',
+	        pageParam:{
+	        	gonggao_id:gonggao_id
+	        }
+        });
+	}
+	function fget_gonggao_list()
+	{
+		//api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_wb_gonggao_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='';
+            	for(var i=0;i<ret.length;i++)
+            	{
+            		html+='<div class="list" tapmode="a" onclick="fopen_gonggao('+ret[i].id+');">';
+            		 var reg=new RegExp("src=\"","g"); //创建正则RegExp对象  
+					 var stringObj=ret[i].content;  
+					 var newstr=stringObj.replace(reg,"src=\""+YAH_web+"/");
+					html+='	<div class="content">'+newstr+'</div>';
+					html+='	<div class="time">'+ret[i].createTime+'</div>';
+					html+='	<div class="name">'+ret[i].users+'</div>';
+					html+='</div>';
+            	}
+            	document.getElementById("main").innerHTML=html;
+            	api.parseTapmode();
+            }else {
+            	//fduanwang();
+            	document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">暂无公告</div>';
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>在线支付</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jf_zhifu.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="address">
+		<div class="wu" id="wu" tapmode="" onclick="fopen_new_address();">
+			<span class="s1"></span>请添加收货地址
+		</div>
+		<div class="you" id="you" tapmode="" onclick="fopen_address();" style="display:none;">
+			<div class="list"><span class="s1">陈晓红</span><div class="s2"></div></div>
+			<div class="list2"><span>电话：</span>13800138000</div>
+			<div class="list2"><span>地址：</span>广东省广州市天河区天河北路175号20楼2007室</div>
+		</div>
+	</div>
+	<input id="yixuan_address" type="hidden" value="0" />
+	<div class="content">
+		<div class="tishi">兑换商品详情</div>
+		<div class="goods">
+			<div class="left"><img id="goodsImg" src="#" /></div>
+			<div class="right">
+				<div class="title" id="goodsName"></div>
+				<div class="money" id="goodsScore"></div>
+			</div>
+		</div>
+	</div>
+	<div class="pingtai">
+		<div class="pay_way" onclick="fxuan(1)">
+			<div class="jifen"></div>
+			<div class="title" style="color:red;">可用积分：<span id="ky_score">0积分</span></div>
+			<div class="xuan xuan_on"></div>
+		</div>
+	</div>
+	<div class="disanfang">
+		<div class="t2">其他支付方式<span style="float:right;color:red;" id="goodsMoney">￥0.00</span></div>
+		<div class="pay_way" onclick="fxuan(2)">
+			<div class="weixin"></div>
+			<div class="title">微信支付</div>
+			<div class="xuan"></div>
+		</div>
+		<div class="pay_way" onclick="fxuan(3)">
+			<div class="zhifubao"></div>
+			<div class="title">支付宝支付</div>
+			<div class="xuan"></div>
+		</div>
+	</div>
+	<div id="statement" class="f"></div>
+	<div tapmode="go_on" class="go" onclick="fgo()">确认支付</div>
+	
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+var pay_way=4;
+var pay_score=0;
+var pay_money=0;
+var pay_pan=-1;
+var user_score=0;
+var isPwd=0;
+var goodsStorck=0;
+var isSale=0;
+var dizhi_pan=0;
+var guan=0;
+	apiready = function(){
+//		api.showProgress({
+//			    style: 'default',
+//			    animationType: 'fade',
+//			    title: '努力加载中...',
+//			    text: '先喝杯茶...',
+//			    modal: true
+//			});
+//		api.hideProgress();//隐藏加载进度框
+        //下拉刷新
+//			api.setRefreshHeaderInfo({
+//			    visible: true,
+//			    loadingImg: '',
+//			    bgColor: '#f2f2f2',
+//			    textColor: '#fff',
+//			    textDown: '下拉刷新...',
+//			    textUp: '松开刷新...',
+//			    showTime: true
+//			}, function(ret, err){
+//			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+//				fget_money();
+//			    //api.refreshHeaderLoadDone();
+//			    api.parseTapmode();
+//			});
+		fget_user_address();
+        fget_money();
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+function fxuan(n)
+{
+	if(n==1) pay_way=4;
+	if(n==2) pay_way=2;
+	if(n==3) pay_way=1;
+	var xuan=document.getElementsByClassName("xuan");
+	for(var i=0;i<xuan.length;i++)
+	{
+		if(i+1==n)
+		{
+			$api.addCls(xuan.item(i), "xuan_on");
+		}
+		else
+		{
+			$api.removeCls(xuan.item(i), "xuan_on");
+		}
+	}
+}
+function fget_money()
+{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_pay_score.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	goods_id:api.pageParam.goods_id,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	if(ret[0].needPay)
+	            	{
+	            		pay_pan=1;
+	            		user_score=ret[0].userScore;
+	                	pay_score=ret[0].score;
+	                	pay_money=ret[0].needPay;
+	                	goodsStorck=ret[0].goodsStorck;
+	                	isSale=ret[0].isSale;
+	                	document.getElementById("goodsImg").src=$api.getStorage("YAH_web")+'/'+ret[0].goodsImg;
+	                	document.getElementById("goodsName").innerHTML=ret[0].goodsName;
+	                	document.getElementById("goodsScore").innerHTML=pay_score+"积分";
+	                	document.getElementById("ky_score").innerHTML=user_score+"积分";
+	                	document.getElementById("goodsMoney").innerHTML="￥"+pay_money;
+	                	if(ret[0].payPwd==0) isPwd=0;
+	                	else isPwd=1;
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            guan++;
+	            if(guan==2)
+	            {
+		            api.refreshHeaderLoadDone();
+		            api.hideProgress();//隐藏加载进度框
+	            }
+	        });
+}
+function fgo()
+{
+	if(pay_pan==-1)
+	{
+		api.toast({
+			msg: '网络错误！请稍后刷新再试！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	if(dizhi_pan==0)
+	{
+		api.toast({
+			msg: '请选择收货地址！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	if(isSale==0)
+	{
+		api.toast({
+			msg: '商品已下架！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	if(Number(goodsStorck)<=0)
+	{
+		api.toast({
+			msg: '商品库存不足！',
+			duration: 2000,
+			location: 'bottom'
+		});
+		return;
+	}
+	if(pay_way==4)
+	{
+		if(Number(user_score)<Number(pay_score))
+		{
+			api.toast({
+				msg: '可用积分不足！请选择其他支付方式！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(isPwd==0)
+		{
+			api.openWin({
+	            name: 'set_pay_pwd_header',
+	            url: 'set_pay_pwd_header.html'
+            });
+		}
+		else if(isPwd==1)
+		{
+			api.openFrame({
+			    name: 'zhifu_tanc',
+			    url: 'zhifu_tanc.html',
+			    opaque:'false',
+			    rect: {
+				    x:0,
+				    y:api.pageParam.header_h,
+				    w:'auto',
+				    h:'auto'
+			    }
+		    });
+		}
+		
+	}
+	if(pay_way==2)
+	{
+		api.toast({
+				msg: '微信支付接口开发中...',
+				duration: 2000,
+				location: 'bottom'
+		});
+		return;
+	}
+	if(pay_way==1)
+	{
+		api.toast({
+				msg: '支付宝接口开发中...',
+				duration: 2000,
+				location: 'bottom'
+		});
+		return;
+	}
+}
+function fpay()
+{
+		api.showProgress({title:'支付中...'});
+		var user_id=$api.getStorage('user_id');
+		var goods_id=api.pageParam.goods_id;
+		var address=document.getElementById('yixuan_address').value;
+			api.ajax({
+	            url: YAH_ajax_name+'jf_pay.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	goods_id:goods_id,
+	                	user_id:user_id,
+	                	pay_way:pay_way,
+	                	address:address
+	                }
+	            }
+	        },function(ret,err){
+	            if (ret) {
+	            	if(ret[0]['pan']==1)
+	            	{
+	            		api.toast({
+							msg: ret[0]['msg'],
+							duration: 2000,
+							location: 'bottom'
+						});
+//						api.execScript({
+//	                       	name:'root',
+//	                       	frameName:'my',
+//	                        script: 'fget_dingdan_number();'
+//                      });
+//                      api.execScript({
+//	                       	name:'daifukuan_header',
+//	                       	frameName:'daifukuan',
+//	                        script: 'fget_daifukuan();'
+//                      });
+//                      api.execScript({
+//	                       	name:'all_dingdan_header',
+//	                       	frameName:'all_dingdan',
+//	                        script: 'fget_all_dingdan();'
+//                      });
+						window.setTimeout('fclose();',1500);
+	            	}
+	            	else if(ret[0]['pan']==-1)
+	            	{
+	            		api.toast({
+							msg: ret[0]['msg'],
+							duration: 2000,
+							location: 'bottom'
+						});
+	            	}
+	            }else {
+	            	fduanwang();
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        	api.hideProgress();//隐藏加载进度框
+	        });
+}
+
+/******************获取收获地址**********************/
+	function fopen_address()
+	{
+		api.openWin({
+	        name: 'address_header',
+	        url: 'address_header.html'
+        });
+	}
+	function fopen_new_address()
+	{
+		api.openWin({
+	        name: 'new_address_header',
+	        url: 'new_address_header.html'
+        });
+	}
+function fget_user_address()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage("user_id");
+		api.ajax({
+            url: YAH_ajax_name+'get_user_address_default.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {user_id:user_id}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 $api.setStorage('going',2);
+            	 dizhi_pan=1;
+            	 document.getElementById("wu").style.display="none";
+                 document.getElementById("you").style.display="block";
+                 //document.getElementsByClassName("shouhuoren")[0].innerHTML="收货人："+ret[0].userName;
+                 //document.getElementsByClassName("phone")[0].innerHTML=ret[0].userPhone;
+                 var dizhi='';
+                 var ret2=$api.getStorage("address_list");
+                 for(var i=0;i<ret2.length;i++)
+                 {
+                 	if(ret2[i].areaId==ret[0].areaId1 || ret2[i].areaId==ret[0].areaId2 || ret2[i].areaId==ret[0].areaId3)
+                 	{
+                 		dizhi+=ret2[i].areaName;
+                 	}
+                 }
+                 var ret3=$api.getStorage("address_list_communitys");
+                 for(i=0;i<ret3.length;i++)
+                 {
+                 	if(ret3[i].communityId==ret[0].communityId)
+                 	{
+                 		dizhi+=ret3[i].communityName;
+                 	}
+                 }
+                 html='';
+                 html+='<div class="list"><span class="s1">'+ret[0].userName+'</span><div class="s2"></div></div>';
+				 html+='<div class="list2"><span>电话：</span>'+ret[0].userPhone+'</div>';
+				 html+='<div class="list2"><span>地址：</span>'+dizhi+ret[0].address+'</div>';
+				 document.getElementById("you").innerHTML=html;
+                 //document.getElementsByClassName("shouhuodizhi")[0].innerHTML="收货地址："+dizhi+ret[0].address;
+                 document.getElementById("yixuan_address").value=ret[0].addressId;
+            }else {
+            	document.getElementById("you").style.display="none";
+                document.getElementById("wu").style.display="block";
+//          	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            guan++;
+            if(guan>=2)
+            {
+	            api.refreshHeaderLoadDone();
+	            api.hideProgress();//隐藏加载进度框
+            }
+        });
+	}
+	function fset_address(id)
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage("user_id");
+		api.ajax({
+            url: YAH_ajax_name+'get_user_address.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	address_id:id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 $api.setStorage('going',2);
+            	 dizhi_pan=1;
+            	 document.getElementById("wu").style.display="none";
+                 document.getElementById("you").style.display="block";
+                 //document.getElementsByClassName("shouhuoren")[0].innerHTML="收货人："+ret[0].userName;
+                 //document.getElementsByClassName("phone")[0].innerHTML=ret[0].userPhone;
+                 var dizhi='';
+                 var ret2=$api.getStorage("address_list");
+                 for(var i=0;i<ret2.length;i++)
+                 {
+                 	if(ret2[i].areaId==ret[0].areaId1 || ret2[i].areaId==ret[0].areaId2 || ret2[i].areaId==ret[0].areaId3)
+                 	{
+                 		dizhi+=ret2[i].areaName;
+                 	}
+                 }
+                 var ret3=$api.getStorage("address_list_communitys");
+                 for(i=0;i<ret3.length;i++)
+                 {
+                 	if(ret3[i].communityId==ret[0].communityId)
+                 	{
+                 		dizhi+=ret3[i].communityName;
+                 	}
+                 }
+                 html='';
+                 html+='<div class="list"><span class="s1">'+ret[0].userName+'</span><div class="s2"></div></div>';
+				 html+='<div class="list2"><span>电话：</span>'+ret[0].userPhone+'</div>';
+				 html+='<div class="list2"><span>地址：</span>'+dizhi+ret[0].address+'</div>';
+				 document.getElementById("you").innerHTML=html;
+                 //document.getElementsByClassName("shouhuodizhi")[0].innerHTML="收货地址："+dizhi+ret[0].address;
+                 document.getElementById("yixuan_address").value=ret[0].addressId;
+            }else {
+            	document.getElementById("you").style.display="none";
+                document.getElementById("wu").style.display="block";
+//          	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+            api.hideProgress();//隐藏加载进度框
+        });
+	}
+</script>
+</html>

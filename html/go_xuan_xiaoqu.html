@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    background-color: transparent;  
+		}
+		body{
+			background-color: black;
+		    float:left;
+		    width: 100%;
+		    height:100%;
+		      background-color: transparent;  
+		}
+		#main{
+			float:left;
+			width: 100%;
+		    font-size: 14px;
+		    height:100%;
+		    color:#fff;
+		    background-color: black;
+		    filter:alpha(opacity=40);  
+		      -moz-opacity:0.4;  
+		      -khtml-opacity: 0.4;  
+		      opacity: 0.4;  
+		}
+		.xuanze_bg{width:100%;height:100%;background-color:#000;position:fixed;top:0;left:0;opacity: 0.2;z-index: 99;}
+		.fenxiangg_xiaoqu{width:250px;height:120px;z-index:100;position:fixed;top:50%;left:50%;margin-top:-60px;margin-left:-125px;background-color:#fff;border:1px solid #f2f2f2;border-radius:10px;display:none;}
+		    	    .xuanze_xiaoqu{width:250px;height:120px;z-index:100;position:fixed;top:50%;left:50%;margin-top:-60px;margin-left:-125px;background-color:#fff;border:1px solid #f2f2f2;border-radius:10px;display:none;}
+		.xuanze_info{width:100%;height:80px;line-height:80px;color:#282828;text-align:center;border-bottom:1px solid #f2f2f2;box-sizing: border-box;}
+		.xuanze_sub{width:100%;height:40px;line-height:40px;}
+		.xuanze_sub span{width:50%;text-align:center;color:#1f75ff;}
+		.xuanze_sub .xuanze_c{color:#f12627;border-right:1px solid #f2f2f2;box-sizing: border-box;}
+    </style>
+</head>
+<body>
+<div class="xuanze_bg"></div>
+<div class="xuanze_xiaoqu">
+   <div class="xuanze_info">请选择小区，享受蚂蚁优鲜服务</div>
+   <div class="xuanze_sub"><span class="xuanze_c" onclick="fclose();">取消</span><span class="xuanze_g" onclick="go_xuan_xiaoqu();">去选择</span></div>
+</div>
+<div class="fenxiangg_xiaoqu">
+   <div class="xuanze_info fenxiang" style="line-height:20px;"><br/>小区还差99人才开通，邀请邻居加入蚂蚁优鲜</div>
+   <div class="xuanze_sub"><span class="xuanze_c" onclick="fclose();">取消</span><span class="xuanze_g" onclick="go_fenxiang_xiaoqu();">去邀请</span></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var type = api.pageParam.type;
+		type = parseInt(type);
+		if(type > 0){
+		   $('.fenxiang').html('<br/>小区还差'+type+'人才开通，邀请邻居加入蚂蚁优鲜');
+		   $('.fenxiangg_xiaoqu').show();
+		}
+		else{
+		    $('.xuanze_xiaoqu').show();
+		}
+
+	};
+function go_xuan_xiaoqu(){
+	api.openWin({
+	    name: 'xuan_xiaoqu_header',
+	    url: 'xuan_xiaoqu_header.html',
+	    
+	});
+}
+function go_fenxiang_xiaoqu(){
+	api.openWin({
+	    name: 'yuyuejieguo_header',
+	    url: 'yuyuejieguo_header.html',
+	    pageParam:{
+	       type:api.pageParam.type
+	    }
+	});
+}
+function fclose()
+{
+	api.closeFrame({
+	    name: 'go_xuan_xiaoqu'
+    });
+	
+}
+</script>
+</html>

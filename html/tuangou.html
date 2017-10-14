@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/tuangou.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div tapmode="a" class="h_list h_list_on" onclick="fqie(0);"><a>全部商区</a></div>
+		<div tapmode="a" class="h_list" onclick="fqie(1);"><a>全部分类</a></div>
+		<div tapmode="a" class="h_list" onclick="fqie(2);"><a><span id="p_title">智能排序</span><span class="sanjiao"></span></a></div>
+		<div tapmode="a" class="h_list" onclick="fqie(3);"><a>筛选<span class="sanjiao"></span></a></div>
+	</div>
+	<div class="goods_list">
+		<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+		<!--<ul>
+			<li tapmode="a" onclick="fopengoods(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">￥297</div>
+					<div class="money2"><span class="s1">￥698</span><span class="s2">537人已买</span></div>
+				</div>
+			</li>
+			<li tapmode="a" onclick="fopengoods(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">￥297</div>
+					<div class="money2"><span class="s1">￥698</span><span class="s2">537人已买</span></div>
+				</div>
+			</li>
+			<li tapmode="a" onclick="fopengoods(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">￥297</div>
+					<div class="money2"><span class="s1">￥698</span><span class="s2">537人已买</span></div>
+				</div>
+			</li>
+			<li tapmode="a" onclick="fopengoods(0);">
+				<div class="list_left"><img src="../image/sp_7.png" /></div>
+				<div class="list_right">
+					<div class="title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金色羽绒服</div>
+					<div class="money">￥297</div>
+					<div class="money2"><span class="s1">￥698</span><span class="s2">537人已买</span></div>
+				</div>
+			</li>
+		</ul>-->
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		api.hideProgress();//隐藏加载进度框
+		fget_sousuo();
+	};
+	var pai='all';//排序方式
+	var paixu_pan=0;//排序判断
+	var shaixuan_pan=0;//筛选判断
+	var qie=0;//切换序号
+	var pinpai=0;//品牌
+	var money_stat=0;//起始价钱
+	var money_end=0;//结束价钱
+	var cat=0;//分类
+	var pai_q='zhineng';
+	function fopen_paixu()
+	{
+		if(Number(paixu_pan)==0 && qie==2)
+		{
+			paixu_pan=1;
+			api.openFrame({
+	            name: 'sousuo_tanc',
+	            url: 'sousuo_tanc.html',
+	            pageParam:{
+            		header_h:api.pageParam.header_h+50,
+            		rect_h:api.pageParam.rect_h-50
+            	},
+	            rect:{
+	            	x:0,
+	            	y:api.pageParam.header_h+50,
+	            	w:'auto',
+	            	h:api.pageParam.rect_h-50
+	            }
+            });
+            fopen_content();
+		}
+		else
+		{
+			paixu_pan=0;
+			api.execScript({
+	           	frameName:'sousuo_tanc',
+	            script: 'fclose();'
+            });
+		}
+	}
+	function fopen_shaixuan()
+	{
+		if(Number(shaixuan_pan)==0 && qie==3)
+		{
+			shaixuan_pan=1;
+			api.openFrame({
+	            name: 'sousuo_shaixuan',
+	            url: 'sousuo_shaixuan.html',
+	            pageParam:{
+            		header_h:api.pageParam.header_h+50,
+            		rect_h:api.pageParam.rect_h-50
+            	},
+	            rect:{
+	            	x:0,
+	            	y:api.pageParam.header_h+50,
+	            	w:'auto',
+	            	h:api.pageParam.rect_h-50
+	            }
+            });
+		}
+		else
+		{
+			shaixuan_pan=0;
+			api.execScript({
+	           	frameName:'sousuo_shaixuan',
+	            script: 'fclose();'
+            });
+		}
+	}
+	function fopen_content()
+	{
+		api.openFrame({
+	        name: 'sousuo_paixu',
+	        url: 'sousuo_paixu.html',
+	        rect: {
+		        x:0,
+		        y:api.pageParam.header_h+50,
+		        w:'auto',
+		        h:200
+	        },
+	        animation:{
+			    type:"movein",                //动画类型（详见动画类型常量）
+			    subType:"from_top",       //动画子类型（详见动画子类型常量）
+			    duration:300                //动画过渡时间，默认300毫秒
+			}
+        });
+	}
+	function fset_paixu_pan(n)
+	{
+		paixu_pan=n;
+	}
+	function fset_shaixuan_pan(n)
+	{
+		shaixuan_pan=n;
+	}
+	function fset_pai(n)
+	{
+		pai=n;
+		pai_q=n;
+		if(pai=='zhineng') $('#p_title').html('智能排序');
+		if(pai=='juli') $('#p_title').html('距离最近');
+		if(pai=='qisongjia') $('#p_title').html('起送价最低');
+		if(pai=='xiaoliang') $('#p_title').html('销量最高');
+		fget_sousuo();
+	}
+	function fset_shaixuan(p,x,y)
+	{
+		pai='shaixuan';
+		pinpai=Number(p);
+		money_stat=Number(x);
+		money_end=Number(y);
+		fget_sousuo();
+	}
+	function fqie(n)
+	{
+		if(n==2)
+		{
+			pai=pai_q;
+		}
+		if(n==0)
+		{
+			pai='all';
+			cat=0;
+		}
+		if(n==3)
+		{
+			pai='shaixuan';
+		}
+		if(n==qie && n==2) fopen_paixu();
+		if(n==qie && n==3) fopen_shaixuan();
+		if(n!=qie && n==2) fget_sousuo();
+		if(n!=qie && n==3) fget_sousuo();
+		if(n==0) fget_sousuo();
+		if(n==1) fopen_fenlei();
+		qie=n;
+		if(n==2)
+		{
+			api.execScript({
+	           	frameName:'sousuo_shaixuan',
+	            script: 'fclose();'
+            });
+		}
+		if(n==0)
+		{
+			api.execScript({
+	           	frameName:'sousuo_tanc',
+	            script: 'fclose();'
+            });
+            api.execScript({
+	           	frameName:'sousuo_shaixuan',
+	            script: 'fclose();'
+            });
+		}
+		if(n==1)
+		{
+			api.execScript({
+	           	frameName:'sousuo_tanc',
+	            script: 'fclose();'
+            });
+            api.execScript({
+	           	frameName:'sousuo_shaixuan',
+	            script: 'fclose();'
+            });
+		}
+		else
+		{
+            api.closeFrame({
+	            name: 'tuangou_fenlei_left'
+            });
+            api.closeFrame({
+	            name: 'tuangou_fenlei_right'
+            });
+            api.closeFrame({
+	            name: 'tuangou_fenlei'
+            });
+		}
+		if(n==3)
+		{
+			api.execScript({
+	           	frameName:'sousuo_tanc',
+	            script: 'fclose();'
+            });
+		}
+		for(var i=0;i<4;i++)
+		{
+			if(i==n)
+			{
+				$('.h_list').eq(i).addClass('h_list_on');
+				if(i==2)
+				{
+					$('.sanjiao').eq(0).addClass('sanjiao_on');
+				}
+				if(i==3)
+				{
+					$('.sanjiao').eq(1).addClass('sanjiao_on');
+				}
+			}
+			else
+			{
+				$('.h_list').eq(i).removeClass('h_list_on');
+				if(i==2)
+				{
+					$('.sanjiao').eq(0).removeClass('sanjiao_on');
+				}
+				if(i==3)
+				{
+					$('.sanjiao').eq(1).removeClass('sanjiao_on');
+				}
+			}
+		}
+	}
+	function fget_sousuo()
+	{
+			var html='<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>';
+	        document.getElementsByClassName("goods_list")[0].innerHTML=html;
+			api.ajax({
+	            url: YAH_ajax_name+'get_tuangou_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	text:'苹果',
+	                	pai:pai,
+	                	pinpai:pinpai,
+	                	money_stat:money_stat,
+	                	money_end:money_end,
+	                	cat:cat
+	                }
+	            }
+	        },function(ret,err){
+	        	//api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	 var html='';
+	            	 html+='<ul>';
+	                 for(var i=0;i<ret.length;i++)
+	                 {
+	                 	html+='<li tapmode="a" onclick="fopengoods('+ret[i].goodsId+');">';
+						html+='	<div class="list_left"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /></div>';
+						html+='	<div class="list_right">';
+						html+='		<div class="title">'+ret[i].goodsName+'</div>';
+						html+='		<div class="money">￥'+ret[i].groupPrice+'</div>';
+						html+='		<div class="money2"><span class="s1">￥'+ret[i].marketPrice+'</span><span class="s2">'+ret[i].saleCount+'人已买</span></div>';
+						html+='	</div>';
+						html+='</li>';
+	                 }
+	                 html+='</ul>';
+	                 document.getElementsByClassName("goods_list")[0].innerHTML=html;
+	            }else {
+	            	var html='<div style="text-align: center;line-height: 50px;">暂无商品</div>';
+	            	document.getElementsByClassName("goods_list")[0].innerHTML=html;
+	            	//fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fopengoods(goods_id)
+	{
+		$api.setStorage('goods_id',goods_id);
+		api.openWin({
+			name: 'goods_header',
+			url: 'goods_header.html',
+			pageParam:{
+				tuangou:1
+			}
+		});
+	}
+	function fopen_fenlei()
+	{
+		api.openFrame({
+	        name: 'tuangou_fenlei',
+	        url: 'tuangou_fenlei.html',
+	        pageParam:{
+	        	header_h:api.pageParam.header_h+50,
+	        	rect_h:api.pageParam.rect_h-50
+	        },
+	        rect: {
+		        x:0,
+		        y:api.pageParam.header_h+50,
+		        w:'auto',
+		        h:api.pageParam.rect_h-50
+	        }
+        });
+	}
+	function fget_fenlei(catId,name)
+	{
+		cat=catId;
+			api.closeFrame({
+	            name: 'tuangou_fenlei_left'
+            });
+            api.closeFrame({
+	            name: 'tuangou_fenlei_right'
+            });
+            api.closeFrame({
+	            name: 'tuangou_fenlei'
+            });
+            fget_sousuo();
+	}
+</script>
+</html>

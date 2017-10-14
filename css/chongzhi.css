@@ -1,0 +1,128 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    float:left;
+    width: 100%;
+    padding-bottom:50px;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	float:left;
+	width: 100%;
+    font-size: 14px;
+}
+.a{
+    background-color:#eee !important;
+}
+#header{
+	height: 50px;
+	line-height: 50px;
+	background-color: #fff;
+	border-bottom:1px solid #eee;
+	padding-left: 10px;
+}
+#header input{
+	border:1px solid #eee;
+	height: 30px;
+	border-radius: 5px;
+	padding-left: 5px;
+}
+.pingtai{
+    background-color: #fff;
+}
+.pay_way{
+    background-color: #fff;
+    height: 50px;
+    line-height: 50px;
+    padding:0 10px;
+    border-bottom:1px solid #eee;
+}
+.t1{
+    background-color: #fff;
+    line-height: 50px;
+    height: 50px;
+    color:#999;
+    font-size: 14px;
+    padding: 0 10px;
+    border-bottom:1px solid #eee;
+}
+.t2{
+    line-height: 50px;
+    height: 50px;
+    color:#666666;
+    padding:0 10px;
+    border-bottom:1px solid #eee;
+}
+.yue{
+    float:left;
+    height: 50px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 0 15px;
+    background-image: url('../image/yue.png');
+}
+.weixin{
+    float:left;
+    height: 50px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 0 15px;
+    background-image: url('../image/weixin.png');
+}
+.zhifubao{
+    float:left;
+    height: 50px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 0 15px;
+    background-image: url('../image/zhifubao.png');
+}
+.title{
+    float:left;
+    line-height: 20px;
+}
+.title .big_title{
+	line-height: 30px;
+}
+.title .smo_title{
+	line-height: 15px;
+	font-size: 12px;
+	color: #999;
+}
+.xuan{
+    float:right;
+    height: 50px;
+    width: 30px;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: 0 15px;
+    background-image: url('../image/xuan_hui.png');
+}
+.xuan_on{
+    background-image: url('../image/xuan_lan.png') !important;
+}
+.disanfang{
+    margin-top: 10px;
+    background-color: #fff;
+}
+.go{
+    color:#fff;
+    background-color: #00b4ff;
+    font-size: 16px;
+    text-align: center;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 30px;
+    padding:10px 0;
+    border-radius: 5px;
+}
+.go_on{
+    background-color: #058fc8 !important;
+}

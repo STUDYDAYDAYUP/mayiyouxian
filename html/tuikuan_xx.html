@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/tuikuan_xx.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div class="header">
+	<div id="st1" style="display:none;">
+		<div class="list_h"><div class="s1"></div><div class="s2">退款成功</div></div>
+		<div class="list_c"><span class="s1">退款金额：</span><span class="s2" id="tkje1"></span></div>
+		<div class="list_c"><span class="s1">退款时间：</span><span class="s2" id="tksj1"></span></div>
+	</div>
+	<div id="st2" style="display:none;">
+		<div class="list_h"><div class="s1"></div><div class="s2">退款关闭</div></div>
+		<div class="list_c">&nbsp;</div>
+		<div class="list_c">&nbsp;</div>
+	</div>
+	<div id="st3" style="display:none;">
+		<div class="list_h"><div class="s3"></div><div class="s2">等待商家处理退款申请</div></div>
+		<div class="list_c"><span class="s1">如果商家同意：</span>申请将达成并退款至您的钱包余额</div>
+		<div class="list_c"><span class="s1">商家未处理：</span>超过48小时则申请达成并退款至您的钱包余额</div>
+		<div class="list_c"><span class="s1">如果商家已发货：</span>订单将关闭，你可以再次发起退款</div>
+	</div>
+</div>
+<div class="bsjb"></div>
+<div id="main">
+	<div class="h1">
+		<div class="s1">协商详情</div>
+		<!--<div class="s2"></div>-->
+	</div>
+	<div class="h2">
+		<span class="s1">店铺名称</span>
+		<span class="s2" id="shopName"></span>
+	</div>
+	<div class="list">
+		<div class="list_l">
+			<span class="s1">退款类型</span>
+			<span class="s2">仅退款</span>
+		</div>
+		<div class="list_l">
+			<span class="s1">退款金额</span>
+			<span class="s2" id="tkje2"></span>
+		</div>
+		<div class="list_l">
+			<span class="s1">退款原因</span>
+			<span class="s2" id="tkyy"></span>
+		</div>
+		<div class="list_l">
+			<span class="s1">退款说明</span>
+			<span class="s2" id="tksm"></span>
+		</div>
+		<div class="list_l">
+			<span class="s1">退款编号</span>
+			<span class="s2" id="tkbh"></span>
+		</div>
+		<div class="list_l">
+			<span class="s1">申请时间</span>
+			<span class="s2" id="tksj2"></span>
+		</div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_tuikuan_xx();
+	};
+	function fget_tuikuan_xx()
+	{
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_tuikuan_xx.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	orderId:api.pageParam.orderId
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 if(ret[0].isRefund==1) document.getElementById("st3").style.display="block";
+                 if(ret[0].isRefund==2) document.getElementById("st1").style.display="block";
+                 if(ret[0].isRefund==3) document.getElementById("st2").style.display="block";
+                 if(ret[0].isRefund==2)
+                 {
+                 	document.getElementById("tkje1").innerHTML="￥"+ret[0].needPay;
+                 	document.getElementById("tksj1").innerHTML=getTime(ret[0].tk_time);
+                 }
+                 document.getElementById("shopName").innerHTML=ret[0].shopName;
+                 document.getElementById("tkje2").innerHTML="￥"+ret[0].needPay
+                 document.getElementById("tkyy").innerHTML=ret[0].reason;
+                 document.getElementById("tksm").innerHTML=ret[0].explain;
+                 document.getElementById("tkbh").innerHTML=ret[0].id;
+                 document.getElementById("tksj2").innerHTML=getTime(ret[0].tk_time);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

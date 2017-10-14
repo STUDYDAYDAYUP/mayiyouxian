@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/jiedan.css"/>
+    <style>
+    	p{ margin:0; padding:0;}
+    </style>
+</head>
+<body onclick="fclose_emotion();">
+<div id="main">
+	<div id="content">
+		<div id="o" contenteditable="true" onblur="blur(this);foshi_jd();" onfocus="fohuo_jd();">请输入你想要说的话</div>
+		<!--<textarea name="" id="cont" maxlength="2048" placeholder="请输入你想要说的话"></textarea>-->
+	</div>
+	<div class="tu_hui"><img src="../image/tu_hui.png" id="add_tu" tapmode="" onclick="fadd_tu();" /><img src="../image/tu_bq.png" onclick="event.cancelBubble = true;fopen_emotion();" /></div>
+	<div class="img_list" style="display: none;">
+		<!--<div class="img"><div class="cha"></div><div class="logoing"><img src="../image/login1.gif" /></div><img src="../image/sp_5.png" /></div>-->
+		<div class="jia" tapmode="" onclick="fadd_tu();"><img src="../image/jia_hui2.png" /></div>
+	</div>
+	<div class="tishi">发送对象：</div>
+	<div class="list">
+		<div class="s1">竞标价格</div>
+		<input type="text" maxlength="10" id="money" class="s2" placeholder="请输入报酬金额"  onkeyup='checkDecimal(this)'/>
+		<div class="s3">元</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/emotion.json.js"></script>
+<script type="text/javascript" src="../script/emotion.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		$('.tishi').html("发送对象："+api.pageParam.name);
+	};
+	var img_num=0;
+	var xuan_num=0;
+	var record={
+                num:""
+    }
+    var checkDecimal=function(n){
+                var decimalReg=/^\d{0,8}\.{0,1}(\d{1,2})?$/;//var decimalReg=/^[-\+]?\d{0,8}\.{0,1}(\d{1,2})?$/;
+                if(n.value!=""&&decimalReg.test(n.value)){
+                    record.num=n.value;
+                }else{
+                    if(n.value!=""){
+                        n.value=record.num;
+                    }
+                }
+    }
+	function fadd_tu()
+	{
+		api.openFrame({
+	        name: 'goodspingjia_tanc',
+	        url: 'goodspingjia_tanc.html',
+	        pageParam:{
+	        	num:3
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fdel(obj)
+	{
+		obj.parentNode.parentNode.removeChild(obj.parentNode);
+		xuan_num--;
+		if(xuan_num<=0) 
+		{
+			$('.tu_hui').css('display','block');
+			$('#add_tu').css('display','inline');
+			$('.img_list').css('display','none');
+		}
+	}
+	function fadd_sc_img(src)
+	{
+//		var json=[{id:0,name:'商品0'},{id:1,name:'商品1'}];
+//		alert( JSON.stringify( json ) );
+//		json.splice(1,1);//开始位置,删除个数
+//		alert( JSON.stringify( json ) );
+//		alert(json.length);
+//		var add={id:3,name:'商品3'};
+//		json.push(add);
+//		alert( JSON.stringify( json ) );
+//		alert(json.length);
+		$('.jia').remove();
+		$('.img_list').append('<div class="img"><div class="cha" tapmode="" onclick="fdel(this);"></div><div class="logoing"><img src="../image/login1.gif" /></div><img class="sc_img" src="'+src+'" sev_src="0" /></div>');
+		$('.img_list').append('<div class="jia" tapmode="" onclick="fadd_tu();"><img src="../image/jia_hui2.png" /></div>');
+	}
+	function fshangchuan(src)
+	{
+		api.execScript({
+	       	frameName:'goodspingjia_tanc',
+	        script: 'fclose();'
+        });
+		//api.showProgress({title:'上传中...'});
+		if(img_num==0)
+		{
+			//$('.tu_hui').css('display','none');
+			$('#add_tu').css('display','none');
+			$('.img_list').css('display','block');
+		}
+		fadd_sc_img(src);
+		xuan_num++;
+		if(xuan_num>=9)
+		{
+			$('.jia').remove();
+		}
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+		    url: YAH_ajax_name+'shangchuan_posts.php',
+		    method: 'post',
+		    dataType: 'json',
+		    data: {
+		        values: { 
+		            user_id:user_id,
+		            ysrc:src
+		        },
+		        files: { 
+		            file:src
+		        }
+		    }
+		},function(ret, err){
+			api.hideProgress();//隐藏加载进度框
+		    if (ret) {
+		         if(ret[0].pan==-1)
+		         {
+		         	api.toast({
+						msg: ret[0]['msg'],
+						duration: 2000,
+						location: 'bottom'
+				    });
+		         }
+		         else if(ret[0].pan==1)
+		         {
+					var max=$('.sc_img').length;
+					for(var i=0;i<max;i++)
+					{
+						var lin_src=$('.sc_img').eq(i).attr('src');
+						if(lin_src==ret[0].ysrc)
+						{
+							$('.logoing').eq(i).css('display','none');
+							$('.sc_img').eq(i).attr('sev_src',ret[0].msg);
+						}
+					}
+		         }
+		    } else {
+		         fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+		    }
+		});
+	}
+	function fgo()
+	{
+		var content=$('#o').html();
+		var user_id=$api.getStorage('user_id');
+		var max=$('.img').length;
+		var img_list='';
+		var img_lin_num=0;
+		var money=$('#money').val();
+		for(var i=0;i<max;i++)
+		{
+			var lin_src=$('.sc_img').eq(i).attr('sev_src');
+			if(lin_src!=0 && lin_src!="0")
+			{
+				if(img_lin_num==0) img_list+=lin_src;
+				else img_list+='|'+lin_src;
+				img_lin_num++;
+			}
+		}
+		if(Trim(content,'g').length==0 || content=="请输入你想要说的话" || content=="请输入内容")
+		{
+			api.toast({
+				msg: '请输入内容！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(money=="")
+		{
+			api.toast({
+				msg: '请输入价格！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+//		alert("user_id:"+user_id);
+//		alert("wb_id:"+api.pageParam.wb_id);
+//		alert("content:"+content);
+//		alert("img_list:"+img_list);
+//		alert("money:"+money);
+//		return;
+		api.showProgress({title:'提交中...'});
+		api.ajax({
+	            url: YAH_ajax_name+'wb_jiedan.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	content:content,
+	                	img_list:img_list,
+	                	wb_id:api.pageParam.wb_id,
+	                	money:money
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                 if(ret[0].pan=="true")
+	                 {
+	                 	api.toast({
+							msg: '接单成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						api.execScript({
+	                       	name:'weibang_fenlei_header',
+	                       	frameName:'weibang_fenlei',
+	                        script: 'fget_weibang_fenlei_list();'
+                        });
+                        api.execScript({
+	                       	name:'weibang_xx_header',
+	                       	frameName:'weibang_xx',
+	                        script: 'fget_weibang();'
+                        });
+                        window.setTimeout("api.closeWin({});",1500);
+	                 }
+	                 else if(ret[0].pan=="-1")
+	                 {
+	                 	api.toast({
+							msg: ret[0].msg,
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							msg: '提交失败，请稍后再试',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

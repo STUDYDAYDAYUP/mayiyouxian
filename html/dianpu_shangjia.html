@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/dianpu_shangjia.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="header">
+		<div class="list">
+			<div class="s1">起送价</div>
+			<div class="s2"><span class="big" id="qsj">- -</span>元</div>
+		</div>
+		<div class="list">
+			<div class="s1">配送</div>
+			<div class="s2"><span class="big" id="psf">- -</span>元</div>
+		</div>
+		<div class="list" style="border-right:0;">
+			<div class="s1">平均配送时间</div>
+			<div class="s2"><span class="big" id="pstime">- -</span>分钟</div>
+		</div>
+	</div>
+	<div class="con">
+		<div class="list">
+			<div class="s1" style="background-image: url('../image/time.png');"></div>
+			<div class="s2" id="fwtime">服务时间：</div>
+		</div>
+		<div class="list">
+			<div class="s1" style="background-image: url('../image/phone.png');"></div>
+			<div class="s2" id="shop_phone" phone="">商家电话：</div>
+			<div class="s3" tapmode="" onclick="fcall();"></div>
+		</div>
+		<div class="list" onclick="fopen_ditu();">
+			<div class="s1" style="background-image: url('../image/dingwei.png');"></div>
+			<div class="s2" id="shop_address">商家地址：</div>
+		</div>
+		<div class="list">
+			<div class="s1"></div>
+			<div class="s2" id="shop_address">商家在线客服</div>
+			<!--<div class="s4" tapmode="" onclick="fopen_kefu();">客服</div>-->
+			<img class="s5" tapmode="a" onclick="fopen_kefu();" src="../image/htlx.png" />
+		</div>
+		<div class="yin">
+		
+		</div>
+	</div>
+	<div class="con2" style="display:none;">
+		<div class="c_h">参与的活动</div>
+		<div class="list">
+			<div class="s1" style="background-color:#44b00a;">首</div>
+			<div class="s2">新用户下单立减10元</div>
+		</div>
+		<div class="list">
+			<div class="s1" style="background-color:#ff2121;">减</div>
+			<div class="s2">满50减12；满80减22；满100减36；(在线支付专享)</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="title">举报商家不妥之处</div>
+		<div class="go" tapmode="go_on" onclick="fopen_jubao();">举报商家</div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_shops();
+		shopName=$api.getStorage('dq_shopName');
+	};
+	var shopName='';
+	var kefu_href='';
+	function fget_shops()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_shops.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	shopId:api.pageParam.shopId
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 document.getElementById("qsj").innerHTML=ret[0].deliveryStartMoney;
+            	 document.getElementById("psf").innerHTML=ret[0].deliveryMoney;
+            	 document.getElementById("pstime").innerHTML=ret[0].deliveryCostTime;
+            	 document.getElementById("fwtime").innerHTML="服务时间："+ret[0].serviceStartTime+'-'+ret[0].serviceEndTime;
+            	 document.getElementById("shop_phone").innerHTML="商家电话："+ret[0].shopTel;
+                 document.getElementById("shop_address").innerHTML="商家地址："+ret[0].shopAddress;
+                 $api.setStorage('dq_address',ret[0].shopAddress);
+                 $('#shop_phone').attr('phone',ret[0].shopTel);
+                 //$('.yin').html(ret[0].userTalkLink);
+                 kefu_href=ret[0].userTalkLink;
+                 shopName=ret[0].shopName;
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fcall()
+	{
+		var phone=$('#shop_phone').attr('phone');
+		api.openFrame({
+	        name: 'fuwuzhongxin_tanc',
+	        url: 'fuwuzhongxin_tanc.html',
+	        pageParam:{
+	        	phone:phone
+	        },
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+	}
+	function fopen_jubao()
+	{
+		api.openWin({
+	        name: 'wb_tousu_header',
+	        url: 'wb_tousu_header.html',
+	        pageParam:{
+	        	to_userName:shopName,
+	        	shopId:api.pageParam.shopId,
+	        	pan:'shop'
+	        }
+        });
+	}
+	function fopen_kefu()
+	{
+		var login=$api.getStorage('login');
+		if(login==undefined || login=="0" || login==0)
+		{
+			api.toast({
+				msg: '请先登录',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.openWin({
+	        name: 'liaotian_header',
+	        url: 'liaotian_header.html',
+	        pageParam:{
+            	to_user_id:'S_'+api.pageParam.shopId,
+            	to_img_src:$api.getStorage('dq_shopImg2'),
+            	wb_id:0,
+            	userName:$api.getStorage('dq_shopName'),
+            	pan:0
+            }
+        });
+		return;
+		//document.getElementsByClassName('yin')[0].getElementsByTagName('a')[0].click();
+		//$('.yin a').click();
+		var a=kefu_href;
+		a=a.split('"')[1];
+		api.openWin({
+	        name: 'kefu_header',
+	        url: 'kefu_header.html',
+	        pageParam:{
+	        	kefu_href:kefu_href
+	        }
+        });
+	}
+</script>
+</html>

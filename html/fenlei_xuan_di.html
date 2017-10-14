@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+    		height:100%;
+    		width:100%;
+    	}
+    	body{
+    		height:100%;
+    		width:100%;
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+    	}
+    	#main{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+    	}
+    	#footer{
+    		background-color:#fff;
+    		height:30px;
+    		border-top:1px solid #ccc;
+    	}
+    	.left{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+    	}
+    	.right{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            background-color:#f2f2f2;
+    	}
+    	.a{
+            background-color:#eee !important;
+		}
+		.tu{
+			background-image:url('../image/shangjiantou.png');
+			background-repeat: no-repeat;
+			background-size:16px 16px;
+			background-position:0 7px;
+			width:16px;
+			height:30px;
+			margin:0 auto;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="left"></div>
+	<div class="right"></div>
+</div>
+<div id="footer" tapmode="a" onclick="fclose();">
+	<div class="tu"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'fenlei_xuan_tanc',
+	        script: 'fclose();'
+        });
+	}
+</script>
+</html>

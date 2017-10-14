@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    background-color: #fff;
+		}
+		body{
+			background-color: #fff;
+		    float:left;
+		    width: 100%;
+		}
+		input,button,select,textarea{outline:none;-webkit-appearance:none;}
+		#main{
+			float:left;
+			width: 100%;
+		    font-size: 14px;
+		}
+		#main{
+			height:50px;
+		}
+		#go{
+			height:40px;
+			margin-top:5px;
+			border:1px solid #ff1b1c;
+			line-height: 40px;
+			text-align: center;
+			width: 70%;
+			margin-left:15%;
+			color:#ff1b1c;
+			border-radius: 5px;
+		}
+		.go_on{
+			background-color:#ff1b1c !important;
+			color:#fff !important;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="go" tapmode="go_on" onclick="fgo();">合并付款</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		
+	};
+	function fgo()
+	{
+		api.execScript({
+	       	frameName:'daifukuan',
+	        script: 'fgo_hb_pay();'
+        });
+	}
+</script>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_pingtai.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css"/>
+    <style>
+    	html, body{
+			height: 100%;
+            position: relative;
+            background: transparent;
+    	}
+    	#main{
+            /*border-top: 1px solid #e5e5e5;*/
+    		/*transition: margin-top 0.3s ease-out;*/
+    	}
+		.mycart{
+			position: absolute;;
+			bottom: 0;
+			left: 0;
+            top: 0;
+            right: 0;
+            margin: auto;
+			width: 50px;
+			height: 50px;
+			background-image: url('../image/my_cart.png');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			z-index: 9999;
+		}
+		.mycart .num{
+			position: absolute;
+			right: 0;
+			top: 0;
+			color: #fff;
+			background-color: red;
+			border-radius: 50%;
+			line-height: 15px;
+			font-size: 12px;
+			height: 15px;
+			width: 15px;
+			text-align: center;
+		}
+    </style>
+</head>
+<script>
+function fopen_goshop()
+{
+	api.execScript({
+		name:'root',
+        script: 'randomSwitchBtn("","goshop",3);'
+    });
+    api.closeWin({name:'fenlei_shaixuan_header'});
+}
+</script>
+<body>
+	<div class="mycart" onclick="fopen_goshop();"><span class="num" id="goods_num">0</span></div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery2.1.1.min.js"></script>
+<script type="text/javascript">
+apiready = function(){
+	fget_buycar();
+
+};
+function fget_buycar(){
+	var pan=$api.getStorage('login');
+	if(pan=='0' || pan==0)
+	{
+		return;
+	}
+	var user_id=$api.getStorage('user_id');
+	var time = Math.ceil(new Date().getTime()/1000);
+	var sign = get_appkey(time);
+	sign = md5(sign+user_id);
+	api.ajax({
+		//url: YAH_ajax_name+'get_buycar_num.php',
+		url: YAH_web+'/index.php?m=Api&c=Orders&a=get_cart_byuser',
+		method: 'post',
+		cache: false,
+		timeout: 30,
+		dataType: 'json',
+		returnAll:false,
+		data:{
+			values: {
+				userId:user_id,
+				type:1,
+				time:time,
+				sign:sign
+			}
+		}
+	},function(ret,err){
+		//api.hideProgress();//隐藏加载进度框
+		if (ret) {
+
+			 if(Number(ret['num']) > 0)
+			 {
+				document.getElementById("goods_num").innerHTML=ret['num'];
+				document.getElementById("goods_num").style.display="block";
+			 }
+			 else
+			 {
+				document.getElementById("goods_num").style.display="none";
+				document.getElementById("goods_num").innerHTML=0;
+			 }
+			 api.execScript({
+				 name:'root',
+				 script: 'fset_goshop_num('+ret['num']+');'
+			 });
+		}else {
+			document.getElementById("goods_num").innerHTML=0;
+			document.getElementById("goods_num").style.display="none";
+			api.execScript({
+				 name:'root',
+				 script: 'fset_goshop_num(0);'
+			 });
+		};
+	});
+}
+function fmovemycart() {
+    $('.mycart').stop();
+    $('.mycart').animate({
+    	'width':'58px',
+    	'height':'58px'
+    },300,function(){
+    	$('.mycart').animate({
+    		'width':'50px',
+    		'height':'50px'
+    	},300);
+    });
+}
+</script>
+</html>

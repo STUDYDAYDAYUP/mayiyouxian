@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/goshop.css"/>
+</head>
+<body style="background: #f2f2f2;">
+	<div id="main" style="padding-bottom: 100px;background: #f2f2f2;">
+		<div style="text-align: center;line-height: 50px;">购物车没有商品</div>
+		<!-- <div class="shangjia goods_cart_list">
+			<div class="min-title">
+				<span class="t2"></span><span class="t1">大吉祥天</span><span class="t3"></span>
+			</div>
+			<div class="goods">
+				<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+				<div class="goods_right" tapmode="" onclick="fxuan(0)">
+					<div class="goods_right_top">
+						<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+						<div class="goods_xuanzhong"></div>
+					</div>
+					<div class="goods_right_bottom">
+						<div class="goods_money">
+							<div class="danjia">￥14</div>
+							<div class="xiaoji"><a>￥42</a></div>
+						</div>
+						<div class="goods_num_add">
+							<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian(0)">-</div>
+							<input type="text" class="num" value="3"   onchange="fshu(0,this.value);" onkeyup="fshu(0,this.value);" onafterpaste="fshu(0,this.value)"/>
+							<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia(0)">+</div>
+						</div>
+					</div>
+				</div>
+				<input class="max_value" type="hidden" value="100" />
+				<input class="money" type="hidden" value="2" />
+				<input class="xuan" type="hidden" value="0" />
+			</div>
+			<div class="goods">
+				<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+				<div class="goods_right" tapmode="" onclick="fxuan(1)">
+					<div class="goods_right_top">
+						<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+						<div class="goods_xuanzhong goods_xuanzhong_on"></div>
+					</div>
+					<div class="goods_right_bottom">
+						<div class="goods_money">
+							<div class="danjia">￥14</div>
+							<div class="xiaoji"><a>￥42</a></div>
+						</div>
+						<div class="goods_num_add">
+							<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian(1)">-</div>
+							<input type="text" class="num" value="3"  onchange="fshu(1,this.value);" onkeyup="fshu(1,this.value);" onafterpaste="fshu(1,this.value)"/>
+							<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia(1)">+</div>
+						</div>
+					</div>
+				</div>
+				<input class="max_value" type="hidden" value="100" />
+				<input class="money" type="hidden" value="2" />
+				<input class="xuan" type="hidden" value="1" />
+			</div>
+		</div> -->
+
+		<!-- <div class="shangjia">
+			<div class="min-title">
+				<span class="t2"></span><span class="t1">小吉祥天</span><span class="t3"></span>
+			</div>
+			<div class="goods">
+				<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+				<div class="goods_right" tapmode="" onclick="fxuan(2)">
+					<div class="goods_right_top">
+						<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+						<div class="goods_xuanzhong"></div>
+					</div>
+					<div class="goods_right_bottom">
+						<div class="goods_money">
+							<div class="danjia">￥14</div>
+							<div class="xiaoji">小计:<a>￥42</a></div>
+						</div>
+						<div class="goods_num_add">
+							<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian(2)">-</div>
+							<input type="text" class="num" value="3"  onchange="fshu(2,this.value);" onkeyup="fshu(2,this.value);" onafterpaste="fshu(2,this.value)"/>
+							<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia(2)">+</div>
+						</div>
+					</div>
+				</div>
+				<input class="max_value" type="hidden" value="100" />
+				<input class="money" type="hidden" value="2" />
+				<input class="xuan" type="hidden" value="0" />
+			</div>
+			<div class="goods">
+				<div class="goods_left" tapmode="" onclick="fopengoods(0);"><img src="../image/sp_5.png" /></div>
+				<div class="goods_right" tapmode="" onclick="fxuan(3)">
+					<div class="goods_right_top">
+						<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+						<div class="goods_xuanzhong goods_xuanzhong_on"></div>
+					</div>
+					<div class="goods_right_bottom">
+						<div class="goods_money">
+							<div class="danjia">￥14</div>
+							<div class="xiaoji">小计:<a>￥42</a></div>
+						</div>
+						<div class="goods_num_add">
+							<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian(3)">-</div>
+							<input type="text" class="num" value="3"   onchange="fshu(3,this.value);" onkeyup="fshu(3,this.value);" onafterpaste="fshu(3,this.value)"/>
+							<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia(3)">+</div>
+						</div>
+					</div>
+				</div>
+				<input class="max_value" type="hidden" value="100" />
+				<input class="money" type="hidden" value="2" />
+				<input class="xuan" type="hidden" value="1" />
+			</div>
+		</div> -->
+	</div>
+    <div class="chongzhi"><span class="chongzhi1">充值即可享受更多一元特权哦</span><span class="chongzhi2" onclick="go_chongzhi()">去充值</span></div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var gao=api.winHeight;
+		h=gao-100;
+		api.openFrame({
+		    name: 'goshop_footder',
+		    url: 'goshop_footder.html',
+		    vScrollBarEnabled:false,
+            hScrollBarEnabled:false,
+		    rect: {
+			    x:0,
+			    y:h,
+			    w:'auto',
+			    h:50
+		    }
+	    });
+	    api.setFrameAttr({name: "goshop_footder", hidden:true});
+	    fget_buycar();
+	    //下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    fget_buycar();
+			    //api.refreshHeaderLoadDone();
+			    api.parseTapmode();
+			});
+	};
+	
+	function go_chongzhi(){
+	    api.openWin({
+	        name: 'chongzhi_header',
+	        url: 'chongzhi_header.html'
+        });
+	}
+	
+	function pay()
+	{
+		api.openWin({
+	        name: 'xiadan_header',
+	        url: 'xiadan_header.html'
+        });
+	}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_info_header',
+		url: 'goods_info_header.html'
+	});
+}
+function fzong()
+{
+	var sum=0,sum2=0;
+	var zong_money=0;
+	var max=$('.xuan');
+	for(var i=0;i<max.length;i++)
+	{
+		if(max.eq(i).val()=="1")
+		{
+			sum++;
+			sum2+=Number($('.num').eq(i).val());
+			zong_money+=Number($('.xiaoji').eq(i).find('a').html().split("￥")[1]);
+		}
+	}
+	api.execScript({
+	    frameName:'goshop_footder',
+	    script: 'fset_num('+sum+');'
+    });
+    api.execScript({
+	    frameName:'goshop_footder',
+	    script: 'fset_num2('+sum2+');'
+    });
+    api.execScript({
+	    frameName:'goshop_footder',
+	    script: 'fset_money('+zong_money+');'
+    });
+	if(max.length==sum && sum!=0)
+	{
+		api.execScript({
+	        frameName:'goshop_footder',
+	        script: 'fset_quanxian(1);'
+        });
+	}
+	else
+	{
+		api.execScript({
+	        frameName:'goshop_footder',
+	        script: 'fset_quanxian(0);'
+        });
+	}
+}
+function fall(n)
+{
+	var max=$('.xuan');
+	for(var i=0;i<max.length;i++)
+	{
+		max.eq(i).val(n+"");
+		if(n==1)
+		{
+			$('.goods_xuanzhong').eq(i).addClass("goods_xuanzhong_on");
+			var goods_id=$('.goods').eq(i).attr('id');
+			var attr_id=$('.goods').eq(i).attr('attr_id');
+            fset_buycar(goods_id,'isSelected','1',attr_id);
+		}
+		else
+		{
+			$('.goods_xuanzhong').eq(i).removeClass("goods_xuanzhong_on");
+			var goods_id=$('.goods').eq(i).attr('id');
+			var attr_id=$('.goods').eq(i).attr('attr_id');
+            fset_buycar(goods_id,'isSelected','0',attr_id);
+		}
+	}
+	fzong();
+}
+function jia(n)
+{
+	var val=$('.num').eq(n).val();
+    var a=$('.max_value').eq(n).val();
+    var money=$('.money').eq(n).val();
+    if(Number(val)==Number(a))
+    {
+    	api.toast({
+				msg: "最多"+a+"次",
+				duration: 2000,
+				location: 'bottom'
+		});
+    	return;
+    }
+        var html;
+        if(Number(val)+1>Number(a))
+        {
+            html='小计:<a>￥'+a*Number(money)+'</a>';
+            $('.num').eq(n).val(a);
+            $('.xiaoji').eq(n).html(html);
+            var goods_id=$('.goods').eq(n).attr('id');
+            var attr_id=$('.goods').eq(n).attr('attr_id');
+            fset_buycar(goods_id,'goods_num',Number(a),attr_id);
+            //appcan.locStorage.setVal('_goods_num['+n+']',Number(a));
+            $('.jia').eq(n).addClass("z-jiadis");
+            $('.jian').eq(n).removeClass("z-jiandis");
+            api.toast({
+				msg: "库存只剩"+a+"了",
+				duration: 2000,
+				location: 'bottom'
+			});
+            fzong();
+        }
+        else
+        {
+            html='小计:<a>￥'+(Number(val)+1)*Number(money)+'</a>';
+            $('.xiaoji').eq(n).html(html);
+            var goods_id=$('.goods').eq(n).attr('id');
+            var attr_id=$('.goods').eq(n).attr('attr_id');
+            fset_buycar(goods_id,'goods_num',Number(val)+1,attr_id);
+            //appcan.locStorage.setVal('_goods_num['+n+']',Number(val)+1);
+            if(Number(val)+1>1)
+            {
+                $('.jian').eq(n).removeClass("z-jiandis");
+                $('.jia').eq(n).removeClass("z-jiadis");
+            }
+            if(Number(val)+1==Number(a))
+            {
+                $('.jia').eq(n).addClass("z-jiadis");
+            }
+            if(Number(val)+1==1)
+            {
+                $('.jian').eq(n).addClass("z-jiandis");
+            }
+            $('.num').eq(n).val(Number(val)+1);
+            fzong();
+        }
+}
+function jian(n)
+{
+	var val=$('.num').eq(n).val();
+	var money=$('.money').eq(n).val();
+    if(Number(val)<=1) return;
+    var a=$('.max_value').eq(n).val();
+        var html;
+        if(Number(val)-1>Number(a))
+        {
+            html='小计:<a>￥'+a*Number(money)+'</a>';
+            $('.num').eq(n).val(a);
+            $('.xiaoji').eq(n).html(html);
+            var goods_id=$('.goods').eq(n).attr('id');
+            var attr_id=$('.goods').eq(n).attr('attr_id');
+            fset_buycar(goods_id,'goods_num',Number(a),attr_id);
+            //appcan.locStorage.setVal('_goods_num['+n+']',Number(a));
+            $('.jia').eq(n).addClass("z-jiadis");
+            $('.jian').eq(n).removeClass("z-jiandis");
+            api.toast({
+				msg: "库存只剩"+a+"了",
+				duration: 2000,
+				location: 'bottom'
+			});
+            fzong();
+        }
+        else
+        {
+            html='小计:<a>￥'+(Number(val)-1)*Number(money)+'</a>';
+            $('.xiaoji').eq(n).html(html);
+            var goods_id=$('.goods').eq(n).attr('id');
+            var attr_id=$('.goods').eq(n).attr('attr_id');
+            fset_buycar(goods_id,'goods_num',Number(val)-1,attr_id);
+            //appcan.locStorage.setVal('_goods_num['+n+']',Number(val)-1);
+            if(Number(val)-1>1)
+            {
+                $('.z-jian').eq(n).removeClass("z-jiandis");
+                $('.z-jia').eq(n).removeClass("z-jiadis");
+            }
+            if(Number(val)-1==Number(a))
+            {
+                $('.z-jia').eq(n).addClass("z-jiadis");
+            }
+            if(Number(val)-1==1)
+            {
+                $('.z-jian').eq(n).addClass("z-jiandis");
+            }
+            $('.num').eq(n).val(Number(val)-1);
+            fzong();
+        }
+}
+function fshu(n,value)
+{
+    $('.num').eq(n).val(value.replace(/\D/g,''));
+    var money=$('.money').eq(n).val();
+    //if(value=="") $('.num').eq(n).val(appcan.locStorage.val('_goods_num['+n+']'));
+    if(value=="") $('.num').eq(n).val(0);
+    else
+    {
+        var a=$('.max_value').eq(n).val();
+        var html;
+        if(Number(value)>Number(a))
+        {
+            html='小计:<a>￥'+a*Number(money)+'</a>';
+            $('.num').eq(n).val(a);
+            $('.xiaoji').eq(n).html(html);
+            var goods_id=$('.goods').eq(n).attr('id');
+            var attr_id=$('.goods').eq(n).attr('attr_id');
+            fset_buycar(goods_id,'goods_num',Number(a),attr_id);
+            //appcan.locStorage.setVal('_goods_num['+n+']',Number(a));
+            $('.jia').eq(n).addClass("z-jiadis");
+            $('.jian').eq(n).removeClass("z-jiandis");
+            api.toast({
+				msg: "库存只剩"+a+"了",
+				duration: 2000,
+				location: 'bottom'
+			});
+            fzong();
+        }
+        else if(Number(value)>0)
+        {
+            html='小计:<a>￥'+Number(value)*Number(money)+'</a>';
+            $('.xiaoji').eq(n).html(html);
+            var goods_id=$('.goods').eq(n).attr('id');
+            var attr_id=$('.goods').eq(n).attr('attr_id');
+            fset_buycar(goods_id,'goods_num',Number(value),attr_id);
+            //appcan.locStorage.setVal('_goods_num['+n+']',Number(value));
+            if(Number(value)>1)
+            {
+                $('.jian').eq(n).removeClass("z-jiandis");
+                $('.jia').eq(n).removeClass("z-jiadis");
+            }
+            if(Number(value)==Number(a))
+            {
+                $('.jia').eq(n).addClass("z-jiadis");
+            }
+            if(Number(value)==1)
+            {
+                $('.jian').eq(n).addClass("z-jiandis");
+            }
+            fzong();
+        }
+    }
+}
+function fxuan(n)
+{
+	var xuan=$('.xuan').eq(n).val();
+	if(xuan=="0")
+	{
+		$('.xuan').eq(n).val("1");
+		var goods_id=$('.goods').eq(n).attr('id');
+		var attr_id=$('.goods').eq(n).attr('attr_id');
+		fset_buycar(goods_id,'isSelected','1',attr_id);
+		$('.goods_xuanzhong').eq(n).addClass("goods_xuanzhong_on");
+		fzong();
+	}
+	else if(xuan=="1")
+	{
+		$('.xuan').eq(n).val("0");
+		var goods_id=$('.goods').eq(n).attr('id');
+		var attr_id=$('.goods').eq(n).attr('attr_id');
+		fset_buycar(goods_id,'isSelected','0',attr_id);
+		$('.goods_xuanzhong').eq(n).removeClass("goods_xuanzhong_on");
+		fzong();
+	}
+}
+function fopen_shangjia(shopId,shopName,shopImg)
+{
+	api.openWin({
+	    name: 'dianpu_header',
+	    url: 'dianpu_header.html',
+	    pageParam:{
+	    	shopId:shopId,
+	    	shopName:shopName,
+	    	shopImg:shopImg
+	    }
+    });
+}
+function fget_buycar()
+{
+	var pan=$api.getStorage('login');
+	if(pan=='0')
+	{
+//		api.toast({
+//			msg: '请先登录！',
+//			duration: 2000,
+//			location: 'bottom'
+//		});
+		return;
+	}
+	var user_id=$api.getStorage('user_id');
+		api.ajax({
+            //url: YAH_ajax_name+'get_buycar.php',
+            url: YAH_ajax_name+'get_buycar_session.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {user_id:user_id}
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	api.execScript({
+	                 name:'root',
+	                 script: 'fset_goshop_num('+ret.length+');'
+                 });
+            	 var shopId=-1,i,j,t;
+            	 var shopNum=0;
+            	 var zu=new Array();//商家id集合
+            	 var zu2=new Array();//商家名字
+            	 var zu3=new Array();//商家图片
+                 for(i=0;i<ret.length;i++)
+                 {
+                 	if(ret[i].shopId!=shopId)
+                 	{
+                 		var pan_c_s=0;
+                 		for(j=0;j<zu.length;j++)
+                 		{
+                 			if(zu[j]==ret[i].shopId) pan_c_s=1;
+                 		}
+                 		if(pan_c_s==0)
+                 		{
+	                 		zu[shopNum]=ret[i].shopId;
+	                 		zu2[shopNum]=ret[i].shopName;
+	                 		zu3[shopNum]=ret[i].shopImg;
+	                 		shopId=ret[i].shopId;
+	                 		shopNum++;
+                 		}
+
+                 	}
+                 }
+                 var html='';t=0;
+                 for(i=0;i<shopNum;i++)
+                 {
+
+                 	html+='<div class="shangjia">';
+					/*html+='	<div class="min-title" tapmode="a" onclick="fopen_shangjia(\''+zu[i]+'\',\''+zu2[i]+'\',\''+zu3[i]+'\')">';
+					html+='		<span class="t2" style="background-image:url(\''+$api.getStorage("YAH_web")+'/'+zu3[i]+'\')"></span><span class="t1">'+zu2[i]+'</span><span class="t3"></span>';
+					html+='	</div>';*/
+                 	for(j=0;j<ret.length;j++)
+                 	{
+                 		if(ret[j].shopId==zu[i])
+                 		{
+								html+='<div class="goods" id="'+ret[j].goods_id+'" attr_id="'+ret[j].goodss_attr_id+'">';
+								html+='	<div class="goods_left" tapmode="" onclick="fopengoods('+ret[j].goods_id+');"><img src="'+$api.getStorage("YAH_web")+'/'+ret[j].goodsImg+'" /></div>';
+								html+='	<div class="goods_right" tapmode="" onclick="fxuan('+t+')">';
+								html+='		<div class="goods_right_top">';
+								var shuxing_title='';
+								if(ret[j].goods_attr==false || ret[j].goods_attr=='false')
+								{
+									shuxing_title='';
+								}
+								else
+								{
+									shuxing_title='['+ret[j].goods_attr+']';
+								}
+								html+='			<div class="goods_title">'+ret[j].goodsName+shuxing_title+'</div>';
+								var zhong='';
+								if(ret[j].isSelected=='1') zhong='goods_xuanzhong_on';
+								else zhong='';
+								html+='			<div class="goods_xuanzhong '+zhong+'"></div>';
+								html+='		</div>';
+								html+='		<div class="goods_right_bottom">';
+								html+='			<div class="goods_money">';
+								if(ret[j].isGroup==1 || ret[j].isGroup=='1') html+='				<div class="danjia">￥'+Number(ret[j].shopPrice)+'</div>';
+								else if(ret[j].isSeckill==1 || ret[j].isSeckill=='1') html+='				<div class="danjia">￥'+Number(ret[j].shopPrice)+'</div>';
+								else  html+='				<div class="danjia">￥'+(Number(ret[j].shopPrice)+Number(ret[j].shuxing_money))+'</div>';
+								//html+='				<div class="danjia">￥'+(Number(ret[j].shopPrice)+Number(ret[j].shuxing_money))+'</div>';
+								if(ret[j].isGroup==1 || ret[j].isGroup=='1') html+='				<div class="xiaoji">小计:<a>￥'+(Number(ret[j].shopPrice))*Number(ret[j].goods_num)+'</a></div>';
+								else if(ret[j].isSeckill==1 || ret[j].isSeckill=='1') html+='				<div class="xiaoji">小计:<a>￥'+(Number(ret[j].shopPrice))*Number(ret[j].goods_num)+'</a></div>';
+								else  html+='				<div class="xiaoji">小计:<a>￥'+(Number(ret[j].shopPrice)+Number(ret[j].shuxing_money))*Number(ret[j].goods_num)+'</a></div>';
+
+								//html+='				<div class="xiaoji">小计:<a>￥'+(Number(ret[j].shopPrice)+Number(ret[j].shuxing_money))*Number(ret[j].goods_num)+'</a></div>';
+								html+='			</div>';
+								html+='			<div class="goods_num_add">';
+								var goods_num_lin=ret[j].goods_num;
+								if(ret[j].goods_num>ret[j].goodsStock) goods_num_lin=ret[j].goodsStock;
+								else goods_num_lin=ret[j].goods_num;
+								html+='				<div class="jian" tapmode="jian_action" onclick="event.cancelBubble = true;jian('+t+')">-</div>';
+								html+='				<input type="text" class="num" value="'+goods_num_lin+'"   onchange="fshu('+t+',this.value);" onkeyup="fshu('+t+',this.value);" onafterpaste="fshu('+t+',this.value)"/>';
+								html+='				<div class="jia" tapmode="jia_action" onclick="event.cancelBubble = true;jia('+t+')">+</div>';
+								html+='			</div>';
+								html+='		</div>';
+								html+='	</div>';
+								html+='	<input class="max_value" type="hidden" value="'+ret[j].goodsStock+'" />';
+								if(ret[j].isGroup==1 || ret[j].isGroup=='1') html+='	<input class="money" type="hidden" value="'+Number(ret[j].shopPrice)+'" />';
+								else if(ret[j].isSeckill==1 || ret[j].isSeckill=='1') html+='	<input class="money" type="hidden" value="'+Number(ret[j].shopPrice)+'" />';
+								else  html+='	<input class="money" type="hidden" value="'+(Number(ret[j].shopPrice)+Number(ret[j].shuxing_money))+'" />';
+								html+='	<input class="xuan" type="hidden" value="'+ret[j].isSelected+'" />';
+								html+='</div>';
+								t++;
+                 		}
+                 	}
+                 	html+='</div>';
+                 }
+                 document.getElementById("main").innerHTML=html;
+                 api.parseTapmode();
+                 fzong();
+            }else {
+            	//fduanwang();
+            	document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">购物车没有商品</div>';
+            	api.execScript({
+			        frameName:'goshop_footder',
+			        script: 'fset_quanxian(0);'
+		        });
+		        api.execScript({
+	                 name:'root',
+	                 script: 'fset_goshop_num(0);'
+                 });
+            	fzong();
+//          	api.toast({
+//					msg: '购物车没有商品！',
+//					duration: 2000,
+//					location: 'bottom'
+//				});
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+        });
+}
+function fset_buycar(goods_id,pan,val,attr_id)
+{
+	var user_id=$api.getStorage('user_id');
+		api.ajax({
+            //url: YAH_ajax_name+'set_buycar.php',
+            url: YAH_ajax_name+'set_buycar_session.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+               		user_id:user_id,
+               		goods_id:goods_id,
+               		pan:pan,
+               		val:val,
+               		attr_id:attr_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+
+            }else {
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+</script>
+</html>

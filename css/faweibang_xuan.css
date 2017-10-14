@@ -1,0 +1,39 @@
+html{
+	height: 100%;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+body{
+	background-color: #f2f2f2;
+    width: 100%;
+}
+input,button,select,textarea{outline:none;-webkit-appearance:none;}
+#main{
+	width: 100%;
+	font-size: 14px;
+	padding-top: 50px;
+	background-color: #fff;
+	text-align: center;
+}
+.a{
+    background-color:#ccc !important;
+}
+#main .header{
+	height: 49px;
+	border-bottom:1px solid #eee;
+	line-height: 49px;
+	position: fixed;
+	left:0;
+	top:0;
+	width:100%;
+	background-color:#fff;
+}
+#main .list{
+	height: 49px;
+	border-bottom:1px solid #eee;
+	line-height: 49px;
+	color:#999;
+}
+#main .list_on{
+	color:#dd3f96 !important;
+}

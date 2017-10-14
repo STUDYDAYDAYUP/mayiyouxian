@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html{
+			height: 100%;
+		    width: 100%;
+		    border-radius: 10px;
+		    background-color: transparent; 
+		}
+		body{
+			background-color: #fff;
+		    /*float:left;*/
+		    /*border-radius: 10px;*/
+		    border:1px solid #eee;
+		}
+		.a{
+            background-color:#eee !important;
+        }
+		#content{
+			height:97px;
+			line-height: 97px;
+			border-bottom:1px solid #eee;
+			color:red;
+			text-align: center;
+			font-size:18px;
+		}
+		#footer{
+			height:50px;
+			line-height: 50px;
+			display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;  
+            text-align: center;
+		}
+		#esc{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            border-right:1px solid #eee;
+            color:#1982db;
+		}
+		#call{
+			-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            color:red;
+		}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="content"></div>
+	<div id="footer">
+		<div tapmode="a" onclick="fclose()" id="esc">取消</div>
+		<div tapmode="a" onclick="fcall()" id="call">呼叫</div>
+	</div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		document.getElementById("content").innerHTML=api.pageParam.phone;
+	};
+	function fcall()
+	{
+		api.call({
+		    type: 'tel',
+		    number: api.pageParam.phone
+		});
+		fclose();
+	}
+	function fclose()
+	{
+		api.execScript({
+	       	frameName:'fuwuzhongxin_tanc',
+	        script: 'fclose();'
+        });
+	}
+</script>
+</html>

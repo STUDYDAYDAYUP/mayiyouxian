@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/reg.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="from">
+		<div class="min-title3" onclick="">
+			<!--<span class="t1">手机号：</span><span class="t2"><input type="text" id="zh" maxlength="11" placeholder="请输入您的手机号" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></span>-->
+			<span class="t1">手机号：</span><span class="t2"><input type="text" id="zh" maxlength="11" placeholder="请输入您的手机号"/></span>
+		</div>
+		<div class="min-title3" onclick="">
+			<span class="t1">验证码：</span><span class="t2"><input type="text" id="yzm" maxlength="6" placeholder="请输入短信验证码" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/></span><span class="t4" tapmode="t4_on" id="fs" onclick="fs();">获取验证码</span><span class="t5" id="djs">重新获取(120S)</span>
+		</div>
+		<div class="min-title3" onclick="">
+			<span class="t1">密码：</span><span class="t2"><input type="password" id="pwd1" maxlength="10" placeholder="请输入6~10位密码"/></span>
+		</div>
+		<div class="min-title3" onclick="">
+			<span class="t1">确认密码：</span><span class="t2"><input type="password" id="pwd2" maxlength="10" placeholder="请再次确认密码"/></span>
+		</div>
+	</div>
+	<div id="go" tapmode="go_on" onclick="fgo()">确定</div>
+	<div class="list2" id="statement"></div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+	
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+   var time=120;
+   var jishi;
+   var dqtime=new Date().getTime();
+   dqtime=Number(dqtime/1000);
+   if(dqtime-Number(localStorage.yzm_time)<120 && dqtime-Number(localStorage.yzm_time)>=0)
+   {
+       document.getElementById("fs").style.display="none";
+	    document.getElementById("djs").style.display="block";
+       time=parseInt(120-(dqtime-localStorage.yzm_time));
+       document.getElementById("djs").innerHTML="重新获取("+time+"S)";
+       jishi=window.setInterval("ftime()","1000");
+   }
+   if(dqtime-localStorage.yzm_time>600)
+   {
+       localStorage.yzm=-1;
+   }
+	function fs()
+	{
+		var mobile=document.getElementById("zh").value;
+	    if(mobile.length==11 && mobile[0]=='1' && (mobile[1]=='3' || mobile[1]=='5' || mobile[1]=='7' || mobile[1]=='8'))
+	    {
+	    	var lin_pan=0;
+	         for(var i=0;i<11;i++)
+	         {
+	         	if(Number(mobile[i])>=0 && Number(mobile[i])<=9);
+	         	else {lin_pan=1;break;}
+	         }
+	         if(lin_pan==1)
+	         {
+	         	api.toast({
+					msg: '请输入正确的手机号码！',
+					duration: 2000,
+					location: 'bottom'
+				});
+		       return;
+	         }
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码！',
+				duration: 2000,
+				location: 'bottom'
+			});
+	       return;
+	    }
+	    var timestamp=new Date().getTime();
+	    localStorage.yzm_time=Number(timestamp/1000);
+	    document.getElementById("fs").style.display="none";
+	    document.getElementById("djs").style.display="block";
+	    localStorage.yzm=Math.floor(Math.random()*899999)+100000;
+	    localStorage.yzm_sj=mobile;
+	    time=120;
+	    document.getElementById("djs").innerHTML=time+"S";
+	    jishi=window.setInterval("ftime()","1000");
+	    //alert("验证码是："+localStorage.yzm);
+	    api.toast({
+				msg: '发送成功！',
+				duration: 2000,
+				location: 'bottom'
+		});
+		api.ajax({
+            url: YAH_ajax_name+'fssms_yzm.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+                	mobile:mobile,
+                	yzm:localStorage.yzm
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	//alert(ret);
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function ftime()
+	{
+	    if(time!=0)
+	    {
+	        time--;
+	        document.getElementById("djs").innerHTML="重新获取("+time+"S)";
+	    }
+	    else
+	    {
+	        window.clearInterval(jishi);
+	        document.getElementById("fs").style.display="block";
+	        document.getElementById("djs").style.display="none";
+	    }
+	}
+	function fgo()
+	{
+	    var mobile=document.getElementById("zh").value;
+	    var pwd1=document.getElementById("pwd1").value;
+	    var pwd2=document.getElementById("pwd2").value;
+	    var yzm=document.getElementById("yzm").value;
+	    if(mobile.length==11 && mobile[0]=='1'  && (mobile[1]=='3' || mobile[1]=='5' || mobile[1]=='7' || mobile[1]=='8'))
+	    {
+	        if(pwd1.length<6)
+	        {
+	            api.toast({
+					msg: '密码不能小于6位数',
+					duration: 2000,
+					location: 'bottom'
+			    });
+	            return;
+	        }
+	        if(pwd1!=pwd2)
+	        {
+	        	api.toast({
+					msg: '两次密码不一致',
+					duration: 2000,
+					location: 'bottom'
+			    });
+	            return;
+	        }
+	        for(var i=0;i<pwd1.length;i++)
+	        {
+	        	if(pwd1[i]==" ")
+	        	{
+	        		api.toast({
+						msg: '密码格式错误',
+						duration: 2000,
+						location: 'bottom'
+				    });
+	        		return;
+	        		break;
+	        	}
+	        }
+	        if(yzm==localStorage.yzm && localStorage.yzm_sj==mobile)
+	        {
+	            fshow(mobile,pwd1);
+	        }
+	        else
+	        {
+	            api.toast({
+					msg: '验证码错误',
+					duration: 2000,
+					location: 'bottom'
+			   });
+	        }
+	    }
+	    else
+	    {
+	       api.toast({
+				msg: '请输入正确的手机号码',
+				duration: 2000,
+				location: 'bottom'
+		   });
+	       return;
+	    }
+	    
+	}
+	function fshow(mobile,pwd)
+	{
+		api.showProgress({title:'注册中...'});
+	    api.ajax({
+            url: YAH_ajax_name+'register.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	mobile:mobile,
+                	pwd:pwd,
+                	type:api.pageParam.type,
+                	openid:api.pageParam.openid,
+                	userName:api.pageParam.nickname,
+                	img:api.pageParam.headimgurl
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	if(ret[0]['pan']==1)
+            	{
+            		if(ret[0]['type']=='weixin')
+            		{
+            			api.toast({
+							msg: '绑定成功',
+							duration: 2000,
+							location: 'bottom'
+					   });
+					   api.execScript({
+		                   name:'login_header',
+		                   frameName:'login',
+		                   script: 'fset_val(\''+mobile+'\',\''+pwd+'\');fgo();'
+	                   });
+					   setTimeout('fclose();',1800);
+            		}
+            		else
+            		{
+	            		api.toast({
+							msg: '注册成功',
+							duration: 2000,
+							location: 'bottom'
+					   });
+					   api.execScript({
+		                   name:'login_header',
+		                   frameName:'login',
+		                   script: 'fset_val(\''+mobile+'\',\''+pwd+'\');'
+	                   });
+					   setTimeout('fclose();',1500);
+            		}
+            		
+            	}
+            	else if(ret[0]['pan']==-1)
+            	{
+            		api.toast({
+						msg: '账号已存在',
+						duration: 2000,
+						location: 'bottom'
+				   });
+            	}
+            	else
+            	{
+            		api.toast({
+						msg: '注册失败',
+						duration: 2000,
+						location: 'bottom'
+				   });
+            	}
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

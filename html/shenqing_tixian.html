@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/shenqing_tixian.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="h1">
+		<div class="s1">提现金额：</div>
+		<!--<div class="s2 ccyc" id="ktx_yj">￥0.00</div>
+		<div class="s3" tapmode="zdye_on" onclick="fzhuandao_yue_pan();">转到余额</div>-->
+		<input type="text" class="s2" id="ktx_yj" maxlength="5" onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')" />
+	</div>
+	<div class="h2">
+		<div class="min-title" tapmode="a" onclick="fopen_changyong_kahao();">
+			<span class="t1" style="color:#000;">常用卡号</span><span class="t3"></span>
+		</div>
+	</div>
+	<div class="h3">
+		<div class="min-title" tapmode="a" onclick="fxuan();">
+			<span class="t11">选择银行：</span><input type="text" id="yinhang" placeholder="" disabled="disabled" /><span class="t3"></span>
+		</div>
+		<div class="min-title" tapmode="a" onclick="">
+			<span class="t11">开户支行：</span><input type="text" id="zhihang" placeholder="请输入开户支行名称" maxlength="20" />
+		</div>
+		<div class="min-title" tapmode="a" onclick="">
+			<span class="t11">银行卡号：</span><input type="text" id="kahao" placeholder="请输入银行卡号" maxlength="19"  onkeyup="this.value=this.value.replace(/[^0-9]/g,'')" onafterpaste="this.value=this.value.replace(/[^0-9]/g,'')"/>
+		</div>
+		<div class="min-title" tapmode="a" onclick="">
+			<span class="t11">真实姓名：</span><input type="text" id="xingming" placeholder="请输入您的真实姓名" maxlength="4" />
+		</div>
+	</div>
+	<div class="h4">
+		<div class="go" tapmode="go_on" onclick="fgo();">提交申请</div>
+	</div>
+	<div class="h5">
+		<div class="h5_t">申请记录</div>
+	</div>
+	<div class="h6">
+		<div class="list"><span>订单号</span><span>金额</span><span>时间</span><span>状态</span></div>
+		<div class="content">
+			<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+			<ul>
+				<!--<li><span class="s1">35577</span><span class="s2">￥13.9</span><span class="s3">2016/3/1</span><span class="s4_1">待处理</span></li>
+				<li><span class="s1">35577</span><span class="s2">￥137.7</span><span class="s3">2016/3/1</span><span class="s4_2">处理中</span></li>
+				<li><span class="s1">35577</span><span class="s2">￥137.7</span><span class="s3">2016/3/1</span><span class="s4_3">已完成</span></li>-->
+			</ul>
+		</div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_pz();
+		fget_tixian_jilu();
+		fget_yinhang();
+	};
+	var pan=-1;
+	var ktx_yj=0;
+	var min_tx=0;
+	var max_tx=0;
+	var dq_time=0;
+	var cj_time=0;
+	var day_num=0;
+	var yh_id=0;
+	function fxuan()
+	{
+		api.openFrame({
+		    name: 'xuan_yinhang_tanc',
+		    url: 'xuan_yinhang_tanc.html',
+		    pageParam:{
+	            		header_h:api.pageParam.header_h-50,
+	            		rect_h:api.pageParam.rect_h+100
+	        },
+		    rect: {
+			    x:0,
+			    y:api.pageParam.header_h-50,
+			    w:'auto',
+			    h:api.pageParam.rect_h+100
+		    }
+	    });
+	}
+	function fopen_changyong_kahao()
+	{
+		api.openWin({
+	        name: 'changyong_kahao_header',
+	        url: 'changyong_kahao_header.html'
+        });
+	}
+	function fset_yinhang(n,id)
+	{
+		document.getElementById("yinhang").value=n;
+		yh_id=id;
+	}
+	function fget_pz()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.showProgress({title:'加载中...'});
+		api.ajax({
+            url: YAH_ajax_name+'get_fenxiao_tixian_pz.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                pan=1;
+                ktx_yj=ret[0].ktx_yj;
+                //document.getElementById("ktx_yj").innerHTML='￥'+ktx_yj;
+				min_tx=ret[0].minApplyPrice;
+				max_tx=ret[0].maxApplyPrice;
+				dq_time=ret[0].dq_time;
+				cj_time=ret[0].cj_time;
+				day_num=ret[0].applyDay;
+                api.parseTapmode();
+            }else {
+            	fduanwang();
+				api.alert({
+	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	            });
+            };
+        });
+	}
+	function fget_tixian_jilu()
+	{
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'get_fenxiao_tixian_jilu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                var html='<ul>';
+                for(var i=0;i<ret.length;i++)
+                {
+                	if(ret[i].status==0) html+='<li><span class="s1 ccyc">'+ret[i].txNo+'</span><span class="s2 ccyc">￥'+ret[i].money+'</span><span class="s3 ccyc">'+getTime4(ret[i].createTime)+'</span><span class="s4_1">待处理</span></li>';
+					if(ret[i].status==1) html+='<li><span class="s1 ccyc">'+ret[i].txNo+'</span><span class="s2 ccyc">￥'+ret[i].money+'</span><span class="s3 ccyc">'+getTime4(ret[i].createTime)+'</span><span class="s4_2">已完成</span></li>';
+					if(ret[i].status==2) html+='<li><span class="s1 ccyc">'+ret[i].txNo+'</span><span class="s2 ccyc">￥'+ret[i].money+'</span><span class="s3 ccyc">'+getTime4(ret[i].createTime)+'</span><span class="s4_3">已拒绝</span></li>';
+                }
+                html+='</ul>';
+                document.getElementsByClassName("content")[0].innerHTML=html;
+                api.parseTapmode();
+            }else {
+            	var html='<div style="text-align: center;line-height: 50px;">暂无记录</div>';
+            	document.getElementsByClassName("content")[0].innerHTML=html;
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fget_yinhang()
+	{
+		api.ajax({
+            url: YAH_ajax_name+'get_fenxiao_tixian_yinhang.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                if(ret.length>0)
+                {
+                	$api.setStorage('fenxiao_yinhang_list',ret);
+                }
+                else
+                {
+                	$api.setStorage('fenxiao_yinhang_list','0');
+                }
+                api.parseTapmode();
+            }else {
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	function fset_info(yinhang,zhihang,kahao,xingming,yh_id2)
+	{
+		document.getElementById("yinhang").value=yinhang;
+		document.getElementById("zhihang").value=zhihang;
+		document.getElementById("kahao").value=kahao;
+		document.getElementById("xingming").value=xingming;
+		yh_id=yh_id2;
+	}
+	function fgo()
+	{
+		if(pan!=1)
+		{
+			api.toast({
+				msg: '网络错误，请稍后再试！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		var yinhang=document.getElementById("yinhang").value;
+		var zhihang=document.getElementById("zhihang").value;
+		var kahao=document.getElementById("kahao").value;
+		var xingming=document.getElementById("xingming").value;
+		var yaotixian=document.getElementById("ktx_yj").value;
+		if(yinhang=="")
+		{
+			api.toast({
+				msg: '请选择银行！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(zhihang=="")
+		{
+			api.toast({
+				msg: '开户支行不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(kahao=="")
+		{
+			api.toast({
+				msg: '请输入卡号！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(xingming=="")
+		{
+			api.toast({
+				msg: '请输入您真实姓名！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(Number(ktx_yj)==0)
+		{
+			api.toast({
+				msg: '可提现金额为0',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(yaotixian=="")
+		{
+			api.toast({
+				msg: '请输入要提现的金额',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(Number(min_tx)==0) ;
+		else if(Number(yaotixian)<Number(min_tx))
+		{
+			api.toast({
+				msg: '提现金额未达到'+min_tx,
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		if(Number(day_num)==0) ;
+		else if((Number(dq_time)-Number(cj_time))/(3600*24)>Number(day_num))
+		{
+			api.toast({
+				msg: '每隔'+day_num+'天可提现一次',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		api.showProgress({title:'提交中...'});
+		var user_id=$api.getStorage('user_id');
+		api.ajax({
+            url: YAH_ajax_name+'shenqing_tixian.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	yinhang:yh_id,
+                	zhihang:zhihang,
+                	kahao:kahao,
+                	xingming:xingming,
+                	yaotixian:yaotixian
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 if(ret[0].pan==1)
+            	 {
+            	 	pan=-1;
+            	 	fget_pz();
+					fget_tixian_jilu();
+            	 	 api.alert({
+            	 		msg:'提交成功!'
+                     },function(ret,err){
+                     	//coding...
+                     });
+                     api.execScript({
+	                     name:'wallet_header',
+	                     frameName:'wallet',
+	                     script: 'fget_user();fget_zhangdan();'
+                     });
+                     api.execScript({
+	                     namr:'root',
+	                     frameName:'my',
+	                     script: 'fyslogin();'
+                     });
+            	 }
+            	 else
+            	 {
+            	 	api.toast({
+						msg: ret[0].msg,
+						duration: 2000,
+						location: 'bottom'
+					});
+            	 }
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+	
+</script>
+</html>

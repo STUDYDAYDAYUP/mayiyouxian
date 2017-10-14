@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		float:left;
+    		margin:0;
+    		padding:0 0 20px 0;
+    		width:100%;
+    		height:100%;
+    		background-color: transparent;
+    	}
+        .a{
+            background-color:#eee !important;
+        }
+    	input,button,select,textarea{outline:none;-webkit-appearance:none;}
+        .ssk{
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            z-index: 99999;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            background-color:#000;
+            filter:alpha(opacity=60);  
+              -moz-opacity:0.6;  
+              -khtml-opacity: 0.6;  
+              opacity: 0.6; 
+             line-height: 50px;
+        }
+        .di{
+       		background-color:#ff1b1c;
+       		width:100%;
+       		height:50px;
+       		position: absolute;
+       		z-index: -2;
+       		filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4; 
+        }
+        .ssk .left{
+    		background-image:url('../image/gouwuche.png');
+            background-size:20px 20px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+            padding-left:40px;
+            color:#fff;
+            position: relative;
+        }
+        .goods_num{
+        	position: absolute;
+    		left:25px;
+    		top:8px;
+    		background-color:#60b034;
+    		border-radius: 50%;
+    		line-height:15px;
+    		font-size:12px;
+    		height: 15px;
+    		width:15px;
+    		text-align: center;
+    		z-index: 1;
+            display:none;
+        }
+        .ssk .con{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            /*background-color:#000;
+            height: 30px;
+            margin:10px 0;
+            border-radius: 15px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex; 
+            filter:alpha(opacity=40);  
+              -moz-opacity:0.4;  
+              -khtml-opacity: 0.4;  
+              opacity: 0.4;  */
+        }
+        .ssk .right{
+            margin-right:10px;
+            color:#fff;
+            font-size: 14px;
+        }
+        .go{
+        	color:#533300;
+        	background-color:#ffd014;
+        	text-align: center;
+        	width:100px;
+        	/*display:none;*/
+        }
+        .go_on{
+        	background-color:#c6a10c !important;
+        }
+    </style>
+</head>
+<body>
+	<div class="ssk">
+		<!--<div class="di"></div>-->
+		<div class="left"><div class="goods_num">0</div><span id="money">￥0</span></div>
+		<div class="con">
+			
+		</div>
+		<!--<div class="right">
+			还差10元起送
+		</div>-->
+		<div class="go" tapmode="go_on" onclick="event.cancelBubble = true;fopen_tanc();">加入购物车</div>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		api.parseTapmode();
+		if(api.pageParam.tuangou==1 || api.pageParam.tuangou=='1') $('.go').eq(0).html('立即抢购');
+		if(api.pageParam.miaosha==1 || api.pageParam.miaosha=='1') $('.go').eq(0).html('立即抢购');
+		fget_buycar();
+	};
+	var goshop_pan=0;
+	function fset_goshop_pan(n)
+	{
+		goshop_pan=n;
+	}
+	function fget_buycar()
+	{
+		var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			return;
+		}
+		var ret=$api.getStorage('buycar');
+		var sum=0,money=0;
+		if(ret!=undefined)
+		{
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_shopId==api.pageParam.shopId)
+				{
+					sum++;
+					money+=Number(ret[i].shuxing_money)*Number(ret[i].goods_num);
+				}
+			}
+		}
+		money=money.toFixed(2);
+		$('.goods_num').html(sum);
+		if(sum>0) $('.goods_num').css('display','block');
+		$('#money').html('￥'+money);
+	}
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fopen_sousuo()
+	{
+		api.openWin({
+	        name: 'ssy_header',
+	        url: 'ssy_header.html',
+	        pageParam:{
+	        	type:'dianpu'
+	        }
+        });
+	}
+	function fopen_tanc()
+	{
+		if(api.pageParam.tuangou==1 || api.pageParam.tuangou=='1' || api.pageParam.miaosha==1 || api.pageParam.miaosha=='1')
+		{
+			api.execScript({
+		       	frameName:'goods_info',
+		        script: 'fgo_ms_tg();'
+	        });
+			return;
+		}
+		api.execScript({
+	       	frameName:'goods_info',
+	        script: 'fadd_buycar();'
+        });
+	}
+	function fopen_goshop()
+	{
+		if(Number(goshop_pan)==0)
+		{
+			goshop_pan=1;
+			api.openFrame({
+		        name: 'dianpu_goshop_tanc',
+		        url: 'dianpu_goshop_tanc.html',
+		        rect: {
+			        x:0,
+			        y:0,
+			        w:'auto',
+			        h:api.winHeight-50
+		        }
+	        });
+	        var goshop_num=2;
+			var header_h=70;
+			var footer_h=50;
+			if(api.systemType=='ios'){
+	       		header_h=90;
+	    	}
+	    	else
+	    	{
+	    		var sVer = api.systemVersion;
+	    		var banben=parseFloat(sVer);
+	    		if(banben>=4.4)
+	    		{
+	    			header_h=95;
+	    		}
+	    	}
+	    	var sh=31+51*goshop_num;
+	    	var max_h=api.winHeight-header_h-footer_h;
+	    	if(sh>max_h) sh=max_h;
+			api.openFrame({
+		        name: 'dianpu_goshop',
+		        url: 'dianpu_goshop.html',
+		        rect: {
+			        x:0,
+			        y:api.winHeight-sh-50,
+			        w:'auto',
+			        h:sh
+		        },
+		        pageParam:{
+		        	
+		        },
+		        animation:{
+				    type:"movein",                //动画类型（详见动画类型常量）
+				    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
+				    duration:300                //动画过渡时间，默认300毫秒
+				}
+	        });
+		}
+		else
+		{
+			goshop_pan=0;
+			api.execScript({
+	           	frameName:'dianpu_goshop_tanc',
+	            script: 'fclose();'
+            });
+		}
+	}
+</script>
+</html>

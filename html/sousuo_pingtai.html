@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/sousuo_pingtai.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div class="goods_list">
+			<div class="min_header">
+				<div class="m_l" tapmode="" onclick="fxuan(0);" style="border-right:1px solid #eee;">分类<span class="sanjiao"></span></div>
+				<div class="m_l" tapmode="" onclick="fxuan(1);" style="border-right:1px solid #eee;">排序<span class="sanjiao"></span></div>
+				<div class="m_l" tapmode="" style="display:none;" onclick="fxuan(2);">筛选<span class="sanjiao"></span></div>
+			</div>
+			<div class="content">
+				<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>
+				<!--<ul>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="s0"><div class="title">五谷香粥</div><div class="right2"><span class="l1">保</span><span class="l2">1000</span></div></div>
+								<div class="s1"><span class="s_l"><span class="red">4.5</span> 月售23份</span><span class="s_r"><span class="red">10</span>元起送</span></div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+						<div class="di2">
+							<div class="left">
+								<span>琼恩雪诺</span><span>这是复活后的琼恩雪诺</span>
+							</div>
+							<div class="div right">共2个</div>
+						</div>
+					</li>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1"><span class="s_l"><span class="red">4.5</span> 月售23份</span><span class="s_r"><span class="red">10</span>元起送</span></div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+						<div class="di2">
+							<div class="left">
+								<span>琼恩雪诺</span><span>这是复活后的琼恩雪诺</span>
+							</div>
+							<div class="div right">共2个</div>
+						</div>
+					</li>
+					<li tapmode="a" onclick="fopen_dianpu(0);">
+						<div class="nei">
+							<div class="left"><img src="../image/sp_9.png" /></div>
+							<div class="right">
+								<div class="title">五谷香粥</div>
+								<div class="s1">
+									<span class="s_l">
+										<div class="sd_wxingji">
+											<div class="sd_xingji x2"></div>
+											<div class="sd_xingji_di"></div>
+										</div>
+										<span class="red">4.5</span> 月售23份</span>
+										<span class="s_r"><span class="red">10</span>元起送
+									</span>
+								</div>
+								<div class="s2"><span class="s_l">预计送达时间：23分钟</span><span class="s_r">免配送费</span></div>
+							</div>
+						</div>
+						<div class="di"><div class="list"><div class="bao"></div>满10元包邮</div></div>
+					</li>
+				</ul>-->
+			</div>
+		</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		//alert(api.pageParam.header_h+" "+api.pageParam.rect_h);
+		//alert(api.pageParam.pan);
+		fget_sousuo_dianpu();
+	};
+	var fenlei_pan=0;
+	var paixu_pan=0;
+	var shaixuan_pan=0;
+	var paixu='zhineng';
+	function fxuan(n)
+	{
+		var max=$('.m_l').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.m_l').eq(i).addClass('m_l_on');
+				$('.sanjiao').eq(i).addClass('sanjiao_on');
+			}
+			else
+			{
+				$('.m_l').eq(i).removeClass('m_l_on');
+				$('.sanjiao').eq(i).removeClass('sanjiao_on');
+			}
+		}
+		if(Number(fenlei_pan)==0 && n==0)
+		{
+			fenlei_pan=1;
+			api.openFrame({
+	            name: 'fenlei_xuan_tanc',
+	            url: 'fenlei_xuan_tanc.html',
+	            pageParam:{
+	            	header_h:api.pageParam.header_h+50
+	            },
+	            rect:{
+	            	x:0,
+	            	y:api.pageParam.header_h+50,
+	            	w:'auto',
+	            	h:api.pageParam.rect_h-50
+	            }
+            });
+            shaixuan_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_shaixuan_tanc',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(2).removeClass('m_l_on');
+			$('.sanjiao').eq(2).removeClass('sanjiao_on');
+			paixu_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_paixu',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(1).removeClass('m_l_on');
+			$('.sanjiao').eq(1).removeClass('sanjiao_on');
+		}
+		else if(Number(fenlei_pan)==1 && n==0)
+		{
+			fenlei_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_xuan_tanc',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(n).removeClass('m_l_on');
+			$('.sanjiao').eq(n).removeClass('sanjiao_on');
+		}
+		if(Number(paixu_pan)==0 && n==1)
+		{
+			paixu_pan=1;
+			api.openFrame({
+	            name: 'fenlei_paixu',
+	            url: 'sousuo_tanc.html',
+	            pageParam:{
+            		header_h:api.pageParam.header_h+50,
+            		rect_h:api.pageParam.rect_h-50
+            	},
+	            rect:{
+	            	x:0,
+	            	y:api.pageParam.header_h+50,
+	            	w:'auto',
+	            	h:api.pageParam.rect_h-50
+	            }
+            });
+            fenlei_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_xuan_tanc',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(0).removeClass('m_l_on');
+			$('.sanjiao').eq(0).removeClass('sanjiao_on');
+			shaixuan_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_shaixuan_tanc',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(2).removeClass('m_l_on');
+			$('.sanjiao').eq(2).removeClass('sanjiao_on');
+		}
+		else if(Number(paixu_pan)==1 && n==1)
+		{
+			paixu_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_paixu',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(n).removeClass('m_l_on');
+			$('.sanjiao').eq(n).removeClass('sanjiao_on');
+		}
+		if(Number(shaixuan_pan)==0 && n==2)
+		{
+			shaixuan_pan=1;
+			api.openFrame({
+	            name: 'fenlei_shaixuan_tanc',
+	            url: 'fenlei_shaixuan_tanc.html',
+	            pageParam:{
+	            	header_h:api.pageParam.header_h+50
+	            },
+	            rect:{
+	            	x:0,
+	            	y:api.pageParam.header_h+50,
+	            	w:'auto',
+	            	h:api.pageParam.rect_h-50
+	            }
+            });
+            fenlei_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_xuan_tanc',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(0).removeClass('m_l_on');
+			$('.sanjiao').eq(0).removeClass('sanjiao_on');
+			paixu_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_paixu',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(1).removeClass('m_l_on');
+			$('.sanjiao').eq(1).removeClass('sanjiao_on');
+		}
+		else if(Number(shaixuan_pan)==1 && n==2)
+		{
+			shaixuan_pan=0;
+			api.execScript({
+	           	frameName:'fenlei_shaixuan_tanc',
+	            script: 'fclose();'
+            });
+            $('.m_l').eq(n).removeClass('m_l_on');
+			$('.sanjiao').eq(n).removeClass('sanjiao_on');
+		}
+	}
+	function fset_fenlei(id)
+	{
+		api.execScript({
+	       	name:'fenlei_header',
+	        script: 'fopen_content2(\''+id+'\');'
+        });
+        api.execScript({
+	       	name:'sousuo_pingtai_header',
+	        script: 'fopen_content2(\''+id+'\');'
+        });
+	}
+	function fset_paixu(n)
+	{
+		paixu=n;
+		paixu_pan=0;
+		fget_sousuo_dianpu();
+	}
+	function fset_shaixuan(ret)
+	{
+		fget_sousuo_dianpu();
+	}
+	function fget_sousuo_dianpu()
+	{
+		$('.content').eq(0).html('<div class="jiazai"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+		var lon=$api.getStorage('lon');
+		var lat=$api.getStorage('lat');
+		api.ajax({
+            url: YAH_ajax_name+'get_sousuo_dianpu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	pan:api.pageParam.pan,
+                	text:api.pageParam.title,
+                	paixu:paixu,
+                	shaixuan:'',
+                	lat:lat,
+                	lon:lon
+                }
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='<ul>';
+            	for(var i=0;i<ret.length;i++)
+            	{
+            		if(api.pageParam.pan=='fenlei')
+            		{
+            			html+='<li tapmode="a" onclick="fopen_dianpu('+ret[i].shopId+');">';
+						html+='	<div class="nei">';
+						html+='		<div class="left"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+						html+='		<div class="right">';
+//						html+='			<div class="title">'+ret[i].shopName;
+//						html+='</div>';
+						html+='		<div class="s0"><div class="title">'+ret[i].shopName+'</div>';
+						var timestamp=new Date().getTime();
+						timestamp=timestamp/1000;
+						if(ret[i].isBondShow==1 && timestamp>=ret[i].bondStartTime && timestamp<=ret[i].bondEndTime) html+='<div class="right2"><span class="l1">保</span><span class="l2">'+ret[i].bond+'</span></div>';
+						function fzhuan(n)
+						{
+								n=n*10;
+								var shi=parseInt((Number(n)/10));
+								var ge=Number(n)%10;
+								if(ge>0 && ge<=9) return shi+''+5;
+								else return shi;
+						}
+						html+='		</div>';
+						//html+='			<div class="s1"><span class="s_l"><span class="red">4.5</span> 月售0份</span><span class="s_r"><span class="red">'+ret[i].deliveryStartMoney+'</span>元起送</span></div>';
+						html+='			<div class="s1">';
+						html+='				<span class="s_l">';
+						html+='					<div class="sd_wxingji">';
+						html+='						<div class="sd_xingji x'+fzhuan((ret[i].score).toFixed(1))+'"></div>';
+						html+='						<div class="sd_xingji_di"></div>';
+						html+='					</div>';
+						html+='					<span class="red">'+(ret[i].score).toFixed(1)+'</span> 月售'+ret[i].yue_xiaoliang+'份</span>';
+						html+='					<span class="s_r"><span class="red">'+ret[i].deliveryStartMoney+'</span>元起送';
+						html+='				</span>';
+						html+='			</div>';
+//						var juli='';
+//						if(Number(ret[i].juli)<1000) juli=ret[i].juli+"米";
+//						else{
+//							juli=Number(ret[i].juli)/1000;
+//							juli=juli.toFixed(1)+"KM";
+//						}
+						html+='			<div class="s2"><span class="s_l">预计送达时间：'+ret[i].deliveryCostTime+'分钟/'+ret[i].juli2+'</span><span class="s_r">'+ret[i].deliveryMoney+'元配送费</span></div>';
+						html+='		</div>';
+						html+='	</div>';
+						html+='	<div class="di"><div class="list"><div class="bao"></div>满'+ret[i].deliveryFreeMoney+'元包邮</div></div>';
+						html+='</li>';
+            		}
+            		else
+            		{
+            			html+='<li tapmode="a" onclick="fopen_dianpu('+ret[i].shopId+');">';
+						html+='	<div class="nei">';
+						html+='		<div class="left"><img src="'+YAH_web+'/'+ret[i].shopImg+'" /></div>';
+						html+='		<div class="right">';
+						html+='			<div class="title">'+ret[i].shopName+'</div>';
+						html+='			<div class="s1"><span class="s_l"><span class="red">4.5</span> 月售0份</span><span class="s_r"><span class="red">'+ret[i].deliveryStartMoney+'</span>元起送</span></div>';
+						html+='			<div class="s2"><span class="s_l">预计送达时间：'+ret[i].deliveryCostTime+'分钟</span><span class="s_r">'+ret[i].deliveryMoney+'元配送费</span></div>';
+						html+='		</div>';
+						html+='	</div>';
+						html+='	<div class="di"><div class="list"><div class="bao"></div>满'+ret[i].deliveryFreeMoney+'元包邮</div></div>';
+						html+='</li>';
+            		}
+            	}
+            	html+='</ul>';
+            	if(ret.length==0) html='<div style="text-align: center;line-height: 50px;">暂无店铺</div>';
+            	$('.content').eq(0).html(html);
+            }else {
+            	//fduanwang();
+            	var html='<div style="text-align: center;line-height: 50px;">暂无店铺</div>';
+            	$('.content').eq(0).html(html);
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+	}
+</script>
+</html>

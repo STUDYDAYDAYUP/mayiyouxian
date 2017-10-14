@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	body{
+    		
+    	}
+    	.money_list{width:90%;height:150px;position:relative;background-image:url('../image/money_list.png');background-size:100%;margin:10px auto 0;border-radius:10px;color:#fff;}
+    	.money_logo{width:80px;height:24px;position:absolute;right:20px;top:10px;background-image:url('../image/money_list_logo.png');background-size:100%;background-repeat: no-repeat;}
+    .money_name{position:absolute;left:20px;top:80px;}
+    .money_youhui{position:absolute;left:20px;top:110px;}
+    </style>
+</head>
+<body>
+<div id="main">
+   <ul id="money_list">
+       <!-- <li class="money_list">
+           <span class="money_logo"></span>
+           <span class="money_name">￥&nbsp;500</span>
+           <span class="money_youhui">充值送30次一元特权</span>
+       </li>
+       <li class="money_list">
+           <span class="money_logo"></span>
+           <span class="money_name">￥&nbsp;500</span>
+           <span class="money_youhui">充值送30次一元特权</span>
+       </li>
+       <li class="money_list">
+           <span class="money_logo"></span>
+           <span class="money_name">￥&nbsp;500</span>
+           <span class="money_youhui">充值送30次一元特权</span>
+       </li> -->
+   </ul>
+	
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		get_money_list();
+	};
+	function get_money_list(){
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign);
+        
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_money_list',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+            //alert(JSON.stringify(ret||err));
+            if (ret) {
+               var html = '';
+               $(ret).each(function(i){
+                  html += '<li class="money_list" onclick="chongzhi('+ret[i]['rId']+','+ret[i]['money']+','+ret[i]['number']+')"><span class="money_logo"></span>';
+                  html += '<span class="money_name">￥&nbsp;'+ret[i]['money']+'</span>';
+                  html += '<span class="money_youhui">充值送'+ret[i]['number']+'次一元特权</span>';
+                  html += '</li>';
+               })
+               $('#money_list').html(html);
+            }
+            else{
+               fduanwang();
+            }
+        })
+	}
+	
+	function chongzhi(rid,money,number){
+	    api.openWin({
+	        name: 'chongzhi_header',
+	        url: 'chongzhi_header.html',
+	        pageParam:{
+	        	rid:rid,
+	        	money:money,
+	        	number:number
+	        }
+        });
+	}
+	
+</script>
+</html>

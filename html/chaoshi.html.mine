@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <!--组件依赖css begin-->
+	<link rel="stylesheet" type="text/css" href="../css/navigator/navigator.css" />
+	<link rel="stylesheet" type="text/css" href="../css/navigator/navigator.iscroll.css" />
+	<!--组件依赖css end-->
+    <link rel="stylesheet" type="text/css" href="../css/chaoshi.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+		<div class="title-list">
+			<div class="min-title">
+				<span class="t4">精选推荐</span><span tapmode="a" class="ty" onclick="fhuanyizu('jingxuan');"><span class="t5">换一组</span><span class="t6"></span></span>
+			</div>
+			<div class="neirong2" id="jingxuan">
+				<ul>
+					<li tapmode="" class="ban1"><img src="../image/sp_4.png" /><a class="a1">加载中...</a><a class="a2">￥0.00</a></li>
+					<li tapmode="" class="ban2"><img src="../image/sp_4.png" /><a class="a1">加载中...</a><a class="a2">￥0.00</a></li>
+					<li tapmode="" class="ban3"><img src="../image/sp_4.png" /><a class="a1">加载中...</a><a class="a2">￥0.00</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="fenlei">
+			<div id="nav-smartSetup">
+				<ul>
+			        <!--<li tapmode="a"><span class="red">要闻</span></li>-->
+			        <li tapmode="a"><span>加载中...</span></li>
+			    </ul>
+		    </div>
+		</div>
+		<div class="goods_list">
+			<ul>
+				<li tapmode="a" onclick="fopengoods(0)">
+					<img src="../image/sp_6.png" />
+					<div class="title">加载中...</div>
+					<div class="money">￥0.00</div>
+				</li>
+				<li tapmode="a" onclick="fopengoods(0)">
+					<img src="../image/sp_6.png" />
+					<div class="title">加载中...</div>
+					<div class="money">￥0.00</div>
+				</li>
+				<li tapmode="a" onclick="fopengoods(0)">
+					<img src="../image/sp_6.png" />
+					<div class="title">加载中...</div>
+					<div class="money">￥0.00</div>
+				</li>
+				<li tapmode="a" onclick="fopengoods(0)">
+					<img src="../image/sp_6.png" />
+					<div class="title">加载中...</div>
+					<div class="money">￥0.00</div>
+				</li>
+			</ul>
+		</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<!--组件依赖js begin-->
+	<script type="text/javascript" src="../script/js/zepto.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.extend.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.ui.js"></script>
+	<script type="text/javascript" src="../script/js/zepto.iscroll.js"></script>
+	<script type="text/javascript" src="../script/js/widget/navigator.js"></script>
+	<script type="text/javascript" src="../script/js/widget/navigator.iscroll.js"></script>
+<!--组件依赖js end-->
+<script type="text/javascript">
+	apiready = function(){
+		api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		//api.hideProgress();//隐藏加载进度框
+		fhuanyizu('jingxuan');
+		fget_fenlei_list();
+	};
+//	(function () {
+//      /*组件初始化js begin*/
+//      $('#nav-smartSetup').navigator();    //smart setup方式创建 推荐方式
+//  })();
+	function fremove(obj,n)
+	{
+		$api.removeCls(obj,n);
+	}
+function fopengoods(goods_id)
+{
+	$api.setStorage('goods_id',goods_id);
+	api.openWin({
+		name: 'goods_header',
+		url: 'goods_header.html'
+	});
+}
+function fhuanyizu(name)
+{
+	$('.t6').eq(0).animate({rotate:'360deg'}, 1000, 'ease-out',function(){$('.t6').eq(0).animate({rotate:'0deg'}, 1, 'ease-out');});
+	api.ajax({
+            url: YAH_ajax_name+'huanyizu.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	huan_name:name
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='<ul>';
+                 for(var i=0;i<ret.length;i++){
+                 	html+='<li tapmode="" onclick="fopengoods('+ret[i].goodsId+');" class="ban1"><img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" /><a class="a1">'+ret[i].goodsName+'</a><a class="a2">￥'+ret[i].shopPrice+'</a></li>';
+                 }
+                 html+='</ul>';
+                 document.getElementById(name).innerHTML=html;
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+        });
+}
+function fget_cat_goods(yiji_id)
+{
+	api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: false
+	});
+	api.ajax({
+            url: YAH_ajax_name+'get_cat_goods.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	get_num:1,
+                	yiji_id:yiji_id,
+                	erji_id:0
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var html='';
+                 for(var i=0;i<ret.length;i++){
+                 	html+='<li tapmode="a" onclick="fopengoods('+ret[i].goodsId+');">';
+					html+=	'<img src="'+$api.getStorage("YAH_web")+'/'+ret[i].goodsImg+'" />';
+					html+=	'<div class="title">'+ret[i].goodsName+'</div>';
+					html+=	'<div class="money">￥'+ret[i].shopPrice+'</div>';
+					html+='</li>';
+                 }
+				 $('.goods_list ul').eq(0).html(html);
+                 api.parseTapmode();
+            }else {
+            	var html='';
+				html+='<div class="no_data">没有更多数据</div>';
+            	$('.goods_list ul').eq(0).html(html);
+            	//fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.hideProgress();//隐藏加载进度框
+        });
+}
+function fget_fenlei_list()
+{
+	api.showProgress({
+			    style: 'default',
+			    animationType: 'fade',
+			    title: '努力加载中...',
+			    text: '先喝杯茶...',
+			    modal: true
+			});
+		api.ajax({
+            url: YAH_ajax_name+'get_fenlei_list.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {}
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var yiji='<ul>';
+                 var yiji_i=0;
+                 for(i=0;i<ret.length;i++){
+                 	if(ret[i].parentId==0)
+                 	{
+                 		if(yiji_i==0)
+                 		{
+                 			yiji+='<li tapmode="a" cat_id="'+ret[i].catId+'" onclick="fget_cat_goods('+ret[i].catId+')"><span class="red">'+ret[i].catName+'</span></li>';
+                 		}
+                 		else
+                 		{
+                 			yiji+='<li tapmode="a" cat_id="'+ret[i].catId+'" onclick="fget_cat_goods('+ret[i].catId+')"><span>'+ret[i].catName+'</span></li>';
+                 		}
+                 		yiji_i++;
+                 	}
+                 }
+                 yiji+='</ul>';
+                 document.getElementById('nav-smartSetup').innerHTML=yiji;
+                 (function () {
+			        /*组件初始化js begin*/
+			        $('#nav-smartSetup').navigator();    //smart setup方式创建 推荐方式
+			    })();
+			    var list=$('#nav-smartSetup li');
+			    $("#nav-smartSetup li").click(function(){
+						for(var i=0;i<list.length;i++)
+						{
+							if(i==$(this).index())
+							{
+								list.eq(i).find("span").eq(0).addClass('red');
+							}
+							else
+							{
+								list.eq(i).find("span").eq(0).removeClass('red');
+							}
+							
+						}
+					});
+				 fget_cat_goods(ret[0].catId);
+                 api.parseTapmode();
+            }else {
+            	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            //api.hideProgress();//隐藏加载进度框
+        });
+}
+</script>
+</html>

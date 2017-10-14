@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/ssy.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<!--<div class="header">热门搜索</div>
+	<div class="content">
+		<ul>
+			<li tapmode="b" onclick="fsousuo('黄焖鸡');">黄焖鸡</li>
+			<li tapmode="b" onclick="fsousuo('粥');">粥</li>
+		</ul>
+	</div>-->
+	<div class="header">搜索历史</div>
+	<div class="content2" id="lishi">
+		<ul>
+			<!--<li tapmode="a"  onclick="fsousuo('冰火');">冰火</li>-->
+		</ul>
+		<div class="di" tapmode="a" onclick="fdel();">清空搜索记录</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_sousuo_lishi();
+	};
+	function fget_sousuo_lishi()
+	{
+		var num=Number($api.getStorage('sousuo_lishi_num'));
+		var html='<ul>';
+		for(var i=num-1;i>=0;i--)
+		{
+			var title=$api.getStorage('sousuo_lishi['+i+']');
+			html+='<li tapmode="a"  onclick="fsousuo(\''+title+'\');">'+title+'</li>';
+		}
+		html+='</ul>';
+		html+='<div class="di" tapmode="a" onclick="fdel();">清空搜索记录</div>';
+		document.getElementById("lishi").innerHTML=html;
+		api.parseTapmode();
+	}
+	function fsousuo(n)
+	{
+		api.execScript({
+			name:'ssy2_header',
+	        script: 'fset(\''+n+'\');'
+        });
+	}
+	function fdel()
+	{
+		$api.setStorage('sousuo_lishi_num',0);
+		fget_sousuo_lishi();
+	}
+</script>
+</html>

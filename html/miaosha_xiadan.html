@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/xiadan.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="address" tapmode="a" onclick="fopen_address();" style="display: none;">
+		<div id="address_info">
+			<div class="s1"></div>
+			<div class="s2">
+				<div class="shouhuoxinxi">
+					<div class="shouhuoren">收货人：</div>
+					<div class="phone"></div>
+				</div>
+				<div class="shouhuodizhi">收货地址：</div>
+			</div>
+			<div class="s3"></div>
+		</div>
+	</div>
+	<div id="address2" tapmode="a" onclick="fopen_new_address();">
+		<div><span class="s1"></span><span class="s2">新增收货人地址</span></div>
+	</div>
+	<input id="yixuan_address" type="hidden" value="0" />
+	<div class="psway">
+		<div class="list" tapmode="" onclick="fxuan_psway(0);"><div class="s1">商家配送</div><div class="s2 s2_on"></div></div>
+		<div class="list" tapmode="" onclick="fxuan_psway(1);"><div class="s1">到店自提</div><div class="s2"></div></div>
+	</div>
+	<div class="min-title" tapmode="" onclick="fxuan_pstime();">
+		<span class="t1">送达时间</span><span class="t3"></span><span class="t4" id="pstime">立即送出</span>
+	</div>
+	<div class="min-title2" id="xuan_youhui" tapmode="" onclick="fopen_youhui()">
+		<span class="t1">店铺优惠</span><span class="t3"></span><span class="t2 youhui_nr">选择优惠</span>
+	</div>
+	<div class="title" id="shopName">&nbsp;</div>
+	<div id="goods_list">
+		<div class="goods"><div class="s1 ccyc">&nbsp;</div><div class="s2">&nbsp;</div><div class="s3"></div></div>
+	</div>
+	<div class="djs">
+		<div class="djs_l">距离本场抢购还剩：<span class="time">00:00:00</span></div>
+	</div>
+	<div class="bt">买家留言</div>
+	<div id="content">
+		<textarea name="" id="cont" maxlength="100" placeholder="输入文字"></textarea>
+	</div>
+	<div id="statement" class="f"></div>
+</div>	
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		$api.setStorage("going","1");
+		fget_user_address();
+		if(api.pageParam.tuangou==1 || api.pageParam.tuangou=="1" || api.pageParam.miaosha==1 || api.pageParam.miaosha=="1")
+		{
+			$('.bt').css('display','none');
+			$('#content').css('display','none');
+			$('#xuan_youhui').css('display','none');
+			$('.djs').css('display','block');
+			fget_ms_tg();
+		} 
+		else fget_buycar();
+		shopId=api.pageParam.shopId;
+		//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    $api.setStorage("going","1");
+				fget_user_address();
+				if(api.pageParam.tuangou==1 || api.pageParam.tuangou=="1" || api.pageParam.miaosha==1 || api.pageParam.miaosha=="1") fget_ms_tg();
+				//else fget_buycar();
+				guan=0;
+			    //api.refreshHeaderLoadDone();
+			    api.parseTapmode();
+			});
+			$api.setStorage('dq_ps_way',0);
+			
+//			alert("tuangou:"+api.pageParam.tuangou);
+//			alert("miaosha:"+api.pageParam.miaosha);
+//			alert("dq_time:"+api.pageParam.dq_time);
+//			alert("end_time:"+api.pageParam.end_time);
+//			alert("num:"+api.pageParam.num);
+//			alert("goodsId:"+api.pageParam.goods_id);
+	};
+	var psway=0;
+	var yxiaoji=0;
+	var hxiaoji=0;
+	var liuyan='';
+	var youhui_id=0;
+	var shopId=0;
+	var ps_time2='立即送出';
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fset_pstime(n)
+	{
+		$('#pstime').html(n);
+		ps_time2=n;
+	}
+	function fxuan_psway(n)
+	{
+		var max=$('.psway .s2').length;
+		for(var i=0;i<max;i++)
+		{
+			if(i==n)
+			{
+				$('.psway .s2').eq(i).addClass('s2_on');
+			}
+			else
+			{
+				$('.psway .s2').eq(i).removeClass('s2_on');
+			}
+		}
+		psway=n;
+		$api.setStorage('dq_ps_way',n);
+		api.execScript({
+	        frameName:'miaosha_xiadan_footer',
+	        script: 'fset_num2(\''+yxiaoji+'\',\''+hxiaoji+'\');'
+        });
+	}
+	function fxuan_pstime()
+	{
+		api.openFrame({
+	        name: 'miaosha_xiadan_tanc',
+	        url: 'miaosha_xiadan_tanc.html',
+	        vScrollBarEnabled:false,
+            hScrollBarEnabled:false,
+	        rect: {
+		        x:0,
+		        y:0,
+		        w:'auto',
+		        h:'auto'
+	        }
+        });
+        api.openFrame({
+	        name: 'miaosha_xiadan_xuan',
+	        url: 'miaosha_xiadan_xuan.html',
+	        vScrollBarEnabled:false,
+            hScrollBarEnabled:false,
+            pageParam:{
+            	ps_time:api.pageParam.ps_time,
+            	end_time:api.pageParam.end_time,
+            	shopId:shopId
+            },
+            reload:true,
+	        rect: {
+		        x:0,
+		        y:api.winHeight-300,
+		        w:'auto',
+		        h:300
+	        }
+        });
+	}
+	var go_pan=0;
+	var guan=0;
+	function fopen_new_address()
+	{
+		api.openWin({
+	        name: 'new_address_header',
+	        url: 'new_address_header.html'
+        });
+	}
+	function fget_user_address()
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage("user_id");
+		api.ajax({
+            url: YAH_ajax_name+'get_user_address_default.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {user_id:user_id}
+            }
+        },function(ret,err){
+        	api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 if(ret.length==0){
+            	 	document.getElementById("address").style.display="none";
+                	document.getElementById("address2").style.display="block";
+                	return;
+            	 }
+            	 $api.setStorage('going',2);
+            	 go_pan=1;
+            	 document.getElementById("address2").style.display="none";
+                 document.getElementById("address").style.display="block";
+                 document.getElementsByClassName("shouhuoren")[0].innerHTML="收货人："+ret[0].userName;
+                 document.getElementsByClassName("phone")[0].innerHTML=ret[0].userPhone;
+                 var dizhi='';
+                 var ret2=$api.getStorage("address_list");
+                 for(var i=0;i<ret2.length;i++)
+                 {
+                 	if(ret2[i].areaId==ret[0].areaId1 || ret2[i].areaId==ret[0].areaId2 || ret2[i].areaId==ret[0].areaId3)
+                 	{
+                 		dizhi+=ret2[i].areaName;
+                 	}
+                 }
+//               var ret3=$api.getStorage("address_list_communitys");
+//               for(i=0;i<ret3.length;i++)
+//               {
+//               	if(ret3[i].communityId==ret[0].communityId)
+//               	{
+//               		dizhi+=ret3[i].communityName;
+//               	}
+//               }
+                 document.getElementsByClassName("shouhuodizhi")[0].innerHTML="收货地址："+dizhi+ret[0].address;
+                 document.getElementById("yixuan_address").value=ret[0].addressId;
+            }else {
+            	document.getElementById("address").style.display="none";
+                document.getElementById("address2").style.display="block";
+//          	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            guan++;
+            //if(guan>=2)
+            //{
+	            api.refreshHeaderLoadDone();
+	            api.hideProgress();//隐藏加载进度框
+            //}
+        });
+	}
+	function fopen_address()
+	{
+		api.openWin({
+	        name: 'address_header',
+	        url: 'address_header.html'
+        });
+	}
+	function fset_address(id)
+	{
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage("user_id");
+		api.ajax({
+            url: YAH_ajax_name+'get_user_address.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	user_id:user_id,
+                	address_id:id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	 $api.setStorage('going',2);
+            	 go_pan=1;
+            	 document.getElementById("address2").style.display="none";
+                 document.getElementById("address").style.display="block";
+                 document.getElementsByClassName("shouhuoren")[0].innerHTML="收货人："+ret[0].userName;
+                 document.getElementsByClassName("phone")[0].innerHTML=ret[0].userPhone;
+                 var dizhi='';
+                 var ret2=$api.getStorage("address_list");
+                 for(var i=0;i<ret2.length;i++)
+                 {
+                 	if(ret2[i].areaId==ret[0].areaId1 || ret2[i].areaId==ret[0].areaId2 || ret2[i].areaId==ret[0].areaId3)
+                 	{
+                 		dizhi+=ret2[i].areaName;
+                 	}
+                 }
+                 var ret3=$api.getStorage("address_list_communitys");
+                 for(i=0;i<ret3.length;i++)
+                 {
+                 	if(ret3[i].communityId==ret[0].communityId)
+                 	{
+                 		dizhi+=ret3[i].communityName;
+                 	}
+                 }
+                 document.getElementsByClassName("shouhuodizhi")[0].innerHTML="收货地址："+dizhi+ret[0].address;
+                 document.getElementById("yixuan_address").value=ret[0].addressId;
+            }else {
+            	document.getElementById("address").style.display="none";
+                document.getElementById("address2").style.display="block";
+//          	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+            api.hideProgress();//隐藏加载进度框
+        });
+	}
+	var jishiqi;
+	function ftime()
+	{
+		var max=$('.time').length;
+		for(var i=0;i<max;i++)
+		{
+			var dq_time=Number($('.time').eq(i).attr('dq_time'));
+			var endTime=$('.time').eq(i).attr('time');
+			endTime=Number(endTime);
+			var status=0;
+			var time_value='';
+			var sy_time=Number(endTime)-Number(dq_time);
+			if(sy_time>0)
+			{
+				if(sy_time>3600*24) status=1;
+				else if(sy_time>3600) status=2;
+				else status=0;
+				if(status==0)
+				{
+					var fen=parseInt(sy_time/60);
+					var miao=parseInt(sy_time%60);
+					time_value=(fen>=10?fen:'0'+fen)+':'+(miao>=10?miao:'0'+miao);
+				}
+				else if(status==1)
+				{
+					var tian=parseInt(sy_time/(3600*24));
+					var shi=parseInt(sy_time%(3600*24)/3600);
+					var fen=parseInt(sy_time%(3600*24)%3600/60);
+					var miao=parseInt(sy_time%(3600*24)%3600%60);
+					time_value=tian+'天  '+(shi>=10?shi:'0'+shi)+':'+(fen>=10?fen:'0'+fen)+':'+(miao>=10?miao:'0'+miao);
+				}
+				else if(status==2)
+				{
+					var shi=parseInt(sy_time%(3600*24)/3600);
+					var fen=parseInt(sy_time%(3600*24)%3600/60);
+					var miao=parseInt(sy_time%(3600*24)%3600%60);
+					time_value=(shi>=10?shi:'0'+shi)+':'+(fen>=10?fen:'0'+fen)+':'+(miao>=10?miao:'0'+miao);
+				}
+				$('.time').eq(i).html(time_value);
+			}
+			else
+			{
+				$('.djs_l').eq(i).html('已结束');
+				api.execScript({
+	               	frameName:'miaosha_xiadan_footer',
+	                script: 'fyin();'
+                });
+			}
+			$('.time').eq(i).attr('dq_time',dq_time+1);
+		}
+	}
+	function fget_ms_tg()
+	{
+		var type='';
+		if(api.pageParam.tuangou==1 || api.pageParam.tuangou=="1") type='tg';
+		else type='ms';
+		api.showProgress({title:'加载中...'});
+		var user_id=$api.getStorage("user_id");
+		api.ajax({
+            url: YAH_ajax_name+'get_ms_tg.php',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	goodsId:api.pageParam.goods_id,
+                	type:type,
+                	user_id:user_id
+                }
+            }
+        },function(ret,err){
+        	//api.hideProgress();//隐藏加载进度框
+            if (ret) {
+            	var html='';
+            	var money_sum=0;
+            	for(var i=0;i<1;i++)
+            	{
+            		html+='<div class="goods"><div class="s1 ccyc">'+ret[i].goodsName+'</div><div class="s2">x'+api.pageParam.num+'</div><div class="s3">￥'+ret[i].shopPrice+'</div></div>';
+            		money_sum+=Number(ret[i].shopPrice)*Number(api.pageParam.num);
+            	}
+            	$('#shopName').html(ret[0].shopName);
+				shopId=ret[0].shopId;
+		        yxiaoji=money_sum;
+		        hxiaoji=money_sum;
+		        $api.setStorage('deliveryFreeMoney',ret[0].deliveryFreeMoney);//满多少包邮
+       			$api.setStorage('deliveryMoney',ret[0].deliveryMoney);//邮费
+        		$api.setStorage('dq_ps_way',0);//当前配送方式
+        		api.pageParam.ps_time=ret[0].deliveryCostTime;
+        		api.pageParam.end_time=ret[0].serviceEndTime;
+		        api.execScript({
+	                frameName:'miaosha_xiadan_footer',
+	                script: 'fset_num2(\''+yxiaoji+'\',\''+money_sum+'\');'
+                });
+                $('#goods_list').html(html);
+                $('.time').eq(0).attr('dq_time',ret[0].time);
+                $('.time').eq(0).attr('time',ret[0].endTime);
+                window.clearInterval(jishiqi);
+                ftime();
+                jishiqi=window.setInterval('ftime()',1000);
+		        api.parseTapmode();
+		        api.refreshHeaderLoadDone();
+            }else {
+            	alert("活动已结束");
+            	api.closeWin({
+                });
+//          	fduanwang();
+//				api.alert({
+//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//	            });
+            };
+            api.refreshHeaderLoadDone();
+            api.hideProgress();//隐藏加载进度框
+        });
+	}
+function fget_buycar()
+	{
+		var ret=$api.getStorage('buycar');
+		var html='';
+		var sum=0,money_sum=0;
+		for(var i=0;i<ret.length;i++)
+		{
+			if(ret[i].goods_shopId==api.pageParam.shopId)
+			{
+		        sum++;
+				money_sum+=tran((Number(ret[i].shuxing_money)),Number(ret[i].goods_num));		
+				html+='<div class="goods"><div class="s1 ccyc">'+ret[i].goods_title+'</div><div class="s2">x'+ret[i].goods_num+'</div><div class="s3">￥'+ret[i].shuxing_money+'</div></div>';
+			}
+		}
+		$('#shopName').html($api.getStorage('shopName'));
+				shopId=api.pageParam.shopId;
+		        yxiaoji=money_sum;
+		        hxiaoji=money_sum;
+		        api.execScript({
+	                frameName:'miaosha_xiadan_footer',
+	                script: 'fset_num2(\''+yxiaoji+'\',\''+money_sum+'\');'
+                });
+                $('#goods_list').html(html);
+		        api.parseTapmode();
+		        api.refreshHeaderLoadDone();
+		return;
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            //url: YAH_ajax_name+'get_buycar.php',
+	            url: YAH_ajax_name+'get_buycar_session.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {user_id:user_id}
+	            }
+	        },function(ret,err){
+		        	api.hideProgress();//隐藏加载进度框
+		        	$api.setStorage('buycart',ret);
+		            if (ret) {
+		            var i,sum=0,money_sum=0;
+		            var html='';
+		            for(var i=0;i<ret.length;i++)
+		            {
+		            	if(ret[i].shopId==api.pageParam.shopId)
+		            	{
+		            		if(sum==0) $('#shopName').html(ret[i].shopName);
+		            		sum++;
+		            		//lin=(Number(ret[i].shopPrice)+Number(ret[i].shuxing_money))*Number(ret[i].goods_num);
+		            		//alert(money_sum+"+=("+ret[i].shopPrice+"+"+ret[i].shuxing_money+")*"+ret[i].goods_num+"="+lin.toFixed(2));
+		            		if(ret[i].isGroup==1 || ret[i].isGroup=='1') money_sum+=tran(Number(ret[i].shopPrice),Number(ret[i].goods_num));
+							else if(ret[i].isSeckill==1 || ret[i].isSeckill=='1') money_sum+=tran(Number(ret[i].shopPrice),Number(ret[i].goods_num));
+							else money_sum+=tran((Number(ret[i].shopPrice)+Number(ret[i].shuxing_money)),Number(ret[i].goods_num));
+							
+							html+='<div class="goods"><div class="s1 ccyc">'+ret[i].goodsName+'</div><div class="s2">x'+ret[i].goods_num+'</div><div class="s3">￥'+ret[i].shopPrice+'</div></div>';
+		            	}
+		            }
+		            shopId=api.pageParam.shopId;
+		            yxiaoji=money_sum;
+		            hxiaoji=money_sum;
+		            api.execScript({
+	                   	frameName:'miaosha_xiadan_footer',
+	                    script: 'fset_num2(\''+yxiaoji+'\',\''+money_sum+'\');'
+                    });
+                    $('#goods_list').html(html);
+		            api.parseTapmode();
+	            }else {
+	            	//fduanwang();
+	//          	api.toast({
+	//					msg: '购物车没有商品！',
+	//					duration: 2000,
+	//					location: 'bottom'
+	//				});
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	            api.refreshHeaderLoadDone();
+	        });
+	}
+function fzong(n,money)
+{
+	api.execScript({
+	   	frameName:'miaosha_xiadan_footer',
+	    script: 'fset_num2(\''+yxiaoji+'\',\''+money+'\');'
+    });
+}
+function fopen_shangjia(shopId,shopName,shopImg)
+{
+	api.openWin({
+	    name: 'dianpu_header',
+	    url: 'dianpu_header.html',
+	    pageParam:{
+	    	shopId:shopId,
+	    	shopName:shopName,
+	    	shopImg:shopImg
+	    }
+    });
+}
+function fgo()
+{
+	if(api.pageParam.tuangou==1 || api.pageParam.tuangou=="1" || api.pageParam.miaosha==1 || api.pageParam.miaosha=="1")
+	{
+		fgo_ms_tg_xiadan();
+		return;
+	}
+		api.showProgress({title:'提交订单中...'});
+		var user_id=$api.getStorage('user_id');
+		liuyan=$('#cont').val();
+		var json='[';
+				json+='{';
+				json+='"shops_id":"'+shopId+'"';
+				json+=',"shops_youhui":"'+youhui_id+'"';
+				json+=',"yxiaoji":"'+yxiaoji+'"';
+				json+=',"hxiaoji":"'+hxiaoji+'"';
+				json+=',"shops_psway":"'+psway+'"';
+				json+=',"shops_liuyan":"'+liuyan+'"';
+				json+=',"ps_time":"'+ps_time2+'"';
+				json+='}';
+		var address_id=document.getElementById("yixuan_address").value;
+		json+=',{"address_id":"'+address_id+'"}';
+		json+=']';
+		var json2=eval('('+json+')');
+		var buycar=$api.getStorage('buycar');
+		//alert(JSON.stringify(json2));
+		//alert(JSON.stringify(buycar));
+		api.ajax({
+	            url: YAH_ajax_name+'xiadan_for_yungou.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 10,
+	            dataType: 'text',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	json:json2,
+	                	buycar:buycar,
+	                	shopId:api.pageParam.shopId
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+//	            	alert(ret);
+//	            	return;
+	            	var jiequ=ret.indexOf("[");
+	            	ret=ret.substring(jiequ);
+	            	ret = eval("("+ret+")");
+	            	if(ret[0].orderId)
+	            	{
+		            	
+//				        api.execScript({
+//				        	name:'root',
+//	                       	frameName:'goshop',
+//	                        script: 'fget_buycar();'
+//                      });
+						fqk();
+				        api.closeWin({name:'miaosha_xiadan_header',animation:{type:"none",duration:1}});
+						api.openWin({
+					        name: 'zhifu_header',
+					        url: 'zhifu_header.html',
+					        pageParam:{
+			            		json:ret
+			            	}
+				        });
+	            	}
+	                else if(ret[0].pan)
+	                {
+	                	var msg='';
+	                	for(var i=0;i<ret.length;i++)
+	                	{
+	                		msg+=ret[i].msg+'\n\r';
+	                	}
+	                	alert(msg);
+	                }
+	                else
+	                {
+	                	api.toast({
+							msg: '订单提交失败，请稍后再试！',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                }
+	            }else {
+//	            	fduanwang();
+//	            	api.toast({
+//						msg: '订单提交失败，请稍后再试！',
+//						duration: 2000,
+//						location: 'bottom'
+//					});
+					if(err.code==3 && err.msg=="服务器返回数据格式错误")
+					{
+						api.execScript({
+				        	name:'root',
+	                       	frameName:'goshop',
+	                        script: 'fget_buycar();'
+                        });
+                        api.openWin({
+					        name: 'zhifu_header',
+					        url: 'zhifu_header.html',
+					        pageParam:{
+			            		json:ret
+			            	}
+				        });
+				        api.closeWin({
+                        });
+					}
+					else{
+		            	api.toast({
+							msg: '订单提交失败，请稍后再试！',
+							duration: 2000,
+							location: 'bottom'
+						});
+					}
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	        });
+}
+function fgo_ms_tg_xiadan()
+{
+	if(api.pageParam.tuangou==1 || api.pageParam.tuangou=="1") fgo_tg_xiadan();
+	if(api.pageParam.miaosha==1 || api.pageParam.miaosha=="1") fgo_ms_xiadan();
+}
+function fgo_tg_xiadan()
+{
+		api.showProgress({title:'提交订单中...'});
+		var user_id=$api.getStorage('user_id');
+		liuyan=$('#cont').val();
+		var address_id=document.getElementById("yixuan_address").value;
+		api.ajax({
+	            url: YAH_ajax_name+'xiadan_for_tuangou.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 10,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	shopId:shopId,
+	                	youhui_id:youhui_id,
+	                	yxiaoji:yxiaoji,
+	                	hxiaoji:hxiaoji,
+	                	psway:psway,
+	                	liuyan:liuyan,
+	                	ps_time2:ps_time2,
+	                	address_id:address_id,
+	                	goods_id:api.pageParam.goods_id,
+	                	num:api.pageParam.num,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0].pan==-1)
+	            	{
+	            		alert(ret[0].msg);
+	            	}
+	            	else if(ret[0].pan==1 && ret[0].orderId)
+	            	{
+	            		api.toast({
+							msg: '下单成功',
+							duration: 2000,
+							location: 'bottom'
+						});
+						api.execScript({
+	                       	name:'xianshi_tuangou_header',
+	                       	frameName:'xianshi_tuangou',
+	                        script: 'fget_tuangou_list();'
+                        });
+						api.closeWin({animation:{type:"none",duration:1}});
+                        api.openWin({
+					        name: 'zhifu_header',
+					        url: 'zhifu_header.html',
+					        pageParam:{
+			            		json:ret
+			            	}
+				        });
+	            	}
+	            }else {
+	            	fduanwang();
+//	            	api.toast({
+//						msg: '订单提交失败，请稍后再试！',
+//						duration: 2000,
+//						location: 'bottom'
+//					});
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	        });
+}
+function fgo_ms_xiadan()
+{
+	api.showProgress({title:'提交订单中...'});
+	var user_id=$api.getStorage('user_id');
+		liuyan=$('#cont').val();
+		var address_id=document.getElementById("yixuan_address").value;
+		api.ajax({
+	            url: YAH_ajax_name+'xiadan_for_miaosha.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 10,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	shopId:shopId,
+	                	youhui_id:youhui_id,
+	                	yxiaoji:yxiaoji,
+	                	hxiaoji:hxiaoji,
+	                	psway:psway,
+	                	liuyan:liuyan,
+	                	ps_time2:ps_time2,
+	                	address_id:address_id,
+	                	goods_id:api.pageParam.goods_id,
+	                	num:api.pageParam.num,
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	            	if(ret[0].pan==-1)
+	            	{
+	            		alert(ret[0].msg);
+	            	}
+	            	else if(ret[0].pan==1 && ret[0].orderId)
+	            	{
+	            		api.toast({
+							msg: '下单成功',
+							duration: 2000,
+							location: 'bottom'
+						});
+						api.execScript({
+	                       	name:'miaosha_header',
+	                       	frameName:'miaosha',
+	                        script: 'fmiaosha();'
+                        });
+						api.closeWin({animation:{type:"none",duration:1}});
+                        api.openWin({
+					        name: 'zhifu_header',
+					        url: 'zhifu_header.html',
+					        pageParam:{
+			            		json:ret
+			            	}
+				        });
+	            	}
+	            }else {
+	            	fduanwang();
+//	            	api.toast({
+//						msg: '订单提交失败，请稍后再试！',
+//						duration: 2000,
+//						location: 'bottom'
+//					});
+//					api.alert({
+//		                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+//		            });
+	            };
+	        });
+}
+function fopen_liuyan(n)
+{
+	var liuyan=$('.shops_liuyan').eq(n).val();
+	api.openWin({
+	    name: 'maijia_liuyan_header',
+	    url: 'maijia_liuyan_header.html',
+	    pageParam:{
+	    	n:n,
+	    	liuyan:liuyan
+	    }
+    });
+}
+//function fopen_youhui(n,money,shop_id)
+//{
+//	api.openWin({
+//	    name: 'xuan_youhuiquan_header',
+//	    url: 'xuan_youhuiquan_header.html',
+//	    pageParam:{
+//	    	n:n,
+//	    	money:money,
+//	    	shop_id:shop_id
+//	    }
+//  });
+//}
+function fopen_peisong(n,shopId)
+{
+	api.openWin({
+	    name: 'xuan_psway_header',
+	    url: 'xuan_psway_header.html',
+	    pageParam:{
+	    	n:n,
+	    	shopId:shopId
+	    }
+    });
+}
+function fset_psway(n,id,name)
+{
+	$('.shops_psway').eq(n).val(id);
+	$('.psway_nr').eq(n).html(name);
+}
+function fset_liuyan(n,text)
+{
+	$('.shops_liuyan').eq(n).val(text);
+	$('.liuyan_nr').eq(n).html('<a>买家留言:</a>'+text);
+}
+function fset_youhui(n,id,youhui_nr,type,breaks_money,is,yyh_money)
+{
+	$('.shops_youhui').eq(n).val(id);
+	youhui_id=id;
+	$('.youhui_nr').eq(n).html(youhui_nr);
+	//var yxiaoji=$('.yxiaoji').eq(n).val();
+	if(type==0)
+	{
+		//var ps_way=$('.shops_psway').eq(n).val();
+		var ps_way=psway;
+		//var psf=$('.psf_val').eq(n).val();
+		var psf=$api.getStorage('deliveryMoney');
+		if((Number(yxiaoji)-Number(breaks_money))<0)
+		{
+			$('.hxiaoji').eq(n).val(0);
+			hxiaoji=0;
+//			$('.xiaoheji').eq(n).html('￥'+0);
+//			if(ps_way==0 || ps_way=='0') $('.xiaoheji').eq(n).html('￥'+psf);
+//			else $('.xiaoheji').eq(n).html('￥0.00');
+		} 
+		else
+		{
+			//$('.hxiaoji').eq(n).val((Number(yxiaoji)-Number(breaks_money)));
+			hxiaoji=(Number(yxiaoji)-Number(breaks_money));
+//			$('.xiaoheji').eq(n).html('￥'+(Number(yxiaoji)-Number(breaks_money)));
+//			if(ps_way==0 || ps_way=='0') $('.xiaoheji').eq(n).html('￥'+(Number(yxiaoji)-Number(breaks_money)+Number(psf)));
+//			else $('.xiaoheji').eq(n).html('￥'+(Number(yxiaoji)-Number(breaks_money)));
+		}
+	}
+	else if(type==1)
+	{
+		if(is!=1) var num=Number(yxiaoji)-(Number(yyh_money)-Number(yyh_money)*Number(breaks_money)/10);
+		else var num=Number(yxiaoji)*Number(breaks_money)/10;
+		$('.hxiaoji').eq(n).val(num);
+		hxiaoji=num;
+		var ps_way=$('.shops_psway').eq(n).val();
+		//var psf=$('.psf_val').eq(n).val();
+		var psf=$api.getStorage('deliveryMoney');
+//		if(ps_way==0 || ps_way=='0') $('.xiaoheji').eq(n).html('￥'+(Number(num)+Number(psf)));
+//		else $('.xiaoheji').eq(n).html('￥'+num);
+	}
+	//var max=$('.hxiaoji').length;
+	var max=1;
+	var z_num=$('#z_num').val();
+	var money=0;
+	for(var i=0;i<max;i++)
+	{
+		//money+=Number($('.hxiaoji').eq(i).val());
+		money+=Number(hxiaoji);
+		//var psf_val=$('.psf_val').eq(i).val();
+		var psf_val=$api.getStorage('deliveryMoney');
+		//var psway=$('.shops_psway').eq(i).val();
+		//if(psway==0 || psway=='0') money+=Number(psf_val);
+	}
+	fzong(z_num,money);
+}
+function fqk()
+{
+			//api.showProgress({title:'删除中...'});
+			var ret=$api.getStorage('buycar');
+			for(var i=0;i<ret.length;i++)
+			{
+				if(ret[i].goods_shopId==api.pageParam.shopId)
+				{
+					ret.splice(i,1);//开始位置,删除个数
+					i--;
+					break;
+				}
+			}
+			$api.setStorage('buycar',[]);
+			//$api.setStorage('buycar',ret);
+					api.execScript({
+						name:'dianpu',
+	                    frameName:'dianpu_footer',
+	                    script: 'fget_buycar();'
+                    });
+                    api.execScript({
+                    	name:'dianpu',
+	                    frameName:'dianpu_goshop',
+	                    script: 'fget_buycart();'
+                    });
+                    api.execScript({
+                    	name:'dianpu',
+	                   	frameName:'dianpu_right',
+	                    script: 'fget_buycar_csh();fshuaxin();'
+                    });
+                    api.execScript({
+                    	name:'dianpu',
+	                   	frameName:'dianpu_goshop_tanc',
+	                    script: 'fclose();'
+                    });
+			return;
+}
+function fopen_youhui()
+{
+	var n=0;
+	var money=yxiaoji;
+	var shop_id=shopId;
+	var z_goodsId_list='';
+	var z_goodsPinpai_list='';
+	var z_fenleiId1_list='';
+	var z_fenleiId2_list='';
+	var z_fenleiId3_list='';
+	var z_goodsMoney_list='';
+	var z_SfenleiId1_list='';
+	var z_SfenleiId2_list='';
+	var ret=$api.getStorage('buycar');
+	var html='';
+	var sum=0;
+	for(var i=0;i<ret.length;i++)
+	{
+		if(ret[i].goods_shopId==api.pageParam.shopId)
+		{
+			if(sum==0)
+			{
+				z_goodsId_list=ret[i].goods_id;
+				z_goodsPinpai_list=ret[i].brandId;
+				z_fenleiId1_list=ret[i].goodsCatId1;
+				z_fenleiId2_list=ret[i].goodsCatId2;
+				z_fenleiId3_list=ret[i].goodsCatId3;
+				z_goodsMoney_list=ret[i].shuxing_money;
+				z_SfenleiId1_list=ret[i].shopCatId1;
+				z_SfenleiId2_list=ret[i].shopCatId2;
+				z_goodsNum_list=ret[i].goods_num;
+			}
+			else
+			{
+				z_goodsId_list+=','+ret[i].goods_id;
+				z_goodsPinpai_list+=','+ret[i].brandId;
+				z_fenleiId1_list+=','+ret[i].goodsCatId1;
+				z_fenleiId2_list+=','+ret[i].goodsCatId2;
+				z_fenleiId3_list+=','+ret[i].goodsCatId3;
+				z_goodsMoney_list+=','+ret[i].shuxing_money;
+				z_SfenleiId1_list+=','+ret[i].shopCatId1;
+				z_SfenleiId2_list+=','+ret[i].shopCatId2;
+				z_goodsNum_list+=','+ret[i].goods_num;
+			}
+		    sum++;
+		}
+	}
+	api.openWin({
+	    name: 'xuan_youhuiquan_header',
+	    url: 'xuan_youhuiquan_header.html',
+	    pageParam:{
+	    	n:n,
+	    	money:money,
+	    	shop_id:shop_id,
+	    	z_goodsId_list:z_goodsId_list,
+	    	z_goodsPinpai_list:z_goodsPinpai_list,
+	    	z_fenleiId1_list:z_fenleiId1_list,
+	    	z_fenleiId2_list:z_fenleiId2_list,
+	    	z_fenleiId3_list:z_fenleiId3_list,
+	    	z_goodsMoney_list:z_goodsMoney_list,
+	    	z_SfenleiId1_list:z_SfenleiId1_list,
+	    	z_SfenleiId2_list:z_SfenleiId2_list,
+	    	z_goodsNum_list:z_goodsNum_list
+	    }
+    });
+}
+</script>
+</html>

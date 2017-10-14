@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/set_nicheng.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="from">
+		<div class="list"><input type="text" id="user_name" maxlength="10" placeholder="请输入昵称" /></div>
+		<div class="tishi">建议：中文请使用2-6个汉字</div>
+	</div>
+	<div id="kong">
+	</div>
+	<div id="hold" style="display: none;">
+		<div id="but" tapmode="but_on" onclick="fgo();">保存</div>
+	</div>
+	<div id="statement" class="f"></div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var from=document.getElementById("from");
+		from_h=$api.offset(from).h;
+		var kong_h=api.pageParam.rect_h-from_h-99;
+		//document.getElementById("kong").style.height=kong_h+"px";
+		window.setTimeout('document.getElementById("hold").style.display="block";',300);
+		fget_user_name();
+	};
+	function fclose()
+	{
+		api.closeWin({
+        });
+	}
+	function fgo()
+	{
+		var user_name=document.getElementById("user_name").value;
+		if(user_name=="")
+		{
+			api.toast({
+				msg: '昵称不能为空！',
+				duration: 2000,
+				location: 'bottom'
+			});
+			return;
+		}
+		for(var i=0;i<user_name.length;i++)
+		{
+			if(user_name[i]==" ")
+			{
+				api.toast({
+					msg: '昵称非法！',
+					duration: 2000,
+					location: 'bottom'
+				});
+				return;
+				break;
+			}
+		}
+		api.showProgress({title:'修改中...'});
+		var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'set_user_name.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	user_name:user_name
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                if(ret[0].pan=='true')
+	                {
+	                	api.toast({
+							msg: '修改成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						$api.setStorage('user_name',user_name);
+						api.execScript({
+	                       	name:'user_info_header',
+	                       	frameName:'user_info',
+	                        script: 'fcsh();'
+                        });
+						api.execScript({
+	                       	name:'root',
+	                       	frameName:'my',
+	                        script: 'fset_user_name(\''+user_name+'\');'
+                        });
+						window.setTimeout('fclose();',300);
+	                }
+	                else
+	                {
+	                	api.toast({
+							msg: '修改失败！',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fget_user_name()
+	{
+			api.showProgress({title:'加载中...'});
+			var user_id=$api.getStorage('user_id');
+			api.ajax({
+	            url: YAH_ajax_name+'get_user.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	            if (ret) {
+	                document.getElementById("user_name").value=ret[0]['userName'];
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+</script>
+</html>

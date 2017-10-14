@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/xiadan.css"/>
+    <style>
+    	body{
+
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<div id="address" tapmode="a" onclick="fopen_address();" style="background-image: none;">
+		<div id="address_info">
+			<div class="s1"></div>
+			<div class="s2">
+				<div class="shouhuoxinxi">
+					<div class="shouhuoren">收货人：</div>
+					<div class="phone"></div>
+				</div>
+				<div class="shouhuodizhi">收货地址：</div>
+				<div class="shouhuoxinxi">
+					<div class="songda">送达时间：</div>
+				</div>
+			</div>
+			<div class="s3"></div>
+		</div>
+	</div>
+	<div id="address2" tapmode="a" onclick="fopen_new_address();">
+		<div><span class="s1"></span><span class="s2">新增收货人地址</span></div>
+	</div>
+	<input id="yixuan_address" type="hidden" value="0" />
+	<div >
+		<div class="shangjia  goods_cart_list" id="goods_list">
+			<!-- <div class="min-title" tapmode="a">
+				<span class="t2" style="background-image:url('');"></span><span class="t1">加载中...</span><span class="t3"></span>
+			</div> -->
+			<!-- <div class="goods" tapmode="a0" onclick="">
+				<div class="goods_left"><img src="../image/sp_5.png" /></div>
+				<div class="goods_right">
+					<div class="goods_right_top">
+						<div class="goods_title">衣锦 2015冬装新款羽绒服奢华大毛领韩中长款金...</div>
+						<div class="goods_canshu">
+							<p class="jiage">￥1.00</p>
+							<p class="goods_num">x1</p>
+						</div>
+					</div>
+					<div class="goods_right_bottom">
+						<div class="goods_money">
+							<div class="danjia">￥14</div>
+							<div class="xiaoji"><a>￥42</a></div>
+						</div>
+						<div class="yiyuan_tequan"><b>一元特权</b><span class="but">关闭</span></div>
+						<div class="yiyuan_tequan"><b>一元特权</b><span class="but_disabled">不足</span></div>
+					</div>
+				</div>
+			</div> -->
+
+		</div>
+		<div class="min-title-box">
+			<!-- <div class="min-title2" tapmode="a" onclick="">
+				<span class="t1">店铺优惠</span><span class="t3"></span><span class="t2">选择优惠</span>
+			</div>
+			<div class="min-title2" tapmode="a" onclick="">
+				<span class="t1">配送方式</span><span class="t3"></span><span class="t2">选择配送方式</span>
+			</div> -->
+			<div class="min-title2" tapmode="a" onclick="" >
+				<span class="t1">使用一元特权：<a class="shiyong_num">0</a></span><!-- <span class="t3"></span> --><span class="t2">剩下次数：<a class="shengxia_num">50</a></span>
+			</div>
+			<div class="min-title3" tapmode="a" onclick="" style="display: none;">
+				<span class="t1"><a>买家留言：</a>选填,可填写您和卖家达成一致的要求</span><span class="t3"></span>
+			</div>
+			<div class="ps_info">
+				<span class="ps_zt"></span><span class="ps_xx">共<font class="tol_num">0</font>件商品 合计：<a class="tol_money">￥0</a> 配送费：<a class="postage_money">￥0.00</a></span>
+			</div>
+		</div>
+		
+	</div>
+	<div class="reminder">
+		<div class="reminder_title">温馨提示：</div>
+		<div class="reminder_content">
+			<p>1. 下单时间为早上6：00 -下午6：00；</p>
+			<p>2. 下午6：00前可随时取消订单，下午6：00后订单锁定进入配送环节；</p>
+			<p>3. 送到家门口，开门即取，无需当面确认。</p>
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/md5.min.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		$api.setStorage("going","1");
+		get_user_info();
+		fget_buycar();
+		//下拉刷新
+			api.setRefreshHeaderInfo({
+			    visible: true,
+			    loadingImg: '',
+			    bgColor: '#f2f2f2',
+			    textColor: '#fff',
+			    textDown: '下拉刷新...',
+			    textUp: '松开刷新...',
+			    showTime: true
+			}, function(ret, err){
+			    //从服务器加载数据，完成后调用api.refreshHeaderLoadDone()方法恢复组件到默认状态
+			    api.refreshHeaderLoading();
+			    $api.setStorage("going","1");
+			    get_user_info();
+			    fget_buycar();
+			    go_pan=0;
+			    guan=0;
+			    key_id = '';
+				api.refreshHeaderLoadDone();
+			});
+	};
+	var go_pan=0;
+	var guan=0;
+	var key_id = '';
+	function fclose()
+	{   
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+	
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=Orders&a=get_cart_byuser',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	type:2,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	         //alert(JSON.stringify(ret||err)); 
+	         api.closeWin({
+             });
+	         
+	    	 
+	    });
+		
+	}
+	function fopen_address()
+	{
+		api.openWin({
+	        name: 'address_header',
+	        url: 'address_header.html'
+        });
+	}
+	function fopen_new_address()
+	{
+		api.openWin({
+	        name: 'address_user_header',
+	        url: 'address_user_header.html'
+        });
+	}
+	
+	function fgo(){
+	    //alert($api.getStorage('going'));return;
+	    api.showProgress({title:'提交订单中...'});
+	    var address_id=document.getElementById("yixuan_address").value;
+	    var key_id1 = key_id.substr(0,key_id.length -1);
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id+key_id1);
+	    
+	    api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=sub_order',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'text',
+            returnAll:false,
+            data:{
+                values: {
+	            	userId:user_id,
+	            	address_id:address_id,
+	            	key_id:key_id1,
+	            	time:time,
+	                sign:sign
+	            }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	api.hideProgress();
+        	var jiequ=ret.indexOf("[");
+        	ret=ret.substring(jiequ);
+        	ret = eval("("+ret+")");
+        	if(ret[0].orderId){
+        	    api.execScript({
+		        	name:'root',
+                   	frameName:'goshop',
+                    script: 'fget_buycar();fzong();'
+                });
+                api.openWin({
+			        name: 'zhifu_header',
+			        url: 'zhifu_header.html',
+			        pageParam:{
+	            		json:ret
+	            	}
+		        });
+        	}
+        	else{
+        	    api.toast({
+					msg: ret[0]['msg'],
+					duration: 2000,
+					location: 'bottom'
+				});
+        	}
+			
+        });
+	}
+	
+	function get_one_num(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+	    api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=get_one_num',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+	            	userId:user_id,
+	            	time:time,
+	                sign:sign
+	            }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	$('.shiyong_num').html(ret['shiyong_num']);
+        	$('.shengxia_num').html(ret['shengxia_num']);
+			
+        });
+	}
+	
+	function order_require_time(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+	    api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Orders&a=order_require_time',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+	            	userId:user_id,
+	            	time:time,
+	                sign:sign
+	            }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	$('.songda').html('送达时间：'+ret['songda']+' 早上7点');
+        });
+	}
+	
+
+	
+	function get_user_info(){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+        var sign = get_appkey(time);
+        sign = md5(sign+user_id);
+        api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=User&a=get_user_info',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+                	userId:user_id,
+                	time:time,
+	                sign:sign
+                }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+            api.hideProgress();//隐藏加载进度框
+            if (ret) {
+                 var comname = $api.getStorage('user_communityName');
+                 if(ret['receiptName'] && ret['receiptTel'] && ret['receiptAddress'] && (comname != '' && ret['communityId'] > 0)){
+                     $api.setStorage('going',2);
+	            	 go_pan=1;
+	            	 document.getElementById("address2").style.display="none";
+	                 document.getElementById("address").style.display="block";
+	                 
+	                 document.getElementsByClassName("shouhuoren")[0].innerHTML="收货人："+ret['receiptName'];
+	                 document.getElementsByClassName("phone")[0].innerHTML=ret['receiptTel'];
+	                 document.getElementsByClassName("shouhuodizhi")[0].innerHTML="收货地址："+$api.getStorage("user_communityName")+' '+ret['receiptAddress'];
+	                 
+	                 order_require_time();
+                 }
+                 else{
+                     
+                     document.getElementById("address").style.display="none";
+                     document.getElementById("address2").style.display="block";
+                 }
+                 
+            }else {
+            	document.getElementById("address").style.display="none";
+                document.getElementById("address2").style.display="block";
+            };
+        });
+	
+	}
+	
+
+	function fget_buycar(){
+	    var pan=$api.getStorage('login');
+		if(pan=='0')
+		{
+			return;
+		}
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign+user_id);
+	
+	    api.ajax({
+	        url: YAH_web+'/index.php?m=Api&c=Orders&a=get_cart_byuser',
+	        method: 'post',
+	        cache: false,
+	        timeout: 30,
+	        dataType: 'json',
+	        returnAll:false,
+	        data:{
+	            values: {
+	            	userId:user_id,
+	            	type:2,
+	            	time:time,
+	                sign:sign
+	            }
+	        }
+	    },function(ret,err){
+	         //alert(JSON.stringify(ret||err)); 
+	         api.hideProgress();
+	         if(ret){
+	             if(ret['num'] > 0){
+	                 var html = '';
+	                 var tol_money = 0;
+	                 var tol_num = 0;
+	                 $(ret['data']).each(function(i,val){
+	                     html += '<div class="goods" tapmode="a0" onclick="">';
+	                     html += '<div class="goods_left"><img src="'+$api.getStorage("YAH_web")+'/'+val.goodsThums+'" /></div>';
+	                     html += '<div class="goods_right">';
+	                     html += '<div class="goods_right_top">';
+	                     html += '<div class="goods_title">'+val.goodsName+'</div>';
+	                     html += '<div class="goods_canshu">';
+	                     html += '<p class="jiage">￥'+(val.shopPrice*val.cnt).toFixed(2)+'</p>';
+	                     html += '<p class="goods_num">x'+val.cnt+'</p>';
+	                     html += '</div>';
+	                     html += '</div>';
+	                     html += '<div class="goods_right_bottom">';
+	                     html += '<div class="goods_money">';
+	                     html += '<div class="danjia">￥'+val.shopPrice+'</div>';
+	                     if(val.isOneyuan == 1){
+	                     html += '<div class="xiaoji"><a>￥'+val.marketPrice+'</a></div>';
+	                     }
+	                     html += '</div>';
+	                     html += '</div>';
+	                     html += '</div>';
+	                     html += '</div>';
+	                     key_id = key_id+val.cart_key+',';
+	                     tol_num++;
+	                     tol_money += Number((val.shopPrice*val.cnt).toFixed(2));
+	                 })
+	                 set_money_num(tol_num,Number(tol_money));
+	                 get_one_num();
+	                 
+				     
+	                 
+			         document.getElementById("goods_list").innerHTML=html;
+			     
+	             }
+	             else{
+		             
+	             }
+	         }else{
+	             
+	         }
+	    	 
+	    	 
+	    });
+	}
+	
+	function set_money_num(n,money){
+	    var user_id=$api.getStorage('user_id');
+	    var time = Math.ceil(new Date().getTime()/1000);
+	    var sign = get_appkey(time);
+	    sign = md5(sign);
+	    api.ajax({
+            url: YAH_web+'/index.php?m=Api&c=Plat&a=get_platinfo',
+            method: 'post',
+            cache: false,
+            timeout: 30,
+            dataType: 'json',
+            returnAll:false,
+            data:{
+                values: {
+	            	userId:user_id,
+	            	time:time,
+	                sign:sign
+	            }
+            }
+        },function(ret,err){
+        	//alert(JSON.stringify(ret||err));
+        	$('.tol_num').html(n);
+        	if(money >= ret['deliveryFreeMoney']){
+        	    var new_money = Number(money.toFixed(2));
+        	    $('.tol_money').html('￥'+new_money);
+        	    $('.postage_money').html('￥0');
+        	    fzong(n,new_money);
+        	}
+        	else{
+        	    var new_money = (Number(money)+Number(ret['deliveryMoney'])).toFixed(2);
+        	    $('.tol_money').html('￥'+new_money);
+        	    $('.postage_money').html('￥'+ret['deliveryMoney']);
+        	    fzong(n,new_money);
+        	}
+			
+        });
+	}
+	
+	function fzong(n,money)
+	{
+		api.execScript({
+		   	frameName:'xiadan_footer',
+		    script: 'fset_num(\''+n+'\',\''+money+'\');'
+	    });
+	}
+	
+</script>
+</html>

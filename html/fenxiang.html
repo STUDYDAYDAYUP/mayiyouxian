@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <style>
+    	html,body{
+    		width:100%;
+    		height:100%;
+    	}
+    	.a{
+            background-color:#eee !important;
+        }
+    	#main{
+    		
+    	}
+    	#main ul{
+    		display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            height:80px;
+    	}
+    	#main ul li{
+    		-webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: center;
+            padding:12px 0 13px 0;
+    	}
+    	#main ul li img{
+    		height:40px;
+    	}
+    	#main ul li a{
+    		display: block;
+    		font-size:12px;
+    		line-height: 15px;
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<ul>
+		<li tapmode="a" onclick="fenxiang('朋友圈')">
+			<img src="../image/icon_res_download_moments.png" />
+			<a>分享到朋友圈</a>
+		</li>
+		<li tapmode="a" onclick="fenxiang('好友')">
+			<img src="../image/icon64_appwx_logo.png" style="height:30px;margin:5px 0;" />
+			<a>分享到好友</a>
+		</li>
+	</ul>
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+document.getElementById("main").ontouchmove = function(e){ e.preventDefault(); };
+	apiready = function(){
+		
+	};
+	var type='timeline';
+	function fenxiang(n)
+	{
+		if(n=='朋友圈') type='timeline';
+		if(n=='好友') type='session';
+		var user_id=$api.getStorage('user_id');
+		
+		var wx = api.require('wx');
+		wx.shareWebpage({
+		    apiKey: 'wx8fbe09646d9da4c5',
+		    scene: type,
+		    title: '蚂蚁优鲜',
+		    description: '蚂蚁优鲜',
+		    thumb: 'widget://image/renhui_logo.png',
+		    contentUrl: YAH_web+'/index.php?m=Wx&c=User&a=loginbyapp&pid='+user_id
+		}, function(ret, err) {
+		    if (ret.status) {
+		        api.alert({title: '发表微信',msg: '分享成功', buttons: ['确定']});
+		    } else {
+		        //alert(err.code);
+		    }
+		    api.execScript({
+               	frameName:'erweima',
+                script: 'fclose();'
+            });
+		    api.execScript({
+               	frameName:'yuyuejieguo_header',
+                script: 'freturn();'
+            });
+		    api.execScript({
+               	frameName:'fenxiang_tanc',
+                script: 'fclose();'
+            });
+            api.closeFrame({
+			    name: 'fenxiang'
+		    });
+            
+		});
+		
+		
+		/*var weiXin = api.require('weiXin');
+	    weiXin.registerApp
+	    (
+	         function(ret,err)
+	         {
+	         	if (ret.status)
+	         	{
+		         	weiXin.sendRequest({
+					    scene:type,
+					    contentType:'web_page',
+					    title:'多商户',
+					    description:YAH_download,
+//					    thumbUrl:YAH_ajax_name+'upload/member.jpg',
+						thumbUrl:'widget://image/renhui_logo.png',
+					    contentUrl: $api.getStorage('dq_fenxiang')
+					},function(ret,err){
+					    if(ret.status){
+					        api.alert({title: '发表微信',msg: '分享成功', buttons: ['确定']});
+					    } else{
+					        //api.alert({title: '发表失败',msg: err.msg,buttons: ['确定']});
+					    }
+					});
+					api.execScript({
+	                   	frameName:'fenxiang_tanc',
+	                    script: 'fclose();'
+                    });
+	         	}
+	         }
+	    );*/
+	}
+</script>
+</html>

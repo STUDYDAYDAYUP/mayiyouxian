@@ -1,0 +1,285 @@
+* { margin:0; padding:0;
+            outline: 0;
+        }
+
+        /*header*/
+        header {
+
+             background-color: #60b034;
+
+             border:0px;
+        }
+
+        .header {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+        }
+        .header a{
+            display: block;
+            background-size: 30px;
+            background-repeat: no-repeat;
+            background-position: center;
+
+        }
+        .title {
+            line-height:40px;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: center;
+        }
+        .header .menu {
+            background-image: url("../image/menu.png");
+        }
+        /*header*/
+       html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+		#wrap {-webkit-animation: fadeIn .5s ease both;animation: fadeIn .5s ease both;}
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+             background-color: #f2f2f2;
+        }
+
+
+		#footer {
+            width: 100%;
+            text-align: center;
+            height: 50px;
+            line-height: 55px;
+            background-color: #fff;
+            border-top:1px solid #ccc;
+        }
+
+        ul {
+
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+        }
+         #footer li {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            height: 49px;
+            position: relative;
+        }
+        .home {
+            background-image: url(../image/shouye_click_1.png);
+        }
+
+        .fenlei {
+            background-image: url(../image/fenlei_click_1.png);
+        }
+        .jifen {
+            background-image: url(../image/faxian_click_1.png);
+        }
+        .goshop {
+            background-image: url(../image/goshop_click_1.png);
+        }
+        .my {
+            background-image: url(../image/wode_click_1.png);
+        }
+		.active .home {
+            background-image: url(../image/shouye_click_2.png);
+        }
+
+        .active .fenlei {
+            background-image: url(../image/fenlei_click_2.png);
+        }
+
+        .active .jifen {
+            background-image: url(../image/faxian_click_2.png);
+        }
+		.active .goshop {
+            background-image: url(../image/goshop_click_2.png);
+        }
+		.active .my {
+            background-image: url(../image/wode_click_2.png);
+        }
+
+		 .bottom_btn {
+/*     bycao       font-size: 12px;
+            color: #545454;
+            width: 100%;
+            height: 50px;
+            background-repeat: no-repeat no-repeat;
+            background-position-x: center;
+            background-size: 30px;*/
+           background-position-y: 4px;
+            padding-top: 12px;
+            font-size: 12px;
+            color: #60b034;
+            height: 35px;
+            width:95%;
+            background-repeat: no-repeat no-repeat;
+            background-position-x: center;
+            background-size: 25px;
+        }
+        .my2 .bottom_btn{
+            background-size: 21px;
+        }
+        .active .bottom_btn {
+            color: #1e1e1e;
+            /*background-color:#ccc;*/
+            /*background-size: 25px;*/
+        }
+
+        .topbar {
+
+            background: #60b034;
+
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            display: none;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            position: relative;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: 0 0px;
+        }
+        #my{
+            background-image: url('../image/my_bj.png');
+        }
+        #home .topzuo{
+            width: 50px;
+        }
+        #home .topyou{
+            width: 50px;
+            /*background-image: url('../image/sousuo_bai.png');*/
+            background-repeat: no-repeat;
+            background-size: 16px 16px;
+            background-position: 17px 17px;
+        }
+/*  bycao       #home .topzhong{
+            padding-left: 20px;
+            background-image: url('../image/weizhi_bai.png');
+            background-repeat: no-repeat;
+            background-size: 12px 16px;
+            background-position: 4px 17px;
+            text-align: left !important;
+            font-size: 14px;
+            line-height: 50px;
+        } */
+        .topzhong{
+            text-align: center;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+        .topzhong .search{
+            width: 100%;
+            height: 34px;
+            line-height: 34px;
+            font-size: 13px;
+            font-weight: normal;
+            color: rgba(250, 250, 250, 0.8);
+            margin-top: 8px;
+            border-radius: 34px;
+            background-color: rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+        .topzhong .search span{
+            padding-left: 20px;
+            background-image: url('../image/index_search.png');
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+        }
+        #fenlei .topzuo{
+            width: 50px;
+            height:50px;
+            left:0px;
+            top:0px;
+            position: absolute;
+            background-image:url('../image/return.png');
+            background-size:11px 19px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+
+        }
+        #fenlei .topzhong{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            float:inherit;
+            text-align: center;
+            /*padding:0 50px;*/
+        }
+        #fenlei .topyou{
+            width: 50px;
+            height:50px;
+            position: absolute;
+            right:0px;
+            top:0px;
+            font-size: 15px;
+            background-image: url('../image/fenxiang.png');
+            background-size: 20px 20px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+        }
+        #goshop .topzuo{
+            width: 50px;
+            height:50px;
+            left:0px;
+            top:0px;
+            position: absolute;
+            background-image:url('../image/return.png');
+            background-size:11px 19px;
+            background-repeat: no-repeat;
+            background-position: 13px 15px;
+
+        }
+        #goshop .topzhong{
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            float:inherit;
+            text-align: center;
+            /*padding:0 50px;*/
+        }
+        #goshop .topyou{
+            width: 50px;
+            height:50px;
+            position: absolute;
+            right:0px;
+            top:0px;
+            font-size: 15px;
+        }
+
+        .activebar {
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: flex !important;
+            /*display: block !important;*/
+        }
+        .a{}
+        #goods_num{
+    		position: absolute;
+    		right:18%;
+    		top:0;
+    		color:#fff;
+    		background-color:red;
+    		border-radius: 50%;
+    		line-height:15px;
+    		font-size:12px;
+    		height: 15px;
+    		width:15px;
+    	}

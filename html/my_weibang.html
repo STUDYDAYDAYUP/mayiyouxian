@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/my_weibang.css"/>
+    <style>
+    	body{
+    		
+    	}
+    </style>
+</head>
+<body>
+<div id="main">
+	<!--<ul>
+		<li>
+			<div class="header">
+				<div class="left"><img tapmode="" onclick="fopen_look_user(0);" src="../image/user_img_cs.png" /></div>
+				<div class="con">
+					<div class="right">2016/07/06</div>
+					<div class="user_name ccyc">我就是我<span class="dengji">lv1</span><span class="right"><span class="l1">保</span><span class="l2">2000</span></span></div>
+					<div class="time"><div class="icon"></div><div class="dizhi ccyc">广州天河区天河北路175号</div><div class="juli">距离233米</div></div>
+				</div>
+				
+			</div>
+			<div class="dian" tapmode="" onclick="fopen_weibang_xx(0);">
+				<div class="title">我就是我，不一样的标题</div>
+				<div class="content">最后一步还是踏上了这一条路，宿命难违，早刻下这个轮回。嘴角写满微笑，埋下红尘牵挂重重的灰。寺院古钟一声声唱着慈悲，暮然回味，竟留下前世的泪。若此...</div>
+				<div class="tu_list">
+					<img src="../image/05.jpg" />
+					<img src="../image/05.jpg" />
+					<img src="../image/05.jpg" />
+				</div>
+			</div>
+			<div class="di">
+				<div class="del" tapmode="del">删除</div><div class="bj" tapmode="bj_on">编辑</div>
+			</div>
+		</li>
+		<li>
+			<div class="header">
+				<div class="left"><img tapmode="" onclick="fopen_look_user(0);" src="../image/user_img_cs.png" /></div>
+				<div class="con">
+					<div class="right">2016/07/06</div>
+					<div class="user_name ccyc">我就是我<span class="dengji">lv1</span><span class="right"><span class="l1">保</span><span class="l2">2000</span></span></div>
+					<div class="time"><div class="icon"></div><div class="dizhi ccyc">广州天河区天河北路175号</div><div class="juli">距离233米</div></div>
+				</div>
+			</div>
+			<div class="dian" tapmode="" onclick="fopen_weibang_xx(0);">
+				<div class="title">我就是我，不一样的标题</div>
+				<div class="content">最后一步还是踏上了这一条路，宿命难违，早刻下这个轮回。嘴角写满微笑，埋下红尘牵挂重重的灰。寺院古钟一声声唱着慈悲，暮然回味，竟留下前世的泪。若此...</div>
+				<div class="tu_list">
+					<img src="../image/05.jpg" />
+					<img src="../image/05.jpg" />
+					<img src="../image/05.jpg" />
+				</div>
+			</div>
+			<div class="di">
+				<div class="del" tapmode="del">删除</div><div class="bj" tapmode="bj_on">编辑</div>
+			</div>
+		</li>
+	</ul>-->
+</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquery190.js"></script>
+<script type="text/javascript" src="../script/config.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		fget_my_weibang();
+	};
+	function fopen_weibang_xx(xuan_way,wb_id)
+	{
+//		api.openWin({
+//	        name: 'weibang_xx_header',
+//	        url: 'weibang_xx_header.html',
+//	        pageParam:{
+//	        	wb_id:wb_id
+//	        }
+//      });
+        api.openWin({
+	        name: 'jiedan_xiaoxi_xx_header',
+	        url: 'jiedan_xiaoxi_xx_header.html',
+	        pageParam:{
+            	xuan_way:xuan_way,
+            	wb_id:wb_id
+            }
+        });
+	}
+	function fget_my_weibang()
+	{
+		var user_id=$api.getStorage('user_id');
+		var lon=$api.getStorage('lon');
+			var lat=$api.getStorage('lat');
+			$('#main').html('<div class="jiazai" style="background-color:#f2f2f2;"><div class="left"><img src="../image/login1.gif" /></div><div class="right">加载中...</div></div>');
+		 	api.ajax({
+	            url: YAH_ajax_name+'get_my_weibang_list.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	user_id:user_id,
+	                	lat:lat,
+	                	lon:lon
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	                 var html='<ul>';
+	                 for(var i=0;i<ret.length;i++)
+	                 {
+	                 	html+='<li>';
+						html+='	<div class="header">';
+						html+='		<div class="left"><img tapmode="" onclick="fopen_look_user('+ret[i].userId+');" src="'+YAH_web+'/'+ret[i].userPhoto+'" /></div>';
+						html+='		<div class="con">';
+						html+='			<div class="right">'+ret[i].createTime+'</div>';
+						html+='			<div class="user_name ccyc">'+ret[i].userName+'<span class="dengji">lv'+ret[i].grage+'</span>';
+						if(ret[i].isBondShow==1 || ret[i].isBondShow=='1') html+='				<span class="right"><span class="l1">保</span><span class="l2">'+ret[i].userBond+'</span></span>';
+						html+='			</div>';
+						html+='			<div class="time"><div class="icon"></div><div class="dizhi ccyc">'+ret[i].address+'</div><div class="juli">距离'+ret[i].juli+'米</div></div>';
+						html+='		</div>';
+						html+='	</div>';
+						html+='	<div class="dian" tapmode="" onclick="fopen_weibang_xx(\''+ret[i].type+'\',\''+ret[i].id+'\');">';
+						html+='	<div class="title ccyc">'+ret[i].title+'</div>';
+						html+='	<div class="content">'+ret[i].content+'</div>';
+						html+='	<div class="tu_list">';
+						var max=ret[i]['img_list'].length;
+						if(max>3) max=3;
+						if(max<=1 && (ret[i]['img_list']==" " || ret[i]['img_list']=="")) max=0;
+						for(var j=0;j<max;j++)
+						{
+							html+='		<img src="'+YAH_web+'/'+ret[i]['img_list'][j]+'" />';
+						}
+						
+//						html+='	<div class="list"><div class="left">价钱:<span>￥'+ret[i].money+'</span></span></div><div class="right">已有'+ret[i].jiedan_num+'人接单</div></div>';
+						html+='	</div>';
+						
+						html+='	</div>';
+						html+='<div class="di">';
+						html+='	<div class="del" tapmode="del_on" onclick="fdel_pan('+ret[i].id+');">删除</div><div class="bj" tapmode="bj_on" onclick="fbianji('+ret[i].id+');">编辑</div>';
+						html+='</div>';
+//						html+='	<div class="footer">';
+//						html+='		<div class="fenxiang" tapmode="fenxiang_on" onclick="fenxiang('+ret[i].id+');">分享</div>';
+//						html+='		<div class="con"></div>';
+//						html+='		<div class="jiedan" tapmode="jiedan_on" onclick="fopen_jiedan('+ret[i].id+');">接单</div>';
+//						html+='	</div>';
+						html+='</li>';
+	                 }
+	                 html+='</ul>';
+	                 $('#main').html(html);
+	                 api.parseTapmode();
+	            }else {
+	            	document.getElementById("main").innerHTML='<div style="text-align: center;line-height: 50px;">暂无微帮信息</div>';
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fdel_pan(id)
+	{
+		api.confirm({
+		    title: '提示',
+		    msg: '确定删除该微帮吗？',
+		    buttons: ['确定', '取消']
+		},function( ret, err ){
+		    if( ret ){
+		    	if(ret.buttonIndex == 1)
+		    	{
+		    		fdel(id);
+		    	}
+		    }else{
+		         //alert( JSON.stringify( err ) );
+		    }
+		});
+	}
+	function fdel(id)
+	{
+		api.showProgress({title:'删除中...'});//显示加载进度框
+		api.ajax({
+	            url: YAH_ajax_name+'del_weibang.php',
+	            method: 'post',
+	            cache: false,
+	            timeout: 30,
+	            dataType: 'json',
+	            returnAll:false,
+	            data:{
+	                values: {
+	                	wb_id:id
+	                }
+	            }
+	        },function(ret,err){
+	        	api.hideProgress();//隐藏加载进度框
+	        	api.refreshHeaderLoadDone();
+	            if (ret) {
+	                 if(ret[0].pan=='1')
+	                 {
+	                 	api.toast({
+							msg: '删除成功！',
+							duration: 2000,
+							location: 'bottom'
+						});
+						fget_my_weibang();
+	                 }
+	                 else
+	                 {
+	                 	api.toast({
+							msg: '删除失败！',
+							duration: 2000,
+							location: 'bottom'
+						});
+	                 }
+	            }else {
+	            	fduanwang();
+	//				api.alert({
+	//	                msg:('错误码：'+err.code+'；错误信息：'+err.msg+'网络状态码：'+err.statusCode)
+	//	            });
+	            };
+	        });
+	}
+	function fbianji(wb_id)
+	{
+		api.openWin({
+	        name: 'faweibang_header',
+	        url: 'faweibang_header.html',
+	        pageParam:{
+	        	wb_id:wb_id,
+	        	pan:'bj'
+	        }
+        });
+	}
+</script>
+</html>
